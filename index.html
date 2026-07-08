@@ -1,0 +1,1508 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Local Nutrition Tracker</title>
+<style>
+:root{--bg:#020617;--card:#111827;--muted:#94a3b8;--text:#f8fafc;--line:#334155;--accent:#38bdf8;--bad:#fb7185;--good:#34d399;--warn:#fbbf24}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#020617,#0f172a);color:var(--text)}header{position:sticky;top:0;z-index:10;padding:16px;border-bottom:1px solid var(--line);background:rgba(2,6,23,.96);backdrop-filter:blur(8px)}h1{margin:0;font-size:22px}.sub,.small{color:var(--muted);font-size:12px}main{max-width:1180px;margin:0 auto;padding:14px}.nav{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}button,input,select{border:1px solid var(--line);border-radius:12px;background:#020617;color:var(--text);padding:10px;font-size:15px}button{cursor:pointer;background:#0c4a6e;border-color:#075985;font-weight:700}button.secondary{background:#1f2937}button.danger{background:#7f1d1d;border-color:#b91c1c}.nav button{width:auto;flex:1 1 130px}.screen{display:none}.screen.active{display:block}.grid{display:grid;gap:12px}@media(min-width:900px){.grid2{grid-template-columns:1.05fr .95fr}}.card{background:rgba(17,24,39,.88);border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:0 10px 25px rgba(0,0,0,.25)}h2{font-size:18px;margin:0 0 10px}h3{font-size:16px;margin:18px 0 8px;color:#e2e8f0}label{display:block;color:var(--muted);font-size:13px;margin:8px 0 4px}.row{display:grid;grid-template-columns:1fr 1fr;gap:8px}.row3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}@media(max-width:700px){.row,.row3{grid-template-columns:1fr}}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.actions button{flex:1 1 150px}.pillgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}@media(min-width:700px){.pillgrid{grid-template-columns:repeat(4,minmax(0,1fr))}}.pill{background:#020617;border:1px solid var(--line);border-radius:14px;padding:10px}.pill b{display:block;font-size:18px}.pill span{color:var(--muted);font-size:12px}table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:8px 5px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left}th{color:var(--muted)}.foodHead{margin-top:16px;padding:9px 10px;border-radius:10px;background:#0f172a;border:1px solid var(--line);font-weight:800;color:#ef4444}.foodItem{padding:10px 0;border-bottom:1px solid var(--line)}.entryCheck{width:18px;height:18px;accent-color:var(--good)}.doneCheck{width:18px;height:18px;accent-color:var(--good)}.orderInput{width:72px;padding:6px;border-radius:8px}.orderBtns{display:flex;gap:4px}.orderBtns button{padding:6px 8px;border-radius:8px}.micro{color:#cbd5e1;font-size:12px;line-height:1.45}.nutrientGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}@media(min-width:850px){.nutrientGrid{grid-template-columns:repeat(4,minmax(0,1fr))}}.barwrap{background:#020617;border:1px solid var(--line);height:12px;border-radius:999px;overflow:hidden}.bar{height:100%;background:var(--accent)}canvas{width:100%;max-width:420px;display:block;margin:10px auto;background:#020617;border:1px solid var(--line);border-radius:16px}.legend{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.legend div{background:#020617;border:1px solid var(--line);border-radius:12px;padding:8px}.tableScroll{overflow:auto;border:1px solid var(--line);border-radius:14px}.tableScroll table{min-width:980px}.nutrientCompact{font-size:12px;line-height:1.45;color:#cbd5e1}.nutrientCompact b{color:#f8fafc}.hide{display:none}.dayPick{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line)}.dayPick input{width:20px;height:20px;margin-top:2px;accent-color:var(--good)}.calendarGrid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:10px}.calendarHead{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;color:var(--muted);font-size:12px;text-align:center}.calDay{min-height:56px;border:1px solid var(--line);border-radius:12px;background:#020617;padding:6px;font-size:12px}.calDay input{width:18px;height:18px;accent-color:var(--good)}.calDay.empty{opacity:.35}.calDay b{display:block;margin-bottom:4px}.dateRow{display:grid;grid-template-columns:1fr 1fr;gap:8px}@media(max-width:700px){.dateRow{grid-template-columns:1fr}}.printOnly{display:none}@media print{header,.nav,.noPrint,button,input,select{display:none!important}body{background:#fff;color:#000}.card{box-shadow:none;border:0;background:#fff;color:#000}.screen{display:block}.screen:not(.active){display:none}th,td{border-bottom:1px solid #ccc;color:#000}.small,.sub{color:#333}}
+
+.moduleGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}.moduleBtn{display:block;width:100%;min-height:92px;text-align:left;background:#0f172a;border:1px solid var(--line);border-radius:16px;padding:14px;color:var(--text);font-weight:800}.moduleBtn span{display:block;margin-top:6px;color:var(--muted);font-size:12px;font-weight:500}.breadcrumb{margin:0 0 12px;color:var(--muted);font-size:13px}.breadcrumb button{padding:6px 10px;border-radius:10px;font-size:12px}
+
+#foodSelect optgroup, #recipeSelect optgroup{
+    color:#ef4444 !important;
+    font-weight:800 !important;
+    font-style:normal !important;
+}
+
+/* Android fallback */
+select optgroup{
+    color:#ef4444 !important;
+    font-weight:800 !important;
+}
+
+
+.pfCard{background:#020617;border:1px solid var(--line);border-radius:16px;padding:12px;margin:10px 0}.pfMachineHead{display:flex;gap:10px;align-items:flex-start}.pfMachineIcon{width:58px;min-width:58px;height:58px;border:1px solid var(--line);border-radius:14px;background:#0f172a;display:flex;align-items:center;justify-content:center;font-size:30px}.pfMachineTitle{font-weight:900}.pfMachineInputs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}.pfMachineInputs input{width:100%}.pfCheck{width:22px;height:22px;accent-color:var(--good);margin-top:3px}.pfSummary{position:sticky;bottom:0;background:rgba(15,23,42,.96);border:1px solid var(--line);border-radius:16px;padding:12px;margin-top:12px;box-shadow:0 -6px 18px rgba(0,0,0,.25)}@media(max-width:520px){.pfMachineInputs{grid-template-columns:1fr 1fr 1fr}.pfMachineInputs label{font-size:12px}.pfMachineInputs input{padding:9px}.pfMachineIcon{width:50px;min-width:50px;height:50px}}
+</style></head><body>
+<header><h1>Local Nutrition Tracker</h1><div class="sub">Single-file, local-only tracker. No account. No cloud. Vitamin D is split into D3 and other/unspecified D forms; Vitamin K is split into K1 and K2 where data is available. Collagen protein is tracked separately from complete protein.</div><div class="nav">
+<button data-screen="foodHubScreen">Food</button><button class="secondary" data-screen="exerciseHubScreen">Exercise</button><button class="secondary" data-screen="utilitiesScreen">Utilities</button><button class="secondary" data-screen="profileScreen">Profile / Goals</button><button class="danger" data-screen="usersGuideScreen">Users Guide</button></div></header>
+<main>
+
+<section id="foodHubScreen" class="screen active"><div class="card"><h2>Food</h2><p class="small">Food logging, food lists, recipes, shopping lists, daily totals, and nutrition stats.</p><div class="moduleGrid"><button class="moduleBtn" data-screen="mainScreen">Today's Menu<span>Today's food entries and eaten checkboxes.</span></button><button class="moduleBtn" data-screen="foodEntryScreen">Add Custom Food to Database<span>Create a custom database item for future menus.</span></button><button class="moduleBtn" data-screen="foodListsHubScreen">Food Lists<span>Food database and current shopping list.</span></button><button class="moduleBtn" data-screen="recipesScreen">Recipes<span>Recipe library and add selected recipe to the day.</span></button><button class="moduleBtn" data-screen="statsHubScreen">Stats<span>Daily totals, nutrition stats, and macro/micro breakdown.</span></button></div></div></section>
+
+<section id="foodListsHubScreen" class="screen"><div class="card"><p class="breadcrumb"><button class="secondary" data-screen="foodHubScreen">← Food</button></p><h2>Food Lists</h2><div class="moduleGrid"><button class="moduleBtn" data-screen="foodsScreen">Food Database<span>Browse all foods by category.</span></button><button class="moduleBtn" data-screen="shoppingListScreen">Current Shopping List<span>Select days and print a combined shopping list.</span></button></div></div></section>
+
+<section id="statsHubScreen" class="screen"><div class="card"><p class="breadcrumb"><button class="secondary" data-screen="foodHubScreen">← Food</button></p><h2>Stats</h2><div class="moduleGrid"><button class="moduleBtn" data-screen="dailyTotalsScreen">Daily Totals<span>Calories, macros, net calories, and estimated loss/gain.</span></button><button class="moduleBtn" data-screen="statsScreen">Nutrition Stats<span>Targets, charts, vitamin breakdowns, and insulin-response estimate.</span></button><button class="moduleBtn" data-screen="breakdownScreen">Daily Macro/Micro Breakdown<span>Each nutrient with contributing foods.</span></button></div></div></section>
+
+<section id="exerciseHubScreen" class="screen"><div class="card"><h2>Exercise</h2><div class="moduleGrid"><button class="moduleBtn" data-screen="exerciseScreen">Exercise Tracker<span>Add exercise minutes and estimated calories.</span></button><button class="moduleBtn" data-screen="planetFitnessScreen">Planet Fitness Workout<span>30-minute full-body machine workout with weight, sets, reps, and calories.</span></button><button class="moduleBtn" data-screen="dailyTotalsScreen">Daily Totals<span>View exercise calories inside daily totals.</span></button></div></div></section>
+
+<section id="planetFitnessScreen" class="screen"><div class="card"><p class="breadcrumb"><button class="secondary" data-screen="exerciseHubScreen">← Exercise</button></p><h2>Planet Fitness Workout</h2><p class="small">Phone-friendly 30-minute full-body workout. Check each machine you complete, enter weight, sets, and reps, then save it to today's exercise log.</p><div class="row3"><div><label>Day</label><input id="pfWorkoutDate" type="date"></div><div><label>Workout minutes</label><input id="pfWorkoutMinutes" type="number" min="1" step="1" value="30"></div><div><label>Estimated calories</label><input id="pfWorkoutCalories" type="number" min="0" step="1" value="0"></div></div><div id="pfWorkoutList"></div><div class="pfSummary"><div id="pfWorkoutSummary" class="small"></div><div class="actions"><button class="secondary" id="pfRecalcBtn">Recalculate</button><button id="pfSaveBtn">Save to Today's Exercise Log</button><button class="secondary" id="pfClearBtn">Clear Boxes</button></div></div><h2 style="margin-top:18px">Planet Fitness history for this day</h2><div id="pfWorkoutHistory"></div></div></section>
+
+<section id="utilitiesScreen" class="screen"><div class="card"><h2>Utilities</h2><p class="small">Backup, restore, copy, and reset tools. Export a backup before major changes or before moving the app to a website.</p><div class="moduleGrid"><button class="moduleBtn" id="exportBtn">Export Backup<span>Save all tracker data to a backup file.</span></button><button class="moduleBtn" id="importBtn">Import Backup<span>Restore a previously exported backup.</span></button><div class="card" style="padding:12px;background:#0f172a"><h3 style="margin-top:0">Copy Day</h3><div class="dateRow"><div><label>Copy From Date</label><input id="copyFromDate" type="date"></div><div><label>Copy To Date</label><input id="copyToDate" type="date"></div></div><div class="actions"><button id="copyDayBtn">Copy From Date → Copy To Date</button></div></div><button class="moduleBtn danger" id="clearDayBtn">Reset Day<span>Clear the selected day's entries.</span></button><button class="moduleBtn danger" id="resetBtn">Reset App<span>Delete all local tracker data.</span></button></div><input id="importFile" class="hide" type="file" accept="application/json"></div></section>
+<section id="mainScreen" class="screen"><div class="card"><p class="breadcrumb"><button class="secondary" data-screen="foodHubScreen">← Food</button></p><h2>Today's Menu</h2><label>Date</label><input id="date" type="date">
+<label style="margin-left:12px">Schedule</label>
+<select id="mealSchedule">
+<option value="1">1 meal</option>
+<option value="2">2 meal</option>
+<option value="3">3 meal</option>
+<option value="fasting">Fasting</option>
+</select>
+<h2 style="margin-top:16px">Add Food to Menu</h2>
+<label>Food</label><select id="foodSelect"></select>
+<div class="row"><div><label>Servings</label><input id="servings" type="number" min="0" step="0.01" value="1"></div></div>
+<div class="actions"><button id="addFoodBtn">Add Food to Menu</button></div>
+<h2 style="margin-top:16px">Food entries</h2>
+<div class="card" style="padding:12px;background:#0f172a;margin-bottom:12px">
+  <label>Group selector</label>
+  <input id="groupName" type="text" placeholder="Example: 1, A, Breakfast, Dinner">
+  <p class="small">Enter a group name, check the Group box beside each line item, then click Submit Group.</p>
+  <div class="actions"><button id="submitGroupBtn">Submit Group</button><button class="secondary" id="clearGroupsBtn">Clear Groups</button></div>
+</div>
+<div id="groupGlycemicSummary"></div>
+<div id="entries"></div>
+<h2 style="margin-top:16px">Daily Totals</h2><div id="menuTotals" class="pillgrid" style="margin-top:12px"></div><div id="menuLossGain" class="pillgrid" style="margin-top:12px"></div>
+</div></section>
+
+<section id="dailyTotalsScreen" class="screen"><div class="card"><p class="breadcrumb"><button class="secondary" data-screen="statsHubScreen">← Stats</button></p><h2>Daily Totals</h2><label>Date</label><input id="dailyTotalsDate" type="date"><label>Daily weight lb</label><input id="dailyWeight" type="number" min="0" step="0.1" placeholder="Example: 147.2"><div id="totals" class="pillgrid" style="margin-top:12px"></div><h2 style="margin-top:16px">Estimated loss / gain today</h2><div id="lossGain" class="pillgrid"></div><p class="small">Uses Mifflin-St Jeor maintenance or your manual maintenance, logged food, logged exercise, and 3,500 kcal/lb.</p></div></section>
+<section id="breakdownScreen" class="screen"><div class="card"><p class="breadcrumb"><button class="secondary" data-screen="statsHubScreen">← Stats</button></p><h2>Daily Macro/Micro Breakdown</h2><p class="small">Shows each nutrient first, then the foods that make up that nutrient total for the selected date. Use this page to find which foods are driving any high or low macro or micronutrient totals.</p><div id="dailyBreakdown"></div></div></section>
+
+<section id="shoppingListScreen" class="screen"><div class="card"><p class="breadcrumb"><button class="secondary" data-screen="foodListsHubScreen">← Food Lists</button></p><h2>Current Shopping List</h2><p class="small">Use the calendar to select one day or multiple days, then print a combined shopping list. Only days with food entries are selectable.</p><div class="dateRow noPrint"><div><label>Calendar month</label><input id="shoppingMonth" type="month"></div><div><label>&nbsp;</label><button class="secondary" id="showLoggedShoppingDaysBtn">Show logged days</button></div></div><div id="shoppingDayList"></div><div class="actions noPrint"><button id="selectAllShoppingDaysBtn" class="secondary">Select visible logged days</button><button id="clearShoppingDaysBtn" class="secondary">Clear selection</button><button id="printShoppingListBtn">Print selected shopping list</button></div><div id="shoppingPreview" style="margin-top:16px"></div></div></section>
+<section id="foodEntryScreen" class="screen"><div class="card"><p class="breadcrumb"><button class="secondary" data-screen="foodHubScreen">← Food</button></p><h2>Add Custom Food to Database</h2><p class="small">Save a food that is not already in the database. After saving, it will appear in the Today's Menu food selector.</p><div class="row3"><div><label>Category</label><input id="cf_category" placeholder="Example: Meat, Fruits, Supplements"></div><div><label>Name</label><input id="cf_name" placeholder="Example: My yogurt"></div><div><label>Serving</label><input id="cf_serving" placeholder="Example: 1 cup"></div></div><div id="customFields" class="nutrientGrid"></div><button id="saveCustomBtn">Save Custom Food to Database</button></div></section>
+<section id="exerciseScreen" class="screen"><div class="card"><p class="breadcrumb"><button class="secondary" data-screen="exerciseHubScreen">← Exercise</button></p><h2>Exercise Tracker</h2><p class="small">CDC values are for a 154-lb person; this tracker scales by your profile weight and minutes.</p><label>Exercise</label><select id="exerciseSelect"></select><div class="row3"><div><label>Done</label><input id="exerciseDone" type="checkbox" checked></div><div><label>Minutes</label><input id="exerciseMinutes" type="number" min="1" step="1" value="30"></div><div><label>Day</label><input id="exerciseDate" type="date"></div><div><label>Time</label><input id="exerciseTime" type="time"></div><div><label>Estimated calories</label><input id="exerciseCalories" type="number" min="0" step="1" value="0"></div></div><div class="actions"><button class="secondary" id="calcExerciseBtn">Recalculate</button><button id="addExerciseBtn">Add to Day</button></div><h2 style="margin-top:18px">Selected exercises for this day</h2><div id="exerciseEntries"></div><h2 style="margin-top:18px">CDC exercise table</h2><div id="exerciseTable"></div></div></section>
+<section id="foodsScreen" class="screen"><div class="card"><p class="breadcrumb"><button class="secondary" data-screen="foodListsHubScreen">← Food Lists</button></p><h2>Food Database</h2><p class="small">New grouped catalog with volume measures where practical. Each food shows calories, macros, and tracked micronutrients per listed serving. Homemade strained skim-milk Greek yogurt uses a thick-strained estimate: higher protein, lower sugar than store-bought nonfat Greek yogurt.</p><div id="foodsList"></div></div></section>
+
+<section id="recipesScreen" class="screen"><div class="card"><p class="breadcrumb"><button class="secondary" data-screen="foodHubScreen">← Food</button></p><h2>Recipes</h2><p class="small">Select a recipe from the list below. Each recipe shows ingredients and detailed directions. You can add the selected recipe directly to the current day.</p><div class="row"><div><label>Recipe list</label><select id="recipeSelect"></select></div><div><label>&nbsp;</label><button id="addSelectedRecipeBtn">Add selected recipe to day</button></div></div><div id="recipeDetails" style="margin-top:14px"></div></div></section>
+
+<section id="statsScreen" class="screen"><div class="card"><p class="breadcrumb"><button class="secondary" data-screen="statsHubScreen">← Stats</button></p><h2>Nutrition Stats</h2><canvas id="macroChart" width="420" height="420"></canvas><div id="macroLegend" class="legend"></div><h2 style="margin-top:18px">Vitamin A: separated for safety</h2><div id="vitABreakdown"></div><h2 style="margin-top:18px">Meal glycemic load / estimated insulin response</h2><div id="insulinSpikeTable"></div><h2 style="margin-top:18px">Actuals vs targets</h2><div id="targetTable"></div></div></section>
+<section id="profileScreen" class="screen"><div class="card"><h2>Profile / Goals</h2><div class="row"><div><label>Sex</label><select id="sex"><option value="male">Male</option><option value="female">Female</option></select></div><div><label>Age</label><input id="age" type="number" value="64"></div></div><div class="row3"><div><label>Height feet</label><input id="feet" type="number" value="5"></div><div><label>Height inches</label><input id="inches" type="number" value="10"></div><div><label>Weight lb</label><input id="weight" type="number" value="150"></div></div><div class="row3"><div><label>Goal weight lb</label><input id="goalWeight" type="number" value="145"></div><div><label>Activity before logged exercise</label><select id="activity"><option value="1.2">Sedentary</option><option value="1.375">Light</option><option value="1.55">Moderate</option><option value="1.725">Very active</option></select></div><div><label>Daily goal adjustment</label><select id="plan"><option value="-300">Lose slowly (-300)</option><option value="-500">Lose standard (-500)</option><option value="-750">Lose aggressively (-750)</option><option value="0">Maintain</option><option value="250">Gain slowly (+250)</option></select></div></div><label>Optional manual maintenance calories</label><input id="manualMaintenance" type="number" value="0">
+<button id="saveProfileBtn">Save profile</button><h2 style="margin-top:18px;display:none">Calculated targets</h2><div id="profileResults" class="pillgrid" style="display:none"></div></div></section>
+
+
+<section id="usersGuideScreen" class="screen">
+<div class="card">
+<h2>Welcome to the Local Nutrition Tracker</h2>
+
+<p>This tracker is designed to run entirely on your device. No accounts are required and no information is stored online. All data is saved locally in your browser until you export a backup.</p>
+
+<h2>Quick Start</h2>
+<ol>
+<li>Open <b>Profile / Goals</b> and enter your age, sex, height, weight, goal weight, activity level, and desired weight-loss plan.</li>
+<li>Select today's date on the <b>Main Tracker</b>.</li>
+<li>Use the <b>Food</b> page to add foods, supplements, meals, or recipes.</li>
+<li>Use the <b>Exercise</b> page to record physical activity and calories burned.</li>
+<li>Review your totals on the <b>Main Tracker</b>.</li>
+<li>Visit <b>Stats</b> to compare your intake with nutritional targets.</li>
+<li>Export a backup regularly.</li>
+</ol>
+
+<h2>Main Tracker</h2>
+<ul>
+<li>Displays daily calorie intake, net calories, estimated weight change, and your logged daily scale weight.</li>
+<li>Shows complete protein and collagen protein separately.</li>
+<li>Lists food entries and lets you assign them to custom groups.</li>
+<li>Displays exercise entries for the selected date.</li>
+<li>Allows exporting, importing, clearing the current day, or resetting all app data.</li>
+</ul>
+
+<h2>Food Page</h2>
+<ul>
+<li>Add foods from the built-in database on Today's Menu.</li>
+<li>Specify servings, then group foods after they are added.</li>
+<li>Create custom foods with your own nutritional information on Add Custom Food to Database.</li>
+<li>Custom foods are stored locally and remain available until deleted or reset.</li>
+</ul>
+
+<h2>Exercise Page</h2>
+<ul>
+<li>Log exercise duration and calories burned.</li>
+<li>Uses CDC reference activities to estimate calorie expenditure.</li>
+<li>Exercise calories are subtracted when calculating net calories and deficits.</li>
+</ul>
+
+<h2>Food List</h2>
+<ul>
+<li>Browse foods organized by category.</li>
+<li>Includes meals, supplements, fruits, vegetables, proteins, grains, and more.</li>
+<li>Displays serving sizes and nutrition information.</li>
+</ul>
+
+<h2>Recipes</h2>
+<p>The Recipes page stores recipes and allows them to be added directly to the current day.</p>
+
+<ul>
+<li>View ingredients and preparation instructions.</li>
+<li>Add the selected recipe directly to your daily log.</li>
+<li>Review nutrition information associated with each recipe.</li>
+</ul>
+
+<p><b>Recipes currently included may include:</b></p>
+<ul>
+<li>Tuna Stuffed Bell Peppers</li>
+<li>Air Fryer Cod</li>
+<li>Quiche (8-egg version)</li>
+<li>Chicken Mushroom Tortellini</li>
+<li>Pho – Beef</li>
+<li>Einkorn Bread variations</li>
+<li>Dessert recipes added through tracker updates</li>
+<li>Cucumber - Fermenteds (2% Brine)</li>
+<li>Additional custom recipes saved by the user</li>
+</ul>
+
+<h2>Daily Nutrition Breakdown</h2>
+<ul>
+<li>Shows each nutrient consumed during the day.</li>
+<li>Identifies which foods contributed to each nutrient total.</li>
+<li>Useful for identifying nutrient deficiencies or excesses.</li>
+</ul>
+
+<h2>Stats</h2>
+<ul>
+<li>Displays macro summaries.</li>
+<li>Compares intake against nutritional targets.</li>
+<li>Separates Vitamin A forms for safety awareness.</li>
+<li>Tracks Vitamin D3 separately from other Vitamin D sources.</li>
+<li>Tracks Vitamin K1 separately from Vitamin K2 when available.</li>
+<li>Separates collagen protein from complete protein.</li>
+</ul>
+
+<h2>Profile / Goals</h2>
+<ul>
+<li>Stores your personal profile information.</li>
+<li>Calculates maintenance calories using the Mifflin-St Jeor equation unless a manual maintenance value is entered.</li>
+<li>Supports weight-loss, maintenance, and weight-gain plans.</li>
+</ul>
+
+<h2>Shopping Lists</h2>
+<ul>
+<li>Select multiple days of logged foods.</li>
+<li>Generate a consolidated grocery list.</li>
+<li>Combine matching foods into total quantities.</li>
+<li>Print shopping lists for meal preparation.</li>
+</ul>
+
+<h2>Backups</h2>
+<ul>
+<li><b>Export Backup:</b> Save all tracker information to a file.</li>
+<li><b>Import Backup:</b> Restore previously exported data.</li>
+<li>Regular backups are recommended before major edits.</li>
+</ul>
+
+<h2>Tips</h2>
+<ul>
+<li>Review Stats regularly to monitor nutritional adequacy.</li>
+<li>Use custom foods for products not already included.</li>
+<li>Use recipes to simplify frequent meal logging.</li>
+<li>Export backups periodically to protect your data.</li>
+</ul>
+</div>
+</section>
+
+</main>
+<script>
+const DEFAULT_FOODS = [{"calories":145,"protein":11,"carbs":11,"fat":4,"fiber":8,"sugar":3,"sodium":300,"category":"Meals","name":"Low-Carb Boston Baked Beans","serving":"1 serving","custom":false},
+{"calories":300,"protein":15,"carbs":38,"fat":9,"fiber":2,"sugar":4,"sodium":600,"potassium":250,"calcium":40,"iron":1.2,"magnesium":30,"phosphorus":180,"zinc":1.5,"copper":0.1,"manganese":0.3,"selenium":20,"vitA":50,"vitC":3,"vitD":2.0,"vitE":0.5,"vitK":8,"vitK1":8,"vitK2":0,"thiamin":0.1,"riboflavin":0.1,"niacin":3,"b6":0.2,"folate":25,"b12":2.5,"choline":40,"category":"Meals","name":"Sushi (Salmon, Rice, Carrot, Seaweed)","serving":"8 pieces","custom":false,"vitD3":0,"vitDOther":2.0},
+{"calories":121,"protein":3.9,"carbs":19.3,"fat":2.7,"fiber":3.5,"sugar":1.2,"sodium":145,"potassium":105,"calcium":28,"iron":1.3,"magnesium":38,"phosphorus":115,"zinc":0.9,"copper":0.2,"manganese":0.8,"selenium":8,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0.3,"vitK":1.1,"vitK1":1.1,"vitK2":0,"thiamin":0.15,"riboflavin":0.05,"niacin":1.6,"b6":0.05,"folate":22,"b12":0,"choline":12,"category":"Grains","name":"Einkorn Bread","serving":"1 slice (flax + chia)","custom":false,"vitD3":0,"vitDOther":0.0},
+{"calories":193,"protein":3.5,"carbs":44,"fat":0.7,"fiber":6,"sugar":0,"category":"Grains","name":"Barley, cooked","serving":"1 cup","custom":false},
+{"calories":66,"protein":0.4,"carbs":18,"fat":0.1,"fiber":1.6,"sugar":16,"category":"Fruits","name":"Dates","serving":"2 dates","custom":false},
+{"calories":74,"protein":0.8,"carbs":19,"fat":0.3,"fiber":3,"sugar":16,"category":"Fruits","name":"Figs, dried","serving":"2 figs","custom":false},
+{"calories":129,"protein":1.4,"carbs":34,"fat":0.2,"fiber":1.6,"sugar":29,"category":"Fruits","name":"Pomegranate Arils","serving":"1 cup","custom":false},
+{"calories":119,"protein":0,"carbs":0,"fat":13.5,"fiber":0,"sugar":0,"category":"Fats & Oils","name":"Olive Oil","serving":"1 tbsp","custom":false},
+{"calories":191,"protein":6,"carbs":6,"fat":18,"fiber":3.5,"sugar":1.2,"category":"Nuts","name":"Almonds","serving":"1 oz","custom":false},
+{"calories":185,"protein":4.3,"carbs":3.9,"fat":18.5,"fiber":1.9,"sugar":0.7,"category":"Nuts","name":"Walnuts","serving":"1 oz","custom":false},
+{"calories":52,"protein":1.6,"carbs":10,"fat":0.8,"fiber":1.4,"sugar":1.7,"category":"Seeds","name":"Sesame Seeds","serving":"1 tbsp","custom":false},
+{"calories":208,"protein":22.8,"carbs":0,"fat":11.5,"fiber":0,"sugar":0,"category":"Fish","name":"Sardines, canned in water","serving":"1 can","custom":false},
+{"calories":145,"protein":30,"carbs":0,"fat":3,"fiber":0,"sugar":0,"category":"Fish","name":"Tilapia, cooked","serving":"4 oz","custom":false},
+{"calories":54,"protein":1.3,"carbs":12.6,"fat":0.2,"fiber":1.8,"sugar":2.5,"category":"Vegetables","name":"Leeks","serving":"1 cup","custom":false},
+,{"calories":20,"protein":2.0,"carbs":4.0,"fat":0.2,"fiber":2.0,"sugar":1.5,"sodium":25,"potassium":250,"calcium":60,"iron":1.0,"magnesium":20,"phosphorus":35,"zinc":0.3,"copper":0.1,"manganese":0.2,"selenium":0.5,"vitA":150,"vitC":12,"vitD":0.0,"vitE":0.5,"vitK":120,"vitK1":120,"vitK2":0,"thiamin":0.05,"riboflavin":0.08,"niacin":0.5,"b6":0.1,"folate":75,"b12":0,"choline":12,"category":"Vegetables","name":"Mixed Greens","serving":"1 cup","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":15,"protein":1.5,"carbs":2.5,"fat":0.2,"fiber":1.5,"sugar":0.8,"sodium":20,"potassium":180,"calcium":50,"iron":0.8,"magnesium":18,"phosphorus":25,"zinc":0.2,"copper":0.05,"manganese":0.15,"selenium":0.3,"vitA":120,"vitC":10,"vitD":0.0,"vitE":0.4,"vitK":90,"vitK1":90,"vitK2":0,"thiamin":0.04,"riboflavin":0.06,"niacin":0.4,"b6":0.08,"folate":60,"b12":0,"choline":10,"category":"Vegetables","name":"Spring Mix","serving":"1 cup","custom":false,"vitD3":0,"vitDOther":0.0},,{"calories":72,"protein":3.0,"carbs":15.0,"fat":0.5,"fiber":4.5,"sugar":4.5,"sodium":35,"potassium":240,"calcium":35,"iron":1.1,"magnesium":25,"phosphorus":70,"zinc":0.5,"copper":0.08,"manganese":0.25,"selenium":1,"vitA":850,"vitC":12,"vitD":0.0,"vitE":0.6,"vitK":28,"vitK1":28,"vitK2":0,"thiamin":0.12,"riboflavin":0.08,"niacin":1.3,"b6":0.15,"folate":40,"b12":0,"choline":22,"category":"Vegetables","name":"Mixed Vegetables (Frozen Corn, Carrots, Peas & Green Beans)","serving":"1 cup","custom":false,"vitD3":0,"vitDOther":0.0},,{"calories":110,"protein":7,"carbs":1,"fat":9,"fiber":0,"sugar":0.5,"sodium":180,"potassium":20,"calcium":200,"iron":0.1,"category":"Dairy","name":"Cheddar Cheese, shredded","serving":"1/4 cup (28g)","custom":false},{"calories":115,"protein":7,"carbs":0.4,"fat":9.5,"fiber":0,"sugar":0.1,"sodium":180,"potassium":28,"calcium":200,"iron":0.2,"category":"Dairy","name":"Cheddar Cheese","serving":"1 oz","custom":false},{"calories":114,"protein":7.0,"carbs":0.4,"fat":9.4,"fiber":0,"sugar":0.1,"sodium":180,"potassium":28,"calcium":200,"iron":0.2,"category":"Dairy","name":"Cheddar Cheese, block","serving":"1 oz (28g)","custom":false},{"calories":4,"protein":0.2,"carbs":1,"fat":0,"fiber":0.1,"sugar":0,"category":"Vegetables","name":"Garlic","serving":"1 clove","custom":false}
+,{"calories":0,"protein":0,"carbs":0,"fat":0,"fiber":0,"sugar":0,"sodium":0,"potassium":0,"calcium":0,"iron":0,"magnesium":0,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0,"vitK":0,"vitK1":0,"vitK2":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":0,"b12":0,"choline":0,"category":"Beverages","name":"Green Tea","serving":"1 cup","custom":false,"vitD3":0,"vitDOther":0.0},,{"calories":70,"protein":0.5,"carbs":14,"fat":2,"fiber":0.5,"sugar":12,"sodium":30,"potassium":0,"calcium":0,"iron":0,"magnesium":0,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0,"vitK":0,"vitK1":0,"vitK2":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":0,"b12":0,"choline":0,"category":"Beverages","name":"Viet 3-in-1 Coffee","serving":"1 sachet (17g)","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":463,"protein":28.6,"carbs":40.3,"fat":21.6,"fiber":1.2,"sugar":3.7,"sodium":1383,"potassium":300,"calcium":63,"iron":2.0,"magnesium":30,"phosphorus":225,"zinc":2.0,"copper":0.1,"manganese":0.1,"selenium":20,"vitA":75,"vitC":3,"vitD":0.5,"vitE":0.5,"vitK":15,"vitK1":15,"vitK2":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":10,"b12":0.3,"choline":0,"category":"Meals","name":"Chicken Mushroom Tortellini","serving":"1 serving (1/4 recipe)","custom":false,"vitD3":0,"vitDOther":0.5},{"calories":130,"protein":24,"carbs":3,"fat":2.5,"fiber":0,"sugar":2,"sodium":125,"potassium":160,"calcium":100,"iron":0.2,"magnesium":0,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0,"vitK":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":0,"b12":0,"choline":0,"category":"Supplements","name":"Whey Protein, Levels (Sam's Club)","serving":"1 scoop (32g)","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":160,"protein":30,"carbs":2,"fat":3,"fiber":0,"sugar":1,"sodium":220,"potassium":180,"calcium":650,"iron":0,"magnesium":0,"phosphorus":650,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0,"vitK":0,"vitK1":0,"vitK2":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":0,"b12":0,"choline":20,"category":"Supplements","name":"Sam's Premier Protein Drink","serving":"1 shake (11 fl oz)","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":40,"protein":10,"carbs":0,"fat":0,"fiber":0,"sugar":0,"sodium":50,"potassium":0,"calcium":0,"iron":0,"magnesium":0,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":0,"vitC":0,"vitD":0,"vitE":0,"vitK":0,"thiamin":0,"riboflavin":0,"niacin":2,"b6":0,"folate":0,"b12":0,"choline":0,"category":"Supplements","name":"BioTRUST Ageless Multi Collagen","serving":"1 scoop (11.4g)","custom":false,"collagenProtein":10,"vitD3":0,"vitDOther":0.0},{"calories":0,"protein":0,"carbs":0,"fat":0,"fiber":0,"sugar":0,"sodium":0,"potassium":0,"calcium":0,"iron":0,"magnesium":12.5,"phosphorus":0,"zinc":10,"copper":0,"manganese":0,"selenium":0,"vitA":0,"vitC":0,"vitD":125.0,"vitE":0,"vitK":50,"vitK1":0,"vitK2":50,"thiamin":0,"riboflavin":0,"niacin":0,"b6":1.7,"folate":0,"b12":0,"choline":0,"category":"Supplements","name":"D3/K2 Supplement - MK-7","serving":"1 capsule","custom":false,"vitD3":125.0,"vitDOther":0},{"calories":550,"protein":35,"carbs":55,"fat":12,"fiber":3,"sugar":4,"sodium":1500,"potassium":500,"calcium":50,"iron":3,"magnesium":40,"phosphorus":200,"zinc":2,"copper":0,"manganese":0,"selenium":0,"vitA":0,"vitC":5,"vitD":0.0,"vitE":0,"vitK":5,"vitK1":5,"vitK2":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":20,"b12":1,"choline":0,"category":"Meals","name":"Pho - Beef","serving":"Medium","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":326,"protein":47,"carbs":12,"fat":10,"fiber":3,"sugar":4,"sodium":600,"potassium":650,"calcium":320,"iron":1.5,"magnesium":45,"phosphorus":450,"zinc":1.5,"selenium":85,"vitA":500,"vitC":150,"vitD":1.0,"vitK":20,"choline":90,"category":"Meals","name":"Tuna Stuffed Bell Peppers","serving":"2 stuffed pepper halves","custom":false,"vitD3":0,"vitDOther":1.0},{"calories":845,"protein":66.5,"carbs":29.0,"fat":50.0,"fiber":6.5,"sugar":14.0,"sodium":1150,"potassium":1850,"calcium":900,"iron":11.0,"magnesium":180,"phosphorus":1200,"zinc":8.0,"copper":0.8,"manganese":1.2,"selenium":140,"vitA":3200,"vitC":40,"vitD":10.0,"vitE":5,"vitK":700,"vitK1":695,"vitK2":5,"thiamin":0.6,"riboflavin":2.5,"niacin":6,"b6":1.0,"folate":420,"b12":5.0,"choline":1200,"category":"Meals","name":"Quiche - 8 egg","serving":"1 whole quiche","custom":false,"vitD3":0,"vitDOther":10.0},{"calories":40,"protein":4.3,"carbs":7.4,"fat":0.4,"fiber":3.6,"sugar":2.5,"sodium":0,"potassium":404,"calcium":41,"iron":2.9,"magnesium":25,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":90,"vitC":13,"vitD":0.0,"vitE":0,"vitK":91,"vitK1":91,"vitK2":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":268,"b12":0,"choline":0,"category":"Vegetables","name":"Asparagus, cooked","serving":"1 cup","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":39,"protein":1.5,"carbs":9,"fat":0.5,"fiber":3.1,"sugar":6.3,"sodium":0,"potassium":314,"calcium":0,"iron":0,"magnesium":0,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":234,"vitC":190,"vitD":0.0,"vitE":2.4,"vitK":7,"vitK1":7,"vitK2":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":68,"b12":0,"choline":0,"category":"Vegetables","name":"Bell pepper, red raw","serving":"1 cup","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":10,"protein":1.3,"carbs":2.1,"fat":0.1,"fiber":1.1,"sugar":0.4,"sodium":7,"potassium":49,"calcium":29,"iron":0.7,"magnesium":19,"phosphorus":37,"zinc":0.4,"copper":0.05,"manganese":0.2,"selenium":1,"vitA":26,"vitC":39,"vitD":0.0,"vitE":0.2,"vitK":92,"vitK1":92,"vitK2":0,"thiamin":0.06,"riboflavin":0.12,"niacin":0.7,"b6":0.16,"folate":61,"b12":0,"choline":9,"category":"Vegetables","name":"Broccoli Sprouts - Raw","serving":"1 cup","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":55,"protein":3.7,"carbs":11.2,"fat":0.6,"fiber":5.1,"sugar":2.2,"sodium":64,"potassium":457,"calcium":62,"iron":1,"magnesium":33,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":120,"vitC":102,"vitD":0.0,"vitE":0,"vitK":220,"vitK1":220,"vitK2":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":168,"b12":0,"choline":0,"category":"Vegetables","name":"Broccoli, cooked","serving":"1 cup","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":56,"protein":4,"carbs":11,"fat":0.8,"fiber":4.1,"sugar":2.7,"sodium":0,"potassium":494,"calcium":56,"iron":1.9,"magnesium":32,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":0,"vitC":97,"vitD":0.0,"vitE":0,"vitK":219,"vitK1":219,"vitK2":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":94,"b12":0,"choline":0,"category":"Vegetables","name":"Brussels sprouts, cooked","serving":"1 cup","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":55,"protein":1.2,"carbs":12.8,"fat":0.3,"fiber":4.7,"sugar":5.4,"sodium":90,"potassium":367,"calcium":47,"iron":0,"magnesium":0,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":1329,"vitC":3.6,"vitD":0.0,"vitE":0,"vitK":17,"vitK1":17,"vitK2":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":0,"b12":0,"choline":0,"category":"Vegetables","name":"Carrots, cooked sliced","serving":"1 cup","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":29,"protein":2.3,"carbs":5.1,"fat":0.6,"fiber":2.9,"sugar":2.6,"sodium":0,"potassium":176,"calcium":19,"iron":0,"magnesium":0,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":0,"vitC":55,"vitD":0.0,"vitE":0,"vitK":17,"vitK1":17,"vitK2":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":55,"b12":0,"choline":0,"category":"Vegetables","name":"Cauliflower, cooked","serving":"1 cup","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":25,"protein":2,"carbs":5,"fat":0.3,"fiber":2,"sugar":2,"sodium":30,"potassium":300,"calcium":20,"iron":0.4,"magnesium":15,"phosphorus":45,"zinc":0.3,"copper":0.05,"manganese":0.2,"selenium":0.6,"vitA":0,"vitC":50,"vitD":0.0,"vitE":0.1,"vitK":16,"vitK1":16,"vitK2":0,"thiamin":0.05,"riboflavin":0.06,"niacin":0.5,"b6":0.2,"folate":57,"b12":0,"choline":44,"category":"Vegetables","name":"Cauliflower Rice","serving":"1 cup","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":14,"protein":0.7,"carbs":3,"fat":0.2,"fiber":1.6,"sugar":1.3,"sodium":81,"potassium":263,"calcium":40,"iron":0,"magnesium":0,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0,"vitK":30,"vitK1":30,"vitK2":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":0,"b12":0,"choline":0,"category":"Vegetables","name":"Celery, chopped","serving":"1 cup","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":63,"protein":5.2,"carbs":11.7,"fat":1.4,"fiber":7.6,"sugar":1,"sodium":0,"potassium":0,"calcium":268,"iron":2.2,"magnesium":40,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":386,"vitC":34,"vitD":0.0,"vitE":0,"vitK":772,"vitK1":772,"vitK2":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":177,"b12":0,"choline":0,"category":"Vegetables","name":"Collard greens, cooked","serving":"1 cup","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":143,"protein":5,"carbs":31,"fat":2.2,"fiber":3.6,"sugar":6.8,"sodium":0,"potassium":392,"calcium":0,"iron":0,"magnesium":54,"phosphorus":124,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0,"vitK":0,"thiamin":0,"riboflavin":0,"niacin":2.5,"b6":0,"folate":76,"b12":0,"choline":0,"category":"Vegetables","name":"Corn, sweet cooked","serving":"1 cup","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":16,"protein":0.7,"carbs":3.8,"fat":0.1,"fiber":0.5,"sugar":1.8,"sodium":0,"potassium":152,"calcium":16,"iron":0,"magnesium":0,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0,"vitK":17,"vitK1":17,"vitK2":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":0,"b12":0,"choline":0,"category":"Vegetables","name":"Cucumber, sliced","serving":"1 cup","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":35,"protein":0.8,"carbs":8.2,"fat":0.1,"fiber":2.8,"sugar":3.8,"sodium":250,"potassium":235,"calcium":30,"iron":0.3,"magnesium":12,"phosphorus":25,"zinc":0.2,"copper":0.04,"manganese":0.1,"selenium":0.1,"vitA":850,"vitC":2,"vitD":0,"vitK":12,"vitK1":12,"vitK2":0,"category":"Vegetables","name":"Carrots - Fermented","serving":"1 cup","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":44,"protein":2.4,"carbs":10,"fat":0.4,"fiber":4,"sugar":4.5,"sodium":0,"potassium":183,"calcium":55,"iron":0,"magnesium":22,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":0,"vitC":12,"vitD":0.0,"vitE":0,"vitK":20,"vitK1":20,"vitK2":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":41,"b12":0,"choline":0,"category":"Vegetables","name":"Green beans, cooked","serving":"1 cup","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":60,"protein":3.5,"carbs":6.1,"fat":3.7,"fiber":2.6,"sugar":1.7,"sodium":0,"potassium":485,"calcium":179,"iron":1.2,"magnesium":23,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":172,"vitC":21,"vitD":0.0,"vitE":1.9,"vitK":494,"vitK1":494,"vitK2":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":76,"b12":0,"choline":0,"category":"Vegetables","name":"Kale, cooked","serving":"1 cup","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":46,"protein":2.6,"carbs":9.7,"fat":0.5,"fiber":4.2,"sugar":3.4,"sodium":58,"potassium":333,"calcium":43,"iron":0.7,"magnesium":22,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":520,"vitC":54,"vitD":0.0,"vitE":0,"vitK":85,"vitK1":85,"vitK2":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":82,"b12":0,"choline":0,"category":"Vegetables","name":"Mixed broccoli, cauliflower, carrots, steamed","serving":"1 cup","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":44,"protein":3.4,"carbs":8.3,"fat":0.7,"fiber":3.4,"sugar":3.7,"sodium":0,"potassium":555,"calcium":0,"iron":0,"magnesium":0,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":18,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0,"vitK":0,"thiamin":0,"riboflavin":0.5,"niacin":4,"b6":0.1,"folate":0,"b12":0,"choline":0,"category":"Vegetables","name":"Mushrooms, cooked","serving":"1 cup","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":64,"protein":1.8,"carbs":14.9,"fat":0.2,"fiber":2.7,"sugar":6.8,"sodium":0,"potassium":234,"calcium":37,"iron":0,"magnesium":0,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":0,"vitC":12,"vitD":0.0,"vitE":0,"vitK":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":30,"b12":0,"choline":0,"category":"Vegetables","name":"Onion, chopped","serving":"1 cup","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":134,"protein":8.6,"carbs":25,"fat":0.4,"fiber":8.8,"sugar":9.5,"sodium":0,"potassium":434,"calcium":0,"iron":2.5,"magnesium":62,"phosphorus":187,"zinc":1.9,"copper":0,"manganese":0,"selenium":0,"vitA":77,"vitC":23,"vitD":0.0,"vitE":0,"vitK":40,"vitK1":40,"vitK2":0,"thiamin":0.4,"riboflavin":0,"niacin":0,"b6":0,"folate":101,"b12":0,"choline":0,"category":"Vegetables","name":"Peas, cooked","serving":"1 cup","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":161,"protein":4.3,"carbs":37,"fat":0.2,"fiber":3.8,"sugar":2,"sodium":17,"potassium":926,"calcium":0,"iron":0,"magnesium":48,"phosphorus":121,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":0,"vitC":17,"vitD":0.0,"vitE":0,"vitK":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0.6,"folate":48,"b12":0,"choline":22,"category":"Vegetables","name":"Potato, baked with skin","serving":"1 medium","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":7,"protein":0.9,"carbs":1.1,"fat":0.1,"fiber":0.7,"sugar":0.1,"sodium":24,"potassium":167,"calcium":30,"iron":0.8,"magnesium":24,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":141,"vitC":8.4,"vitD":0.0,"vitE":0.6,"vitK":145,"vitK1":145,"vitK2":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":58,"b12":0,"choline":0,"category":"Vegetables","name":"Spinach, raw","serving":"1 cup","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":103,"protein":2.3,"carbs":23.6,"fat":0.2,"fiber":3.8,"sugar":7.4,"sodium":41,"potassium":542,"calcium":43,"iron":0.8,"magnesium":31,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":1096,"vitC":22,"vitD":0.0,"vitE":0,"vitK":2.6,"vitK1":2.6,"vitK2":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0.3,"folate":0,"b12":0,"choline":0,"category":"Vegetables","name":"Sweet potato, baked medium","serving":"1 medium","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":22,"protein":1.1,"carbs":4.8,"fat":0.2,"fiber":1.5,"sugar":3.2,"sodium":0,"potassium":292,"calcium":12,"iron":0,"magnesium":0,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":51,"vitC":17,"vitD":0.0,"vitE":0,"vitK":10,"vitK1":10,"vitK2":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":0,"b12":0,"choline":0,"category":"Vegetables","name":"Tomato, medium","serving":"1 medium","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":95,"protein":0.5,"carbs":25.1,"fat":0.3,"fiber":4.4,"sugar":18.9,"sodium":0,"potassium":195,"calcium":11,"iron":0,"magnesium":0,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":0,"vitC":8.4,"vitD":0.0,"vitE":0,"vitK":4,"vitK1":4,"vitK2":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":5,"b12":0,"choline":0,"category":"Fruits","name":"Apple, medium","serving":"1 medium","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":240,"protein":3,"carbs":12.8,"fat":22,"fiber":10,"sugar":1,"sodium":0,"potassium":728,"calcium":0,"iron":0,"magnesium":43,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":0,"vitC":15,"vitD":0.0,"vitE":3.1,"vitK":31,"vitK1":31,"vitK2":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":122,"b12":0,"choline":0,"category":"Fruits","name":"Avocado, medium","serving":"1 medium","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":105,"protein":1.3,"carbs":27,"fat":0.4,"fiber":3.1,"sugar":14.4,"sodium":0,"potassium":422,"calcium":0,"iron":0,"magnesium":32,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":0,"vitC":10,"vitD":0.0,"vitE":0,"vitK":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0.4,"folate":24,"b12":0,"choline":0,"category":"Fruits","name":"Banana, medium","serving":"1 medium","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":62,"protein":2,"carbs":14,"fat":0.7,"fiber":8,"sugar":7,"sodium":0,"potassium":233,"calcium":42,"iron":0,"magnesium":29,"phosphorus":0,"zinc":0,"copper":0,"manganese":0.9,"selenium":0,"vitA":0,"vitC":30,"vitD":0.0,"vitE":0,"vitK":29,"vitK1":29,"vitK2":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":0,"b12":0,"choline":0,"category":"Fruits","name":"Blackberries","serving":"1 cup","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":84,"protein":1.1,"carbs":21.4,"fat":0.5,"fiber":3.6,"sugar":14.7,"sodium":0,"potassium":114,"calcium":0,"iron":0,"magnesium":0,"phosphorus":0,"zinc":0,"copper":0,"manganese":0.5,"selenium":0,"vitA":0,"vitC":14,"vitD":0.0,"vitE":0,"vitK":29,"vitK1":29,"vitK2":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":0,"b12":0,"choline":0,"category":"Fruits","name":"Blueberries","serving":"1 cup","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":104,"protein":1.1,"carbs":27.3,"fat":0.2,"fiber":1.4,"sugar":23.4,"sodium":0,"potassium":288,"calcium":15,"iron":0,"magnesium":0,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":0,"vitC":16,"vitD":0.0,"vitE":0,"vitK":22,"vitK1":22,"vitK2":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":0,"b12":0,"choline":0,"category":"Fruits","name":"Grapes","serving":"1 cup","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":202,"protein":2.8,"carbs":50,"fat":1.3,"fiber":5.4,"sugar":45,"sodium":0,"potassium":564,"calcium":0,"iron":0,"magnesium":0,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":181,"vitC":122,"vitD":0.0,"vitE":3,"vitK":14,"vitK1":14,"vitK2":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":144,"b12":0,"choline":0,"category":"Fruits","name":"Mango, medium","serving":"1 medium","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":62,"protein":1.2,"carbs":15.4,"fat":0.2,"fiber":3.1,"sugar":12.2,"sodium":0,"potassium":237,"calcium":52,"iron":0,"magnesium":0,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":0,"vitC":70,"vitD":0.0,"vitE":0,"vitK":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":40,"b12":0,"choline":0,"category":"Fruits","name":"Orange, medium","serving":"1 medium","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":59,"protein":1.4,"carbs":14,"fat":0.4,"fiber":2.3,"sugar":12.6,"sodium":0,"potassium":285,"calcium":0,"iron":0,"magnesium":0,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":24,"vitC":10,"vitD":0.0,"vitE":1.1,"vitK":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":0,"b12":0,"choline":0,"category":"Fruits","name":"Peach, medium","serving":"1 medium","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":101,"protein":0.6,"carbs":27,"fat":0.2,"fiber":5.5,"sugar":17.4,"sodium":0,"potassium":206,"calcium":0,"iron":0,"magnesium":0,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":0,"vitC":7.5,"vitD":0.0,"vitE":0,"vitK":8,"vitK1":8,"vitK2":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":0,"b12":0,"choline":0,"category":"Fruits","name":"Pear, medium","serving":"1 medium","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":82,"protein":0.9,"carbs":21.6,"fat":0.2,"fiber":2.3,"sugar":16.3,"sodium":0,"potassium":180,"calcium":0,"iron":0,"magnesium":0,"phosphorus":0,"zinc":0,"copper":0,"manganese":1.5,"selenium":0,"vitA":0,"vitC":79,"vitD":0.0,"vitE":0,"vitK":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":30,"b12":0,"choline":0,"category":"Fruits","name":"Pineapple chunks","serving":"1 cup","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":64,"protein":1.5,"carbs":14.7,"fat":0.8,"fiber":8,"sugar":5.4,"sodium":0,"potassium":186,"calcium":31,"iron":0,"magnesium":27,"phosphorus":0,"zinc":0,"copper":0,"manganese":0.8,"selenium":0,"vitA":0,"vitC":32,"vitD":0.0,"vitE":0,"vitK":10,"vitK1":10,"vitK2":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":0,"b12":0,"choline":0,"category":"Fruits","name":"Raspberries","serving":"1 cup","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":49,"protein":1,"carbs":11.7,"fat":0.5,"fiber":3,"sugar":7.4,"sodium":0,"potassium":233,"calcium":24,"iron":0,"magnesium":0,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":0,"vitC":89,"vitD":0.0,"vitE":0,"vitK":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":36,"b12":0,"choline":0,"category":"Fruits","name":"Strawberries, halves","serving":"1 cup","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":46,"protein":0.9,"carbs":11.5,"fat":0.2,"fiber":0.6,"sugar":9.4,"sodium":0,"potassium":170,"calcium":0,"iron":0,"magnesium":0,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":43,"vitC":12,"vitD":0.0,"vitE":0,"vitK":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":0,"b12":0,"choline":0,"category":"Fruits","name":"Watermelon, diced","serving":"1 cup","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":218,"protein":5,"carbs":45.8,"fat":1.6,"fiber":3.5,"sugar":0.7,"sodium":0,"potassium":0,"calcium":0,"iron":0,"magnesium":86,"phosphorus":150,"zinc":0,"copper":0,"manganese":1.8,"selenium":19,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0,"vitK":0,"thiamin":0.2,"riboflavin":0,"niacin":3,"b6":0,"folate":0,"b12":0,"choline":0,"category":"Grains","name":"Brown rice, cooked","serving":"1 cup","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":154,"protein":6,"carbs":27,"fat":3.2,"fiber":4,"sugar":1.1,"sodium":0,"potassium":164,"calcium":21,"iron":1.7,"magnesium":63,"phosphorus":180,"zinc":1.5,"copper":0,"manganese":1.4,"selenium":13,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0,"vitK":0,"thiamin":0.2,"riboflavin":0,"niacin":0,"b6":0,"folate":0,"b12":0,"choline":0,"category":"Grains","name":"Oatmeal, cooked","serving":"1 cup","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":31,"protein":1,"carbs":6.2,"fat":0.4,"fiber":1.2,"sugar":0.1,"sodium":0,"potassium":26,"calcium":0,"iron":0.3,"magnesium":11,"phosphorus":29,"zinc":0.2,"copper":0,"manganese":0,"selenium":0,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0,"vitK":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":0,"b12":0,"choline":0,"category":"Grains","name":"Popcorn, air-popped","serving":"1 cup","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":222,"protein":8.1,"carbs":39.4,"fat":3.6,"fiber":5.2,"sugar":1.6,"sodium":0,"potassium":318,"calcium":0,"iron":2.8,"magnesium":118,"phosphorus":281,"zinc":2,"copper":0,"manganese":1.2,"selenium":0,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0,"vitK":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":78,"b12":0,"choline":0,"category":"Grains","name":"Quinoa, cooked","serving":"1 cup","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":81,"protein":4,"carbs":14,"fat":1.1,"fiber":1.9,"sugar":1.4,"sodium":144,"potassium":0,"calcium":50,"iron":0.9,"magnesium":23,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":12,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0,"vitK":0,"thiamin":0.1,"riboflavin":0,"niacin":1.6,"b6":0,"folate":20,"b12":0,"choline":0,"category":"Grains","name":"Whole wheat bread","serving":"1 slice","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":205,"protein":4.3,"carbs":44.5,"fat":0.4,"fiber":0.6,"sugar":0.1,"sodium":0,"potassium":0,"calcium":0,"iron":1.9,"magnesium":0,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0,"vitK":0,"thiamin":0.3,"riboflavin":0,"niacin":2.3,"b6":0,"folate":91,"b12":0,"choline":0,"category":"Grains","name":"White rice, cooked","serving":"1 cup","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":221,"protein":8.1,"carbs":43,"fat":1.3,"fiber":2.5,"sugar":0.8,"sodium":0,"potassium":0,"calcium":0,"iron":1.9,"magnesium":25,"phosphorus":81,"zinc":0,"copper":0,"manganese":0,"selenium":37,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0,"vitK":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":102,"b12":0,"choline":0,"category":"Grains","name":"Pasta, cooked","serving":"1 cup","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":52,"protein":1.4,"carbs":10.7,"fat":0.7,"fiber":1.5,"sugar":0.2,"sodium":11,"potassium":0,"calcium":42,"iron":0,"magnesium":18,"phosphorus":50,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0,"vitK":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":0,"b12":0,"choline":0,"category":"Grains","name":"Tortilla, corn","serving":"1 medium","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":114,"protein":7.6,"carbs":20.4,"fat":0.5,"fiber":7.5,"sugar":0.3,"sodium":0,"potassium":305,"calcium":23,"iron":1.8,"magnesium":60,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0,"vitK":0,"thiamin":0.2,"riboflavin":0,"niacin":0,"b6":0,"folate":128,"b12":0,"choline":0,"category":"Legumes","name":"Black beans, cooked","serving":"1/2 cup","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":135,"protein":7.3,"carbs":22.5,"fat":2.1,"fiber":6.2,"sugar":3.9,"sodium":0,"potassium":239,"calcium":40,"iron":2.4,"magnesium":39,"phosphorus":0,"zinc":1.3,"copper":0,"manganese":0.8,"selenium":0,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0,"vitK":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":141,"b12":0,"choline":0,"category":"Legumes","name":"Chickpeas, cooked","serving":"1/2 cup","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":115,"protein":9,"carbs":20,"fat":0.4,"fiber":7.8,"sugar":1.8,"sodium":0,"potassium":365,"calcium":0,"iron":3.3,"magnesium":36,"phosphorus":0,"zinc":1.3,"copper":0,"manganese":0,"selenium":0,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0,"vitK":0,"thiamin":0.2,"riboflavin":0,"niacin":0,"b6":0,"folate":179,"b12":0,"choline":0,"category":"Legumes","name":"Lentils, cooked","serving":"1/2 cup","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":123,"protein":7.7,"carbs":22,"fat":0.6,"fiber":7.7,"sugar":0.3,"sodium":0,"potassium":373,"calcium":40,"iron":1.8,"magnesium":43,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0,"vitK":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":147,"b12":0,"choline":0,"category":"Legumes","name":"Pinto beans, cooked","serving":"1/2 cup","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":112,"protein":7.7,"carbs":20.2,"fat":0.4,"fiber":5.7,"sugar":0.3,"sodium":0,"potassium":358,"calcium":0,"iron":2.6,"magnesium":39,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0,"vitK":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":115,"b12":0,"choline":0,"category":"Legumes","name":"Kidney beans, cooked","serving":"1/2 cup","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":94,"protein":9.2,"carbs":6.9,"fat":4,"fiber":4,"sugar":1,"sodium":0,"potassium":338,"calcium":49,"iron":1.8,"magnesium":50,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0,"vitK":20,"vitK1":20,"vitK2":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":241,"b12":0,"choline":0,"category":"Legumes","name":"Edamame, shelled","serving":"1/2 cup","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":287,"protein":22,"carbs":0,"fat":20,"fiber":0,"sugar":0,"sodium":75,"potassium":330,"calcium":19,"iron":1.0,"magnesium":24,"phosphorus":220,"zinc":2.5,"copper":0,"manganese":0,"selenium":33,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0.3,"vitK":0,"thiamin":0.6,"riboflavin":0.2,"niacin":5.5,"b6":0.5,"folate":0,"b12":0.7,"choline":95,"category":"Meat","name":"Ground pork, cooked","serving":"4 oz","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":287,"protein":19,"carbs":0,"fat":23,"fiber":0,"sugar":0,"sodium":75,"potassium":270,"calcium":18,"iron":2.5,"magnesium":19,"phosphorus":0,"zinc":5.5,"copper":0,"manganese":0,"selenium":21,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0,"vitK":0,"thiamin":0,"riboflavin":0,"niacin":5.3,"b6":0.4,"folate":0,"b12":2.4,"choline":81,"category":"Meat","name":"Ground beef, 80/20 cooked","serving":"4 oz","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":46,"protein":5,"carbs":0.4,"fat":2.5,"fiber":0,"sugar":0,"sodium":365,"potassium":86,"calcium":0,"iron":0,"magnesium":0,"phosphorus":60,"zinc":0.5,"copper":0,"manganese":0,"selenium":6,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0,"vitK":0,"thiamin":0.2,"riboflavin":0,"niacin":1.2,"b6":0,"folate":0,"b12":0.2,"choline":0,"category":"Meat","name":"Ham, sliced","serving":"1 oz","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":230,"protein":31,"carbs":0,"fat":11,"fiber":0,"sugar":0,"sodium":74,"potassium":430,"calcium":0,"iron":0.9,"magnesium":29,"phosphorus":285,"zinc":2.5,"copper":0,"manganese":0,"selenium":45,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0,"vitK":0,"thiamin":0.8,"riboflavin":0,"niacin":9,"b6":0.7,"folate":0,"b12":0.7,"choline":0,"category":"Meat","name":"Pork chop, cooked lean","serving":"4 oz","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":240,"protein":33,"carbs":0,"fat":11,"fiber":0,"sugar":0,"sodium":70,"potassium":420,"calcium":0,"iron":2.9,"magnesium":0,"phosphorus":0,"zinc":6,"copper":0,"manganese":0,"selenium":33,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0,"vitK":0,"thiamin":0,"riboflavin":0,"niacin":7.5,"b6":0.6,"folate":0,"b12":2.6,"choline":100,"category":"Meat","name":"Sirloin steak, cooked","serving":"4 oz","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":187,"protein":35,"carbs":0,"fat":4,"fiber":0,"sugar":0,"sodium":84,"potassium":290,"calcium":0,"iron":0.6,"magnesium":31,"phosphorus":260,"zinc":1,"copper":0,"manganese":0,"selenium":31,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0,"vitK":0,"thiamin":0,"riboflavin":0,"niacin":14,"b6":0.8,"folate":0,"b12":0.3,"choline":100,"category":"Poultry","name":"Chicken breast, cooked","serving":"4 oz","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":229,"protein":25,"carbs":0,"fat":15,"fiber":0,"sugar":0,"sodium":90,"potassium":240,"calcium":0,"iron":1.1,"magnesium":0,"phosphorus":0,"zinc":2,"copper":0,"manganese":0,"selenium":25,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0,"vitK":0,"thiamin":0,"riboflavin":0,"niacin":7,"b6":0.4,"folate":0,"b12":0.3,"choline":75,"category":"Poultry","name":"Chicken thigh, cooked","serving":"4 oz","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":160,"protein":34,"carbs":0,"fat":2,"fiber":0,"sugar":0,"sodium":70,"potassium":300,"calcium":0,"iron":1,"magnesium":0,"phosphorus":235,"zinc":1.7,"copper":0,"manganese":0,"selenium":31,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0,"vitK":0,"thiamin":0,"riboflavin":0,"niacin":9,"b6":0.7,"folate":0,"b12":0.5,"choline":85,"category":"Poultry","name":"Turkey breast, cooked","serving":"4 oz","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":104,"protein":23,"carbs":0,"fat":0.9,"fiber":0,"sugar":0,"sodium":90,"potassium":470,"calcium":0,"iron":0,"magnesium":42,"phosphorus":230,"zinc":0,"copper":0,"manganese":0,"selenium":37,"vitA":0,"vitC":0,"vitD":1.0,"vitE":0,"vitK":0,"thiamin":0,"riboflavin":0,"niacin":2.5,"b6":0.3,"folate":0,"b12":1.1,"choline":75,"category":"Fish","name":"Cod, cooked","serving":"4 oz","custom":false,"vitD3":0,"vitDOther":1.0},{"calories":233,"protein":25,"carbs":0,"fat":14,"fiber":0,"sugar":0,"sodium":75,"potassium":490,"calcium":0,"iron":0.5,"magnesium":30,"phosphorus":300,"zinc":0,"copper":0,"manganese":0,"selenium":40,"vitA":0,"vitC":0,"vitD":14.0,"vitE":1,"vitK":0,"thiamin":0,"riboflavin":0,"niacin":9,"b6":0.8,"folate":0,"b12":4.8,"choline":100,"category":"Fish","name":"Salmon, cooked","serving":"4 oz","custom":false,"vitD3":0,"vitDOther":14.0},{"calories":120,"protein":26,"carbs":0,"fat":1,"fiber":0,"sugar":0,"sodium":320,"potassium":240,"calcium":0,"iron":1.2,"magnesium":34,"phosphorus":250,"zinc":0,"copper":0,"manganese":0,"selenium":80,"vitA":0,"vitC":0,"vitD":1.7,"vitE":0,"vitK":0,"thiamin":0,"riboflavin":0,"niacin":15,"b6":0.4,"folate":0,"b12":2.5,"choline":65,"category":"Fish","name":"Tuna, canned in water","serving":"4 oz","custom":false,"vitD3":0,"vitDOther":1.7},{"calories":191,"protein":22.7,"carbs":0,"fat":10.5,"fiber":0,"sugar":0,"sodium":282,"potassium":365,"calcium":351,"iron":2.7,"magnesium":39,"phosphorus":490,"zinc":1.3,"copper":0,"manganese":0,"selenium":53,"vitA":0,"vitC":0,"vitD":4.8,"vitE":2,"vitK":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":0,"b12":8.2,"choline":75,"category":"Fish","name":"Sardines, canned in oil","serving":"3.75 oz can","custom":false,"vitD3":0,"vitDOther":4.8},{"calories":72,"protein":6.3,"carbs":0.4,"fat":4.8,"fiber":0,"sugar":0.2,"sodium":71,"potassium":69,"calcium":28,"iron":0.9,"magnesium":6,"phosphorus":99,"zinc":0.6,"copper":0,"manganese":0,"selenium":15.4,"vitA":80,"vitC":0,"vitD":1.1,"vitE":0.5,"vitK":0.2,"vitK1":0.1,"vitK2":0.1,"thiamin":0,"riboflavin":0.2,"niacin":0,"b6":0.1,"folate":24,"b12":0.6,"choline":147,"category":"Eggs","name":"Large egg","serving":"1 egg","custom":false,"vitD3":0,"vitDOther":1.1},{"calories":90,"protein":12.5,"carbs":4.5,"fat":2.5,"fiber":0,"sugar":4.5,"sodium":350,"potassium":136,"calcium":69,"iron":0,"magnesium":0,"phosphorus":151,"zinc":0.5,"copper":0,"manganese":0,"selenium":11,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0,"vitK":0,"thiamin":0,"riboflavin":0.2,"niacin":0,"b6":0,"folate":0,"b12":0.5,"choline":18,"category":"Dairy","name":"Cottage cheese, low-fat","serving":"1/2 cup","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":122,"protein":8.1,"carbs":12,"fat":4.8,"fiber":0,"sugar":12,"sodium":115,"potassium":366,"calcium":309,"iron":0,"magnesium":29,"phosphorus":252,"zinc":1,"copper":0,"manganese":0,"selenium":9,"vitA":139,"vitC":0,"vitD":2.9,"vitE":0,"vitK":0,"thiamin":0,"riboflavin":0.4,"niacin":0,"b6":0,"folate":0,"b12":1.3,"choline":43,"category":"Dairy","name":"Milk, 2%","serving":"1 cup","custom":false,"vitD3":0,"vitDOther":2.9},{"calories":170,"protein":35,"carbs":6,"fat":0,"fiber":0,"sugar":6,"sodium":120,"potassium":420,"calcium":360,"iron":0,"magnesium":34,"phosphorus":330,"zinc":2,"copper":0,"manganese":0,"selenium":34,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0,"vitK":0,"thiamin":0,"riboflavin":0.8,"niacin":0,"b6":0,"folate":0,"b12":2,"choline":55,"category":"Dairy","name":"Homemade strained skim-milk Greek yogurt","serving":"1 cup, cream-cheese thick","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":149,"protein":8.5,"carbs":11.4,"fat":8,"fiber":0,"sugar":11.4,"sodium":113,"potassium":379,"calcium":296,"iron":0,"magnesium":29,"phosphorus":233,"zinc":1.7,"copper":0,"manganese":0,"selenium":9.7,"vitA":74,"vitC":0,"vitD":0.0,"vitE":0.1,"vitK":0.5,"vitK1":0.2,"vitK2":0.3,"thiamin":0,"riboflavin":0.3,"niacin":0,"b6":0,"folate":0,"b12":1.4,"choline":38,"category":"Dairy","name":"Plain whole milk yogurt","serving":"1 cup","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":106,"protein":7.5,"carbs":0.4,"fat":7.8,"fiber":0,"sugar":0,"sodium":54,"potassium":22,"calcium":220,"iron":0,"magnesium":0,"phosphorus":161,"zinc":1.2,"copper":0,"manganese":0,"selenium":4.1,"vitA":73,"vitC":0,"vitD":0.1,"vitE":0,"vitK":0.7,"vitK1":0.2,"vitK2":0.5,"thiamin":0,"riboflavin":0.1,"niacin":0,"b6":0,"folate":0,"b12":0.9,"choline":0,"category":"Dairy","name":"Swiss cheese","serving":"1 slice","custom":false,"vitD3":0,"vitDOther":0.1},{"calories":164,"protein":6,"carbs":6.1,"fat":14.2,"fiber":3.5,"sugar":1.2,"sodium":0,"potassium":208,"calcium":76,"iron":1.1,"magnesium":76,"phosphorus":136,"zinc":0.9,"copper":0.3,"manganese":0.6,"selenium":0,"vitA":0,"vitC":0,"vitD":0.0,"vitE":7.3,"vitK":0,"thiamin":0,"riboflavin":0.3,"niacin":0,"b6":0,"folate":12,"b12":0,"choline":0,"category":"Nuts","name":"Almonds","serving":"1 oz","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":190,"protein":7,"carbs":7,"fat":16,"fiber":2,"sugar":2,"sodium":5,"potassium":180,"calcium":17,"iron":0.6,"magnesium":57,"phosphorus":107,"zinc":0.9,"copper":0.2,"manganese":0.5,"selenium":0,"vitA":0,"vitC":0,"vitD":0.0,"vitE":2.9,"vitK":0,"thiamin":0,"riboflavin":0,"niacin":4.2,"b6":0.2,"folate":24,"b12":0,"choline":0,"category":"Nuts","name":"Peanut butter, natural","serving":"2 tbsp","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":196,"protein":2.6,"carbs":3.9,"fat":20.4,"fiber":2.7,"sugar":1.1,"sodium":0,"potassium":116,"calcium":20,"iron":0.7,"magnesium":34,"phosphorus":79,"zinc":1.3,"copper":0.3,"manganese":1.3,"selenium":0,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0,"vitK":1,"vitK1":1,"vitK2":0,"thiamin":0.2,"riboflavin":0,"niacin":0,"b6":0,"folate":0,"b12":0,"choline":0,"category":"Nuts","name":"Pecans","serving":"1 oz","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":185,"protein":4.3,"carbs":3.9,"fat":18.5,"fiber":1.9,"sugar":0.7,"sodium":0,"potassium":125,"calcium":28,"iron":0.8,"magnesium":45,"phosphorus":98,"zinc":0.9,"copper":0.5,"manganese":1,"selenium":0,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0,"vitK":0.8,"vitK1":0.8,"vitK2":0,"thiamin":0.1,"riboflavin":0,"niacin":0,"b6":0.2,"folate":28,"b12":0,"choline":0,"category":"Nuts","name":"Walnuts","serving":"1 oz","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":157,"protein":5.2,"carbs":8.6,"fat":12.4,"fiber":0.9,"sugar":1.7,"sodium":0,"potassium":187,"calcium":0,"iron":1.9,"magnesium":83,"phosphorus":168,"zinc":1.6,"copper":0.6,"manganese":0.5,"selenium":5.6,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0,"vitK":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":0,"b12":0,"choline":0,"category":"Nuts","name":"Cashews","serving":"1 oz","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":138,"protein":4.7,"carbs":12,"fat":8.7,"fiber":9.8,"sugar":0,"sodium":5,"potassium":115,"calcium":179,"iron":2.2,"magnesium":95,"phosphorus":244,"zinc":1.3,"copper":0.3,"manganese":0.8,"selenium":15.6,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0,"vitK":0,"thiamin":0.2,"riboflavin":0,"niacin":2.5,"b6":0,"folate":14,"b12":0,"choline":22,"category":"Seeds","name":"Chia seeds","serving":"1 oz","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":37,"protein":1.3,"carbs":2,"fat":3,"fiber":1.9,"sugar":0.1,"sodium":0,"potassium":56,"calcium":18,"iron":0.4,"magnesium":27,"phosphorus":44,"zinc":0.3,"copper":0.1,"manganese":0.2,"selenium":1.8,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0,"vitK":0,"thiamin":0.1,"riboflavin":0,"niacin":0,"b6":0,"folate":0,"b12":0,"choline":0,"category":"Seeds","name":"Flaxseed, ground","serving":"1 tbsp","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":163,"protein":8.5,"carbs":4.2,"fat":13.9,"fiber":1.8,"sugar":0.4,"sodium":5,"potassium":226,"calcium":15,"iron":2.3,"magnesium":156,"phosphorus":332,"zinc":2.2,"copper":0.4,"manganese":1.3,"selenium":0,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0,"vitK":2,"vitK1":2,"vitK2":0,"thiamin":0,"riboflavin":0,"niacin":1.4,"b6":0,"folate":16,"b12":0,"choline":0,"category":"Seeds","name":"Pumpkin seeds","serving":"1 oz","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":15,"protein":0,"carbs":4,"fat":0,"fiber":3.5,"sugar":0,"sodium":0,"potassium":10,"calcium":5,"iron":0.1,"magnesium":0,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0,"vitK":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":0,"b12":0,"choline":0,"category":"Seeds","name":"Psyllium husk powder","serving":"1 tsp","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":165,"protein":5.5,"carbs":6.8,"fat":14.1,"fiber":3.1,"sugar":0.8,"sodium":0,"potassium":241,"calcium":22,"iron":1.5,"magnesium":91,"phosphorus":185,"zinc":1.5,"copper":0.5,"manganese":0.6,"selenium":22,"vitA":0,"vitC":0,"vitD":0.0,"vitE":9.3,"vitK":0,"thiamin":0.4,"riboflavin":0,"niacin":0,"b6":0,"folate":67,"b12":0,"choline":0,"category":"Seeds","name":"Sunflower seeds","serving":"1 oz","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":119,"protein":0,"carbs":0,"fat":13.5,"fiber":0,"sugar":0,"sodium":0,"potassium":0,"calcium":0,"iron":0,"magnesium":0,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":0,"vitC":0,"vitD":0.0,"vitE":1.9,"vitK":8.1,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":0,"b12":0,"choline":0,"category":"Fats & Oils","name":"Olive oil","serving":"1 tbsp","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":102,"protein":0.1,"carbs":0,"fat":11.5,"fiber":0,"sugar":0,"sodium":91,"potassium":0,"calcium":0,"iron":0,"magnesium":0,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":97,"vitC":0,"vitD":0.2,"vitE":0.3,"vitK":1,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":0,"b12":0,"choline":0,"category":"Fats & Oils","name":"Butter","serving":"1 tbsp","custom":false,"vitD3":0,"vitDOther":0.2},{"calories":124,"protein":0,"carbs":0,"fat":14,"fiber":0,"sugar":0,"sodium":0,"potassium":0,"calcium":0,"iron":0,"magnesium":0,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":0,"vitC":0,"vitD":0.0,"vitE":1.9,"vitK":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":0,"b12":0,"choline":0,"category":"Fats & Oils","name":"Avocado oil","serving":"1 tbsp","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":64,"protein":0.1,"carbs":17.3,"fat":0,"fiber":0,"sugar":17.2,"sodium":1,"potassium":11,"calcium":1,"iron":0,"magnesium":0,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0,"vitK":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":0,"b12":0,"choline":0,"category":"Sweeteners","name":"Honey","serving":"1 tbsp","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":52,"protein":0,"carbs":13.4,"fat":0,"fiber":0,"sugar":12.1,"sodium":0,"potassium":42,"calcium":20,"iron":0,"magnesium":0,"phosphorus":0,"zinc":0.3,"copper":0,"manganese":0.6,"selenium":0,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0,"vitK":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":0,"b12":0,"choline":0,"category":"Sweeteners","name":"Maple syrup","serving":"1 tbsp","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":16,"protein":0,"carbs":4.2,"fat":0,"fiber":0,"sugar":4.2,"sodium":0,"potassium":0,"calcium":0,"iron":0,"magnesium":0,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0,"vitK":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":0,"b12":0,"choline":0,"category":"Sweeteners","name":"Table sugar","serving":"1 tsp","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":0,"protein":0,"carbs":0,"fat":0,"fiber":0,"sugar":0,"sodium":0,"potassium":0,"calcium":0,"iron":0,"magnesium":12.5,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":0,"vitC":0,"vitD":125.0,"vitE":0,"vitK":50,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":0,"b12":0,"choline":0,"category":"Supplements","name":"D3/K2 supplement","serving":"1 serving","custom":false,"vitD3":125.0,"vitDOther":0},{"calories":0,"protein":0,"carbs":0,"fat":0,"fiber":0,"sugar":0,"sodium":0,"potassium":0,"calcium":0,"iron":0,"magnesium":120,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":0,"vitC":0,"vitD":6.25,"vitE":0,"vitK":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":0,"b12":0,"choline":0,"category":"Supplements","name":"Magnesium supplement","serving":"1 serving","custom":false,"vitD3":0,"vitDOther":6.25},{"calories":0,"protein":0,"carbs":0,"fat":0,"fiber":0,"sugar":0,"sodium":0,"potassium":0,"calcium":100,"iron":0,"magnesium":50,"phosphorus":0,"zinc":11,"copper":0.9,"manganese":2.3,"selenium":55,"vitA":900,"vitC":90,"vitD":20.0,"vitE":15,"vitK":120,"thiamin":1.2,"riboflavin":1.3,"niacin":16,"b6":1.7,"folate":400,"b12":2.4,"choline":0,"category":"Supplements","name":"Multivitamin generic","serving":"1 tablet","custom":false,"vitD3":0,"vitDOther":20.0},{"calories":2,"protein":0.3,"carbs":0,"fat":0,"fiber":0,"sugar":0,"sodium":0,"potassium":116,"calcium":0,"iron":0,"magnesium":7,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0,"vitK":0,"thiamin":0,"riboflavin":0,"niacin":0.5,"b6":0,"folate":0,"b12":0,"choline":0,"category":"Beverages","name":"Coffee, black","serving":"1 cup","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":2,"protein":0,"carbs":0.5,"fat":0,"fiber":0,"sugar":0,"sodium":0,"potassium":88,"calcium":0,"iron":0,"magnesium":0,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0,"vitK":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":0,"b12":0,"choline":0,"category":"Beverages","name":"Tea, unsweetened","serving":"1 cup","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":30,"protein":0,"carbs":7,"fat":0,"fiber":0,"sugar":7,"sodium":0,"potassium":0,"calcium":0,"iron":0,"magnesium":0,"phosphorus":0,"zinc":0,"copper":0,"manganese":0,"selenium":0,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0,"vitK":0,"thiamin":0,"riboflavin":0,"niacin":0,"b6":0,"folate":0,"b12":0,"choline":0,"category":"Beverages","name":"Kombucha","serving":"1 cup","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":0,"protein":0,"carbs":0,"fat":0,"fiber":0,"sugar":0,
+"sodium":10,"potassium":80,"calcium":200,"iron":0,"magnesium":100,"phosphorus":20,
+"zinc":22,"copper":0.5,"manganese":4,"selenium":55,"vitA":1050,"vitC":150,
+"vitD":50.0,"vitE":27,"vitK":90,"vitK1":90,"vitK2":0,"thiamin":1.5,
+"riboflavin":1.7,"niacin":40,"b6":6,"folate":500,"b12":200,"choline":10,
+"iodine":150,"chromium":60,"molybdenum":50,"chloride":72,"biotin":30,
+"pantothenic":10,"boron":3,"lutein":1,"sawPalmetto":50,
+"category":"Supplements","name":"Sam's Men's Multivitamin","serving":"1 tablet",
+"custom":false,"vitD3":50.0,"vitDOther":0},
+{"calories":265,"protein":53,"carbs":6,"fat":4.5,"fiber":1,"sugar":3,
+"sodium":230,"potassium":850,"calcium":85,"iron":1.5,"magnesium":50,
+"phosphorus":480,"zinc":1.6,"copper":0,"manganese":0,"selenium":45,
+"vitA":0,"vitC":2,"vitD":0.0,"vitE":0,"vitK":0,"vitK1":0,"vitK2":0,
+"thiamin":0,"riboflavin":0,"niacin":22,"b6":1.2,"folate":0,"b12":0,
+"choline":0,"category":"Meals","name":"Chicken Curry","serving":"1 serving (1/2 recipe)",
+"custom":false,"vitD3":0,"vitDOther":0.0},{"calories":189,"protein":7.4,"carbs":31.4,"fat":5.8,"fiber":5.1,"sugar":14.5,"sodium":36,"potassium":526,"calcium":33,"iron":1.3,"magnesium":59,"phosphorus":126,"zinc":0.8,"copper":0.3,"manganese":0.6,"selenium":15.9,"vitA":75,"vitC":10,"vitD":0.55,"vitE":0.6,"vitK":0.3,"vitK1":0.3,"vitK2":0,"thiamin":0.06,"riboflavin":0.28,"niacin":0.8,"b6":0.45,"folate":34,"b12":0.45,"choline":158,"category":"Dessert","name":"Chocolate Banana Cocoa Bake","serving":"1 serving (1/2 recipe)","custom":false,"vitD3":0,"vitDOther":0.55},{"calories":220,"protein":14,"carbs":15,"fat":12,"fiber":1,"sugar":3,"sodium":450,"potassium":280,"calcium":250,"iron":2,"magnesium":25,"phosphorus":250,"zinc":2.5,"copper":0.1,"manganese":0.1,"selenium":20,"vitA":180,"vitC":3,"vitD":0.3,"vitE":0.5,"vitK":5,"vitK1":5,"vitK2":0,"thiamin":0.1,"riboflavin":0.2,"niacin":3,"b6":0.2,"folate":35,"b12":0.8,"choline":50,"category":"Meals","name":"Lasagna with Beef","serving":"4 oz","custom":false,"vitD3":0,"vitDOther":0.3}
+,{"calories":16,"protein":0.7,"carbs":3.8,"fat":0.1,"fiber":1.0,"sugar":1.7,"sodium":300,"potassium":150,"calcium":20,"iron":0.3,"magnesium":12,"phosphorus":24,"zinc":0.2,"copper":0.04,"manganese":0.08,"selenium":0.3,"vitA":5,"vitC":2,"vitD":0.0,"vitE":0.1,"vitK":17,"vitK1":15,"vitK2":2,"thiamin":0.03,"riboflavin":0.03,"niacin":0.1,"b6":0.04,"folate":8,"b12":0,"choline":4,"category":"Vegetables","name":"Cucumber - Fermenteds (2% Brine)","serving":"1 medium cucumber","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":190,"protein":32,"carbs":0.5,"fat":6,"fiber":0,"sugar":0,"sodium":360,"potassium":560,"calcium":25,"iron":0.5,"magnesium":45,"phosphorus":280,"zinc":0.6,"copper":0.04,"manganese":0.02,"selenium":55,"vitA":10,"vitC":2,"vitD":1.0,"vitE":1.9,"vitK":8,"vitK1":8,"vitK2":0,"thiamin":0.08,"riboflavin":0.1,"niacin":3.0,"b6":0.25,"folate":10,"b12":1.4,"choline":95,"category":"Meals","name":"Air Fryer Cod","serving":"1 fillet (about 6 oz)","custom":false,"vitD3":0,"vitDOther":1.0},
+{"calories":290,"protein":10,"carbs":50,"fat":5,"fiber":4,"sugar":3,"sodium":600,"potassium":237,"calcium":55,"iron":0.94,"vitD":0.0,"category":"Meals","name":"Priano Ricotta & Spinach Ravioli","serving":"1 cup (90g)","custom":false,"vitD3":0,"vitDOther":0.0}];
+
+const RECIPE_DATA = [{name:'Lasagna with Beef',category:'Beef',yield:'8 servings',serving:'1 serving (4 oz)',foodName:'Lasagna with Beef',ingredients:['1 lb lean ground beef','9 lasagna noodles','15 oz ricotta cheese','2 cups shredded mozzarella cheese','1/2 cup grated Parmesan cheese','24 oz pasta sauce','1 egg','1 tsp Italian seasoning'],directions:['Preheat oven to 375°F.','Brown ground beef and drain excess fat. Stir in pasta sauce and Italian seasoning.','Cook lasagna noodles according to package directions and drain.','Mix ricotta cheese with egg and half of the Parmesan cheese.','Layer sauce, noodles, ricotta mixture, mozzarella, and repeat until ingredients are used.','Top with remaining mozzarella and Parmesan cheese.','Cover with foil and bake for 30 minutes. Remove foil and bake an additional 15 minutes.','Let stand for 10-15 minutes before slicing into 8 portions.'],nutrition:{calories:220,protein:14,carbs:15,fat:12,fiber:1,sodium:450}},{
+    name:'Chicken Curry',
+    category:'Chicken',
+    yield:'2 servings',
+    serving:'1 bowl, about half the recipe',
+    foodName:'Chicken Curry',
+    ingredients:[
+      '12 oz boneless skinless chicken breast',
+      '1/2 onion, diced',
+      '1 tsp curry powder',
+      '1/2 tsp turmeric',
+      '1/2 cup plain nonfat Greek yogurt',
+      '1/2 cup low-sodium chicken broth',
+      '1 tsp olive oil'
+    ],
+    directions:['Heat 1 tsp olive oil in a skillet over medium heat (about 350°F). Cook diced onion for 3-4 minutes until softened.','Cut chicken into bite-sized pieces. Add chicken, curry powder, and turmeric. Cook 6-8 minutes, stirring occasionally, until chicken reaches an internal temperature of 165°F.','Pour in chicken broth, reduce heat to low, and simmer uncovered for 5 minutes.','Remove skillet from heat and let cool 1-2 minutes. Stir in Greek yogurt until smooth. Serve immediately.'],
+    nutrition:{calories:265,protein:53,carbs:6,fiber:1,sugar:3,fat:4.5,saturatedFat:0.9,cholesterol:145,sodium:230,potassium:850,calcium:85,iron:1.5,magnesium:50,phosphorus:480,zinc:1.6,b6:1.2,niacin:22,selenium:45,vitC:2,vitD:0,vitD3:0,vitDOther:0,vitK:0,vitK1:0,vitK2:0}
+  },
+  {
+    name:'Chicken Mushroom Tortellini',
+    category:'Chicken',
+    yield:'2 servings',
+    serving:'1 bowl, about half the recipe',
+    foodName:'Chicken Mushroom Tortellini',
+    ingredients:[
+      '8 oz boneless skinless chicken breast, diced',
+      '9 oz cheese tortellini',
+      '8 oz baby bella mushrooms, sliced',
+      '1 cup light Alfredo sauce',
+      '1 tsp Italian seasoning',
+      '1 tsp olive oil'
+    ],
+    directions:['Bring a pot of water to a boil. Cook tortellini according to package directions, usually 3-5 minutes. Drain and set aside.','Heat 1 tsp olive oil in a skillet over medium heat (350°F). Add chicken and cook 6-8 minutes until it reaches 165°F internally.','Add mushrooms and Italian seasoning. Cook an additional 5-7 minutes until mushrooms are tender and moisture has mostly evaporated.','Reduce heat to low. Stir in Alfredo sauce and cooked tortellini. Cook 2-3 minutes until heated through. Divide into 2 servings and serve warm.'],
+    nutrition:{calories:463,protein:28.6,carbs:40.3,fiber:1.2,sugar:3.7,fat:21.6,sodium:1383,potassium:300,calcium:63,iron:2.0,magnesium:30,phosphorus:225,zinc:2.0,selenium:20,vitA:75,vitC:3,vitD:0.5,vitD3:0,vitDOther:0.5,vitK:15,vitK1:15,vitK2:0,folate:10,b12:0.3}
+  },
+  {
+    name:'Einkorn Flax Chia Bread',
+    category:'Other',
+    yield:'1 Dutch oven loaf, about 14 slices',
+    serving:'1 slice',
+    foodName:'Einkorn Bread',
+    ingredients:[
+      '3 cups einkorn flour',
+      '2 tbsp ground flaxseed',
+      '2 tbsp chia seeds',
+      '1 1/4 cups warm water, about 100-105°F',
+      '2 tsp active dry yeast',
+      '1 tbsp honey',
+      '1 tbsp olive oil',
+      '1 1/2 tsp salt'
+    ],
+    directions:[
+      'In a large bowl, stir warm water, yeast, and honey together. Let stand 5-10 minutes, until foamy.',
+      'Add einkorn flour, ground flaxseed, chia seeds, olive oil, and salt. Stir until a sticky dough forms. Einkorn dough should stay softer and wetter than modern wheat dough.',
+      'Cover the bowl and let rise at room temperature for 60-90 minutes, until puffy and increased by about half. Do not over-knead.',
+      'Lightly flour your hands and shape the dough into a round loaf. Place on parchment paper, cover, and rest 30-45 minutes.',
+      'Place a Dutch oven with lid in the oven and preheat to 450°F for 30 minutes.',
+      'Carefully lower the dough on parchment into the hot Dutch oven. Cover and bake 25 minutes at 450°F.',
+      'Remove the lid, reduce oven to 400°F, and bake 12-18 minutes more, until the crust is browned and the loaf sounds hollow or reaches about 200°F internal temperature.',
+      'Cool at least 1 hour before slicing so the crumb sets. Slice into about 14 slices.','Bread pan option: Transfer dough to a greased 9×5-inch loaf pan after shaping. Cover and let rise 45-75 minutes until increased by 50-75%. Bake at 375°F for 40-45 minutes. If the top browns too quickly, tent loosely with foil during the last 10-15 minutes. The bread is done when the internal temperature reaches 195-200°F. Remove from the pan immediately and cool on a wire rack for at least 1 hour before slicing.'
+    ],
+    nutrition:{calories:121,protein:3.9,carbs:19.3,fiber:3.5,sugar:1.2,fat:2.7,saturatedFat:0.3,sodium:145,potassium:105,calcium:28,iron:1.3,magnesium:38,phosphorus:115,zinc:0.9,selenium:8,vitA:0,vitC:0,vitD:0,vitD3:0,vitDOther:0,vitE:0.3,vitK:1.1,vitK1:1.1,vitK2:0,thiamin:0.15,riboflavin:0.05,niacin:1.6,b6:0.05,folate:22,b12:0,choline:12}
+  },{"name":"Tuna Stuffed Bell Peppers","category":"Fish","foodName":"Tuna Stuffed Bell Peppers","yield":"2 servings","serving":"2 stuffed pepper halves","ingredients":["2 large bell peppers, halved and seeded","2 (5-ounce) cans tuna packed in water, drained","1/2 cup nonfat Greek yogurt","1/4 cup diced celery","2 tablespoons chopped green onion","1/4 cup diced mushrooms, sauteed","1/4 teaspoon garlic powder","1/4 teaspoon black pepper","1/4 teaspoon paprika","1/2 cup reduced-fat cheddar cheese"],"directions":["Preheat oven to 375°F.","Place pepper halves cut-side up in a baking dish. Add 1/4 cup water to the bottom of the dish, cover with foil, and bake for 15 minutes.","Mix remaining ingredients except half the cheese.","Fill peppers with tuna mixture.","Top with remaining cheese.","Bake uncovered 15-20 minutes until hot and cheese melts."],"nutrition":{"calories":326,"protein":47,"carbs":12,"fat":10,"fiber":3}},{
+    name:'Chocolate Banana Cocoa Bake',
+    category:'Dessert',
+    yield:'2 servings',
+    serving:'1 small ramekin or half the baked dish',
+    foodName:'Chocolate Banana Cocoa Bake',
+    ingredients:[
+      '2 ripe medium bananas',
+      '2 large eggs',
+      '2 tbsp unsweetened cocoa powder'
+    ],
+    directions:[
+      'Preheat oven to 350°F. Lightly grease two ramekins or one small baking dish if needed.',
+      'Mash the bananas until very smooth.',
+      'Whisk in the eggs until fully blended.',
+      'Stir in the cocoa powder until no dry pockets remain.',
+      'Pour into ramekins or the baking dish. Bake 15-18 minutes for ramekins, or 18-22 minutes for one small dish, until the center is set but still soft.',
+      'Cool 5 minutes before eating. The texture will be like a soft chocolate banana custard cake.'
+    ],
+    nutrition:{calories:189,protein:7.4,carbs:31.4,fiber:5.1,sugar:14.5,fat:5.8,saturatedFat:2.0,cholesterol:186,sodium:36,potassium:526,calcium:33,iron:1.3,magnesium:59,phosphorus:126,zinc:0.8,copper:0.3,manganese:0.6,selenium:15.9,vitA:75,vitC:10,vitD:0.55,vitD3:0,vitDOther:0.55,vitE:0.6,vitK:0.3,vitK1:0.3,vitK2:0,thiamin:0.06,riboflavin:0.28,niacin:0.8,b6:0.45,folate:34,b12:0.45,choline:158}
+
+  },
+  {
+    name:'Cucumber - Fermenteds (2% Brine)',
+    category:'Vegetables',
+    yield:'4-5 medium cucumbers',
+    serving:'1 medium cucumber',
+    foodName:'Cucumber - Fermenteds (2% Brine)',
+    ingredients:[
+      '4-5 medium cucumbers',
+      '1 liter water',
+      '20 g sea salt (2% brine)',
+      '2 cloves garlic',
+      '1 tsp dill'
+    ],
+    directions:[
+      'Dissolve 20 g sea salt in 1 liter of water to make a 2% brine.',
+      'Place cucumbers, garlic, and dill into a clean jar.',
+      'Pour the brine over the cucumbers until completely covered.',
+      'Use a fermentation weight or clean weight to keep every cucumber submerged below the brine.',
+      'Cover loosely or use a fermentation lid. Ferment at room temperature for 5-10 days, tasting after day 5.',
+      'When the flavor is where you want it, refrigerate to slow fermentation.'
+    ],
+    nutrition:{calories:16,protein:0.7,carbs:3.8,fiber:1.0,sugar:1.7,fat:0.1,sodium:300,potassium:150,calcium:20,iron:0.3,magnesium:12,phosphorus:24,zinc:0.2,copper:0.04,manganese:0.08,selenium:0.3,vitA:5,vitC:2,vitD:0,vitD3:0,vitDOther:0,vitE:0.1,vitK:17,vitK1:15,vitK2:2,thiamin:0.03,riboflavin:0.03,niacin:0.1,b6:0.04,folate:8,b12:0,choline:4}
+  },{
+    name:'Air Fryer Cod',
+    category:'Fish',
+    yield:'2 servings',
+    serving:'1 fillet (about 6 oz)',
+    foodName:'Air Fryer Cod',
+    ingredients:[
+      '2 cod fillets, about 5-6 oz each',
+      '1 tbsp olive oil',
+      '1/2 tsp paprika',
+      '1/2 tsp garlic powder',
+      '1/2 tsp onion powder',
+      '1/2 tsp dried parsley or dill',
+      '1/4 tsp salt',
+      '1/4 tsp black pepper',
+      'Lemon wedges for serving'
+    ],
+    directions:[
+      'Preheat the air fryer to 400°F for 3-5 minutes.',
+      'Pat the cod fillets dry with paper towels.',
+      'Brush both sides of the cod with olive oil.',
+      'Mix paprika, garlic powder, onion powder, parsley or dill, salt, and black pepper.',
+      'Sprinkle the seasoning evenly over both sides of the fish.',
+      'Place the fillets in the air fryer basket in a single layer.',
+      'Air fry at 400°F for 8-10 minutes, depending on thickness.',
+      'Cod is done when it flakes easily with a fork and reaches 145°F internally.',
+      'Serve with lemon wedges.'
+    ],
+    nutrition:{calories:190,protein:32,carbs:0.5,fiber:0,sugar:0,fat:6,sodium:360,potassium:560,calcium:25,iron:0.5,magnesium:45,phosphorus:280,zinc:0.6,copper:0.04,manganese:0.02,selenium:55,vitA:10,vitC:2,vitD:1.0,vitD3:0,vitDOther:1.0,vitE:1.9,vitK:8,vitK1:8,vitK2:0,thiamin:0.08,riboflavin:0.1,niacin:3.0,b6:0.25,folate:10,b12:1.4,choline:95}
+  },{
+name:'Low-Carb Boston Baked Beans',
+category:'Low Carb',
+yield:'6 servings',
+serving:'1 serving',
+foodName:'Low-Carb Boston Baked Beans',
+ingredients:[
+'2 (15 oz) cans black soy beans, rinsed',
+'1 tbsp olive oil',
+'1/2 cup onion, diced',
+'2 cloves garlic, minced',
+'2 tbsp tomato paste',
+'2 tbsp sugar-free maple syrup',
+'1 tbsp blackstrap molasses',
+'2 tbsp apple cider vinegar',
+'1 tsp Dijon mustard',
+'1 tsp smoked paprika',
+'1/2 tsp black pepper',
+'1/2 cup water'
+],
+directions:[
+'Heat olive oil in a skillet over medium heat.',
+'Sauté onion in bacon fat until soft, then add garlic for 30 seconds.',
+'Stir in tomato paste, maple syrup, molasses, vinegar, mustard, paprika, pepper and water.',
+'Fold in beans.',
+'Bake uncovered at 325°F for 60-75 minutes, stirring once, until thickened.'
+],
+nutrition:{calories:145,protein:11,carbs:11,fiber:8,sugar:3,fat:4,sodium:300}
+}];
+const CDC_EXERCISES = [{"category":"Moderate","name":"Hiking","cal30":185,"calHr":370},{"category":"Moderate","name":"Light gardening/yard work","cal30":165,"calHr":330},{"category":"Moderate","name":"Dancing","cal30":165,"calHr":330},{"category":"Moderate","name":"Golf (walking and carrying clubs)","cal30":165,"calHr":330},{"category":"Moderate","name":"Bicycling (<10 mph)","cal30":145,"calHr":290},{"category":"Moderate","name":"Walking (3.5 mph)","cal30":140,"calHr":280},{"category":"Moderate","name":"Weight lifting (general light workout)","cal30":110,"calHr":220},{"category":"Moderate","name":"Stretching","cal30":90,"calHr":180},{"category":"Vigorous","name":"Running/jogging (5 mph)","cal30":295,"calHr":590},{"category":"Vigorous","name":"Bicycling (>10 mph)","cal30":295,"calHr":590},{"category":"Vigorous","name":"Swimming (slow freestyle laps)","cal30":255,"calHr":510},{"category":"Vigorous","name":"Aerobics","cal30":240,"calHr":510},{"category":"Vigorous","name":"Walking (4.5 mph)","cal30":230,"calHr":460},{"category":"Vigorous","name":"Heavy yard work (chopping wood)","cal30":220,"calHr":440},{"category":"Vigorous","name":"Weight lifting (vigorous effort)","cal30":220,"calHr":440},{"category":"Vigorous","name":"Basketball (vigorous)","cal30":220,"calHr":440},{"category":"Strength","name":"Push-ups","cal30":180,"calHr":360},{"category":"Strength","name":"Planks","cal30":120,"calHr":240},{"category":"Strength","name":"Wall Squats","cal30":150,"calHr":300},{"category":"Strength","name":"Superman Pose Isometrics","cal30":90,"calHr":180}];
+const PF_MACHINES = [
+  {name:'Leg Press', area:'Legs / glutes', icon:'🦵', tip:'Feet shoulder-width on platform. Keep low back against pad.'},
+  {name:'Chest Press', area:'Chest / triceps', icon:'↔️', tip:'Handles at mid-chest. Press without locking elbows hard.'},
+  {name:'Seated Row', area:'Upper back / biceps', icon:'🚣', tip:'Tall chest. Pull elbows back and squeeze shoulder blades.'},
+  {name:'Lat Pulldown', area:'Back / biceps', icon:'⬇️', tip:'Pull bar toward upper chest. Do not yank behind the neck.'},
+  {name:'Shoulder Press', area:'Shoulders / triceps', icon:'⬆️', tip:'Start light. Press overhead with ribs down.'},
+  {name:'Leg Curl', area:'Hamstrings', icon:'🔁', tip:'Line knee with machine pivot. Curl smoothly.'},
+  {name:'Leg Extension', area:'Quads', icon:'🦿', tip:'Lift under control. Avoid snapping the knees straight.'},
+  {name:'Abdominal Crunch', area:'Core', icon:'◎', tip:'Curl ribs toward hips. Do not pull with arms.'},
+  {name:'Back Extension', area:'Low back / glutes', icon:'↩️', tip:'Use a small range and stop if it irritates your back.'}
+];
+const NUTRIENTS = [{"key":"calories","label":"Net Calories","unit":"kcal"},{"key":"protein","label":"Complete Protein","unit":"g"},{"key":"collagenProtein","label":"Collagen Protein","unit":"g"},{"key":"carbs","label":"Carbs","unit":"g"},{"key":"fat","label":"Fat","unit":"g"},{"key":"fiber","label":"Fiber","unit":"g"},{"key":"sugar","label":"Sugar","unit":"g"},{"key":"glycemicLoad","label":"Glycemic Load","unit":"GL"},{"key":"sodium","label":"Sodium","unit":"mg"},{"key":"potassium","label":"Potassium","unit":"mg"},{"key":"calcium","label":"Calcium","unit":"mg"},{"key":"iron","label":"Iron","unit":"mg"},{"key":"magnesium","label":"Magnesium","unit":"mg"},{"key":"phosphorus","label":"Phosphorus","unit":"mg"},{"key":"zinc","label":"Zinc","unit":"mg"},{"key":"copper","label":"Copper","unit":"mg"},{"key":"manganese","label":"Manganese","unit":"mg"},{"key":"selenium","label":"Selenium","unit":"mcg"},{"key":"vitA","label":"Vitamin A (total RAE)","unit":"mcg RAE"},{"key":"vitC","label":"Vitamin C","unit":"mg"},{"key":"vitD","label":"Vitamin D (total D3 + other)","unit":"mcg"},{"key":"vitD3","label":"Vitamin D3","unit":"mcg"},{"key":"vitDOther","label":"Vitamin D other/unspecified","unit":"mcg"},{"key":"vitE","label":"Vitamin E","unit":"mg"},{"key":"vitK","label":"Vitamin K (total K1 + K2)","unit":"mcg"},{"key":"vitK1","label":"Vitamin K1","unit":"mcg"},{"key":"vitK2","label":"Vitamin K2","unit":"mcg"},{"key":"thiamin","label":"B1 Thiamin","unit":"mg"},{"key":"riboflavin","label":"B2 Riboflavin","unit":"mg"},{"key":"niacin","label":"B3 Niacin","unit":"mg"},{"key":"b6","label":"B6","unit":"mg"},{"key":"folate","label":"Folate","unit":"mcg DFE"},{"key":"b12","label":"B12","unit":"mcg"},{"key":"choline","label":"Choline","unit":"mg"}];
+const KEYS = NUTRIENTS.map(x=>x.key); const STORAGE_KEY='nutritionTracker.rebuild.v1'; const HASH_PREFIX='ntsave=';
+let state = loadState();
+
+function normalizeVitaminDFields(food){
+  if(!food) return food;
+  const total=n(food.vitD), d3=n(food.vitD3), other=n(food.vitDOther);
+  if((d3||other) && Math.abs(total-(d3+other))>0.001) food.vitD=d3+other;
+  else if(total && !d3 && !other){
+    const name=(food.name||'').toLowerCase();
+    if(name.includes('d3') || name.includes('vitamin d3')){ food.vitD3=total; food.vitDOther=0; }
+    else { food.vitD3=0; food.vitDOther=total; }
+  } else {
+    food.vitD3=d3;
+    food.vitDOther=other;
+    food.vitD=d3+other;
+  }
+  return food;
+}
+
+function normalizeVitaminKFields(food){
+  if(!food) return food;
+  const total=n(food.vitK), k1=n(food.vitK1), k2=n(food.vitK2);
+  if((k1||k2) && Math.abs(total-(k1+k2))>0.001) food.vitK=k1+k2;
+  else if(total && !k1 && !k2){
+    const cat=(food.category||'').toLowerCase(), name=(food.name||'').toLowerCase();
+    const plantCats=['vegetables','fruits','grains','legumes','nuts','seeds','meals'];
+    if(cat.includes('vegetable')||cat.includes('fruit')||cat.includes('legume')||cat.includes('grain')||cat.includes('nut')||cat.includes('seed')){ food.vitK1=total; food.vitK2=0; }
+    else if(name.includes('mk-7')||name.includes('k2')){ food.vitK1=0; food.vitK2=total; }
+    else { food.vitK1=0; food.vitK2=total; }
+  }
+  return food;
+}
+
+
+function estimateGlycemicIndex(food){
+  const name=String(food&&food.name||'').toLowerCase();
+  const cat=String(food&&food.category||'').toLowerCase();
+  const carbs=n(food&&food.carbs), fiber=n(food&&food.fiber), sugar=n(food&&food.sugar);
+  if(carbs<=0) return 0;
+  if(name.includes('whey')||name.includes('protein')||name.includes('collagen')) return 5;
+  if(cat.includes('supplement') && carbs<=3) return 0;
+  if(cat.includes('meat')||cat.includes('fish')||cat.includes('poultry')||cat.includes('egg')) return carbs>5?25:0;
+  if(cat.includes('fats')||cat.includes('oil')) return 0;
+  if(name.includes('white rice')||name.includes('sushi')) return 73;
+  if(name.includes('brown rice')) return 50;
+  if(name.includes('oatmeal')) return 55;
+  if(name.includes('barley')) return 28;
+  if(name.includes('quinoa')) return 53;
+  if(name.includes('einkorn')||name.includes('bread')) return 54;
+  if(name.includes('potato')) return 85;
+  if(name.includes('sweet potato')) return 63;
+  if(name.includes('banana')) return 52;
+  if(name.includes('mango')) return 51;
+  if(name.includes('grapes')) return 53;
+  if(name.includes('dates')) return 42;
+  if(name.includes('fig')) return 61;
+  if(name.includes('apple')||name.includes('pear')||name.includes('orange')||name.includes('berries')||name.includes('strawberries')||name.includes('raspberries')||name.includes('blueberries')||name.includes('blackberries')||name.includes('peach')) return 35;
+  if(name.includes('watermelon')) return 72;
+  if(name.includes('corn')) return 52;
+  if(name.includes('peas')) return 48;
+  if(cat.includes('fruit')) return sugar>20?50:40;
+  if(cat.includes('grain')) return fiber>=4?50:60;
+  if(cat.includes('vegetable')) return carbs>=20?55:25;
+  if(cat.includes('legume')||name.includes('bean')||name.includes('lentil')) return 32;
+  if(cat.includes('dairy')||name.includes('yogurt')||name.includes('milk')) return 35;
+  if(cat.includes('nut')||cat.includes('seed')) return 15;
+  if(cat.includes('meal')) return fiber>=5?45:55;
+  return fiber>=5?35:(sugar>=15?55:45);
+}
+function normalizeGlycemicFields(food){
+  if(!food) return food;
+  const netCarbs=Math.max(0,n(food.carbs)-n(food.fiber));
+  let gi=n(food.glycemicIndex);
+  if(!gi && netCarbs>0) gi=estimateGlycemicIndex(food);
+  food.glycemicIndex=round(gi);
+  const currentGL=n(food.glycemicLoad);
+  food.glycemicLoad=round(currentGL || (netCarbs*gi/100));
+  return food;
+}
+function normalizeNutritionFields(food){
+  return normalizeGlycemicFields(normalizeVitaminKFields(normalizeVitaminDFields(normalizeBiblicalFoodCategory(food))));
+}
+function normalizeBiblicalFoodCategory(food){
+  if(!food) return food;
+  const biblicalCategoryMap={
+    'Einkorn Bread':'Grains',
+    'Barley, cooked':'Grains',
+    'Dates':'Fruits',
+    'Figs, dried':'Fruits',
+    'Pomegranate Arils':'Fruits',
+    'Olive Oil':'Fats & Oils',
+    'Almonds':'Nuts',
+    'Walnuts':'Nuts',
+    'Sesame Seeds':'Seeds',
+    'Sardines, canned in water':'Fish',
+    'Tilapia, cooked':'Fish',
+    'Leeks':'Vegetables',
+    'Garlic':'Vegetables'
+  };
+  if(food.category==='Biblical Foods' && biblicalCategoryMap[food.name]) food.category=biblicalCategoryMap[food.name];
+  return food;
+}
+
+function trackerFreshState(){
+  return {foods:DEFAULT_FOODS.map(f=>normalizeNutritionFields({...f})), entries:[], exercises:[], dailyWeights:[], profile:{sex:'male',age:64,feet:5,inches:10,weight:150,goalWeight:145,activity:1.2,plan:-300,manualMaintenance:0}};
+}
+function compactStateForStorage(src){
+  const s=src||state||trackerFreshState();
+  return {
+    foods:(s.foods||[]).filter(f=>f&&f.custom),
+    entries:s.entries||[],
+    exercises:s.exercises||[],
+    dailyWeights:s.dailyWeights||[],
+    profile:s.profile||trackerFreshState().profile
+  };
+}
+function encodeHashState(src){
+  try{
+    return btoa(unescape(encodeURIComponent(JSON.stringify(compactStateForStorage(src)))));
+  }catch(e){ return ''; }
+}
+function decodeHashState(){
+  try{
+    const h=(location.hash||'').replace(/^#/,'');
+    if(!h.startsWith(HASH_PREFIX)) return null;
+    return JSON.parse(decodeURIComponent(escape(atob(h.slice(HASH_PREFIX.length)))));
+  }catch(e){ return null; }
+}
+function mergeSavedState(saved){
+  const fresh=trackerFreshState();
+  if(!(saved&&Array.isArray(saved.foods)&&saved.entries&&saved.exercises&&saved.profile)) return fresh;
+  saved.dailyWeights=Array.isArray(saved.dailyWeights)?saved.dailyWeights:[];
+  const merged=(saved.foods||[]).map(f=>{ if(f&&f.name==='Healthy Chicken Curry') f.name='Chicken Curry'; if(f&&f.name==='Chicken Mushroom Tortelloni Alfredo'){ f.name='Chicken Mushroom Tortellini'; f.serving='1 serving (1/4 recipe)'; f.calories=463; f.protein=28.6; f.carbs=40.3; f.fat=21.6; f.fiber=1.2; f.sugar=3.7; f.sodium=1383; } if(f&&f.name==='Einkorn Bread'){ Object.assign(f,{calories:121,protein:3.9,carbs:19.3,fat:2.7,fiber:3.5,sugar:1.2,sodium:145,potassium:105,calcium:28,iron:1.3,magnesium:38,phosphorus:115,zinc:0.9,copper:0.2,manganese:0.8,selenium:8,vitA:0,vitC:0,vitD:0,vitE:0.3,vitK:1.1,vitK1:1.1,vitK2:0,thiamin:0.15,riboflavin:0.05,niacin:1.6,b6:0.05,folate:22,b12:0,choline:12,category:'Grains',serving:'1 slice (flax + chia)',custom:false,vitD3:0,vitDOther:0}); } return normalizeNutritionFields(f); });
+  const keyOf=f=>`${(f.category||'').trim().toLowerCase()}|${(f.name||'').trim().toLowerCase()}|${(f.serving||'').trim().toLowerCase()}`;
+  const seen=new Set(merged.map(keyOf));
+  DEFAULT_FOODS.forEach(f=>{ if(!seen.has(keyOf(f))) merged.push(normalizeNutritionFields({...f})); });
+  const entries=(saved.entries||[]).map(e=>{ const food={...(e.food||{})}; if(food.name==='Healthy Chicken Curry') food.name='Chicken Curry'; if(food.name==='Chicken Mushroom Tortelloni Alfredo') food.name='Chicken Mushroom Tortellini'; return {...e, food:normalizeNutritionFields(food)}; });
+  const exercises=(saved.exercises||[]).map(e=>({...e, done:e.done!==false}));
+  return {...fresh, ...saved, foods:merged.map(f=>normalizeNutritionFields(f)), entries, exercises};
+}
+function loadState(){
+  try{
+    const raw=localStorage.getItem(STORAGE_KEY);
+    if(raw) return mergeSavedState(JSON.parse(raw));
+  }catch(e){}
+  const hashSaved=decodeHashState();
+  if(hashSaved) return mergeSavedState(hashSaved);
+  return trackerFreshState();
+}
+function normalizeAllVitaminKData(){
+  state.foods=(state.foods||[]).map(f=>normalizeNutritionFields(f));
+  state.entries=(state.entries||[]).map(e=>({...e, food:normalizeNutritionFields({...e.food})}));
+}
+function save(){
+  normalizeAllVitaminKData();
+  let localOk=false;
+  try{
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(compactStateForStorage(state)));
+    localOk=true;
+  }catch(e){ localOk=false; }
+  // Android Documents / file viewers sometimes lose localStorage on refresh.
+  // This URL-hash fallback stores only user data, not the whole food database.
+  try{
+    const encoded=encodeHashState(state);
+    if(encoded){ history.replaceState(null,'',location.pathname+location.search+'#'+HASH_PREFIX+encoded); }
+  }catch(e){}
+  return localOk;
+}
+function n(x){ return Number(x||0); } function round(x){ return Math.round((n(x)+Number.EPSILON)*10)/10; } function esc(s){ return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m])); }
+function today(){ return new Date().toISOString().slice(0,10); } function hhmm(){ const d=new Date(); return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); }
+function fmtTime(t){ if(!t) return ''; const [h,m]=t.split(':').map(Number); const s=h>=12?'PM':'AM'; return (((h+11)%12)+1)+':'+String(m).padStart(2,'0')+' '+s; }
+function selectedDate(){ return document.getElementById('date').value || today(); }
+function setSelectedDate(d){ const val=d||today(); const main=document.getElementById('date'); const totals=document.getElementById('dailyTotalsDate'); if(main) main.value=val; if(totals) totals.value=val; const exDate=document.getElementById('exerciseDate'); if(exDate && !exDate.value) exDate.value=val; }
+function showScreen(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); const el=document.getElementById(id); if(el) el.classList.add('active'); if(id==='statsScreen') renderStats(); if(id==='breakdownScreen') renderDailyBreakdown(); if(id==='shoppingListScreen') renderShoppingListScreen(); if(id==='profileScreen') renderProfile(); if(id==='dailyTotalsScreen') render(); if(id==='exerciseScreen'){ const exDate=document.getElementById('exerciseDate'); if(exDate) exDate.value=selectedDate(); const pfDate=document.getElementById('pfWorkoutDate'); if(pfDate) pfDate.value=selectedDate(); } if(id==='planetFitnessScreen'){ const pfDate=document.getElementById('pfWorkoutDate'); if(pfDate) pfDate.value=selectedDate(); renderPlanetFitnessWorkout(); }
+renderVitABreakdown();
+renderDailyBreakdown();
+renderDailyBreakdown(); if(id==='exerciseScreen') previewExercise(); window.scrollTo({top:0,behavior:'smooth'}); } window.showScreen=showScreen;
+function profileCalc(){
+  const p=state.profile;
+  const male=p.sex==='male';
+  const heightIn=n(p.feet)*12+n(p.inches);
+  const cm=heightIn*2.54;
+  const kg=n(p.weight)*0.45359237;
+  const age=n(p.age);
+  const bmr=male?10*kg+6.25*cm-5*age+5:10*kg+6.25*cm-5*age-161;
+  const maint=n(p.manualMaintenance)>0?n(p.manualMaintenance):bmr*n(p.activity||1.2);
+  const goalAdjustment=n(p.plan||0);
+  const targetNet=maint+goalAdjustment;
+  const goal=n(p.goalWeight||p.weight||150);
+  const idealKg=(male?50:45.5)+2.3*Math.max(0,heightIn-60);
+  return {bmr:Math.round(bmr),maintenance:Math.round(maint),calories:Math.round(targetNet),targetNetCalories:Math.round(targetNet),protein:Math.round(Math.max(male?56:46,goal*.8)),carbs:Math.round(Math.max(0,(targetNet*.4)/4)),fat:Math.round(Math.max(0,(targetNet*.3)/9)),fiber:male?30:25,sodium:2300,potassium:male?3400:2600,calcium:age>=70?1200:1000,iron:(male||age>50)?8:18,magnesium:male?420:320,phosphorus:700,zinc:male?11:8,copper:.9,manganese:male?2.3:1.8,selenium:55,vitA:male?900:700,vitC:male?90:75,vitD:age>=70?20:15,vitE:15,vitK:male?120:90,thiamin:male?1.2:1.1,riboflavin:male?1.3:1.1,niacin:male?16:14,b6:age>=51?1.7:1.3,folate:400,b12:2.4,choline:male?550:425,idealLb:round(idealKg*2.20462262)};
+}
+function isCollagenProteinFood(food){ const name=(food&&food.name?food.name:'' ).toLowerCase(); return name.includes('collagen') || n(food&&food.collagenProtein)>0; }
+function nutrientForTotals(food,k){
+  if(k==='protein' && isCollagenProteinFood(food)) return 0;
+  if(k==='collagenProtein') return isCollagenProteinFood(food) ? (n(food.collagenProtein)||n(food.protein)) : n(food.collagenProtein);
+  return n(food[k]);
+}
+function totalsForDate(d){ const t={}; KEYS.forEach(k=>t[k]=0); state.entries.filter(e=>e.date===d).forEach(e=>KEYS.forEach(k=>t[k]+=nutrientForTotals(e.food,k)*n(e.servings))); return t; }
+function exerciseForDate(d){ return state.exercises.filter(e=>e.date===d && e.done!==false).reduce((a,e)=>a+n(e.calories),0); }
+function weightForDate(d){ const item=(state.dailyWeights||[]).find(w=>w.date===d); return item?n(item.weight):0; }
+function saveDailyWeight(){ const el=document.getElementById('dailyWeight'); if(!el) return; const d=selectedDate(); const val=n(el.value); state.dailyWeights=state.dailyWeights||[]; state.dailyWeights=state.dailyWeights.filter(w=>w.date!==d); if(val>0) state.dailyWeights.push({date:d,weight:val}); save(); render(); }
+function groupedFoods(){ return state.foods.map((f,i)=>({f,i})).sort((a,b)=>(a.f.category||'').localeCompare(b.f.category||'')||a.f.name.localeCompare(b.f.name)); }
+function renderFoodSelect(){ const sel=document.getElementById('foodSelect'); sel.innerHTML=''; let last='', group=null; groupedFoods().forEach(({f,i})=>{ if(f.category!==last){ group=document.createElement('optgroup'); group.label=f.category; sel.appendChild(group); last=f.category; } const opt=document.createElement('option'); opt.value=i; opt.textContent=f.name+' — '+(f.serving||'1 serving'); group.appendChild(opt); }); }
+function renderFoodsList(){ const box=document.getElementById('foodsList'); let html='', cur=''; groupedFoods().forEach(({f,i})=>{ if(f.category!==cur){ cur=f.category; html+=`<div class="foodHead">${esc(cur)}</div>`; } const micro=['glycemicLoad','sodium','potassium','calcium','iron','magnesium','phosphorus','zinc','vitA','vitC','vitD','vitD3','vitDOther','vitE','vitK','folate','b12'].map(k=>{ const m=NUTRIENTS.find(x=>x.key===k); return `${m.label}: ${round(f[k])} ${m.unit}`; }).join(' · '); html+=`<div class="foodItem"><b>${esc(f.name)}</b> <span class="small">${esc(f.serving||'1 serving')}</span><div class="small">${round(f.calories)} kcal | P ${round(f.protein)}g | C ${round(f.carbs)}g | F ${round(f.fat)}g | Fiber ${round(f.fiber)}g | Sugar ${round(f.sugar)}g | GL ${round(f.glycemicLoad)}</div><div class="micro">${micro}</div>${f.custom?`<button class="danger" data-delete-food="${i}">Delete</button>`:'<span class="small">Built-in</span>'}</div>`; }); box.innerHTML=html; box.querySelectorAll('[data-delete-food]').forEach(btn=>btn.addEventListener('click',()=>deleteFood(Number(btn.dataset.deleteFood)))); }
+function buildCustomFields(){ document.getElementById('customFields').innerHTML=NUTRIENTS.map(m=>`<div><label>${m.label} (${m.unit})</label><input id="cf_${m.key}" type="number" step="0.01" value="0"></div>`).join(''); }
+function saveCustomFood(){ const name=document.getElementById('cf_name').value.trim(); if(!name) return alert('Give the custom food a name.'); const f={custom:true,category:document.getElementById('cf_category').value.trim()||'Custom',name,serving:document.getElementById('cf_serving').value.trim()||'1 serving'}; KEYS.forEach(k=>f[k]=n(document.getElementById('cf_'+k).value)); state.foods.push(normalizeNutritionFields(f)); save(); renderFoodSelect(); renderFoodsList(); ['cf_category','cf_name','cf_serving'].forEach(id=>document.getElementById(id).value=''); KEYS.forEach(k=>document.getElementById('cf_'+k).value=0); }
+function deleteFood(i){ if(!state.foods[i]?.custom) return; if(!confirm('Delete this custom food?')) return; state.foods.splice(i,1); save(); renderFoodSelect(); renderFoodsList(); render(); }
+function foodEntriesForDate(d){ return state.entries.filter(e=>e.date===d).sort((a,b)=>(n(a.order)||9999)-(n(b.order)||9999)||(a.time||'').localeCompare(b.time||'')||(a.id||'').localeCompare(b.id||'')); }
+function normalizeFoodEntryOrder(d){ foodEntriesForDate(d).forEach((e,i)=>{ if(!n(e.order)) e.order=i+1; }); }
+function normalizeAllFoodEntryOrders(){ [...new Set((state.entries||[]).map(e=>e.date).filter(Boolean))].forEach(normalizeFoodEntryOrder); }
+function nextFoodOrder(d){ const orders=state.entries.filter(e=>e.date===d).map(e=>n(e.order)).filter(Boolean); return orders.length?Math.max(...orders)+1:1; }
+function refreshFoodOrderDefault(){ const el=document.getElementById('foodOrder'); if(el) el.value=nextFoodOrder(selectedDate()); }
+function moveFoodEntry(id,delta){
+ const d=selectedDate();
+ const items=foodEntriesForDate(d);
+ const idx=items.findIndex(e=>e.id===id);
+ if(idx<0) return;
+ const swap=idx+delta;
+ if(swap<0||swap>=items.length) return;
+ const moved=items.splice(idx,1)[0];
+ items.splice(swap,0,moved);
+ items.forEach((e,i)=>{ e.order=i+1; });
+ save();
+ render();
+}
+
+function groupKey(e){ return String(e.group||'').trim(); }
+function groupLabel(e){ const g=groupKey(e); return g || 'Ungrouped'; }
+function groupGlycemicRows(d){
+  const groups={};
+  foodEntriesForDate(d).forEach(e=>{
+    const label=groupLabel(e);
+    if(!groups[label]) groups[label]={group:label,gl:0,calories:0,count:0};
+    groups[label].gl += n(e.food&&e.food.glycemicLoad)*n(e.servings);
+    groups[label].calories += n(e.food&&e.food.calories)*n(e.servings);
+    groups[label].count += 1;
+  });
+  return Object.values(groups).sort((a,b)=>a.group.localeCompare(b.group,undefined,{numeric:true,sensitivity:'base'}));
+}
+function renderGroupGlycemicSummary(){
+  const box=document.getElementById('groupGlycemicSummary'); if(!box) return;
+  const rows=groupGlycemicRows(selectedDate());
+  if(!rows.length){ box.innerHTML=''; return; }
+  box.innerHTML=`<h3>Glycemic load by group</h3><table><thead><tr><th>Group</th><th>Items</th><th>Glycemic Load</th><th>Calories</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${esc(r.group)}</td><td>${r.count}</td><td>${round(r.gl)}</td><td>${round(r.calories)}</td></tr>`).join('')}</tbody></table>`;
+}
+function submitSelectedGroup(){
+  const name=(document.getElementById('groupName')?.value||'').trim();
+  if(!name) return alert('Enter a group name first.');
+  const checked=[...document.querySelectorAll('[data-group-entry]:checked')].map(c=>c.dataset.groupEntry);
+  if(!checked.length) return alert('Check at least one food entry to add to the group.');
+  state.entries.forEach(e=>{ if(checked.includes(e.id)) e.group=name; });
+  save(); render();
+}
+function clearGroupsForDate(){
+  if(!confirm('Clear all groups for this date?')) return;
+  const d=selectedDate();
+  state.entries.forEach(e=>{ if(e.date===d) e.group=''; });
+  save(); render();
+}
+function addFoodEntry(){ const food=state.foods[Number(document.getElementById('foodSelect').value)]; const servings=n(document.getElementById('servings').value); if(!food||servings<=0) return alert('Choose a food and servings above zero.'); const d=selectedDate(); const order=nextFoodOrder(d); state.entries.push({id:crypto.randomUUID(),date:d,order,time:hhmm(),servings,food:normalizeNutritionFields(JSON.parse(JSON.stringify(food))),eaten:false,group:''}); save(); render(); showScreen('mainScreen'); }
+
+function nutritionRows(nutrition){
+  const labels={calories:['Calories','kcal'],protein:['Complete Protein','g'],collagenProtein:['Collagen Protein','g'],carbs:['Carbohydrates','g'],fiber:['Fiber','g'],sugar:['Sugar','g'],fat:['Fat','g'],saturatedFat:['Saturated fat','g'],cholesterol:['Cholesterol','mg'],sodium:['Sodium','mg'],potassium:['Potassium','mg'],calcium:['Calcium','mg'],iron:['Iron','mg'],magnesium:['Magnesium','mg'],phosphorus:['Phosphorus','mg'],zinc:['Zinc','mg'],selenium:['Selenium','mcg'],vitA:['Vitamin A','mcg RAE'],vitC:['Vitamin C','mg'],vitD:['Vitamin D total','mcg'],vitD3:['Vitamin D3','mcg'],vitDOther:['Other/unspecified D','mcg'],vitK:['Vitamin K total','mcg'],vitK1:['Vitamin K1','mcg'],vitK2:['Vitamin K2','mcg'],niacin:['Niacin / B3','mg'],b6:['Vitamin B6','mg'],folate:['Folate','mcg DFE'],b12:['B12','mcg']};
+  return Object.keys(labels).filter(k=>nutrition[k]!==undefined).map(k=>`<tr><td>${labels[k][0]}</td><td>${round(nutrition[k])} ${labels[k][1]}</td></tr>`).join('');
+}
+function renderRecipes(){
+  const sel=document.getElementById('recipeSelect');
+  const details=document.getElementById('recipeDetails');
+  if(!sel||!details) return;
+  const preferred=['Chicken','Beef','Fish','Dessert'];
+  const categoryOf=r=>preferred.includes(r.category)?r.category:'Other';
+  const cats=[...preferred, ...Array.from(new Set(RECIPE_DATA.map(categoryOf).filter(c=>!preferred.includes(c))))];
+  sel.innerHTML=cats.map(cat=>{
+    const opts=RECIPE_DATA.map((r,i)=>({r,i})).filter(x=>categoryOf(x.r)===cat);
+    if(!opts.length) return '';
+    return `<optgroup label="${esc(cat)}">${opts.map(x=>`<option value="${x.i}">${esc(x.r.name)}</option>`).join('')}</optgroup>`;
+  }).join('');
+  function draw(){
+    const r=RECIPE_DATA[Number(sel.value)||0];
+    if(!r){ details.innerHTML='<p class="small">No recipes saved yet.</p>'; return; }
+    details.innerHTML=`<div class="foodItem"><h3 style="margin-top:0">${esc(r.name)}</h3><p class="small"><b>Yield:</b> ${esc(r.yield)} &nbsp; | &nbsp; <b>Serving:</b> ${esc(r.serving)}</p><p><b>Ingredients:</b></p><ul>${r.ingredients.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><p><b>Directions:</b></p><ol>${r.directions.map(x=>`<li>${esc(x)}</li>`).join('')}</ol><p><b>Nutrition per serving:</b></p><table><tbody>${nutritionRows(r.nutrition||{})}</tbody></table></div>`;
+  }
+  sel.onchange=draw;
+  draw();
+}
+function addSelectedRecipeToDay(){
+  const sel=document.getElementById('recipeSelect');
+  const r=RECIPE_DATA[Number(sel&&sel.value)||0];
+  if(!r) return alert('Choose a recipe first.');
+  const food=(state.foods||[]).find(f=>(f.name||'')===r.foodName);
+  if(!food) return alert('This recipe is not in the Food List yet.');
+  const d=selectedDate(); state.entries.push({id:crypto.randomUUID(),date:d,order:nextFoodOrder(d),time:hhmm(),servings:1,food:JSON.parse(JSON.stringify(food)),eaten:false});
+  save();
+  render();
+  showScreen('mainScreen');
+}
+
+function pfLastForMachine(machineName){
+  const all=(state.pfWorkouts||[]).flatMap(w=>(w.machines||[]).map(m=>({...m,date:w.date}))).filter(m=>m.name===machineName && n(m.weight)>0);
+  all.sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
+  return all[0]||null;
+}
+function pfEstimateCalories(){
+  const mins=n(document.getElementById('pfWorkoutMinutes')&&document.getElementById('pfWorkoutMinutes').value)||30;
+  const wt=n(state.profile&&state.profile.weight)||154;
+  return Math.round(220*(mins/60)*(wt/154));
+}
+function renderPlanetFitnessWorkout(){
+  const list=document.getElementById('pfWorkoutList'); if(!list) return;
+  const dateEl=document.getElementById('pfWorkoutDate'); if(dateEl && !dateEl.value) dateEl.value=selectedDate();
+  const calEl=document.getElementById('pfWorkoutCalories'); if(calEl && !n(calEl.value)) calEl.value=pfEstimateCalories();
+  list.innerHTML=PF_MACHINES.map((m,i)=>{ const last=pfLastForMachine(m.name); const lastTxt=last?`Last: ${round(last.weight)} lb · ${round(last.sets)} × ${round(last.reps)} reps`:m.area; return `<div class="pfCard"><div class="pfMachineHead"><input class="pfCheck" type="checkbox" id="pf_done_${i}" data-pf-field="done"><div class="pfMachineIcon" aria-hidden="true">${m.icon}</div><div><div class="pfMachineTitle">${esc(m.name)}</div><div class="small">${esc(lastTxt)}</div><div class="micro">${esc(m.tip)}</div></div></div><div class="pfMachineInputs"><div><label>Weight</label><input type="number" min="0" step="1" inputmode="decimal" id="pf_weight_${i}" placeholder="lb" data-pf-field="weight"></div><div><label>Sets</label><input type="number" min="0" step="1" inputmode="numeric" id="pf_sets_${i}" value="2" data-pf-field="sets"></div><div><label>Reps</label><input type="number" min="0" step="1" inputmode="numeric" id="pf_reps_${i}" value="12" data-pf-field="reps"></div></div></div>`; }).join('');
+  document.querySelectorAll('[data-pf-field]').forEach(el=>el.addEventListener('input',updatePlanetFitnessSummary));
+  document.querySelectorAll('[data-pf-field]').forEach(el=>el.addEventListener('change',updatePlanetFitnessSummary));
+  renderPlanetFitnessHistory();
+  updatePlanetFitnessSummary();
+}
+function readPlanetFitnessMachines(){
+  return PF_MACHINES.map((m,i)=>({name:m.name,area:m.area,weight:n(document.getElementById(`pf_weight_${i}`)&&document.getElementById(`pf_weight_${i}`).value),sets:n(document.getElementById(`pf_sets_${i}`)&&document.getElementById(`pf_sets_${i}`).value),reps:n(document.getElementById(`pf_reps_${i}`)&&document.getElementById(`pf_reps_${i}`).value),done:!!(document.getElementById(`pf_done_${i}`)&&document.getElementById(`pf_done_${i}`).checked)})).filter(m=>m.done || m.weight || m.sets || m.reps);
+}
+function updatePlanetFitnessSummary(){
+  const sum=document.getElementById('pfWorkoutSummary'); if(!sum) return;
+  const machines=readPlanetFitnessMachines().filter(m=>m.done);
+  const totalVolume=machines.reduce((a,m)=>a+n(m.weight)*n(m.sets)*n(m.reps),0);
+  const mins=n(document.getElementById('pfWorkoutMinutes')&&document.getElementById('pfWorkoutMinutes').value)||30;
+  const calEl=document.getElementById('pfWorkoutCalories');
+  if(calEl && document.activeElement!==calEl) calEl.value=pfEstimateCalories();
+  sum.innerHTML=`<b>${machines.length}</b> machines checked · <b>${round(totalVolume)}</b> lb total volume · <b>${mins}</b> min · <b>${calEl?round(calEl.value):0}</b> kcal`;
+}
+function clearPlanetFitnessBoxes(){
+  PF_MACHINES.forEach((m,i)=>{ const done=document.getElementById(`pf_done_${i}`), wt=document.getElementById(`pf_weight_${i}`), sets=document.getElementById(`pf_sets_${i}`), reps=document.getElementById(`pf_reps_${i}`); if(done) done.checked=false; if(wt) wt.value=''; if(sets) sets.value=2; if(reps) reps.value=12; });
+  updatePlanetFitnessSummary();
+}
+function savePlanetFitnessWorkout(){
+  const d=(document.getElementById('pfWorkoutDate')&&document.getElementById('pfWorkoutDate').value)||selectedDate();
+  const mins=n(document.getElementById('pfWorkoutMinutes')&&document.getElementById('pfWorkoutMinutes').value)||30;
+  const calories=n(document.getElementById('pfWorkoutCalories')&&document.getElementById('pfWorkoutCalories').value)||pfEstimateCalories();
+  const machines=readPlanetFitnessMachines().filter(m=>m.done);
+  if(!machines.length) return alert('Check at least one machine before saving.');
+  state.pfWorkouts=state.pfWorkouts||[];
+  const workoutId=crypto.randomUUID();
+  const volume=machines.reduce((a,m)=>a+n(m.weight)*n(m.sets)*n(m.reps),0);
+  state.pfWorkouts.push({id:workoutId,date:d,time:hhmm(),minutes:mins,calories,volume,machines});
+  state.exercises.push({id:crypto.randomUUID(),date:d,time:hhmm(),name:'Planet Fitness Full Body Machines',category:'Strength',minutes:mins,calories,done:true,source:'planetFitness',workoutId});
+  save(); setSelectedDate(d); render(); renderPlanetFitnessWorkout(); showScreen('planetFitnessScreen');
+}
+function renderPlanetFitnessHistory(){
+  const box=document.getElementById('pfWorkoutHistory'); if(!box) return;
+  const d=(document.getElementById('pfWorkoutDate')&&document.getElementById('pfWorkoutDate').value)||selectedDate();
+  const items=(state.pfWorkouts||[]).filter(w=>w.date===d).sort((a,b)=>(b.time||'').localeCompare(a.time||''));
+  if(!items.length){ box.innerHTML='<p class="small">No Planet Fitness workout saved for this date.</p>'; return; }
+  box.innerHTML=items.map(w=>`<div class="pfCard"><b>${fmtTime(w.time)} · ${round(w.minutes)} min · ${round(w.calories)} kcal</b><div class="small">Total volume: ${round(w.volume)} lb</div><table><thead><tr><th>Machine</th><th>Weight</th><th>Sets</th><th>Reps</th></tr></thead><tbody>${(w.machines||[]).map(m=>`<tr><td>${esc(m.name)}</td><td>${round(m.weight)}</td><td>${round(m.sets)}</td><td>${round(m.reps)}</td></tr>`).join('')}</tbody></table></div>`).join('');
+}
+function renderExerciseChoices(){ const sel=document.getElementById('exerciseSelect'); sel.innerHTML=''; let last='', group=null; CDC_EXERCISES.forEach((e,i)=>{ if(e.category!==last){ group=document.createElement('optgroup'); group.label=e.category; sel.appendChild(group); last=e.category; } const opt=document.createElement('option'); opt.value=i; opt.textContent=`${e.name} — ${e.cal30}/30 min, ${e.calHr}/hr`; group.appendChild(opt); }); document.getElementById('exerciseTable').innerHTML=`<table><thead><tr><th>Level</th><th>Activity</th><th>30 min</th><th>1 hour</th></tr></thead><tbody>${CDC_EXERCISES.map(e=>`<tr><td>${e.category}</td><td>${esc(e.name)}</td><td>${e.cal30}</td><td>${e.calHr}</td></tr>`).join('')}</tbody></table>`; }
+function previewExercise(){ const ex=CDC_EXERCISES[Number(document.getElementById('exerciseSelect').value)||0]; const mins=n(document.getElementById('exerciseMinutes').value)||30; const wt=n(state.profile.weight)||154; document.getElementById('exerciseCalories').value=Math.round(ex.calHr*(mins/60)*(wt/154)); }
+function addExercise(){ const ex=CDC_EXERCISES[Number(document.getElementById('exerciseSelect').value)||0]; const mins=n(document.getElementById('exerciseMinutes').value); const cal=n(document.getElementById('exerciseCalories').value); const doneEl=document.getElementById('exerciseDone'); if(!ex||mins<=0||cal<=0) return alert('Choose an exercise and minutes.'); const d=document.getElementById('exerciseDate').value||selectedDate(); state.exercises.push({id:crypto.randomUUID(),date:d,time:document.getElementById('exerciseTime').value||hhmm(),name:ex.name,category:ex.category,minutes:mins,calories:cal,done:doneEl?doneEl.checked:true}); save(); setSelectedDate(d); const timeEl=document.getElementById('exerciseTime'); if(timeEl) timeEl.value=hhmm(); render(); showScreen('exerciseScreen'); }
+function renderExerciseEntries(){ const box=document.getElementById('exerciseEntries'); if(!box) return; const d=selectedDate(); const items=state.exercises.filter(e=>e.date===d).sort((a,b)=>(a.time||'').localeCompare(b.time||'')); const total=items.filter(e=>e.done!==false).reduce((a,e)=>a+n(e.calories),0); box.innerHTML=items.length?`<table><thead><tr><th>Done</th><th>Time</th><th>Exercise</th><th>Min</th><th>Calories</th><th></th></tr></thead><tbody>${items.map(e=>`<tr><td><input class="doneCheck" type="checkbox" data-done-ex="${e.id}" ${e.done!==false?'checked':''} aria-label="Mark ${esc(e.name)} done"></td><td>${fmtTime(e.time)}</td><td>${esc(e.name)}</td><td>${e.minutes}</td><td>${round(e.calories)}</td><td><button class="danger" data-delete-ex="${e.id}">X</button></td></tr>`).join('')}<tr><td colspan="4"><b>Total for day</b></td><td><b>${round(total)}</b></td><td></td></tr></tbody></table><p class="small">Only exercises marked Done are included in Daily Totals, Today's Menu net calories, and calorie deficit.</p>`:'<p class="small">No exercise logged for this date.</p>'; document.querySelectorAll('[data-done-ex]').forEach(c=>c.addEventListener('change',()=>{ const item=state.exercises.find(e=>e.id===c.dataset.doneEx); if(item){ item.done=c.checked; save(); render(); } })); document.querySelectorAll('[data-delete-ex]').forEach(b=>b.addEventListener('click',()=>{ state.exercises=state.exercises.filter(e=>e.id!==b.dataset.deleteEx); save(); render(); })); }
+function render(){
+ const d=selectedDate(); normalizeFoodEntryOrder(d);
+ const totals=totalsForDate(d); const ex=exerciseForDate(d); const calc=profileCalc(); const dayWeight=weightForDate(d); const weightEl=document.getElementById('dailyWeight'); if(weightEl && document.activeElement!==weightEl) weightEl.value=dayWeight?round(dayWeight):'';
+ const totalsHtml=`<div class="pill"><b>${dayWeight?round(dayWeight):'—'}</b><span>Daily weight lb</span></div><div class="pill"><b>${round(totals.calories)}</b><span>Food kcal</span></div><div class="pill"><b>${round(ex)}</b><span>Exercise kcal</span></div><div class="pill"><b>${round(totals.calories-ex)}</b><span>Net kcal</span></div>`+['protein','collagenProtein','carbs','fat','fiber','sugar','glycemicLoad','sodium','potassium','calcium','iron','magnesium','vitA','vitD','vitD3','vitDOther','vitK'].map(k=>{ const m=NUTRIENTS.find(x=>x.key===k); return `<div class="pill"><b>${round(totals[k])}</b><span>${m.label} ${m.unit}</span></div>`; }).join('');
+ const totalsEl=document.getElementById('totals'); if(totalsEl) totalsEl.innerHTML=totalsHtml;
+ const menuTotalsEl=document.getElementById('menuTotals'); if(menuTotalsEl) menuTotalsEl.innerHTML=totalsHtml;
+ const balance=(totals.calories-ex)-calc.maintenance; const lbs=balance/3500; const balanceColor=balance>0?'var(--good)':balance<0?'var(--bad)':'var(--text)'; const balanceLabel=balance>0?'Calorie Surplus':balance<0?'Calorie Deficit':'Calorie Balance';
+ const lossGainHtml=`<div class="pill"><b style="color:${balanceColor}">${Math.abs(round(balance))}</b><span>${balanceLabel}</span></div><div class="pill"><b style="color:${lbs>0?'var(--good)':lbs<0?'var(--bad)':'var(--text)'}">${Math.abs(lbs).toFixed(3)} lb</b><span>Estimated ${lbs<0?'loss':lbs>0?'gain':'change'}</span></div><div class="pill"><b>${round(calc.maintenance)}</b><span>Maintenance</span></div><div class="pill"><b>${round(calc.calories-ex)}</b><span>Net target</span></div>`;
+ const lossGainEl=document.getElementById('lossGain'); if(lossGainEl) lossGainEl.innerHTML=lossGainHtml;
+ const menuLossGainEl=document.getElementById('menuLossGain'); if(menuLossGainEl) menuLossGainEl.innerHTML=lossGainHtml;
+ const entries=foodEntriesForDate(d);
+ renderGroupGlycemicSummary();
+ document.getElementById('entries').innerHTML=entries.length?`<table><thead><tr><th>Group</th><th>Add to Group</th><th>Food</th><th>Serving</th><th>Servings</th><th>Cal</th><th>GL</th><th>Eaten</th><th>Move</th><th></th></tr></thead><tbody>${entries.map(e=>`<tr><td><input class="orderInput" type="text" value="${esc(groupKey(e))}" data-entry-group-name="${e.id}" aria-label="Entry group"></td><td><input type="checkbox" class="entryCheck" data-group-entry="${e.id}" aria-label="Select for group"></td><td>${esc(e.food.name)}</td><td>${esc(e.food.serving)}</td><td>${e.servings}</td><td>${round(n(e.food.calories)*n(e.servings))}</td><td>${round(n(e.food.glycemicLoad)*n(e.servings))}</td><td><input type="checkbox" class="entryCheck" data-eaten-entry="${e.id}" ${e.eaten?'checked':''} aria-label="Eaten marker"></td><td><span class="orderBtns"><button class="secondary" data-move-entry="${e.id}" data-move-delta="-1">↑</button><button class="secondary" data-move-entry="${e.id}" data-move-delta="1">↓</button></span></td><td><button class="danger" data-delete-entry="${e.id}">X</button></td></tr>`).join('')}</tbody></table>`:'<p class="small">No food logged for this date.</p>';
+ document.querySelectorAll('[data-entry-group-name]').forEach(inp=>inp.addEventListener('change',()=>{ const entry=state.entries.find(e=>e.id===inp.dataset.entryGroupName); if(entry){ entry.group=inp.value.trim(); save(); render(); } }));
+ document.querySelectorAll('[data-move-entry]').forEach(b=>b.addEventListener('click',()=>moveFoodEntry(b.dataset.moveEntry, Number(b.dataset.moveDelta))));
+ document.querySelectorAll('[data-eaten-entry]').forEach(c=>c.addEventListener('change',()=>{ const entry=state.entries.find(e=>e.id===c.dataset.eatenEntry); if(entry){ entry.eaten=c.checked; save(); } }));
+ document.querySelectorAll('[data-delete-entry]').forEach(b=>b.addEventListener('click',()=>{
+   const entry=state.entries.find(e=>e.id===b.dataset.deleteEntry);
+   const foodName=entry && entry.food ? entry.food.name : 'this food item';
+   if(!confirm(`Delete ${foodName} from today's menu?`)) return;
+   state.entries=state.entries.filter(e=>e.id!==b.dataset.deleteEntry);
+   save();
+   render();
+   refreshFoodOrderDefault();
+ }));
+ refreshFoodOrderDefault();
+ renderExerciseEntries();
+ renderPlanetFitnessHistory();
+ updatePlanetFitnessSummary();
+}
+function renderProfile(){ const p=state.profile; ['sex','age','feet','inches','weight','goalWeight','activity','plan','manualMaintenance'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=p[id] ?? ''; }); const c=profileCalc(); document.getElementById('profileResults').innerHTML=`<div class="pill"><b>${c.calories}</b><span>Net calorie target</span></div><div class="pill"><b>${c.maintenance}</b><span>Maintenance</span></div><div class="pill"><b>${c.bmr}</b><span>BMR</span></div><div class="pill"><b>${c.idealLb}</b><span>Formula ideal lb</span></div><div class="pill"><b>${c.protein}g</b><span>Protein target</span></div><div class="pill"><b>${c.fiber}g</b><span>Fiber target</span></div><div class="pill"><b>${c.magnesium}mg</b><span>Magnesium target</span></div><div class="pill"><b>${c.potassium}mg</b><span>Potassium target</span></div>`; }
+function saveProfile(){ state.profile={sex:document.getElementById('sex').value,age:n(document.getElementById('age').value),feet:n(document.getElementById('feet').value),inches:n(document.getElementById('inches').value),weight:n(document.getElementById('weight').value),goalWeight:n(document.getElementById('goalWeight').value),activity:n(document.getElementById('activity').value),plan:n(document.getElementById('plan').value),manualMaintenance:n(document.getElementById('manualMaintenance').value)}; save(); renderProfile(); previewExercise(); render(); }
+function vitaminAClass(food){
+ const cat=String(food.category||'').toLowerCase();
+ const name=String(food.name||'').toLowerCase();
+ if(cat.includes('vegetable')||cat.includes('fruit')) return 'carotenoid';
+ if(name.includes('carrot')||name.includes('sweet potato')||name.includes('spinach')||name.includes('kale')||name.includes('collard')||name.includes('pepper')||name.includes('tomato')||name.includes('mango')||name.includes('watermelon')) return 'carotenoid';
+ if(cat.includes('supplement')||cat.includes('meat')||cat.includes('poultry')||cat.includes('fish')||cat.includes('egg')||cat.includes('dairy')||name.includes('butter')) return 'preformed';
+ return 'unknown';
+}
+function vitaminABreakdownForDate(d){
+ const rows=[]; let total=0, preformed=0, carotenoid=0, unknown=0;
+ state.entries.filter(e=>e.date===d).forEach(e=>{
+   const amount=n(e.food&&e.food.vitA)*n(e.servings);
+   if(!amount) return;
+   const kind=vitaminAClass(e.food||{});
+   total+=amount;
+   if(kind==='preformed') preformed+=amount; else if(kind==='carotenoid') carotenoid+=amount; else unknown+=amount;
+   rows.push({name:e.food.name||'Food', serving:e.food.serving||'', servings:n(e.servings), amount, kind});
+ });
+ rows.sort((a,b)=>b.amount-a.amount);
+ return {total, preformed, carotenoid, unknown, rows};
+}
+function renderVitaminABreakdown(){
+ const box=document.getElementById('vitABreakdown'); if(!box) return;
+ const b=vitaminABreakdownForDate(selectedDate());
+ const prePct=Math.round((b.preformed/3000)*100);
+ const totalPct=Math.round((b.total/(profileCalc().vitA||900))*100);
+ let status=b.preformed>=3000?'Preformed vitamin A is at or above the adult upper limit. Review supplements/animal sources.':'Preformed vitamin A is below the adult upper limit.';
+ if(b.unknown>0) status+=' Some vitamin A is from uncategorized/custom foods; check those entries.';
+ const top=b.rows.length?`<table><thead><tr><th>Food</th><th>Type used for safety check</th><th>Vitamin A</th></tr></thead><tbody>${b.rows.slice(0,10).map(r=>`<tr><td>${esc(r.name)} <span class="small">${esc(r.serving)} × ${round(r.servings)}</span></td><td>${r.kind==='carotenoid'?'plant carotenoid':r.kind==='preformed'?'preformed/retinol source':'unknown/custom'}</td><td>${round(r.amount)} mcg RAE</td></tr>`).join('')}</tbody></table>`:'<p class="small">No vitamin A logged for this date.</p>';
+ box.innerHTML=`<div class="pillgrid"><div class="pill"><b>${round(b.total)}</b><span>Total vitamin A RAE</span></div><div class="pill"><b>${round(b.carotenoid)}</b><span>Plant carotenoid RAE</span></div><div class="pill"><b>${round(b.preformed)}</b><span>Preformed/retinol RAE</span></div><div class="pill"><b>${prePct}%</b><span>Of 3,000 mcg retinol UL</span></div></div><p class="small">${status} Total vitamin A is ${totalPct}% of the 900 mcg adult male target. The 3,000 mcg upper limit is applied here only to preformed/retinol sources, not to plant carotenoids.</p><h3>Where today’s vitamin A is coming from</h3>${top}`;
+}
+
+function dailyEntryRows(d){
+ return foodEntriesForDate(d);
+}
+function nutrientAmount(entry,key){ return n(entry.food&&entry.food[key])*n(entry.servings); }
+function nutrientLine(entry,keys){
+ return keys.map(k=>{ const m=NUTRIENTS.find(x=>x.key===k); if(!m) return ''; return `${m.label}: ${round(nutrientAmount(entry,k))} ${m.unit}`; }).filter(Boolean).join(' · ');
+}
+function getEntryFood(e){
+  if(!e) return null;
+  if(e.foodIndex !== undefined && state.foods[e.foodIndex]) return state.foods[e.foodIndex];
+  if(e.foodId !== undefined && state.foods[e.foodId]) return state.foods[e.foodId];
+  if(e.id !== undefined && state.foods[e.id]) return state.foods[e.id];
+
+  const entryName = String(e.foodName || e.name || e.food || '').trim().toLowerCase();
+  if(entryName){
+    const found = (state.foods||[]).find(f => String(f.name||'').trim().toLowerCase() === entryName);
+    if(found) return found;
+  }
+
+  return null;
+}
+
+function getEntryFoodName(e, food){
+  return (food && food.name) || e.foodName || e.name || e.food || 'Food item';
+}
+
+function getEntryServingText(e, food){
+  return (food && food.serving) || e.serving || '';
+}
+
+function getEntryNutrientAmount(e, food, key){
+  const servings = Number(e.servings || e.qty || e.quantity || 1);
+  if(food && food[key] !== undefined) return Number(food[key] || 0) * servings;
+  if(e[key] !== undefined) return Number(e[key] || 0) * servings;
+  return 0;
+}
+
+function renderDailyBreakdown(){
+  const wrap=document.getElementById('dailyBreakdown');
+  if(!wrap) return;
+
+  const d=selectedDate();
+  const entries=(state.entries||[]).filter(e=>e.date===d);
+
+  if(!entries.length){
+    wrap.innerHTML='<p class="small">No foods logged for this date.</p>';
+    return;
+  }
+
+  function foodForEntry(e){
+    if(e.food && typeof e.food === 'object') return e.food;
+    if(e.foodIndex !== undefined && state.foods[e.foodIndex]) return state.foods[e.foodIndex];
+    if(e.foodId !== undefined && state.foods[e.foodId]) return state.foods[e.foodId];
+    return null;
+  }
+
+  let html='';
+
+  NUTRIENTS.forEach(nutr=>{
+    if(nutr.key==='vitA') return;
+    let rows=[];
+    let total=0;
+
+    entries.forEach(e=>{
+      const food=foodForEntry(e);
+      if(!food) return;
+
+      const servings=n(e.servings || 1);
+      const amount=n(food[nutr.key]) * servings;
+
+      if(amount>0){
+        total += amount;
+        rows.push({
+          name: food.name || 'Food item',
+          serving: food.serving || '',
+          servings: servings,
+          amount: amount
+        });
+      }
+    });
+
+    if(total<=0) return;
+
+    rows.sort((a,b)=>b.amount-a.amount);
+
+    html += `<div class="foodHead">${nutr.label}: ${round(total)} ${nutr.unit}</div>`;
+
+    rows.forEach(r=>{
+      const pct = total > 0 ? (r.amount / total) * 100 : 0;
+      html += `
+        <div class="foodItem">
+          <b>${esc(r.name)}</b><br>
+          <span class="small">${esc(r.serving)} × ${round(r.servings)} serving(s)</span><br>
+          <b>${round(r.amount)} ${nutr.unit}</b>
+          <span class="small"> — ${round(pct)}% of ${esc(nutr.label)} total</span>
+        </div>`;
+    });
+  });
+
+  wrap.innerHTML = html || '<p class="small">No nutrient amounts found for this date.</p>';
+}
+
+
+function vitaminAType(food){
+  const cat=String(food.category||'').toLowerCase();
+  const name=String(food.name||'').toLowerCase();
+
+  if(cat.includes('vegetable') || cat.includes('fruit')){
+    return 'Plant carotenoids';
+  }
+
+  if(name.includes('carrot') || name.includes('sweet potato') || name.includes('spinach') || name.includes('kale') || name.includes('collard') || name.includes('pepper') || name.includes('mango')){
+    return 'Plant carotenoids';
+  }
+
+  if(cat.includes('supplement') || name.includes('multivitamin') || name.includes('retinol') || name.includes('liver') || cat.includes('dairy') || cat.includes('egg') || cat.includes('fish') || cat.includes('meat') || cat.includes('poultry') || cat.includes('fats')){
+    return 'Preformed/retinol';
+  }
+
+  return 'Unclassified';
+}
+
+function renderVitABreakdown(){
+  const box=document.getElementById('vitABreakdown');
+  if(!box) return;
+
+  const d=selectedDate();
+  const entries=(state.entries||[]).filter(e=>e.date===d);
+
+  let plant=0, preformed=0, unknown=0;
+  let rows=[];
+
+  entries.forEach(e=>{
+    const food=(e.food && typeof e.food==='object') ? e.food : null;
+    if(!food) return;
+
+    const amount=n(food.vitA) * n(e.servings || 1);
+    if(amount<=0) return;
+
+    const type=vitaminAType(food);
+    if(type==='Plant carotenoids') plant += amount;
+    else if(type==='Preformed/retinol') preformed += amount;
+    else unknown += amount;
+
+    rows.push({
+      name: food.name || 'Food item',
+      type: type,
+      amount: amount
+    });
+  });
+
+  const total=plant+preformed+unknown;
+  rows.sort((a,b)=>b.amount-a.amount);
+
+  let html=`<div class="pillgrid">
+    <div class="pill"><b>${round(total)}</b><span>Total Vitamin A, mcg RAE</span></div>
+    <div class="pill"><b>${round(plant)}</b><span>Plant carotenoids, mcg RAE</span></div>
+    <div class="pill"><b>${round(preformed)}</b><span>Preformed/retinol, mcg RAE</span></div>
+    <div class="pill"><b>${round(unknown)}</b><span>Unclassified, mcg RAE</span></div>
+  </div>
+  <p class="small"><b>Safety interpretation:</b> the 3,000 mcg adult upper limit applies to preformed/retinol vitamin A, not plant carotenoids from carrots, sweet potatoes, greens, and similar foods.</p>`;
+
+  if(rows.length){
+    html += `<div class="tableScroll"><table>
+      <thead><tr><th>Food</th><th>Type</th><th>Amount</th><th>% of total Vitamin A</th></tr></thead><tbody>`;
+    rows.forEach(r=>{
+      const pct=total>0 ? (r.amount/total)*100 : 0;
+      html += `<tr>
+        <td>${esc(r.name)}</td>
+        <td>${esc(r.type)}</td>
+        <td>${round(r.amount)} mcg RAE</td>
+        <td>${round(pct)}%</td>
+      </tr>`;
+    });
+    html += `</tbody></table></div>`;
+  } else {
+    html += `<p class="small">No Vitamin A sources logged for this date.</p>`;
+  }
+
+  box.innerHTML=html;
+}
+
+function insulinSpikeForDate(d){
+  const groups={};
+  foodEntriesForDate(d).forEach(e=>{
+    const group=groupLabel(e);
+    const food=normalizeNutritionFields(e.food||{});
+    if(!groups[group]) groups[group]={group,gl:0,sugar:0,fiber:0,protein:0,fat:0};
+    const g=groups[group], servings=n(e.servings);
+    g.gl += n(food.glycemicLoad)*servings;
+    g.sugar += n(food.sugar)*servings;
+    g.fiber += n(food.fiber)*servings;
+    g.protein += nutrientForTotals(food,'protein')*servings;
+    g.fat += n(food.fat)*servings;
+  });
+  return Object.values(groups).sort((a,b)=>a.group.localeCompare(b.group,undefined,{numeric:true,sensitivity:'base'})).map(g=>{
+    let score=g.gl + g.sugar*0.12;
+    if(g.fiber>=8) score*=0.9;
+    if(g.protein>=20) score*=0.9;
+    if(g.fat>=15) score*=0.9;
+    g.score=round(score);
+    if(score<5){ g.response='Very Low 🟢'; g.ketosis='Excellent'; }
+    else if(score<10){ g.response='Low 🟢'; g.ketosis='Excellent'; }
+    else if(score<20){ g.response='Moderate 🟡'; g.ketosis='Good'; }
+    else if(score<40){ g.response='High 🟠'; g.ketosis='May Reduce'; }
+    else { g.response='Very High 🔴'; g.ketosis='Likely Interrupt'; }
+    return g;
+  });
+}
+function renderInsulinSpikeTable(){
+  const box=document.getElementById('insulinSpikeTable'); if(!box) return;
+  const rows=insulinSpikeForDate(selectedDate());
+  if(!rows.length){ box.innerHTML='<p class="small">No food logged for this date.</p>'; return; }
+  const note='Each line is one menu group. Estimated insulin response is based on glycemic load, then modestly adjusted for sugar, fiber, complete protein, and fat. It is not a medical insulin measurement.';
+  box.innerHTML=`<p class="small">${note}</p><table><thead><tr><th>Group</th><th>Estimated Insulin Response</th><th>Glycemic Load</th><th>Ketosis Impact</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${esc(r.group)}</td><td>${r.response}</td><td>${round(r.gl)}</td><td>${r.ketosis}</td></tr>`).join('')}</tbody></table>`;
+}
+function renderStats(){ const totals=totalsForDate(selectedDate()); const c=profileCalc(); const ex=exerciseForDate(selectedDate()); drawMacro(totals); renderVitaminABreakdown(); renderInsulinSpikeTable(); document.getElementById('targetTable').innerHTML=`<table><thead><tr><th>Nutrient</th><th>Actual</th><th>Target</th><th>%</th></tr></thead><tbody>${NUTRIENTS.map(m=>{ const actual=m.key==='calories'?(totals.calories-ex):totals[m.key]; const hasTarget=Object.prototype.hasOwnProperty.call(c,m.key); const target=hasTarget?c[m.key]:0; const pct=target?Math.round(n(actual)/target*100):0; const pctCell=target?`<div class="barwrap"><div class="bar" style="width:${Math.min(100,pct)}%"></div></div><span class="small">${pct}%</span>`:`<span class="small">No target set</span>`; return `<tr><td>${m.label}</td><td>${round(actual)} ${m.unit}</td><td>${target?target+' '+m.unit:'—'}</td><td>${pctCell}</td></tr>`; }).join('')}</tbody></table>`; }
+function drawMacro(t){ const canvas=document.getElementById('macroChart'); if(!canvas) return; const ctx=canvas.getContext('2d'); ctx.clearRect(0,0,420,420); const parts=[{name:'Complete Protein',value:n(t.protein)*4},{name:'Carbs',value:n(t.carbs)*4},{name:'Fat',value:n(t.fat)*9}]; const total=parts.reduce((a,p)=>a+p.value,0); if(total<=0){ ctx.fillStyle='#94a3b8'; ctx.font='18px system-ui'; ctx.textAlign='center'; ctx.fillText('No macro data for this date',210,210); document.getElementById('macroLegend').innerHTML=''; return; } const colors=['#38bdf8','#34d399','#fbbf24']; let start=-Math.PI/2; parts.forEach((p,i)=>{ const ang=p.value/total*Math.PI*2; ctx.beginPath(); ctx.moveTo(210,200); ctx.arc(210,200,145,start,start+ang); ctx.closePath(); ctx.fillStyle=colors[i]; ctx.fill(); start+=ang; }); ctx.beginPath(); ctx.arc(210,200,72,0,Math.PI*2); ctx.fillStyle='#020617'; ctx.fill(); ctx.fillStyle='#f8fafc'; ctx.font='bold 20px system-ui'; ctx.textAlign='center'; ctx.fillText(Math.round(total),210,196); ctx.font='13px system-ui'; ctx.fillStyle='#94a3b8'; ctx.fillText('macro calories',210,220); document.getElementById('macroLegend').innerHTML=parts.map((p,i)=>`<div><b style="color:${colors[i]}">${p.name}</b><br>${Math.round(p.value/total*100)}% · ${Math.round(p.value)} kcal</div>`).join(''); }
+
+function suggestDailyMenu(){
+  const d=selectedDate();
+  const c=profileCalc();
+  const existing=totalsForDate(d);
+  // Suggested menu mode:
+  // Target full maintenance calories as food calories only.
+  // Do not subtract a planned deficit and do not add/assume exercise, even if exercise is logged.
+  const targetCalories=Math.max(900, n(c.maintenance));
+  const remainingCalories=Math.max(0, targetCalories-n(existing.calories));
+  const remainingProtein=Math.max(0, n(c.protein)-n(existing.protein));
+  const remainingFiber=Math.max(0, n(c.fiber)-n(existing.fiber));
+  const remainingPotassium=Math.max(0, n(c.potassium)-n(existing.potassium));
+  const remainingCalcium=Math.max(0, n(c.calcium)-n(existing.calcium));
+  const remainingMagnesium=Math.max(0, n(c.magnesium)-n(existing.magnesium));
+  const remainingVitC=Math.max(0, n(c.vitC)-n(existing.vitC));
+  const remainingVitK=Math.max(0, n(c.vitK)-n(existing.vitK));
+
+  const foods=state.foods||[];
+  function findFood(name){
+    return foods.find(f=>(f.name||'').toLowerCase()===name.toLowerCase()) ||
+           foods.find(f=>(f.name||'').toLowerCase().includes(name.toLowerCase()));
+  }
+  function addPlanItem(plan, name, servings, time){
+    const f=findFood(name);
+    if(!f || servings<=0) return;
+    plan.push({food:f, servings:Math.round(servings*100)/100, time});
+  }
+  function planTotals(plan){
+    const t={}; KEYS.forEach(k=>t[k]=0);
+    plan.forEach(item=>KEYS.forEach(k=>t[k]+=n(item.food[k])*n(item.servings)));
+    return t;
+  }
+  function scorePlan(plan){
+    const t=planTotals(plan);
+    const calDiff=Math.abs(t.calories-remainingCalories)/Math.max(remainingCalories,1);
+    const proteinGap=Math.max(0,remainingProtein-t.protein)/Math.max(remainingProtein,1);
+    const fiberGap=Math.max(0,remainingFiber-t.fiber)/Math.max(remainingFiber,1);
+    const sodiumOver=Math.max(0,(existing.sodium+t.sodium)-c.sodium)/Math.max(c.sodium,1);
+    const sugarOver=Math.max(0,t.sugar-55)/55;
+    return calDiff*3 + proteinGap*2 + fiberGap + sodiumOver*2 + sugarOver;
+  }
+
+  const candidates=[
+    [
+      ['Homemade strained skim-milk Greek yogurt',1,'08:00'],['Blueberries',0.5,'08:00'],['Raspberries',0.5,'08:00'],
+      ['Chicken breast, cooked',1,'13:00'],['Spinach, raw',2,'13:00'],['Broccoli, cooked',1,'13:00'],
+      ['Salmon, cooked',1,'18:00'],['Sweet potato, baked medium',1,'18:00'],['Avocado, medium',0.5,'18:00']
+    ],
+    [
+      ['Large egg',2,'08:00'],['Homemade strained skim-milk Greek yogurt',1,'08:00'],['Strawberries, halves',1,'08:00'],
+      ['Turkey breast, cooked',1,'13:00'],['Mixed broccoli, cauliflower, carrots, steamed',2,'13:00'],
+      ['Cod, cooked',1,'18:00'],['Black beans, cooked',1,'18:00'],['Kale, cooked',1,'18:00']
+    ],
+    [
+      ['Oatmeal, cooked',1,'08:00'],['Whey Protein, Levels (Sam\'s Club)',1,'08:00'],['Blackberries',1,'08:00'],
+      ['Tuna, canned in water',1,'13:00'],['Avocado, medium',0.5,'13:00'],['Spinach, raw',2,'13:00'],
+      ['Chicken breast, cooked',1,'18:00'],['Brussels sprouts, cooked',1,'18:00'],['Quinoa, cooked',0.5,'18:00']
+    ],
+    [
+      ['Cottage cheese, low-fat',1,'08:00'],['Blueberries',1,'08:00'],['Large egg',1,'08:00'],
+      ['Sardines, canned in oil',1,'13:00'],['Broccoli, cooked',1,'13:00'],
+      ['Sirloin steak, cooked',1,'18:00'],['Green beans, cooked',1,'18:00'],['Sweet potato, baked medium',0.75,'18:00']
+    ],
+    [
+      ['Large egg',2,'08:00'],['Spinach, raw',1,'08:00'],['Whole wheat bread',1,'08:00'],
+      ['Salmon, cooked',1,'13:00'],['Asparagus, cooked',1,'13:00'],['Avocado, medium',0.5,'13:00'],
+      ['Turkey breast, cooked',1,'18:00'],['Cauliflower, cooked',1,'18:00'],['Black beans, cooked',0.75,'18:00']
+    ],
+    [
+      ['Homemade strained skim-milk Greek yogurt',1,'08:00'],['Blackberries',1,'08:00'],['Chia seeds',1,'08:00'],
+      ['Chicken thigh, cooked',1,'13:00'],['Brussels sprouts, cooked',1,'13:00'],['Sweet potato, baked medium',0.5,'13:00'],
+      ['Cod, cooked',1,'18:00'],['Collard greens, cooked',1,'18:00'],['Quinoa, cooked',0.5,'18:00']
+    ],
+    [
+      ['Whey Protein, Levels (Sam\'s Club)',1,'08:00'],['Oatmeal, cooked',0.75,'08:00'],['Strawberries, halves',1,'08:00'],
+      ['Pork chop, cooked lean',1,'13:00'],['Green beans, cooked',1,'13:00'],['Tomato, medium',1,'13:00'],
+      ['Tuna, canned in water',1,'18:00'],['Kale, cooked',1,'18:00'],['Pinto beans, cooked',0.75,'18:00']
+    ]
+  ];
+
+  function seededRandom(seed){
+    let x=Math.sin(seed)*10000;
+    return x-Math.floor(x);
+  }
+  function dateSeed(dateText){
+    return String(dateText||'').split('').reduce((a,ch)=>a+ch.charCodeAt(0),0);
+  }
+
+  let scored=[];
+  candidates.forEach((cand,idx)=>{
+    const plan=[];
+    cand.forEach(x=>addPlanItem(plan,x[0],x[1],x[2]));
+    if(!plan.length) return;
+    let t=planTotals(plan);
+    if(t.calories>remainingCalories*1.10 && remainingCalories>300){
+      const scale=Math.max(0.55, remainingCalories/t.calories);
+      plan.forEach(item=>item.servings=Math.round(item.servings*scale*100)/100);
+      t=planTotals(plan);
+    }
+    if(t.calories<remainingCalories*0.90 && remainingCalories>300){
+      const scale=Math.min(1.65, remainingCalories/Math.max(t.calories,1));
+      plan.forEach(item=>item.servings=Math.round(item.servings*scale*100)/100);
+      t=planTotals(plan);
+    }
+    if(t.protein<remainingProtein*0.9){
+      const whey=findFood("Whey Protein");
+      if(whey) plan.push({food:whey, servings:1, time:'15:00'});
+    }
+    scored.push({plan, score:scorePlan(plan), idx});
+  });
+
+  if(!scored.length) return alert('Could not build a suggested menu from the current Food List.');
+
+  // Keep nutrition quality, but rotate among the better-fitting menus so tomorrow is not identical to today.
+  scored.sort((a,b)=>a.score-b.score);
+  const bestScore=scored[0].score;
+  const good=scored.filter(x=>x.score<=bestScore+0.75).slice(0,Math.min(4,scored.length));
+  const seed=dateSeed(d)+state.entries.filter(e=>e.date===d).length+state.exercises.filter(e=>e.date===d).length;
+  const chosen=good[Math.floor(seededRandom(seed)*good.length)] || scored[0];
+  const best=chosen.plan;
+
+  if(state.entries.some(e=>e.date===d)){
+    const ok=confirm('Add suggested menu items to the selected day? Existing food entries for this date will be kept.');
+    if(!ok) return;
+  }
+
+  let order=nextFoodOrder(d);
+  best.forEach(item=>{
+    state.entries.push({
+      id:crypto.randomUUID(),
+      date:d,
+      order:order++,
+      time:item.time,
+      servings:item.servings,
+      food:JSON.parse(JSON.stringify(item.food)),
+      eaten:false
+    });
+  });
+  save();
+  render();
+  showScreen('mainScreen');
+  const t=planTotals(best);
+  alert(`Suggested Daily Menu added for ${d}.\nTarget: ${Math.round(targetCalories)} food kcal = full maintenance calories. Exercise is not assumed; add it manually.\nAdded: ${Math.round(t.calories)} kcal, ${round(t.protein)}g protein, ${round(t.carbs)}g carbs, ${round(t.fat)}g fat, ${round(t.fiber)}g fiber.`);
+}
+
+
+
+
+
+function suggestBiblicalDietMenu(){
+  const d=selectedDate();
+  const c=profileCalc();
+  const existing=totalsForDate(d);
+
+  // Target full maintenance as FOOD calories. Exercise remains manual.
+  const targetCalories=Math.max(1200, n(c.maintenance));
+  const targetProtein=Math.max(80, n(c.protein || c.proteinTarget || c.proteinGoal || 0));
+
+  const foods=state.foods||[];
+
+  function findFood(name){
+    return foods.find(f=>(f.name||'').toLowerCase()===name.toLowerCase()) ||
+           foods.find(f=>(f.name||'').toLowerCase().includes(name.toLowerCase()));
+  }
+
+  function addPlanItem(plan, name, servings, time){
+    const f=findFood(name);
+    if(!f || servings<=0) return false;
+    plan.push({food:f, servings:Math.round(servings*100)/100, time});
+    return true;
+  }
+
+  function planTotals(plan){
+    const t={}; KEYS.forEach(k=>t[k]=0);
+    plan.forEach(item=>KEYS.forEach(k=>t[k]+=n(item.food[k])*n(item.servings)));
+    return t;
+  }
+
+  function dateSeed(dateText){
+    return String(dateText||'').split('').reduce((a,ch)=>a+ch.charCodeAt(0),0);
+  }
+
+  const menus=[
+    {fruit:'Apple, medium', nut:'Walnuts', fish:'Sardines, canned in water', legume:'Lentils, cooked', greens:'Kale, cooked'},
+    {fruit:'Blueberries', nut:'Almonds', fish:'Tilapia, cooked', legume:'Chickpeas, cooked', greens:'Spinach, raw'},
+    {fruit:'Strawberries, halves', nut:'Walnuts', fish:'Salmon, cooked', legume:'Lentils, cooked', greens:'Collard greens, cooked'},
+    {fruit:'Orange, medium', nut:'Almonds', fish:'Cod, cooked', legume:'Chickpeas, cooked', greens:'Kale, cooked'}
+  ];
+
+  const m=menus[dateSeed(d)%menus.length];
+  const plan=[];
+
+  // Simple base: yogurt + fruit + nuts; fish + legume + bread + greens + olive oil.
+  addPlanItem(plan,'Homemade strained skim-milk Greek yogurt',1.5,'08:00');
+  addPlanItem(plan,m.fruit,1,'08:00');
+  addPlanItem(plan,m.nut,0.5,'08:00');
+
+  addPlanItem(plan,m.fish,1.25,'18:00');
+  addPlanItem(plan,m.legume,2,'18:00');
+  addPlanItem(plan,'Einkorn Bread',4,'18:00');
+  addPlanItem(plan,m.greens,1,'18:00');
+  addPlanItem(plan,'Olive Oil',1,'18:00');
+
+  if(!plan.length) return alert('Could not build a Biblical Diet menu from the current Food List.');
+
+  let t=planTotals(plan);
+
+  // First fix protein with simple staples: fish, yogurt, legumes.
+  let guard=0;
+  while(t.protein < targetProtein && guard < 20){
+    const gap=targetProtein-t.protein;
+    if(gap > 25){
+      addPlanItem(plan,m.fish,0.5,'18:00');
+    }else if(gap > 12){
+      addPlanItem(plan,'Homemade strained skim-milk Greek yogurt',0.5,'08:00');
+    }else{
+      addPlanItem(plan,m.legume,0.5,'18:00');
+    }
+    t=planTotals(plan);
+    guard++;
+  }
+
+  // Then fill calories mostly with the staple bread, with a little olive oil if close.
+  guard=0;
+  while(t.calories < targetCalories-150 && guard < 30){
+    addPlanItem(plan,'Einkorn Bread',1,'18:00');
+    t=planTotals(plan);
+    guard++;
+  }
+
+  if(t.calories < targetCalories-80){
+    addPlanItem(plan,'Olive Oil',0.5,'18:00');
+    t=planTotals(plan);
+  }
+
+  // If still too low, add one more yogurt serving for protein-rich calories.
+  if(t.calories < targetCalories-80){
+    addPlanItem(plan,'Homemade strained skim-milk Greek yogurt',0.5,'08:00');
+    t=planTotals(plan);
+  }
+
+  // Combine duplicate foods so the daily entry list stays simple.
+  const combined=[];
+  plan.forEach(item=>{
+    const key=(item.food.name||'')+'|'+item.time;
+    const found=combined.find(x=>((x.food.name||'')+'|'+x.time)===key);
+    if(found){
+      found.servings=Math.round((found.servings+item.servings)*100)/100;
+    }else{
+      combined.push(item);
+    }
+  });
+
+  t=planTotals(combined);
+
+  if(state.entries.some(e=>e.date===d)){
+    const ok=confirm('Add the maintenance-level Biblical Diet menu to the selected day? Existing food entries for this date will be kept.');
+    if(!ok) return;
+  }
+
+  combined.forEach(item=>{
+    state.entries.push({
+      id:crypto.randomUUID(),
+      date:d,
+      time:item.time,
+      servings:item.servings,
+      food:JSON.parse(JSON.stringify(item.food)),
+      eaten:false
+    });
+  });
+
+  save();
+  render();
+  showScreen('mainScreen');
+  alert(`Biblical Diet Menu added for ${d}.\nTargets food calories near maintenance, with protein raised first.\nAdded: ${Math.round(t.calories)} kcal, ${round(t.protein)}g protein, ${round(t.carbs)}g carbs, ${round(t.fat)}g fat, ${round(t.fiber)}g fiber.`);
+}
+
+
+function loggedFoodDates(){
+  return [...new Set((state.entries||[]).map(e=>e.date).filter(Boolean))].sort();
+}
+function shoppingAggregateForDates(dates){
+  const selected=new Set(dates||[]);
+  const items=new Map();
+  (state.entries||[]).filter(e=>selected.has(e.date)).forEach(e=>{
+    const food=e.food||{};
+    const key=[food.name||'Unknown food', food.serving||'1 serving'].join('||');
+    if(!items.has(key)) items.set(key,{name:food.name||'Unknown food', serving:food.serving||'1 serving', category:food.category||'Other', servings:0, dates:new Set()});
+    const item=items.get(key);
+    item.servings+=n(e.servings);
+    item.dates.add(e.date);
+  });
+  return [...items.values()].sort((a,b)=>(a.category||'').localeCompare(b.category||'') || a.name.localeCompare(b.name));
+}
+function selectedShoppingDates(){
+  return [...document.querySelectorAll('[data-shopping-day]:checked')].map(x=>x.value);
+}
+function renderShoppingPreview(){
+  const box=document.getElementById('shoppingPreview');
+  if(!box) return;
+  const dates=selectedShoppingDates();
+  if(!dates.length){ box.innerHTML='<p class="small">No days selected yet.</p>'; return; }
+  const items=shoppingAggregateForDates(dates);
+  if(!items.length){ box.innerHTML='<p class="small">No food entries found for the selected days.</p>'; return; }
+  let cur='';
+  let html=`<h2>Shopping list preview</h2><p class="small">${dates.length} day${dates.length===1?'':'s'} selected: ${dates.map(esc).join(', ')}</p><table><thead><tr><th>Buy</th><th>Food</th><th>Total servings</th><th>Serving size</th></tr></thead><tbody>`;
+  items.forEach(item=>{
+    if(item.category!==cur){ cur=item.category; html+=`<tr><th colspan="4">${esc(cur)}</th></tr>`; }
+    html+=`<tr><td><input type="checkbox" class="entryCheck"></td><td>${esc(item.name)}</td><td>${round(item.servings)}</td><td>${esc(item.serving)}</td></tr>`;
+  });
+  html+='</tbody></table>';
+  box.innerHTML=html;
+}
+function shoppingMonthValue(){
+  const el=document.getElementById('shoppingMonth');
+  return (el&&el.value) ? el.value : selectedDate().slice(0,7);
+}
+function renderShoppingListScreen(){
+  const box=document.getElementById('shoppingDayList');
+  const monthEl=document.getElementById('shoppingMonth');
+  if(!box) return;
+  if(monthEl && !monthEl.value) monthEl.value=selectedDate().slice(0,7);
+  const dates=loggedFoodDates();
+  if(!dates.length){
+    box.innerHTML='<p class="small">No logged food days yet. Add foods to one or more days first.</p>';
+    document.getElementById('shoppingPreview').innerHTML='';
+    return;
+  }
+  const logged=new Set(dates);
+  const selected=new Set(selectedShoppingDates());
+  const [year,month]=shoppingMonthValue().split('-').map(Number);
+  const first=new Date(year, month-1, 1);
+  const daysInMonth=new Date(year, month, 0).getDate();
+  const blanks=first.getDay();
+  let html='<div class="calendarHead"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div><div class="calendarGrid">';
+  for(let i=0;i<blanks;i++) html+='<div class="calDay empty"></div>';
+  for(let day=1; day<=daysInMonth; day++){
+    const d=`${year}-${String(month).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+    const has=logged.has(d);
+    const entries=(state.entries||[]).filter(e=>e.date===d);
+    const calories=entries.reduce((a,e)=>a+n(e.food&&e.food.calories)*n(e.servings),0);
+    html+=`<label class="calDay ${has?'':'empty'}"><b>${day}</b><input type="checkbox" data-shopping-day value="${esc(d)}" ${has?'':'disabled'} ${(selected.has(d)||d===selectedDate())&&has?'checked':''}><span class="small">${has?`${entries.length} food · ${round(calories)} kcal`:'—'}</span></label>`;
+  }
+  html+='</div>';
+  box.innerHTML=html;
+  box.querySelectorAll('[data-shopping-day]').forEach(c=>c.addEventListener('change',renderShoppingPreview));
+  renderShoppingPreview();
+}
+function printSelectedShoppingList(){
+  const dates=selectedShoppingDates();
+  if(!dates.length) return alert('Select at least one day.');
+
+  const preview=document.getElementById('shoppingPreview');
+  if(!preview) return alert('Shopping list preview is not available.');
+
+  const checkedRows=[];
+  let currentCategory='';
+  preview.querySelectorAll('tbody tr').forEach(tr=>{
+    const header=tr.querySelector('th[colspan]');
+    if(header){
+      currentCategory=header.textContent.trim();
+      return;
+    }
+    const cb=tr.querySelector('input[type="checkbox"]');
+    if(cb && cb.checked){
+      const cells=tr.querySelectorAll('td');
+      checkedRows.push({
+        category: currentCategory,
+        name: (cells[1]?.textContent || '').trim(),
+        servings: (cells[2]?.textContent || '').trim(),
+        serving: (cells[3]?.textContent || '').trim()
+      });
+    }
+  });
+
+  if(!checkedRows.length) return alert('Check at least one Buy box before printing.');
+
+  let cur='';
+  const rows=checkedRows.map(item=>{
+    let h='';
+    if(item.category!==cur){
+      cur=item.category;
+      h+=`<tr><th colspan="3">${esc(cur)}</th></tr>`;
+    }
+    h+=`<tr><td style="width:34px">☐</td><td>${esc(item.name)}</td><td>${esc(item.servings)} × ${esc(item.serving)}</td></tr>`;
+    return h;
+  }).join('');
+
+  const w=window.open('', '_blank');
+  if(!w) return alert('Pop-up blocked. Allow pop-ups for this file, then try again.');
+  w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>Shopping List</title><style>body{font-family:Arial,sans-serif;margin:24px;color:#111}h1{font-size:22px;margin:0 0 6px}.small{color:#555;margin-bottom:18px}table{width:100%;border-collapse:collapse}th,td{padding:8px;border-bottom:1px solid #ccc;text-align:left}th{background:#eee}@media print{button{display:none}}</style></head><body><button onclick="window.print()">Print</button><h1>Shopping List</h1><div class="small">Selected days: ${dates.map(esc).join(', ')}</div><table><thead><tr><th></th><th>Food</th><th>Total needed</th></tr></thead><tbody>${rows}</tbody></table><script>setTimeout(()=>window.print(),250)<\/script></body></html>`);
+  w.document.close();
+}
+
+function exportData(){ const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='nutrition_tracker_backup.json'; a.click(); URL.revokeObjectURL(a.href); }
+function importData(ev){ const file=ev.target.files[0]; if(!file) return; const reader=new FileReader(); reader.onload=()=>{ try{ const data=JSON.parse(reader.result); if(!data.foods||!data.entries||!data.exercises) throw new Error('Invalid backup'); state=data; if(!state.profile) state.profile=loadState().profile; if(!Array.isArray(state.dailyWeights)) state.dailyWeights=[]; save(); init(false); alert('Imported.'); }catch(e){ alert('Could not import that file.'); } }; reader.readAsText(file); }
+function cloneForCopiedDay(item, destinationDate){
+  const copy=JSON.parse(JSON.stringify(item));
+  copy.id=(crypto&&crypto.randomUUID)?crypto.randomUUID():String(Date.now())+Math.random().toString(16).slice(2);
+  copy.date=destinationDate;
+  return copy;
+}
+function copySelectedDay(){
+  const from=(document.getElementById('copyFromDate')?.value || selectedDate()).trim();
+  const to=(document.getElementById('copyToDate')?.value || '').trim();
+  if(!to) return;
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(to)) return alert('Use date format YYYY-MM-DD.');
+  if(to===from) return alert('Choose a different destination date.');
+
+  const sourceEntries=(state.entries||[]).filter(e=>e.date===from);
+  const sourceExercises=(state.exercises||[]).filter(e=>e.date===from);
+  if(!sourceEntries.length && !sourceExercises.length) return alert('There are no food or exercise entries on the selected day to copy.');
+
+  const destinationHasEntries=(state.entries||[]).some(e=>e.date===to) || (state.exercises||[]).some(e=>e.date===to);
+  let mode='replace';
+  if(destinationHasEntries){
+    const choice=(prompt('Destination day already has entries. Type REPLACE to replace them, APPEND to add to them, or CANCEL.', 'APPEND')||'').trim().toUpperCase();
+    if(choice==='CANCEL' || !choice) return;
+    if(choice!=='REPLACE' && choice!=='APPEND') return alert('Copy canceled. Use REPLACE or APPEND.');
+    mode=choice.toLowerCase();
+  }
+
+  if(mode==='replace'){
+    state.entries=(state.entries||[]).filter(e=>e.date!==to);
+    state.exercises=(state.exercises||[]).filter(e=>e.date!==to);
+  }
+
+  const copiedEntries=sourceEntries.map(e=>cloneForCopiedDay(e,to));
+  const copiedExercises=sourceExercises.map(e=>cloneForCopiedDay(e,to));
+  state.entries=[...(state.entries||[]), ...copiedEntries];
+  state.exercises=[...(state.exercises||[]), ...copiedExercises];
+  normalizeFoodEntryOrder(to);
+  save();
+  document.getElementById('date').value=to;
+  render();
+  refreshFoodOrderDefault();
+  alert(`Copied ${copiedEntries.length} food entr${copiedEntries.length===1?'y':'ies'} and ${copiedExercises.length} exercise entr${copiedExercises.length===1?'y':'ies'} to ${to}.`);
+}
+function clearDay(){ if(!confirm('Clear food and exercise entries for the selected day?')) return; const d=selectedDate(); state.entries=state.entries.filter(e=>e.date!==d); state.exercises=state.exercises.filter(e=>e.date!==d); save(); render(); }
+function resetAll(){ if(!confirm('Reset all local tracker data?')) return; try{localStorage.removeItem(STORAGE_KEY);}catch(e){} try{history.replaceState(null,'',location.pathname+location.search);}catch(e){} state=trackerFreshState(); init(false); }
+function init(setDate=true){ if(!Array.isArray(state.dailyWeights)) state.dailyWeights=[]; normalizeAllVitaminKData(); normalizeAllFoodEntryOrders(); save(); if(setDate) setSelectedDate(today()); else setSelectedDate(selectedDate()); const copyFrom=document.getElementById('copyFromDate'); if(copyFrom) copyFrom.value=selectedDate(); const exDate=document.getElementById('exerciseDate'); if(exDate) exDate.value=selectedDate(); const shopMonth=document.getElementById('shoppingMonth'); if(shopMonth) shopMonth.value=selectedDate().slice(0,7); const foodOrderEl=document.getElementById('foodOrder'); if(foodOrderEl) foodOrderEl.value=nextFoodOrder(selectedDate()); document.getElementById('exerciseTime').value=hhmm(); buildCustomFields(); renderFoodSelect(); renderFoodsList(); renderRecipes(); renderExerciseChoices(); renderProfile(); previewExercise(); renderPlanetFitnessWorkout(); render(); }
+document.addEventListener('DOMContentLoaded',()=>{ document.querySelectorAll('[data-screen]').forEach(b=>b.addEventListener('click',()=>showScreen(b.dataset.screen))); document.getElementById('date').addEventListener('change',()=>{ setSelectedDate(document.getElementById('date').value); const cf=document.getElementById('copyFromDate'); if(cf) cf.value=selectedDate(); render(); }); const dtd=document.getElementById('dailyTotalsDate'); if(dtd) dtd.addEventListener('change',()=>{ setSelectedDate(dtd.value); render(); }); const dailyWeightEl=document.getElementById('dailyWeight'); if(dailyWeightEl){ dailyWeightEl.addEventListener('change',saveDailyWeight); dailyWeightEl.addEventListener('blur',saveDailyWeight); } document.getElementById('addFoodBtn').addEventListener('click',addFoodEntry); document.getElementById('submitGroupBtn').addEventListener('click',submitSelectedGroup); document.getElementById('clearGroupsBtn').addEventListener('click',clearGroupsForDate); document.getElementById('saveCustomBtn').addEventListener('click',saveCustomFood); document.getElementById('exerciseSelect').addEventListener('change',previewExercise); document.getElementById('exerciseMinutes').addEventListener('input',previewExercise); document.getElementById('calcExerciseBtn').addEventListener('click',previewExercise); const exDateEl=document.getElementById('exerciseDate'); if(exDateEl) exDateEl.addEventListener('change',()=>{ setSelectedDate(exDateEl.value); render(); }); document.getElementById('addExerciseBtn').addEventListener('click',addExercise); { const pfDate=document.getElementById('pfWorkoutDate'); if(pfDate) pfDate.addEventListener('change',()=>{ setSelectedDate(pfDate.value); renderPlanetFitnessHistory(); }); const pfMins=document.getElementById('pfWorkoutMinutes'); if(pfMins) pfMins.addEventListener('input',updatePlanetFitnessSummary); const pfCal=document.getElementById('pfWorkoutCalories'); if(pfCal) pfCal.addEventListener('input',updatePlanetFitnessSummary); const pfRecalc=document.getElementById('pfRecalcBtn'); if(pfRecalc) pfRecalc.addEventListener('click',()=>{ const cal=document.getElementById('pfWorkoutCalories'); if(cal) cal.value=pfEstimateCalories(); updatePlanetFitnessSummary(); }); const pfSave=document.getElementById('pfSaveBtn'); if(pfSave) pfSave.addEventListener('click',savePlanetFitnessWorkout); const pfClear=document.getElementById('pfClearBtn'); if(pfClear) pfClear.addEventListener('click',clearPlanetFitnessBoxes); } document.getElementById('saveProfileBtn').addEventListener('click',saveProfile); document.getElementById('addSelectedRecipeBtn').addEventListener('click',addSelectedRecipeToDay); document.getElementById('exportBtn').addEventListener('click',exportData); { const suggestBtn=document.getElementById('suggestMenuBtn'); if(suggestBtn) suggestBtn.addEventListener('click',suggestDailyMenu); } { const biblicalBtn=document.getElementById('biblicalMenuBtn'); if(biblicalBtn) biblicalBtn.addEventListener('click',suggestBiblicalDietMenu); } { const shoppingBtn=document.getElementById('shoppingListBtn'); if(shoppingBtn) shoppingBtn.addEventListener('click',()=>showScreen('shoppingListScreen')); } document.getElementById('selectAllShoppingDaysBtn').addEventListener('click',()=>{document.querySelectorAll('[data-shopping-day]').forEach(c=>c.checked=true); renderShoppingPreview();}); document.getElementById('clearShoppingDaysBtn').addEventListener('click',()=>{document.querySelectorAll('[data-shopping-day]').forEach(c=>c.checked=false); renderShoppingPreview();}); document.getElementById('printShoppingListBtn').addEventListener('click',printSelectedShoppingList); const shopMonthEl=document.getElementById('shoppingMonth'); if(shopMonthEl) shopMonthEl.addEventListener('change',renderShoppingListScreen); const showLoggedBtn=document.getElementById('showLoggedShoppingDaysBtn'); if(showLoggedBtn) showLoggedBtn.addEventListener('click',()=>{ const dates=loggedFoodDates(); if(dates.length){ const sm=document.getElementById('shoppingMonth'); if(sm) sm.value=dates[dates.length-1].slice(0,7); } renderShoppingListScreen(); }); document.getElementById('importBtn').addEventListener('click',()=>document.getElementById('importFile').click()); document.getElementById('importFile').addEventListener('change',importData); document.getElementById('copyDayBtn').addEventListener('click',copySelectedDay); document.getElementById('clearDayBtn').addEventListener('click',clearDay); document.getElementById('resetBtn').addEventListener('click',resetAll); init(true); });
+document.addEventListener('change',e=>{
+ const id=e.target.dataset.eatenEntry;
+ if(!id)return;
+ const item=state.entries.find(x=>x.id===id);
+ if(item){
+   item.eaten=e.target.checked;
+   save();
+ }
+});
+
+
+</script></body></html
+,{"name":"Broccoli Sprouts","category":"Vegetables","serving":"1 cup","calories":35,"protein":3,"carbs":5,"fat":0.5,"fiber":3,"sugar":1,"sodium":15,"potassium":250,"calcium":40,"iron":0.7,"magnesium":20,"vitC":80,"vitK":90}
+,{"name":"Homemade Pickled Carrots","category":"Fermented Foods","serving":"1/2 cup","calories":20,"protein":0.5,"carbs":4,"fat":0.1,"fiber":1.5,"sugar":2,"sodium":350,"potassium":120,"vitA":5000,"vitC":3,"vitK":8}
+,{"name":"Homemade Pickled Cucumbers","category":"Fermented Foods","serving":"1/2 cup","calories":10,"protein":0.4,"carbs":2,"fat":0.1,"fiber":1,"sugar":1,"sodium":300,"potassium":80,"vitC":2,"vitK":10}
+>
