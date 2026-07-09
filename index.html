@@ -19,7 +19,7 @@ select optgroup{
 }
 
 
-.pfCard{background:#020617;border:1px solid var(--line);border-radius:16px;padding:12px;margin:10px 0}.pfMachineHead{display:flex;gap:10px;align-items:flex-start}.pfMachineIcon{width:58px;min-width:58px;height:58px;border:1px solid var(--line);border-radius:14px;background:#0f172a;display:flex;align-items:center;justify-content:center;font-size:30px}.pfMachineTitle{font-weight:900}.pfMachineInputs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}.pfMachineInputs input{width:100%}.pfCheck{width:22px;height:22px;accent-color:var(--good);margin-top:3px}.pfSummary{position:sticky;bottom:0;background:rgba(15,23,42,.96);border:1px solid var(--line);border-radius:16px;padding:12px;margin-top:12px;box-shadow:0 -6px 18px rgba(0,0,0,.25)}@media(max-width:520px){.pfMachineInputs{grid-template-columns:1fr 1fr 1fr}.pfMachineInputs label{font-size:12px}.pfMachineInputs input{padding:9px}.pfMachineIcon{width:50px;min-width:50px;height:50px}}
+
 </style></head><body>
 <header><h1>Local Nutrition Tracker</h1><div class="sub">Single-file, local-only tracker. No account. No cloud. Vitamin D is split into D3 and other/unspecified D forms; Vitamin K is split into K1 and K2 where data is available. Collagen protein is tracked separately from complete protein.</div><div class="nav">
 <button data-screen="foodHubScreen">Food</button><button class="secondary" data-screen="exerciseHubScreen">Exercise</button><button class="secondary" data-screen="utilitiesScreen">Utilities</button><button class="secondary" data-screen="profileScreen">Profile / Goals</button><button class="danger" data-screen="usersGuideScreen">Users Guide</button></div></header>
@@ -31,9 +31,9 @@ select optgroup{
 
 <section id="statsHubScreen" class="screen"><div class="card"><p class="breadcrumb"><button class="secondary" data-screen="foodHubScreen">← Food</button></p><h2>Stats</h2><div class="moduleGrid"><button class="moduleBtn" data-screen="dailyTotalsScreen">Daily Totals<span>Calories, macros, net calories, and estimated loss/gain.</span></button><button class="moduleBtn" data-screen="statsScreen">Nutrition Stats<span>Targets, charts, vitamin breakdowns, and insulin-response estimate.</span></button><button class="moduleBtn" data-screen="breakdownScreen">Daily Macro/Micro Breakdown<span>Each nutrient with contributing foods.</span></button></div></div></section>
 
-<section id="exerciseHubScreen" class="screen"><div class="card"><h2>Exercise</h2><div class="moduleGrid"><button class="moduleBtn" data-screen="exerciseScreen">Exercise Tracker<span>Add exercise minutes and estimated calories.</span></button><button class="moduleBtn" data-screen="planetFitnessScreen">Planet Fitness Workout<span>30-minute full-body machine workout with weight, sets, reps, and calories.</span></button><button class="moduleBtn" data-screen="dailyTotalsScreen">Daily Totals<span>View exercise calories inside daily totals.</span></button></div></div></section>
+<section id="exerciseHubScreen" class="screen"><div class="card"><h2>Exercise</h2><div class="moduleGrid"><button class="moduleBtn" data-screen="exerciseScreen">Exercise Tracker<span>Add exercise minutes and estimated calories.</span></button><button class="moduleBtn" data-screen="dailyTotalsScreen">Daily Totals<span>View exercise calories inside daily totals.</span></button></div></div></section>
 
-<section id="planetFitnessScreen" class="screen"><div class="card"><p class="breadcrumb"><button class="secondary" data-screen="exerciseHubScreen">← Exercise</button></p><h2>Planet Fitness Workout</h2><p class="small">Phone-friendly 30-minute full-body workout. Check each machine you complete, enter weight, sets, and reps, then save it to today's exercise log.</p><div class="row3"><div><label>Day</label><input id="pfWorkoutDate" type="date"></div><div><label>Workout minutes</label><input id="pfWorkoutMinutes" type="number" min="1" step="1" value="30"></div><div><label>Estimated calories</label><input id="pfWorkoutCalories" type="number" min="0" step="1" value="0"></div></div><div id="pfWorkoutList"></div><div class="pfSummary"><div id="pfWorkoutSummary" class="small"></div><div class="actions"><button class="secondary" id="pfRecalcBtn">Recalculate</button><button id="pfSaveBtn">Save to Today's Exercise Log</button><button class="secondary" id="pfClearBtn">Clear Boxes</button></div></div><h2 style="margin-top:18px">Planet Fitness history for this day</h2><div id="pfWorkoutHistory"></div></div></section>
+
 
 <section id="utilitiesScreen" class="screen"><div class="card"><h2>Utilities</h2><p class="small">Backup, restore, copy, and reset tools. Export a backup before major changes or before moving the app to a website.</p><div class="moduleGrid"><button class="moduleBtn" id="exportBtn">Export Backup<span>Save all tracker data to a backup file.</span></button><button class="moduleBtn" id="importBtn">Import Backup<span>Restore a previously exported backup.</span></button><div class="card" style="padding:12px;background:#0f172a"><h3 style="margin-top:0">Copy Day</h3><div class="dateRow"><div><label>Copy From Date</label><input id="copyFromDate" type="date"></div><div><label>Copy To Date</label><input id="copyToDate" type="date"></div></div><div class="actions"><button id="copyDayBtn">Copy From Date → Copy To Date</button></div></div><button class="moduleBtn danger" id="clearDayBtn">Reset Day<span>Clear the selected day's entries.</span></button><button class="moduleBtn danger" id="resetBtn">Reset App<span>Delete all local tracker data.</span></button></div><input id="importFile" class="hide" type="file" accept="application/json"></div></section>
 <section id="mainScreen" class="screen"><div class="card"><p class="breadcrumb"><button class="secondary" data-screen="foodHubScreen">← Food</button></p><h2>Today's Menu</h2><label>Date</label><input id="date" type="date">
@@ -395,372 +395,6 @@ directions:[
 nutrition:{calories:145,protein:11,carbs:11,fiber:8,sugar:3,fat:4,sodium:300}
 }];
 const CDC_EXERCISES = [{"category":"Moderate","name":"Hiking","cal30":185,"calHr":370},{"category":"Moderate","name":"Light gardening/yard work","cal30":165,"calHr":330},{"category":"Moderate","name":"Dancing","cal30":165,"calHr":330},{"category":"Moderate","name":"Golf (walking and carrying clubs)","cal30":165,"calHr":330},{"category":"Moderate","name":"Bicycling (<10 mph)","cal30":145,"calHr":290},{"category":"Moderate","name":"Walking (3.5 mph)","cal30":140,"calHr":280},{"category":"Moderate","name":"Weight lifting (general light workout)","cal30":110,"calHr":220},{"category":"Moderate","name":"Stretching","cal30":90,"calHr":180},{"category":"Vigorous","name":"Running/jogging (5 mph)","cal30":295,"calHr":590},{"category":"Vigorous","name":"Bicycling (>10 mph)","cal30":295,"calHr":590},{"category":"Vigorous","name":"Swimming (slow freestyle laps)","cal30":255,"calHr":510},{"category":"Vigorous","name":"Aerobics","cal30":240,"calHr":510},{"category":"Vigorous","name":"Walking (4.5 mph)","cal30":230,"calHr":460},{"category":"Vigorous","name":"Heavy yard work (chopping wood)","cal30":220,"calHr":440},{"category":"Vigorous","name":"Weight lifting (vigorous effort)","cal30":220,"calHr":440},{"category":"Vigorous","name":"Basketball (vigorous)","cal30":220,"calHr":440},{"category":"Strength","name":"Push-ups","cal30":180,"calHr":360},{"category":"Strength","name":"Planks","cal30":120,"calHr":240},{"category":"Strength","name":"Wall Squats","cal30":150,"calHr":300},{"category":"Strength","name":"Superman Pose Isometrics","cal30":90,"calHr":180}];
-const PF_MACHINES = [
-  {name:'Leg Press', area:'Legs / glutes', icon:'🦵', tip:'Feet shoulder-width on platform. Keep low back against pad.'},
-  {name:'Chest Press', area:'Chest / triceps', icon:'↔️', tip:'Handles at mid-chest. Press without locking elbows hard.'},
-  {name:'Seated Row', area:'Upper back / biceps', icon:'🚣', tip:'Tall chest. Pull elbows back and squeeze shoulder blades.'},
-  {name:'Lat Pulldown', area:'Back / biceps', icon:'⬇️', tip:'Pull bar toward upper chest. Do not yank behind the neck.'},
-  {name:'Shoulder Press', area:'Shoulders / triceps', icon:'⬆️', tip:'Start light. Press overhead with ribs down.'},
-  {name:'Leg Curl', area:'Hamstrings', icon:'🔁', tip:'Line knee with machine pivot. Curl smoothly.'},
-  {name:'Leg Extension', area:'Quads', icon:'🦿', tip:'Lift under control. Avoid snapping the knees straight.'},
-  {name:'Abdominal Crunch', area:'Core', icon:'◎', tip:'Curl ribs toward hips. Do not pull with arms.'},
-  {name:'Back Extension', area:'Low back / glutes', icon:'↩️', tip:'Use a small range and stop if it irritates your back.'}
-];
-const NUTRIENTS = [{"key":"calories","label":"Net Calories","unit":"kcal"},{"key":"protein","label":"Complete Protein","unit":"g"},{"key":"collagenProtein","label":"Collagen Protein","unit":"g"},{"key":"carbs","label":"Carbs","unit":"g"},{"key":"fat","label":"Fat","unit":"g"},{"key":"fiber","label":"Fiber","unit":"g"},{"key":"sugar","label":"Sugar","unit":"g"},{"key":"glycemicLoad","label":"Glycemic Load","unit":"GL"},{"key":"sodium","label":"Sodium","unit":"mg"},{"key":"potassium","label":"Potassium","unit":"mg"},{"key":"calcium","label":"Calcium","unit":"mg"},{"key":"iron","label":"Iron","unit":"mg"},{"key":"magnesium","label":"Magnesium","unit":"mg"},{"key":"phosphorus","label":"Phosphorus","unit":"mg"},{"key":"zinc","label":"Zinc","unit":"mg"},{"key":"copper","label":"Copper","unit":"mg"},{"key":"manganese","label":"Manganese","unit":"mg"},{"key":"selenium","label":"Selenium","unit":"mcg"},{"key":"vitA","label":"Vitamin A (total RAE)","unit":"mcg RAE"},{"key":"vitC","label":"Vitamin C","unit":"mg"},{"key":"vitD","label":"Vitamin D (total D3 + other)","unit":"mcg"},{"key":"vitD3","label":"Vitamin D3","unit":"mcg"},{"key":"vitDOther","label":"Vitamin D other/unspecified","unit":"mcg"},{"key":"vitE","label":"Vitamin E","unit":"mg"},{"key":"vitK","label":"Vitamin K (total K1 + K2)","unit":"mcg"},{"key":"vitK1","label":"Vitamin K1","unit":"mcg"},{"key":"vitK2","label":"Vitamin K2","unit":"mcg"},{"key":"thiamin","label":"B1 Thiamin","unit":"mg"},{"key":"riboflavin","label":"B2 Riboflavin","unit":"mg"},{"key":"niacin","label":"B3 Niacin","unit":"mg"},{"key":"b6","label":"B6","unit":"mg"},{"key":"folate","label":"Folate","unit":"mcg DFE"},{"key":"b12","label":"B12","unit":"mcg"},{"key":"choline","label":"Choline","unit":"mg"}];
-const KEYS = NUTRIENTS.map(x=>x.key); const STORAGE_KEY='nutritionTracker.rebuild.v2'; const HASH_PREFIX='ntsave2=';
-let state = loadState();
-
-function normalizeVitaminDFields(food){
-  if(!food) return food;
-  const total=n(food.vitD), d3=n(food.vitD3), other=n(food.vitDOther);
-  if((d3||other) && Math.abs(total-(d3+other))>0.001) food.vitD=d3+other;
-  else if(total && !d3 && !other){
-    const name=(food.name||'').toLowerCase();
-    if(name.includes('d3') || name.includes('vitamin d3')){ food.vitD3=total; food.vitDOther=0; }
-    else { food.vitD3=0; food.vitDOther=total; }
-  } else {
-    food.vitD3=d3;
-    food.vitDOther=other;
-    food.vitD=d3+other;
-  }
-  return food;
-}
-
-function normalizeVitaminKFields(food){
-  if(!food) return food;
-  const total=n(food.vitK), k1=n(food.vitK1), k2=n(food.vitK2);
-  if((k1||k2) && Math.abs(total-(k1+k2))>0.001) food.vitK=k1+k2;
-  else if(total && !k1 && !k2){
-    const cat=(food.category||'').toLowerCase(), name=(food.name||'').toLowerCase();
-    const plantCats=['vegetables','fruits','grains','legumes','nuts','seeds','meals'];
-    if(cat.includes('vegetable')||cat.includes('fruit')||cat.includes('legume')||cat.includes('grain')||cat.includes('nut')||cat.includes('seed')){ food.vitK1=total; food.vitK2=0; }
-    else if(name.includes('mk-7')||name.includes('k2')){ food.vitK1=0; food.vitK2=total; }
-    else { food.vitK1=0; food.vitK2=total; }
-  }
-  return food;
-}
-
-
-function estimateGlycemicIndex(food){
-  const name=String(food&&food.name||'').toLowerCase();
-  const cat=String(food&&food.category||'').toLowerCase();
-  const carbs=n(food&&food.carbs), fiber=n(food&&food.fiber), sugar=n(food&&food.sugar);
-  if(carbs<=0) return 0;
-  if(name.includes('whey')||name.includes('protein')||name.includes('collagen')) return 5;
-  if(cat.includes('supplement') && carbs<=3) return 0;
-  if(cat.includes('meat')||cat.includes('fish')||cat.includes('poultry')||cat.includes('egg')) return carbs>5?25:0;
-  if(cat.includes('fats')||cat.includes('oil')) return 0;
-  if(name.includes('white rice')||name.includes('sushi')) return 73;
-  if(name.includes('brown rice')) return 50;
-  if(name.includes('oatmeal')) return 55;
-  if(name.includes('barley')) return 28;
-  if(name.includes('quinoa')) return 53;
-  if(name.includes('einkorn')||name.includes('bread')) return 54;
-  if(name.includes('potato')) return 85;
-  if(name.includes('sweet potato')) return 63;
-  if(name.includes('banana')) return 52;
-  if(name.includes('mango')) return 51;
-  if(name.includes('grapes')) return 53;
-  if(name.includes('dates')) return 42;
-  if(name.includes('fig')) return 61;
-  if(name.includes('apple')||name.includes('pear')||name.includes('orange')||name.includes('berries')||name.includes('strawberries')||name.includes('raspberries')||name.includes('blueberries')||name.includes('blackberries')||name.includes('peach')) return 35;
-  if(name.includes('watermelon')) return 72;
-  if(name.includes('corn')) return 52;
-  if(name.includes('peas')) return 48;
-  if(cat.includes('fruit')) return sugar>20?50:40;
-  if(cat.includes('grain')) return fiber>=4?50:60;
-  if(cat.includes('vegetable')) return carbs>=20?55:25;
-  if(cat.includes('legume')||name.includes('bean')||name.includes('lentil')) return 32;
-  if(cat.includes('dairy')||name.includes('yogurt')||name.includes('milk')) return 35;
-  if(cat.includes('nut')||cat.includes('seed')) return 15;
-  if(cat.includes('meal')) return fiber>=5?45:55;
-  return fiber>=5?35:(sugar>=15?55:45);
-}
-function normalizeGlycemicFields(food){
-  if(!food) return food;
-  const netCarbs=Math.max(0,n(food.carbs)-n(food.fiber));
-  let gi=n(food.glycemicIndex);
-  if(!gi && netCarbs>0) gi=estimateGlycemicIndex(food);
-  food.glycemicIndex=round(gi);
-  const currentGL=n(food.glycemicLoad);
-  food.glycemicLoad=round(currentGL || (netCarbs*gi/100));
-  return food;
-}
-function normalizeNutritionFields(food){
-  return normalizeGlycemicFields(normalizeVitaminKFields(normalizeVitaminDFields(normalizeBiblicalFoodCategory(food))));
-}
-function normalizeBiblicalFoodCategory(food){
-  if(!food) return food;
-  const biblicalCategoryMap={
-    'Einkorn Bread':'Grains',
-    'Barley, cooked':'Grains',
-    'Dates':'Fruits',
-    'Figs, dried':'Fruits',
-    'Pomegranate Arils':'Fruits',
-    'Olive Oil':'Fats & Oils',
-    'Almonds':'Nuts',
-    'Walnuts':'Nuts',
-    'Sesame Seeds':'Seeds',
-    'Sardines, canned in water':'Fish',
-    'Tilapia, cooked':'Fish',
-    'Leeks':'Vegetables',
-    'Garlic':'Vegetables'
-  };
-  if(food.category==='Biblical Foods' && biblicalCategoryMap[food.name]) food.category=biblicalCategoryMap[food.name];
-  return food;
-}
-
-function trackerFreshState(){
-  return {foods:DEFAULT_FOODS.map(f=>normalizeNutritionFields({...f})), entries:[], exercises:[], dailyWeights:[], profile:{sex:'',age:'',feet:'',inches:'',weight:'',goalWeight:'',activity:'',plan:'',manualMaintenance:''}};
-}
-function compactStateForStorage(src){
-  const s=src||state||trackerFreshState();
-  return {
-    foods:(s.foods||[]).filter(f=>f&&f.custom),
-    entries:s.entries||[],
-    exercises:s.exercises||[],
-    dailyWeights:s.dailyWeights||[],
-    profile:s.profile||trackerFreshState().profile
-  };
-}
-function encodeHashState(src){
-  try{
-    return btoa(unescape(encodeURIComponent(JSON.stringify(compactStateForStorage(src)))));
-  }catch(e){ return ''; }
-}
-function decodeHashState(){
-  try{
-    const h=(location.hash||'').replace(/^#/,'');
-    if(!h.startsWith(HASH_PREFIX)) return null;
-    return JSON.parse(decodeURIComponent(escape(atob(h.slice(HASH_PREFIX.length)))));
-  }catch(e){ return null; }
-}
-function mergeSavedState(saved){
-  const fresh=trackerFreshState();
-  if(!(saved&&Array.isArray(saved.foods)&&saved.entries&&saved.exercises&&saved.profile)) return fresh;
-  saved.dailyWeights=Array.isArray(saved.dailyWeights)?saved.dailyWeights:[];
-  const merged=(saved.foods||[]).map(f=>{ if(f&&f.name==='Healthy Chicken Curry') f.name='Chicken Curry'; if(f&&f.name==='Chicken Mushroom Tortelloni Alfredo'){ f.name='Chicken Mushroom Tortellini'; f.serving='1 serving (1/4 recipe)'; f.calories=463; f.protein=28.6; f.carbs=40.3; f.fat=21.6; f.fiber=1.2; f.sugar=3.7; f.sodium=1383; } if(f&&f.name==='Einkorn Bread'){ Object.assign(f,{calories:121,protein:3.9,carbs:19.3,fat:2.7,fiber:3.5,sugar:1.2,sodium:145,potassium:105,calcium:28,iron:1.3,magnesium:38,phosphorus:115,zinc:0.9,copper:0.2,manganese:0.8,selenium:8,vitA:0,vitC:0,vitD:0,vitE:0.3,vitK:1.1,vitK1:1.1,vitK2:0,thiamin:0.15,riboflavin:0.05,niacin:1.6,b6:0.05,folate:22,b12:0,choline:12,category:'Grains',serving:'1 slice (flax + chia)',custom:false,vitD3:0,vitDOther:0}); } return normalizeNutritionFields(f); });
-  const keyOf=f=>`${(f.category||'').trim().toLowerCase()}|${(f.name||'').trim().toLowerCase()}|${(f.serving||'').trim().toLowerCase()}`;
-  const seen=new Set(merged.map(keyOf));
-  DEFAULT_FOODS.forEach(f=>{ if(!seen.has(keyOf(f))) merged.push(normalizeNutritionFields({...f})); });
-  const entries=(saved.entries||[]).map(e=>{ const food={...(e.food||{})}; if(food.name==='Healthy Chicken Curry') food.name='Chicken Curry'; if(food.name==='Chicken Mushroom Tortelloni Alfredo') food.name='Chicken Mushroom Tortellini'; return {...e, food:normalizeNutritionFields(food)}; });
-  const exercises=(saved.exercises||[]).map(e=>({...e, done:e.done!==false}));
-  return {...fresh, ...saved, foods:merged.map(f=>normalizeNutritionFields(f)), entries, exercises};
-}
-function loadState(){
-  try{
-    const raw=localStorage.getItem(STORAGE_KEY);
-    if(raw) return mergeSavedState(JSON.parse(raw));
-  }catch(e){}
-  const hashSaved=decodeHashState();
-  if(hashSaved) return mergeSavedState(hashSaved);
-  return trackerFreshState();
-}
-function normalizeAllVitaminKData(){
-  state.foods=(state.foods||[]).map(f=>normalizeNutritionFields(f));
-  state.entries=(state.entries||[]).map(e=>({...e, food:normalizeNutritionFields({...e.food})}));
-}
-function save(){
-  normalizeAllVitaminKData();
-  let localOk=false;
-  try{
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(compactStateForStorage(state)));
-    localOk=true;
-  }catch(e){ localOk=false; }
-  // Android Documents / file viewers sometimes lose localStorage on refresh.
-  // This URL-hash fallback stores only user data, not the whole food database.
-  try{
-    const encoded=encodeHashState(state);
-    if(encoded){ history.replaceState(null,'',location.pathname+location.search+'#'+HASH_PREFIX+encoded); }
-  }catch(e){}
-  return localOk;
-}
-function n(x){ return Number(x||0); } function round(x){ return Math.round((n(x)+Number.EPSILON)*10)/10; } function esc(s){ return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m])); }
-function today(){ return new Date().toISOString().slice(0,10); } function hhmm(){ const d=new Date(); return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); }
-function fmtTime(t){ if(!t) return ''; const [h,m]=t.split(':').map(Number); const s=h>=12?'PM':'AM'; return (((h+11)%12)+1)+':'+String(m).padStart(2,'0')+' '+s; }
-function selectedDate(){ return document.getElementById('date').value || today(); }
-function setSelectedDate(d){ const val=d||today(); const main=document.getElementById('date'); const totals=document.getElementById('dailyTotalsDate'); if(main) main.value=val; if(totals) totals.value=val; const exDate=document.getElementById('exerciseDate'); if(exDate && !exDate.value) exDate.value=val; }
-function showScreen(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); const el=document.getElementById(id); if(el) el.classList.add('active'); if(id==='statsScreen') renderStats(); if(id==='breakdownScreen') renderDailyBreakdown(); if(id==='shoppingListScreen') renderShoppingListScreen(); if(id==='profileScreen') renderProfile(); if(id==='dailyTotalsScreen') render(); if(id==='exerciseScreen'){ const exDate=document.getElementById('exerciseDate'); if(exDate) exDate.value=selectedDate(); const pfDate=document.getElementById('pfWorkoutDate'); if(pfDate) pfDate.value=selectedDate(); } if(id==='planetFitnessScreen'){ const pfDate=document.getElementById('pfWorkoutDate'); if(pfDate) pfDate.value=selectedDate(); renderPlanetFitnessWorkout(); }
-renderVitABreakdown();
-renderDailyBreakdown();
-renderDailyBreakdown(); if(id==='exerciseScreen') previewExercise(); window.scrollTo({top:0,behavior:'smooth'}); } window.showScreen=showScreen;
-function profileCalc(){
-  const p=state.profile;
-  const male=p.sex==='male';
-  const heightIn=n(p.feet)*12+n(p.inches);
-  const cm=heightIn*2.54;
-  const kg=n(p.weight)*0.45359237;
-  const age=n(p.age);
-  const bmr=male?10*kg+6.25*cm-5*age+5:10*kg+6.25*cm-5*age-161;
-  const maint=n(p.manualMaintenance)>0?n(p.manualMaintenance):bmr*n(p.activity||1.2);
-  const goalAdjustment=n(p.plan||0);
-  const targetNet=maint+goalAdjustment;
-  const goal=n(p.goalWeight||p.weight||150);
-  const idealKg=(male?50:45.5)+2.3*Math.max(0,heightIn-60);
-  return {bmr:Math.round(bmr),maintenance:Math.round(maint),calories:Math.round(targetNet),targetNetCalories:Math.round(targetNet),protein:Math.round(Math.max(male?56:46,goal*.8)),carbs:Math.round(Math.max(0,(targetNet*.4)/4)),fat:Math.round(Math.max(0,(targetNet*.3)/9)),fiber:male?30:25,sodium:2300,potassium:male?3400:2600,calcium:age>=70?1200:1000,iron:(male||age>50)?8:18,magnesium:male?420:320,phosphorus:700,zinc:male?11:8,copper:.9,manganese:male?2.3:1.8,selenium:55,vitA:male?900:700,vitC:male?90:75,vitD:age>=70?20:15,vitE:15,vitK:male?120:90,thiamin:male?1.2:1.1,riboflavin:male?1.3:1.1,niacin:male?16:14,b6:age>=51?1.7:1.3,folate:400,b12:2.4,choline:male?550:425,idealLb:round(idealKg*2.20462262)};
-}
-function isCollagenProteinFood(food){ const name=(food&&food.name?food.name:'' ).toLowerCase(); return name.includes('collagen') || n(food&&food.collagenProtein)>0; }
-function nutrientForTotals(food,k){
-  if(k==='protein' && isCollagenProteinFood(food)) return 0;
-  if(k==='collagenProtein') return isCollagenProteinFood(food) ? (n(food.collagenProtein)||n(food.protein)) : n(food.collagenProtein);
-  return n(food[k]);
-}
-function totalsForDate(d){ const t={}; KEYS.forEach(k=>t[k]=0); state.entries.filter(e=>e.date===d).forEach(e=>KEYS.forEach(k=>t[k]+=nutrientForTotals(e.food,k)*n(e.servings))); return t; }
-function exerciseForDate(d){ return state.exercises.filter(e=>e.date===d && e.done!==false).reduce((a,e)=>a+n(e.calories),0); }
-function weightForDate(d){ const item=(state.dailyWeights||[]).find(w=>w.date===d); return item?n(item.weight):0; }
-function saveDailyWeight(){ const el=document.getElementById('dailyWeight'); if(!el) return; const d=selectedDate(); const val=n(el.value); state.dailyWeights=state.dailyWeights||[]; state.dailyWeights=state.dailyWeights.filter(w=>w.date!==d); if(val>0) state.dailyWeights.push({date:d,weight:val}); save(); render(); }
-function groupedFoods(){ return state.foods.map((f,i)=>({f,i})).sort((a,b)=>(a.f.category||'').localeCompare(b.f.category||'')||a.f.name.localeCompare(b.f.name)); }
-function renderFoodSelect(){ const sel=document.getElementById('foodSelect'); sel.innerHTML=''; let last='', group=null; groupedFoods().forEach(({f,i})=>{ if(f.category!==last){ group=document.createElement('optgroup'); group.label=f.category; sel.appendChild(group); last=f.category; } const opt=document.createElement('option'); opt.value=i; opt.textContent=f.name+' — '+(f.serving||'1 serving'); group.appendChild(opt); }); }
-function renderFoodsList(){ const box=document.getElementById('foodsList'); let html='', cur=''; groupedFoods().forEach(({f,i})=>{ if(f.category!==cur){ cur=f.category; html+=`<div class="foodHead">${esc(cur)}</div>`; } const micro=['glycemicLoad','sodium','potassium','calcium','iron','magnesium','phosphorus','zinc','vitA','vitC','vitD','vitD3','vitDOther','vitE','vitK','folate','b12'].map(k=>{ const m=NUTRIENTS.find(x=>x.key===k); return `${m.label}: ${round(f[k])} ${m.unit}`; }).join(' · '); html+=`<div class="foodItem"><b>${esc(f.name)}</b> <span class="small">${esc(f.serving||'1 serving')}</span><div class="small">${round(f.calories)} kcal | P ${round(f.protein)}g | C ${round(f.carbs)}g | F ${round(f.fat)}g | Fiber ${round(f.fiber)}g | Sugar ${round(f.sugar)}g | GL ${round(f.glycemicLoad)}</div><div class="micro">${micro}</div>${f.custom?`<button class="danger" data-delete-food="${i}">Delete</button>`:'<span class="small">Built-in</span>'}</div>`; }); box.innerHTML=html; box.querySelectorAll('[data-delete-food]').forEach(btn=>btn.addEventListener('click',()=>deleteFood(Number(btn.dataset.deleteFood)))); }
-function buildCustomFields(){ document.getElementById('customFields').innerHTML=NUTRIENTS.map(m=>`<div><label>${m.label} (${m.unit})</label><input id="cf_${m.key}" type="number" step="0.01" value="0"></div>`).join(''); }
-function saveCustomFood(){ const name=document.getElementById('cf_name').value.trim(); if(!name) return alert('Give the custom food a name.'); const f={custom:true,category:document.getElementById('cf_category').value.trim()||'Custom',name,serving:document.getElementById('cf_serving').value.trim()||'1 serving'}; KEYS.forEach(k=>f[k]=n(document.getElementById('cf_'+k).value)); state.foods.push(normalizeNutritionFields(f)); save(); renderFoodSelect(); renderFoodsList(); ['cf_category','cf_name','cf_serving'].forEach(id=>document.getElementById(id).value=''); KEYS.forEach(k=>document.getElementById('cf_'+k).value=0); }
-function deleteFood(i){ if(!state.foods[i]?.custom) return; if(!confirm('Delete this custom food?')) return; state.foods.splice(i,1); save(); renderFoodSelect(); renderFoodsList(); render(); }
-function foodEntriesForDate(d){ return state.entries.filter(e=>e.date===d).sort((a,b)=>(n(a.order)||9999)-(n(b.order)||9999)||(a.time||'').localeCompare(b.time||'')||(a.id||'').localeCompare(b.id||'')); }
-function normalizeFoodEntryOrder(d){ foodEntriesForDate(d).forEach((e,i)=>{ if(!n(e.order)) e.order=i+1; }); }
-function normalizeAllFoodEntryOrders(){ [...new Set((state.entries||[]).map(e=>e.date).filter(Boolean))].forEach(normalizeFoodEntryOrder); }
-function nextFoodOrder(d){ const orders=state.entries.filter(e=>e.date===d).map(e=>n(e.order)).filter(Boolean); return orders.length?Math.max(...orders)+1:1; }
-function refreshFoodOrderDefault(){ const el=document.getElementById('foodOrder'); if(el) el.value=nextFoodOrder(selectedDate()); }
-function moveFoodEntry(id,delta){
- const d=selectedDate();
- const items=foodEntriesForDate(d);
- const idx=items.findIndex(e=>e.id===id);
- if(idx<0) return;
- const swap=idx+delta;
- if(swap<0||swap>=items.length) return;
- const moved=items.splice(idx,1)[0];
- items.splice(swap,0,moved);
- items.forEach((e,i)=>{ e.order=i+1; });
- save();
- render();
-}
-
-function groupKey(e){ return String(e.group||'').trim(); }
-function groupLabel(e){ const g=groupKey(e); return g || 'Ungrouped'; }
-function groupGlycemicRows(d){
-  const groups={};
-  foodEntriesForDate(d).forEach(e=>{
-    const label=groupLabel(e);
-    if(!groups[label]) groups[label]={group:label,gl:0,calories:0,count:0};
-    groups[label].gl += n(e.food&&e.food.glycemicLoad)*n(e.servings);
-    groups[label].calories += n(e.food&&e.food.calories)*n(e.servings);
-    groups[label].count += 1;
-  });
-  return Object.values(groups).sort((a,b)=>a.group.localeCompare(b.group,undefined,{numeric:true,sensitivity:'base'}));
-}
-function renderGroupGlycemicSummary(){
-  const box=document.getElementById('groupGlycemicSummary'); if(!box) return;
-  const rows=groupGlycemicRows(selectedDate());
-  if(!rows.length){ box.innerHTML=''; return; }
-  box.innerHTML=`<h3>Glycemic load by group</h3><table><thead><tr><th>Group</th><th>Items</th><th>Glycemic Load</th><th>Calories</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${esc(r.group)}</td><td>${r.count}</td><td>${round(r.gl)}</td><td>${round(r.calories)}</td></tr>`).join('')}</tbody></table>`;
-}
-function submitSelectedGroup(){
-  const name=(document.getElementById('groupName')?.value||'').trim();
-  if(!name) return alert('Enter a group name first.');
-  const checked=[...document.querySelectorAll('[data-group-entry]:checked')].map(c=>c.dataset.groupEntry);
-  if(!checked.length) return alert('Check at least one food entry to add to the group.');
-  state.entries.forEach(e=>{ if(checked.includes(e.id)) e.group=name; });
-  save(); render();
-}
-function clearGroupsForDate(){
-  if(!confirm('Clear all groups for this date?')) return;
-  const d=selectedDate();
-  state.entries.forEach(e=>{ if(e.date===d) e.group=''; });
-  save(); render();
-}
-function addFoodEntry(){ const food=state.foods[Number(document.getElementById('foodSelect').value)]; const servings=n(document.getElementById('servings').value); if(!food||servings<=0) return alert('Choose a food and servings above zero.'); const d=selectedDate(); const order=nextFoodOrder(d); state.entries.push({id:crypto.randomUUID(),date:d,order,time:hhmm(),servings,food:normalizeNutritionFields(JSON.parse(JSON.stringify(food))),eaten:false,group:''}); save(); render(); showScreen('mainScreen'); }
-
-function nutritionRows(nutrition){
-  const labels={calories:['Calories','kcal'],protein:['Complete Protein','g'],collagenProtein:['Collagen Protein','g'],carbs:['Carbohydrates','g'],fiber:['Fiber','g'],sugar:['Sugar','g'],fat:['Fat','g'],saturatedFat:['Saturated fat','g'],cholesterol:['Cholesterol','mg'],sodium:['Sodium','mg'],potassium:['Potassium','mg'],calcium:['Calcium','mg'],iron:['Iron','mg'],magnesium:['Magnesium','mg'],phosphorus:['Phosphorus','mg'],zinc:['Zinc','mg'],selenium:['Selenium','mcg'],vitA:['Vitamin A','mcg RAE'],vitC:['Vitamin C','mg'],vitD:['Vitamin D total','mcg'],vitD3:['Vitamin D3','mcg'],vitDOther:['Other/unspecified D','mcg'],vitK:['Vitamin K total','mcg'],vitK1:['Vitamin K1','mcg'],vitK2:['Vitamin K2','mcg'],niacin:['Niacin / B3','mg'],b6:['Vitamin B6','mg'],folate:['Folate','mcg DFE'],b12:['B12','mcg']};
-  return Object.keys(labels).filter(k=>nutrition[k]!==undefined).map(k=>`<tr><td>${labels[k][0]}</td><td>${round(nutrition[k])} ${labels[k][1]}</td></tr>`).join('');
-}
-function renderRecipes(){
-  const sel=document.getElementById('recipeSelect');
-  const details=document.getElementById('recipeDetails');
-  if(!sel||!details) return;
-  const preferred=['Chicken','Beef','Fish','Dessert'];
-  const categoryOf=r=>preferred.includes(r.category)?r.category:'Other';
-  const cats=[...preferred, ...Array.from(new Set(RECIPE_DATA.map(categoryOf).filter(c=>!preferred.includes(c))))];
-  sel.innerHTML=cats.map(cat=>{
-    const opts=RECIPE_DATA.map((r,i)=>({r,i})).filter(x=>categoryOf(x.r)===cat);
-    if(!opts.length) return '';
-    return `<optgroup label="${esc(cat)}">${opts.map(x=>`<option value="${x.i}">${esc(x.r.name)}</option>`).join('')}</optgroup>`;
-  }).join('');
-  function draw(){
-    const r=RECIPE_DATA[Number(sel.value)||0];
-    if(!r){ details.innerHTML='<p class="small">No recipes saved yet.</p>'; return; }
-    details.innerHTML=`<div class="foodItem"><h3 style="margin-top:0">${esc(r.name)}</h3><p class="small"><b>Yield:</b> ${esc(r.yield)} &nbsp; | &nbsp; <b>Serving:</b> ${esc(r.serving)}</p><p><b>Ingredients:</b></p><ul>${r.ingredients.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><p><b>Directions:</b></p><ol>${r.directions.map(x=>`<li>${esc(x)}</li>`).join('')}</ol><p><b>Nutrition per serving:</b></p><table><tbody>${nutritionRows(r.nutrition||{})}</tbody></table></div>`;
-  }
-  sel.onchange=draw;
-  draw();
-}
-function addSelectedRecipeToDay(){
-  const sel=document.getElementById('recipeSelect');
-  const r=RECIPE_DATA[Number(sel&&sel.value)||0];
-  if(!r) return alert('Choose a recipe first.');
-  const food=(state.foods||[]).find(f=>(f.name||'')===r.foodName);
-  if(!food) return alert('This recipe is not in the Food List yet.');
-  const d=selectedDate(); state.entries.push({id:crypto.randomUUID(),date:d,order:nextFoodOrder(d),time:hhmm(),servings:1,food:JSON.parse(JSON.stringify(food)),eaten:false});
-  save();
-  render();
-  showScreen('mainScreen');
-}
-
-function pfLastForMachine(machineName){
-  const all=(state.pfWorkouts||[]).flatMap(w=>(w.machines||[]).map(m=>({...m,date:w.date}))).filter(m=>m.name===machineName && n(m.weight)>0);
-  all.sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
-  return all[0]||null;
-}
-function pfEstimateCalories(){
-  const mins=n(document.getElementById('pfWorkoutMinutes')&&document.getElementById('pfWorkoutMinutes').value)||30;
-  const wt=n(state.profile&&state.profile.weight)||154;
-  return Math.round(220*(mins/60)*(wt/154));
-}
-function renderPlanetFitnessWorkout(){
-  const list=document.getElementById('pfWorkoutList'); if(!list) return;
-  const dateEl=document.getElementById('pfWorkoutDate'); if(dateEl && !dateEl.value) dateEl.value=selectedDate();
-  const calEl=document.getElementById('pfWorkoutCalories'); if(calEl && !n(calEl.value)) calEl.value=pfEstimateCalories();
-  list.innerHTML=PF_MACHINES.map((m,i)=>{ const last=pfLastForMachine(m.name); const lastTxt=last?`Last: ${round(last.weight)} lb · ${round(last.sets)} × ${round(last.reps)} reps`:m.area; return `<div class="pfCard"><div class="pfMachineHead"><input class="pfCheck" type="checkbox" id="pf_done_${i}" data-pf-field="done"><div class="pfMachineIcon" aria-hidden="true">${m.icon}</div><div><div class="pfMachineTitle">${esc(m.name)}</div><div class="small">${esc(lastTxt)}</div><div class="micro">${esc(m.tip)}</div></div></div><div class="pfMachineInputs"><div><label>Weight</label><input type="number" min="0" step="1" inputmode="decimal" id="pf_weight_${i}" placeholder="lb" data-pf-field="weight"></div><div><label>Sets</label><input type="number" min="0" step="1" inputmode="numeric" id="pf_sets_${i}" value="2" data-pf-field="sets"></div><div><label>Reps</label><input type="number" min="0" step="1" inputmode="numeric" id="pf_reps_${i}" value="12" data-pf-field="reps"></div></div></div>`; }).join('');
-  document.querySelectorAll('[data-pf-field]').forEach(el=>el.addEventListener('input',updatePlanetFitnessSummary));
-  document.querySelectorAll('[data-pf-field]').forEach(el=>el.addEventListener('change',updatePlanetFitnessSummary));
-  renderPlanetFitnessHistory();
-  updatePlanetFitnessSummary();
-}
-function readPlanetFitnessMachines(){
-  return PF_MACHINES.map((m,i)=>({name:m.name,area:m.area,weight:n(document.getElementById(`pf_weight_${i}`)&&document.getElementById(`pf_weight_${i}`).value),sets:n(document.getElementById(`pf_sets_${i}`)&&document.getElementById(`pf_sets_${i}`).value),reps:n(document.getElementById(`pf_reps_${i}`)&&document.getElementById(`pf_reps_${i}`).value),done:!!(document.getElementById(`pf_done_${i}`)&&document.getElementById(`pf_done_${i}`).checked)})).filter(m=>m.done || m.weight || m.sets || m.reps);
-}
-function updatePlanetFitnessSummary(){
-  const sum=document.getElementById('pfWorkoutSummary'); if(!sum) return;
-  const machines=readPlanetFitnessMachines().filter(m=>m.done);
-  const totalVolume=machines.reduce((a,m)=>a+n(m.weight)*n(m.sets)*n(m.reps),0);
-  const mins=n(document.getElementById('pfWorkoutMinutes')&&document.getElementById('pfWorkoutMinutes').value)||30;
-  const calEl=document.getElementById('pfWorkoutCalories');
-  if(calEl && document.activeElement!==calEl) calEl.value=pfEstimateCalories();
-  sum.innerHTML=`<b>${machines.length}</b> machines checked · <b>${round(totalVolume)}</b> lb total volume · <b>${mins}</b> min · <b>${calEl?round(calEl.value):0}</b> kcal`;
-}
-function clearPlanetFitnessBoxes(){
-  PF_MACHINES.forEach((m,i)=>{ const done=document.getElementById(`pf_done_${i}`), wt=document.getElementById(`pf_weight_${i}`), sets=document.getElementById(`pf_sets_${i}`), reps=document.getElementById(`pf_reps_${i}`); if(done) done.checked=false; if(wt) wt.value=''; if(sets) sets.value=2; if(reps) reps.value=12; });
-  updatePlanetFitnessSummary();
-}
-function savePlanetFitnessWorkout(){
-  const d=(document.getElementById('pfWorkoutDate')&&document.getElementById('pfWorkoutDate').value)||selectedDate();
-  const mins=n(document.getElementById('pfWorkoutMinutes')&&document.getElementById('pfWorkoutMinutes').value)||30;
-  const calories=n(document.getElementById('pfWorkoutCalories')&&document.getElementById('pfWorkoutCalories').value)||pfEstimateCalories();
-  const machines=readPlanetFitnessMachines().filter(m=>m.done);
-  if(!machines.length) return alert('Check at least one machine before saving.');
-  state.pfWorkouts=state.pfWorkouts||[];
-  const workoutId=crypto.randomUUID();
-  const volume=machines.reduce((a,m)=>a+n(m.weight)*n(m.sets)*n(m.reps),0);
-  state.pfWorkouts.push({id:workoutId,date:d,time:hhmm(),minutes:mins,calories,volume,machines});
-  state.exercises.push({id:crypto.randomUUID(),date:d,time:hhmm(),name:'Planet Fitness Full Body Machines',category:'Strength',minutes:mins,calories,done:true,source:'planetFitness',workoutId});
-  save(); setSelectedDate(d); render(); renderPlanetFitnessWorkout(); showScreen('planetFitnessScreen');
-}
-function renderPlanetFitnessHistory(){
-  const box=document.getElementById('pfWorkoutHistory'); if(!box) return;
-  const d=(document.getElementById('pfWorkoutDate')&&document.getElementById('pfWorkoutDate').value)||selectedDate();
-  const items=(state.pfWorkouts||[]).filter(w=>w.date===d).sort((a,b)=>(b.time||'').localeCompare(a.time||''));
-  if(!items.length){ box.innerHTML='<p class="small">No Planet Fitness workout saved for this date.</p>'; return; }
-  box.innerHTML=items.map(w=>`<div class="pfCard"><b>${fmtTime(w.time)} · ${round(w.minutes)} min · ${round(w.calories)} kcal</b><div class="small">Total volume: ${round(w.volume)} lb</div><table><thead><tr><th>Machine</th><th>Weight</th><th>Sets</th><th>Reps</th></tr></thead><tbody>${(w.machines||[]).map(m=>`<tr><td>${esc(m.name)}</td><td>${round(m.weight)}</td><td>${round(m.sets)}</td><td>${round(m.reps)}</td></tr>`).join('')}</tbody></table></div>`).join('');
-}
 function renderExerciseChoices(){ const sel=document.getElementById('exerciseSelect'); sel.innerHTML=''; let last='', group=null; CDC_EXERCISES.forEach((e,i)=>{ if(e.category!==last){ group=document.createElement('optgroup'); group.label=e.category; sel.appendChild(group); last=e.category; } const opt=document.createElement('option'); opt.value=i; opt.textContent=`${e.name} — ${e.cal30}/30 min, ${e.calHr}/hr`; group.appendChild(opt); }); document.getElementById('exerciseTable').innerHTML=`<table><thead><tr><th>Level</th><th>Activity</th><th>30 min</th><th>1 hour</th></tr></thead><tbody>${CDC_EXERCISES.map(e=>`<tr><td>${e.category}</td><td>${esc(e.name)}</td><td>${e.cal30}</td><td>${e.calHr}</td></tr>`).join('')}</tbody></table>`; }
 function previewExercise(){ const ex=CDC_EXERCISES[Number(document.getElementById('exerciseSelect').value)||0]; const mins=n(document.getElementById('exerciseMinutes').value)||30; const wt=n(state.profile.weight)||154; document.getElementById('exerciseCalories').value=Math.round(ex.calHr*(mins/60)*(wt/154)); }
 function addExercise(){ const ex=CDC_EXERCISES[Number(document.getElementById('exerciseSelect').value)||0]; const mins=n(document.getElementById('exerciseMinutes').value); const cal=n(document.getElementById('exerciseCalories').value); const doneEl=document.getElementById('exerciseDone'); if(!ex||mins<=0||cal<=0) return alert('Choose an exercise and minutes.'); const d=document.getElementById('exerciseDate').value||selectedDate(); state.exercises.push({id:crypto.randomUUID(),date:d,time:document.getElementById('exerciseTime').value||hhmm(),name:ex.name,category:ex.category,minutes:mins,calories:cal,done:doneEl?doneEl.checked:true}); save(); setSelectedDate(d); const timeEl=document.getElementById('exerciseTime'); if(timeEl) timeEl.value=hhmm(); render(); showScreen('exerciseScreen'); }
@@ -771,7 +405,7 @@ function render(){
  const totalsHtml=`<div class="pill"><b>${dayWeight?round(dayWeight):'—'}</b><span>Daily weight lb</span></div><div class="pill"><b>${round(totals.calories)}</b><span>Food kcal</span></div><div class="pill"><b>${round(ex)}</b><span>Exercise kcal</span></div><div class="pill"><b>${round(totals.calories-ex)}</b><span>Net kcal</span></div>`+['protein','collagenProtein','carbs','fat','fiber','sugar','glycemicLoad','sodium','potassium','calcium','iron','magnesium','vitA','vitD','vitD3','vitDOther','vitK'].map(k=>{ const m=NUTRIENTS.find(x=>x.key===k); return `<div class="pill"><b>${round(totals[k])}</b><span>${m.label} ${m.unit}</span></div>`; }).join('');
  const totalsEl=document.getElementById('totals'); if(totalsEl) totalsEl.innerHTML=totalsHtml;
  const menuTotalsEl=document.getElementById('menuTotals'); if(menuTotalsEl) menuTotalsEl.innerHTML=totalsHtml;
- const balance=(totals.calories-ex)-calc.maintenance; const lbs=balance/3500; const balanceColor=balance>0?'var(--good)':balance<0?'var(--bad)':'var(--text)'; const balanceLabel=balance>0?'Calorie Surplus':balance<0?'Calorie Deficit':'Calorie Balance';
+ const hasLoggedDayData=state.entries.some(e=>e.date===d)||state.exercises.some(e=>e.date===d && e.done!==false); const balance=hasLoggedDayData?(totals.calories-ex)-calc.maintenance:0; const lbs=balance/3500; const balanceColor=balance>0?'var(--good)':balance<0?'var(--bad)':'var(--text)'; const balanceLabel=balance>0?'Calorie Surplus':balance<0?'Calorie Deficit':'Calorie Balance';
  const lossGainHtml=`<div class="pill"><b style="color:${balanceColor}">${Math.abs(round(balance))}</b><span>${balanceLabel}</span></div><div class="pill"><b style="color:${lbs>0?'var(--good)':lbs<0?'var(--bad)':'var(--text)'}">${Math.abs(lbs).toFixed(3)} lb</b><span>Estimated ${lbs<0?'loss':lbs>0?'gain':'change'}</span></div><div class="pill"><b>${round(calc.maintenance)}</b><span>Maintenance</span></div><div class="pill"><b>${round(calc.calories-ex)}</b><span>Net target</span></div>`;
  const lossGainEl=document.getElementById('lossGain'); if(lossGainEl) lossGainEl.innerHTML=lossGainHtml;
  const menuLossGainEl=document.getElementById('menuLossGain'); if(menuLossGainEl) menuLossGainEl.innerHTML=lossGainHtml;
@@ -1488,8 +1122,8 @@ function copySelectedDay(){
 }
 function clearDay(){ if(!confirm('Clear food and exercise entries for the selected day?')) return; const d=selectedDate(); state.entries=state.entries.filter(e=>e.date!==d); state.exercises=state.exercises.filter(e=>e.date!==d); save(); render(); }
 function resetAll(){ if(!confirm('Reset all local tracker data?')) return; try{localStorage.removeItem(STORAGE_KEY);}catch(e){} try{history.replaceState(null,'',location.pathname+location.search);}catch(e){} state=trackerFreshState(); init(false); }
-function init(setDate=true){ if(!Array.isArray(state.dailyWeights)) state.dailyWeights=[]; normalizeAllVitaminKData(); normalizeAllFoodEntryOrders(); save(); if(setDate) setSelectedDate(today()); else setSelectedDate(selectedDate()); const copyFrom=document.getElementById('copyFromDate'); if(copyFrom) copyFrom.value=selectedDate(); const exDate=document.getElementById('exerciseDate'); if(exDate) exDate.value=selectedDate(); const shopMonth=document.getElementById('shoppingMonth'); if(shopMonth) shopMonth.value=selectedDate().slice(0,7); const foodOrderEl=document.getElementById('foodOrder'); if(foodOrderEl) foodOrderEl.value=nextFoodOrder(selectedDate()); document.getElementById('exerciseTime').value=hhmm(); buildCustomFields(); renderFoodSelect(); renderFoodsList(); renderRecipes(); renderExerciseChoices(); renderProfile(); previewExercise(); renderPlanetFitnessWorkout(); render(); }
-document.addEventListener('DOMContentLoaded',()=>{ document.querySelectorAll('[data-screen]').forEach(b=>b.addEventListener('click',()=>showScreen(b.dataset.screen))); document.getElementById('date').addEventListener('change',()=>{ setSelectedDate(document.getElementById('date').value); const cf=document.getElementById('copyFromDate'); if(cf) cf.value=selectedDate(); render(); }); const dtd=document.getElementById('dailyTotalsDate'); if(dtd) dtd.addEventListener('change',()=>{ setSelectedDate(dtd.value); render(); }); const dailyWeightEl=document.getElementById('dailyWeight'); if(dailyWeightEl){ dailyWeightEl.addEventListener('change',saveDailyWeight); dailyWeightEl.addEventListener('blur',saveDailyWeight); } document.getElementById('addFoodBtn').addEventListener('click',addFoodEntry); document.getElementById('submitGroupBtn').addEventListener('click',submitSelectedGroup); document.getElementById('clearGroupsBtn').addEventListener('click',clearGroupsForDate); document.getElementById('saveCustomBtn').addEventListener('click',saveCustomFood); document.getElementById('exerciseSelect').addEventListener('change',previewExercise); document.getElementById('exerciseMinutes').addEventListener('input',previewExercise); document.getElementById('calcExerciseBtn').addEventListener('click',previewExercise); const exDateEl=document.getElementById('exerciseDate'); if(exDateEl) exDateEl.addEventListener('change',()=>{ setSelectedDate(exDateEl.value); render(); }); document.getElementById('addExerciseBtn').addEventListener('click',addExercise); { const pfDate=document.getElementById('pfWorkoutDate'); if(pfDate) pfDate.addEventListener('change',()=>{ setSelectedDate(pfDate.value); renderPlanetFitnessHistory(); }); const pfMins=document.getElementById('pfWorkoutMinutes'); if(pfMins) pfMins.addEventListener('input',updatePlanetFitnessSummary); const pfCal=document.getElementById('pfWorkoutCalories'); if(pfCal) pfCal.addEventListener('input',updatePlanetFitnessSummary); const pfRecalc=document.getElementById('pfRecalcBtn'); if(pfRecalc) pfRecalc.addEventListener('click',()=>{ const cal=document.getElementById('pfWorkoutCalories'); if(cal) cal.value=pfEstimateCalories(); updatePlanetFitnessSummary(); }); const pfSave=document.getElementById('pfSaveBtn'); if(pfSave) pfSave.addEventListener('click',savePlanetFitnessWorkout); const pfClear=document.getElementById('pfClearBtn'); if(pfClear) pfClear.addEventListener('click',clearPlanetFitnessBoxes); } document.getElementById('saveProfileBtn').addEventListener('click',saveProfile); document.getElementById('addSelectedRecipeBtn').addEventListener('click',addSelectedRecipeToDay); document.getElementById('exportBtn').addEventListener('click',exportData); { const suggestBtn=document.getElementById('suggestMenuBtn'); if(suggestBtn) suggestBtn.addEventListener('click',suggestDailyMenu); } { const biblicalBtn=document.getElementById('biblicalMenuBtn'); if(biblicalBtn) biblicalBtn.addEventListener('click',suggestBiblicalDietMenu); } { const shoppingBtn=document.getElementById('shoppingListBtn'); if(shoppingBtn) shoppingBtn.addEventListener('click',()=>showScreen('shoppingListScreen')); } document.getElementById('selectAllShoppingDaysBtn').addEventListener('click',()=>{document.querySelectorAll('[data-shopping-day]').forEach(c=>c.checked=true); renderShoppingPreview();}); document.getElementById('clearShoppingDaysBtn').addEventListener('click',()=>{document.querySelectorAll('[data-shopping-day]').forEach(c=>c.checked=false); renderShoppingPreview();}); document.getElementById('printShoppingListBtn').addEventListener('click',printSelectedShoppingList); const shopMonthEl=document.getElementById('shoppingMonth'); if(shopMonthEl) shopMonthEl.addEventListener('change',renderShoppingListScreen); const showLoggedBtn=document.getElementById('showLoggedShoppingDaysBtn'); if(showLoggedBtn) showLoggedBtn.addEventListener('click',()=>{ const dates=loggedFoodDates(); if(dates.length){ const sm=document.getElementById('shoppingMonth'); if(sm) sm.value=dates[dates.length-1].slice(0,7); } renderShoppingListScreen(); }); document.getElementById('importBtn').addEventListener('click',()=>document.getElementById('importFile').click()); document.getElementById('importFile').addEventListener('change',importData); document.getElementById('copyDayBtn').addEventListener('click',copySelectedDay); document.getElementById('clearDayBtn').addEventListener('click',clearDay); document.getElementById('resetBtn').addEventListener('click',resetAll); init(true); });
+function init(setDate=true){ if(!Array.isArray(state.dailyWeights)) state.dailyWeights=[]; normalizeAllVitaminKData(); normalizeAllFoodEntryOrders(); save(); if(setDate) setSelectedDate(today()); else setSelectedDate(selectedDate()); const copyFrom=document.getElementById('copyFromDate'); if(copyFrom) copyFrom.value=selectedDate(); const exDate=document.getElementById('exerciseDate'); if(exDate) exDate.value=selectedDate(); const shopMonth=document.getElementById('shoppingMonth'); if(shopMonth) shopMonth.value=selectedDate().slice(0,7); const foodOrderEl=document.getElementById('foodOrder'); if(foodOrderEl) foodOrderEl.value=nextFoodOrder(selectedDate()); document.getElementById('exerciseTime').value=hhmm(); buildCustomFields(); renderFoodSelect(); renderFoodsList(); renderRecipes(); renderExerciseChoices(); renderProfile(); previewExercise(); render(); }
+document.addEventListener('DOMContentLoaded',()=>{ document.querySelectorAll('[data-screen]').forEach(b=>b.addEventListener('click',()=>showScreen(b.dataset.screen))); document.getElementById('date').addEventListener('change',()=>{ setSelectedDate(document.getElementById('date').value); const cf=document.getElementById('copyFromDate'); if(cf) cf.value=selectedDate(); render(); }); const dtd=document.getElementById('dailyTotalsDate'); if(dtd) dtd.addEventListener('change',()=>{ setSelectedDate(dtd.value); render(); }); const dailyWeightEl=document.getElementById('dailyWeight'); if(dailyWeightEl){ dailyWeightEl.addEventListener('change',saveDailyWeight); dailyWeightEl.addEventListener('blur',saveDailyWeight); } document.getElementById('addFoodBtn').addEventListener('click',addFoodEntry); document.getElementById('submitGroupBtn').addEventListener('click',submitSelectedGroup); document.getElementById('clearGroupsBtn').addEventListener('click',clearGroupsForDate); document.getElementById('saveCustomBtn').addEventListener('click',saveCustomFood); document.getElementById('exerciseSelect').addEventListener('change',previewExercise); document.getElementById('exerciseMinutes').addEventListener('input',previewExercise); document.getElementById('calcExerciseBtn').addEventListener('click',previewExercise); const exDateEl=document.getElementById('exerciseDate'); if(exDateEl) exDateEl.addEventListener('change',()=>{ setSelectedDate(exDateEl.value); render(); }); document.getElementById('addExerciseBtn').addEventListener('click',addExercise); document.getElementById('saveProfileBtn').addEventListener('click',saveProfile); document.getElementById('addSelectedRecipeBtn').addEventListener('click',addSelectedRecipeToDay); document.getElementById('exportBtn').addEventListener('click',exportData); { const suggestBtn=document.getElementById('suggestMenuBtn'); if(suggestBtn) suggestBtn.addEventListener('click',suggestDailyMenu); } { const biblicalBtn=document.getElementById('biblicalMenuBtn'); if(biblicalBtn) biblicalBtn.addEventListener('click',suggestBiblicalDietMenu); } { const shoppingBtn=document.getElementById('shoppingListBtn'); if(shoppingBtn) shoppingBtn.addEventListener('click',()=>showScreen('shoppingListScreen')); } document.getElementById('selectAllShoppingDaysBtn').addEventListener('click',()=>{document.querySelectorAll('[data-shopping-day]').forEach(c=>c.checked=true); renderShoppingPreview();}); document.getElementById('clearShoppingDaysBtn').addEventListener('click',()=>{document.querySelectorAll('[data-shopping-day]').forEach(c=>c.checked=false); renderShoppingPreview();}); document.getElementById('printShoppingListBtn').addEventListener('click',printSelectedShoppingList); const shopMonthEl=document.getElementById('shoppingMonth'); if(shopMonthEl) shopMonthEl.addEventListener('change',renderShoppingListScreen); const showLoggedBtn=document.getElementById('showLoggedShoppingDaysBtn'); if(showLoggedBtn) showLoggedBtn.addEventListener('click',()=>{ const dates=loggedFoodDates(); if(dates.length){ const sm=document.getElementById('shoppingMonth'); if(sm) sm.value=dates[dates.length-1].slice(0,7); } renderShoppingListScreen(); }); document.getElementById('importBtn').addEventListener('click',()=>document.getElementById('importFile').click()); document.getElementById('importFile').addEventListener('change',importData); document.getElementById('copyDayBtn').addEventListener('click',copySelectedDay); document.getElementById('clearDayBtn').addEventListener('click',clearDay); document.getElementById('resetBtn').addEventListener('click',resetAll); init(true); });
 document.addEventListener('change',e=>{
  const id=e.target.dataset.eatenEntry;
  if(!id)return;
