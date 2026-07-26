@@ -1,0 +1,28 @@
+# Operating-system and editor clutter
+.DS_Store
+Thumbs.db
+*~
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# Local development and test output
+node_modules/
+test-results/
+playwright-report/
+coverage/
+*.log
+tmp/
+.cache/
+
+# Environment files and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+*.personal.json
