@@ -1,71 +1,59 @@
-# Nutrition Tracker — Stage 1
+# Nutrition Tracker — Stage 2
 
-## Purpose
+Static HTML/CSS/JavaScript nutrition and exercise Tracker with Supabase email/password accounts and private per-user cloud state. `index.html` is authoritative; `nutrition-tracker.html` is kept byte-identical. Production is deployed from `Lightbody61/nutrition-tracker` `main` to `https://nutrition-tracker.jodydmccord.workers.dev`.
 
-This repository contains Stage 1 of the Nutrition Tracker: a static online version built with plain HTML, CSS, and JavaScript. `index.html` is the authoritative Tracker and public entry point. Tracker information is stored locally in the browser; there are no user accounts, cloud synchronization, databases, analytics, or backend services.
+## Supabase configuration and security model
 
-## Local preview
+- Project URL: `https://bwihhbcfthkfsogqmgdq.supabase.co`
+- Browser credential: the intended browser-safe `sb_publishable_...` key in `account.js`
+- No secret, service-role, database password, JWT secret, or direct connection string is used.
+- The official Supabase JavaScript v2 browser client is loaded from a pinned HTTPS CDN URL.
+- Email/password registration uses a production confirmation redirect. Login, logout, confirmation resend, password-reset request, recovery-session detection, and password update use Supabase Auth.
+- The existing `public.tracker_states` table must have `user_id uuid primary key`, `tracker_state jsonb not null`, `schema_version integer not null`, and `updated_at timestamptz not null`.
+- RLS must remain enabled with authenticated users restricted to their own `user_id`. Client code derives the ID only from the authenticated session.
+
+### Required manual database migration
+
+Before deploying this browser release, open the production Supabase SQL editor and run the complete, exact contents of [`supabase/atomic_tracker_state.sql`](supabase/atomic_tracker_state.sql). The migration creates `public.save_tracker_state_if_version_matches(jsonb, integer, timestamptz)` as `SECURITY INVOKER`, derives identity from `auth.uid()`, leaves RLS in force, revokes public/anonymous execution, and grants execution only to `authenticated`. The browser release must not be deployed before this function exists.
+
+## Cloud state flow
+
+After authentication resolves, the Tracker reads only that user's row and the matching account-scoped cache. Dirty cached edits are compared with cloud state before either is applied. Different dirty cache/cloud versions require Save Cached Version to Cloud or a confirmed Load Cloud Version choice; identical versions load normally. A missing row with no cache creates a clean state. Old unscoped Stage 1 data is never uploaded.
+
+Mutations are obtained through `getTrackerState()`, validated, and cached with `dirty`, `base_updated_at`, and cache time metadata. Saves call the atomic RPC with the last confirmed `updated_at`; the database updates only on an exact match. A stale version returns conflict without mutation. No unconditional upsert or field-level merging is used.
+
+Signed-out users see a clean, locked Tracker. Dirty logout attempts save first. Offline, expired-session, RLS, and conflict failures stop logout and preserve cache, offering Retry Save, Stay Signed In, or strongly confirmed discard-and-logout. Delete Account Data deletes only the authenticated user's row after two confirmations.
+
+## Static preview and deployment
 
 ```bash
 cd /home/jody/Portal/TrackerSite
 python3 -m http.server 8080
 ```
 
-Open `http://localhost:8080`.
+Open `http://127.0.0.1:8080`. No application server, framework, package install, environment variables, or build step is required. Cloudflare should deploy the repository root with framework preset `None`, blank build command, and output directory `.`. HTTPS and network access to the Supabase and jsDelivr origins are required in production.
 
-To preview from another device on the same network, find the Pi's local IP address (for example with `hostname -I`), keep the preview server running, and open `http://PI_LOCAL_IP:8080` on that device. The Pi firewall and Wi-Fi network must permit local connections. This command is only for preview; the deployed site does not require Python or the Pi.
-
-## GitHub
-
-Repository: `Lightbody61/nutrition-tracker`
-
-Remote: `git@github.com:Lightbody61/nutrition-tracker.git`
-
-Branch: `main`
-
-After reviewing and approving all changes:
+## Testing
 
 ```bash
-git status
-git add .
-git commit -m "Prepare current nutrition tracker for Stage 1 hosting"
-GIT_SSH_COMMAND='ssh -i /home/jody/.ssh/github_nutrition_tracker' git push origin main
+node --check account.js
+node tests/tracker-regression.test.js
+node tests/account-module.test.js
+node tests/account-auth-mock.test.js
+node tests/cloud-persistence-correctness.test.js
+cmp -s index.html nutrition-tracker.html
+git diff --check
 ```
 
-Do not commit or push until the repository owner approves.
+See `TESTING.md` for complete automated and production manual procedures.
 
-The existing `.github/workflows/pages.yml` workflow remains usable for GitHub Pages. It does not interfere with Cloudflare Pages, but maintaining two hosting targets can be confusing; Cloudflare Pages is the Stage 1 publishing target.
+## Stage 2 limitations
 
-## Cloudflare Pages
+- Email delivery and confirmation depend on production Supabase Auth configuration.
+- Conflict resolution is whole-state choice, not merging.
+- Offline cache is best-effort and browser/origin specific.
+- Delete Account Data does not delete the authentication identity.
+- No ecommerce, subscriptions, analytics, administration, JSON transfer, or old-format migration is included.
+- Supabase Auth normally persists its own session; application code does not manually store tokens.
 
-1. Sign in to Cloudflare.
-2. Open **Workers & Pages**.
-3. Create a Pages project.
-4. Connect GitHub.
-5. Select `Lightbody61/nutrition-tracker`.
-6. Set **Framework preset** to `None`.
-7. Leave **Build command** blank.
-8. Set **Build output directory** to the repository root (`.`).
-9. Deploy.
-10. Open the generated Pages address.
-11. Test food, exercise, profile, and weight saving and reloading on the live site.
-
-No environment variables, secrets, build process, or server process are required.
-
-## Data warning
-
-During Stage 1, entries are stored only in the current browser on the current device and website origin. They do not synchronize between devices and may be lost when browser storage is cleared or a private/incognito session closes. Stage 2 will replace browser-only persistence with authenticated account storage.
-
-## Files
-
-- `index.html`: authoritative Tracker and public website entry point.
-- `nutrition-tracker.html`: synchronized convenience copy of the authoritative Tracker.
-- `_headers`: conservative Cloudflare Pages response headers.
-- `TESTING.md`: test environment, coverage, results, and limitations.
-- `CHANGELOG.md`: Stage 1 changes only.
-- `AGENTS.md`: permanent maintenance rules.
-
-## Future stages (not implemented)
-
-- Stage 2: authenticated user accounts and account-based data storage.
-- Stage 3: additional features and ecommerce.
+Do not commit or push without repository-owner approval.

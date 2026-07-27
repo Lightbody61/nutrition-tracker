@@ -23,12 +23,20 @@ select optgroup{
 .groupTotalsTableWrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;max-width:100%;-webkit-overflow-scrolling:touch}.groupTotalsTable{min-width:max-content;width:100%}.groupTotalsTable th,.groupTotalsTable td{min-width:105px;text-align:right;white-space:nowrap;padding:9px 10px}.groupTotalsTable th:first-child,.groupTotalsTable td:first-child{position:sticky;left:0;z-index:2;min-width:170px;text-align:left;background:#111827}.groupTotalsTable thead th{position:sticky;top:0;z-index:3;background:#0f172a}.groupTotalsTable thead th:first-child{z-index:4;background:#0f172a}.groupTotalsTable tbody tr:nth-child(even) td,.groupTotalsTable tbody tr:nth-child(even) th{background:#0b1220}.groupTotalsTable tbody tr:nth-child(even) th:first-child{background:#0b1220}.groupTotalsTable .dailyTotalCell{border-left:2px solid var(--accent);background:rgba(56,189,248,.08)}
 #entries,#exerciseEntries,#foodsList,#dailyBreakdown,#shoppingDayList,#shoppingPreview{overflow-x:auto;-webkit-overflow-scrolling:touch}
 .formatNotice{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;padding:20px;background:rgba(2,6,23,.9)}.formatNotice.hide{display:none}.formatNotice .card{width:min(560px,100%);box-shadow:0 24px 80px rgba(0,0,0,.6)}
+.accountGate{max-width:760px;margin:14px auto}.accountStatus{min-height:22px;margin-top:10px;color:var(--muted)}.accountStatus.error{color:#fecdd3}.accountStatus.success{color:#a7f3d0}.trackerLocked main .screen:not(#accountScreen){display:none!important}.trackerLocked #accountScreen{display:block!important}.trackerLocked .nav button:not([data-screen="accountScreen"]){display:none}.trackerLocked .statusNotice{display:block}.signedInOnly,.signedOutOnly,.recoveryOnly{display:none}
 </style></head><body>
-<header><h1>Local Nutrition Tracker</h1><div class="sub">Single-file, local-only tracker. No account. No cloud. Vitamin D is split into D3 and other/unspecified D forms; Vitamin K is split into K1 and K2 where data is available. Collagen protein is tracked separately from complete protein.</div><div class="nav">
-<button data-screen="foodHubScreen">Food</button><button class="secondary" data-screen="exerciseHubScreen">Exercise</button><button class="secondary" data-screen="utilitiesScreen">Utilities</button><button class="secondary" data-screen="profileScreen">Profile / Goals</button><button class="danger" data-screen="usersGuideScreen">Users Guide</button></div><div class="storageStatus" id="storageStatus" role="status" aria-live="polite"></div></header>
-<aside class="statusNotice">During Stage 1, your entries are stored only in this browser on this device. They do not synchronize between devices. User accounts and account-based storage will be added in Stage 2. Private/incognito sessions may discard local data when closed.</aside>
-<section class="formatNotice hide" id="incompatibleStateNotice" role="dialog" aria-modal="true" aria-labelledby="incompatibleStateTitle"><div class="card"><h2 id="incompatibleStateTitle">Tracker data format changed</h2><p>This Tracker now uses a new data format. Older browser-local Tracker data is not carried forward.</p><p>Stage 2 will add user accounts and account-based storage. To begin Stage 1 with a clean browser-local Tracker, acknowledge this reset.</p><button id="acknowledgeStateResetBtn">Acknowledge and Start Fresh</button></div></section>
+<header><h1>Nutrition Tracker</h1><div class="sub">Private account-based nutrition and exercise tracking with Supabase cloud synchronization.</div><div class="nav">
+<button data-screen="accountScreen">Account</button><button data-screen="foodHubScreen">Food</button><button class="secondary" data-screen="exerciseHubScreen">Exercise</button><button class="secondary" data-screen="utilitiesScreen">Utilities</button><button class="secondary" data-screen="profileScreen">Profile / Goals</button><button class="danger" data-screen="usersGuideScreen">Users Guide</button></div><div class="storageStatus" id="storageStatus" role="status" aria-live="polite"></div></header>
+<aside class="statusNotice" id="accountGateMessage">Sign in or create an account to use and save your Tracker.</aside>
+<section class="formatNotice hide" id="incompatibleStateNotice" role="dialog" aria-modal="true" aria-labelledby="incompatibleStateTitle"><div class="card"><h2 id="incompatibleStateTitle">Tracker data format changed</h2><p>This Tracker uses the current account-state format. Older browser-local Tracker data is not carried forward or uploaded.</p><button id="acknowledgeStateResetBtn">Acknowledge and Start Fresh</button></div></section>
 <main>
+<section class="screen" id="accountScreen"><div class="card accountGate"><h2>Account</h2>
+<div class="signedOutOnly" id="signedOutAccount"><label for="accountEmail">Email</label><input id="accountEmail" type="email" autocomplete="email"/><label for="accountPassword">Password</label><input id="accountPassword" type="password" minlength="8" autocomplete="current-password"/><div class="actions"><button id="createAccountBtn">Create Account</button><button id="loginBtn">Log In</button><button class="secondary" id="forgotPasswordBtn">Forgot Password</button><button class="secondary hide" id="resendConfirmationBtn">Resend Confirmation</button></div></div>
+<div class="signedInOnly" id="signedInAccount"><p>Signed in as <strong id="signedInEmail"></strong></p><p>Account status: <span id="accountStateLabel">Authenticated</span></p><p>Last successful cloud save: <span id="lastCloudSave">Not yet saved</span></p><p>Cloud-save status: <span id="cloudSaveStatus">Waiting</span></p><div class="actions"><button id="saveNowBtn">Save Now</button><button class="secondary" id="logoutBtn">Log Out</button><button class="danger" id="deleteAccountDataBtn">Delete Account Data</button></div></div>
+<div class="recoveryOnly" id="recoveryAccount"><h3>Set a new password</h3><label for="newPassword">New Password</label><input id="newPassword" type="password" minlength="8" autocomplete="new-password"/><label for="confirmNewPassword">Confirm New Password</label><input id="confirmNewPassword" type="password" minlength="8" autocomplete="new-password"/><div class="actions"><button id="updatePasswordBtn">Update Password</button><button class="secondary hide" id="retryRecoveryLoadBtn">Retry Load</button></div></div>
+<div class="accountStatus" id="accountMessage" role="status" aria-live="polite"></div>
+<div class="actions hide" id="conflictActions"><button id="loadCloudVersionBtn">Load Cloud Version</button><button class="danger" id="keepDeviceVersionBtn">Keep This Device Version</button></div>
+<div class="actions hide" id="logoutProtectionActions"><button id="retryLogoutSaveBtn">Retry Save</button><button class="secondary" id="staySignedInBtn">Stay Signed In</button><button class="danger" id="discardAndLogoutBtn">Discard Unsaved Changes and Log Out</button></div></div></section>
 <section class="screen active" id="foodHubScreen"><div class="card"><h2>Food</h2><p class="small">Food logging, food lists, recipes, shopping lists, daily totals, and nutrition stats.</p><div class="moduleGrid"><button class="moduleBtn" data-screen="mainScreen">Today's Menu<span>Today's food entries and eaten checkboxes.</span></button><button class="moduleBtn" data-screen="foodEntryScreen">Add Custom Food to Database<span>Create a custom database item for future menus.</span></button><button class="moduleBtn" data-screen="oneOffFoodsScreen">One-Off Foods<span>Add temporary foods to a day without putting them in the permanent food database.</span></button><button class="moduleBtn" data-screen="foodListsHubScreen">Food Lists<span>Food database and current shopping list.</span></button><button class="moduleBtn" data-screen="recipesScreen">Recipes<span>Recipe library and add selected recipe to the day.</span></button><button class="moduleBtn" data-screen="statsHubScreen">Stats<span>Daily totals, nutrition stats, and macro/micro breakdown.</span></button></div></div></section>
 <section class="screen" id="foodListsHubScreen"><div class="card"><p class="breadcrumb"><button class="secondary" data-screen="foodHubScreen">← Food</button></p><h2>Food Lists</h2><div class="moduleGrid"><button class="moduleBtn" data-screen="foodsScreen">Food Database<span>Browse all foods by category.</span></button><button class="moduleBtn" data-screen="shoppingListScreen">Current Shopping List<span>Select days and print a combined shopping list.</span></button></div></div></section>
 <section class="screen" id="statsHubScreen"><div class="card"><p class="breadcrumb"><button class="secondary" data-screen="foodHubScreen">← Food</button></p><h2>Stats</h2><div class="moduleGrid"><button class="moduleBtn" data-screen="dailyTotalsScreen">Daily Totals<span>Calories, macros, net calories, and estimated loss/gain.</span></button><button class="moduleBtn" data-screen="statsScreen">Nutrition Stats<span>Targets, charts, vitamin breakdowns, and insulin-response estimate.</span></button><button class="moduleBtn" data-screen="breakdownScreen">Daily Macro/Micro Breakdown<span>Each nutrient with contributing foods.</span></button></div></div></section>
@@ -174,8 +182,9 @@ select optgroup{
 <li>Combine matching foods into total quantities.</li>
 <li>Print shopping lists for meal preparation.</li>
 </ul>
-<h2 style="color:#ef4444;">Stage 1 Storage</h2>
-<p>Your entries are kept temporarily in this browser. They do not synchronize between browsers or devices. Stage 2 will add authenticated account storage.</p>
+<h2 style="color:#ef4444;">Accounts, Cloud Storage, and Privacy</h2>
+<p>Sign in to use the Tracker. Supabase provides authentication, and your validated Tracker state is stored in one private cloud record associated with your authenticated account. Row Level Security is expected to restrict each user to their own record. A user-scoped browser cache may be used temporarily when cloud access is unavailable.</p>
+<p>Your state can synchronize between devices after login. Log out on shared devices. Cloud conflicts require you to choose the cloud or device version; Stage 2 does not merge them. Delete Account Data removes Tracker state but not the authentication account. Ecommerce is not part of Stage 2, and no absolute security guarantee is made.</p>
 <h2 style="color:#ef4444;">Tips</h2>
 <ul><li>The most important goal is balancing your key daily metrics: Daily Calorie Deficit, Protein, Fiber, Net Carbs, Glycemic Load, and Micronutrients. These six metrics work together, and keeping them in balance is the heart of the Nutrition Tracker.</li>
 <li>Review Stats regularly to monitor nutritional adequacy.</li>
@@ -186,7 +195,7 @@ select optgroup{
 </div>
 </section>
 </main>
-<footer class="siteFooter"><details><summary>Privacy</summary><p>During Stage 1, your entries are stored only in this browser on this device. They do not synchronize between devices. User accounts and account-based storage will be added in Stage 2.</p></details><details><summary>Contact</summary><p>Contact information coming soon</p></details><div>Web Version 1.0 — Stage 1</div></footer>
+<footer class="siteFooter"><details><summary>Privacy</summary><p>Accounts are provided through Supabase. Signed-in Tracker state is stored in your private cloud record; Row Level Security is expected to restrict each account to its own record. An account-scoped browser cache may provide temporary offline resilience. Data can synchronize between devices after login. Log out on shared devices. Ecommerce is not part of Stage 2. No system can provide an absolute security guarantee.</p></details><details><summary>Contact</summary><p>Contact information coming soon</p></details><div>Web Version 2.0 — Stage 2</div></footer>
 <script>
 const DEFAULT_FOODS = [{"calories":12,"protein":1.0,"carbs":3.1,"fat":0.7,"fiber":1.8,"sugar":0.1,"sodium":1,"potassium":76,"calcium":6,"iron":0.8,"magnesium":27,"phosphorus":39,"zinc":0.2,"copper":0.1,"manganese":0.1,"selenium":1,"vitA":0,"vitC":0,"vitD":0.0,"vitE":0.0,"vitK":0.2,"vitK1":0.2,"vitK2":0,"thiamin":0.01,"riboflavin":0.02,"niacin":0.1,"b6":0.02,"folate":1,"b12":0,"choline":0.4,"category":"Baking","name":"Baking Cocoa, unsweetened","serving":"1 tsp","custom":false,"vitD3":0,"vitDOther":0.0},{"calories":430,"protein":45,"collagenProtein":0,"carbs":16,"fiber":6,"sugar":4,"fat":15,"saturatedFat":5,"cholesterol":380,"sodium":320,"potassium":520,"calcium":330,"iron":2.6,"magnesium":60,"phosphorus":500,"zinc":2.4,"copper":0.2,"manganese":0.5,"selenium":45,"vitA":180,"vitC":0,"vitD":2.2,"vitD3":2.2,"vitDOther":0,"vitE":1.5,"vitK":2,"vitK1":2,"vitK2":0,"thiamin":0.15,"riboflavin":0.9,"niacin":1.3,"b6":0.3,"folate":80,"b12":1.3,"choline":320,"category":"Meals","name":"2 Egg Protein Mug Cake","serving":"1 mug cake with topping","custom":false},
 {"calories":145,"protein":11,"carbs":11,"fat":4,"fiber":8,"sugar":3,"sodium":300,"category":"Meals","name":"Low-Carb Boston Baked Beans","serving":"1 serving","custom":false},
@@ -656,15 +665,6 @@ function applyTrackerState(candidate){
   return true;
 }
 function loadState(){
-  try{
-    const raw=localStorage.getItem(STORAGE_KEY);
-    if(raw){
-      try{ const candidate=JSON.parse(raw); if(validateTrackerState(candidate)) return buildTrackerState(candidate); }
-      catch(e){}
-      incompatibleStoredState=true;
-      automaticSavesBlocked=true;
-    }
-  }catch(e){}
   return createEmptyTrackerState();
 }
 function showIncompatibleStateNotice(){ const notice=document.getElementById('incompatibleStateNotice'); if(notice) notice.classList.remove('hide'); }
@@ -694,17 +694,9 @@ function setStorageStatus(message,isError=false){
 function save(){
   if(automaticSavesBlocked){ setStorageStatus('Saving is paused until you acknowledge the new Tracker data format.',true); showIncompatibleStateNotice(); return false; }
   normalizeAllVitaminKData();
-  let localOk=false;
-  try{
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(getTrackerState()));
-    localOk=true;
-  }catch(e){
-    localOk=false;
-    const quota=e && (e.name==='QuotaExceededError'||e.code===22);
-    setStorageStatus(quota?'Save failed: browser storage is full. These changes may not persist. Free browser storage and try again.':'Save failed: browser storage is unavailable. These changes may not persist; private/incognito storage may be unavailable.',true);
-  }
-  if(localOk) setStorageStatus('Saved in this browser.');
-  return localOk;
+  if(typeof window.trackerAccountStateChanged==='function') return window.trackerAccountStateChanged();
+  setStorageStatus('Sign in to save Tracker data.',true);
+  return false;
 }
 function n(x){ return Number(x||0); } function round(x){ return Math.round((n(x)+Number.EPSILON)*10)/10; } function esc(s){ return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m])); }
 function today(){ return new Date().toISOString().slice(0,10); } function hhmm(){ const d=new Date(); return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); }
@@ -1846,7 +1838,7 @@ function copySelectedDay(){
   alert(`Copied ${copiedEntries.length} food entr${copiedEntries.length===1?'y':'ies'} and ${copiedExercises.length} exercise entr${copiedExercises.length===1?'y':'ies'} to ${to}.`);
 }
 function clearDay(){ if(!confirm('Clear food and exercise entries for the selected day?')) return; const d=selectedDate(); state.entries=state.entries.filter(e=>e.date!==d); state.exercises=state.exercises.filter(e=>e.date!==d); save(); render(); }
-function resetAll(){ if(!confirm('Reset all local tracker data?')) return; try{localStorage.removeItem(STORAGE_KEY);}catch(e){} state=createEmptyTrackerState(); init(false); }
+function resetAll(){ if(!confirm('Reset all Tracker data for this signed-in account?')) return; state=createEmptyTrackerState(); init(false); }
 function init(setDate=true,persist=true){ if(!Array.isArray(state.dailyWeights)) state.dailyWeights=[]; normalizeAllVitaminKData(); normalizeAllFoodEntryOrders(); if(persist) persistInitialState(); else if(automaticSavesBlocked) showIncompatibleStateNotice(); if(setDate) setSelectedDate(today()); else setSelectedDate(selectedDate()); const copyFrom=document.getElementById('copyFromDate'); if(copyFrom) copyFrom.value=selectedDate(); const exDate=document.getElementById('exerciseDate'); if(exDate) exDate.value=selectedDate(); const shopMonth=document.getElementById('shoppingMonth'); if(shopMonth) shopMonth.value=selectedDate().slice(0,7); const whEnd=document.getElementById('weightHistoryEnd'); const whStart=document.getElementById('weightHistoryStart'); if(whEnd) whEnd.value=selectedDate(); if(whStart){ const d=new Date(selectedDate()+'T12:00:00'); d.setDate(d.getDate()-90); whStart.value=d.toISOString().slice(0,10); } const foodOrderEl=document.getElementById('foodOrder'); if(foodOrderEl) foodOrderEl.value=nextFoodOrder(selectedDate()); document.getElementById('exerciseTime').value=hhmm(); buildCustomFields(); buildOneOffFields(); renderOneOffFoods(); renderFoodSelect(); renderFoodsList(); renderRecipes(); renderRecipePrintChoices(); renderExerciseChoices(); renderProfile(); previewExercise(); render(); }
 document.addEventListener('DOMContentLoaded',()=>{ const acknowledgeReset=document.getElementById('acknowledgeStateResetBtn'); if(acknowledgeReset) acknowledgeReset.addEventListener('click',acknowledgeIncompatibleStateReset); document.querySelectorAll('[data-screen]').forEach(b=>b.addEventListener('click',()=>showScreen(b.dataset.screen))); document.getElementById('date').addEventListener('change',()=>{ setSelectedDate(document.getElementById('date').value); const cf=document.getElementById('copyFromDate'); if(cf) cf.value=selectedDate(); render(); }); const dtd=document.getElementById('dailyTotalsDate'); if(dtd) dtd.addEventListener('change',()=>{ setSelectedDate(dtd.value); render(); }); const dailyWeightEl=document.getElementById('dailyWeight');
  if(dailyWeightEl){ dailyWeightEl.addEventListener('change',()=>saveDailyWeight('dailyWeight')); dailyWeightEl.addEventListener('blur',()=>saveDailyWeight('dailyWeight')); }
@@ -1866,4 +1858,6 @@ document.addEventListener('change',e=>{
 });
 
 
-</script></body></html>
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.53.0/dist/umd/supabase.min.js" crossorigin="anonymous"></script>
+<script src="account.js"></script></body></html>

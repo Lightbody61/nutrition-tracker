@@ -5,7 +5,8 @@ const vm=require('vm');
 
 const trackerPath=path.resolve(__dirname,'..','index.html');
 const html=fs.readFileSync(trackerPath,'utf8');
-const source=html.slice(html.indexOf('<script>')+8,html.lastIndexOf('</script>'));
+const scriptStart=html.indexOf('<script>')+8;
+const source=html.slice(scriptStart,html.indexOf('</script>',scriptStart));
 let uuid=0;
 const stored={};
 const urlMutations=[];
@@ -38,30 +39,12 @@ function boundaryContext(initialValue){
   return {sandbox,data,notice,status,get writes(){return writes;}};
 }
 
-// Current state loads normally; unversioned state is neither accepted nor overwritten before acknowledgment.
+// Signed-out startup never loads or overwrites old unscoped Stage 1 browser data.
 const currentLocal=accountState({entries:[{id:'current',date:'2026-07-01',servings:1,food:{name:'Current Food',calories:80}}]});
 let boundary=boundaryContext(JSON.stringify(currentLocal));
-assert.deepStrictEqual(JSON.parse(JSON.stringify(vm.runInContext(`({blocked:automaticSavesBlocked,incompatible:incompatibleStoredState,entries:state.entries.length})`,boundary.sandbox))),{blocked:false,incompatible:false,entries:1});
-
-const incompatibleRaw=JSON.stringify({foods:[{name:'Old Custom',custom:true}],entries:[{id:'old-entry'}],exercises:[{id:'old-exercise'}],profile:{weight:199},oldPrivateMarker:'must-not-migrate'});
-boundary=boundaryContext(incompatibleRaw);
-assert.deepStrictEqual(JSON.parse(JSON.stringify(vm.runInContext(`({blocked:automaticSavesBlocked,incompatible:incompatibleStoredState,entries:state.entries.length,foods:state.foods.filter(f=>f.custom).length})`,boundary.sandbox))),{blocked:true,incompatible:true,entries:0,foods:0});
+assert.deepStrictEqual(JSON.parse(JSON.stringify(vm.runInContext(`({blocked:automaticSavesBlocked,incompatible:incompatibleStoredState,entries:state.entries.length})`,boundary.sandbox))),{blocked:false,incompatible:false,entries:0});
 assert.strictEqual(boundary.writes,0);
-assert.strictEqual(vm.runInContext('persistInitialState()',boundary.sandbox),false);
-assert.strictEqual(boundary.writes,0);
-assert.strictEqual(boundary.data['nutritionTracker.rebuild.v1'],incompatibleRaw);
-assert.strictEqual(boundary.notice.visible,true);
-assert.ok(html.includes('Older browser-local Tracker data is not carried forward.'));
-vm.runInContext('init=()=>{}',boundary.sandbox);
-assert.strictEqual(vm.runInContext('acknowledgeIncompatibleStateReset()',boundary.sandbox),true);
-assert.strictEqual(boundary.writes,1);
-const acknowledged=JSON.parse(boundary.data['nutritionTracker.rebuild.v1']);
-assert.strictEqual(acknowledged.schemaVersion,1);
-assert.deepStrictEqual({entries:acknowledged.entries,exercises:acknowledged.exercises,weights:acknowledged.dailyWeights,foods:acknowledged.foods,oneOff:acknowledged.oneOffFoods},{entries:[],exercises:[],weights:[],foods:[],oneOff:[]});
-assert.ok(!JSON.stringify(acknowledged).includes('must-not-migrate'));
-assert.strictEqual(boundary.notice.visible,false);
-const reloadedBoundary=boundaryContext(boundary.data['nutritionTracker.rebuild.v1']);
-assert.deepStrictEqual(JSON.parse(JSON.stringify(vm.runInContext(`({blocked:automaticSavesBlocked,incompatible:incompatibleStoredState,schema:getTrackerState().schemaVersion})`,reloadedBoundary.sandbox))),{blocked:false,incompatible:false,schema:1});
+assert.strictEqual(boundary.data['nutritionTracker.rebuild.v1'],JSON.stringify(currentLocal));
 
 // A fresh browser has catalogs and neutral placeholders, but no user history or user-created foods.
 assert.deepStrictEqual(run(`(()=>{const s=createEmptyTrackerState();return {builtInFoods:s.foods.length,customFoods:s.foods.filter(f=>f.custom).length,oneOff:s.oneOffFoods.length,entries:s.entries.length,exercises:s.exercises.length,weights:s.dailyWeights.length,profile:s.profile};})()`),{builtInFoods:138,customFoods:0,oneOff:0,entries:0,exercises:0,weights:0,profile:accountState().profile});
@@ -99,14 +82,12 @@ assert.strictEqual(run(`(()=>{clearDay();return state.entries.some(e=>e.date==='
 assert.strictEqual(run('(()=>{resetAll();return true;})()'),true);
 assert.deepStrictEqual(run(`(()=>({foods:state.foods.length,custom:state.foods.filter(f=>f.custom).length,oneOff:state.oneOffFoods.length,entries:state.entries.length,exercises:state.exercises.length,weights:state.dailyWeights.length}))()`),{foods:138,custom:0,oneOff:0,entries:0,exercises:0,weights:0});
 
-// Browser-local state survives save/reload and never changes URL/history fields.
+// Signed-out saves are refused and never move personal data into URL/history or unscoped storage.
 setState(run('createEmptyTrackerState()'));
 run(`state.entries=[{id:'persisted',date:'2026-07-04',servings:1,food:{name:'Persisted Food',calories:90}}];state.exercises=[{id:'persisted-walk',date:'2026-07-04',name:'Walking',minutes:20,calories:80}];state.profile={...state.profile,age:45}`);
 const originalUrl=JSON.parse(JSON.stringify(context.location));
-assert.strictEqual(run('save()'),true);
-setState(run('createEmptyTrackerState()'));
-setState(run('loadState()'));
-assert.deepStrictEqual(run(`(()=>({food:state.entries[0].food.name,exercise:state.exercises[0].name,age:state.profile.age}))()`),{food:'Persisted Food',exercise:'Walking',age:45});
+assert.strictEqual(run('save()'),false);
+assert.strictEqual(stored['nutritionTracker.rebuild.v1'],undefined);
 assert.deepStrictEqual(context.location,originalUrl);
 assert.strictEqual(urlMutations.length,0);
 

@@ -1,15 +1,21 @@
 # Permanent repository rules
 
-- `index.html` is the authoritative current Tracker.
-- Do not restore or retain obsolete Tracker versions.
-- Do not create unnecessary Tracker duplicates.
-- Preserve current Tracker behavior.
-- Do not remove foods, recipes, exercises, supplements, reports, or calculations without approval.
-- Never commit secrets.
-- Run regression tests after changes.
-- Maintain static Cloudflare Pages compatibility during Stage 1.
-- Stage 1 user data is temporary browser-local state; Stage 2 will introduce authenticated account storage through the internal Tracker state boundary.
-- Do not add manual JSON file transfer or obsolete-version migration code.
-- Avoid unnecessary frameworks and dependencies.
-- Document meaningful changes.
-- Do not use the old Pi save server.
+- `index.html` is authoritative; keep `nutrition-tracker.html` byte-identical when retained.
+- Preserve current Tracker behavior, catalogs, reports, and calculations unless the owner approves a material change.
+- Never use a Supabase service-role or secret key in browser code. Never request or document privileged credentials.
+- Never disable Row Level Security.
+- Never permit arbitrary `user_id` values; derive them from the authenticated session.
+- Never replace the atomic version-matching RPC with select-then-upsert or unconditional upsert.
+- Preserve dirty account cache until cloud save succeeds or the user explicitly confirms discard.
+- Reconcile matching account cache and cloud state before applying either at authenticated startup.
+- Never load one user's cloud state or cache into another user's session.
+- Never show signed-out users previous account data.
+- Validate all cloud state before applying it and use only the Tracker state boundary.
+- Preserve plain static Cloudflare compatibility without a runtime build.
+- Do not restore removed modules, including Planet Fitness or Micronutrient Optimizer.
+- Do not add JSON file import/export or old-format migration.
+- Do not use the old Pi nutrition save server.
+- Do not commit credentials other than the intended browser-safe project URL and publishable key.
+- Do not commit or push without user approval.
+- Run regression, account, syntax, static, identity, and repository scan checks after changes.
+- Run `supabase/atomic_tracker_state.sql` manually in Supabase before deploying browser code that depends on it; never automate production migration from browser code or tests.
