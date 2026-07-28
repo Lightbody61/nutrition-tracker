@@ -6,10 +6,9 @@ const account=fs.readFileSync('account.js','utf8');
 const edge=fs.readFileSync('supabase/functions/contact-admin/index.ts','utf8');
 const migration=fs.readFileSync('supabase/contact_messages.sql','utf8');
 
-const home=html.slice(html.indexOf('id="homeScreen"'),html.indexOf('</section>',html.indexOf('id="homeScreen"')));
-assert.strictEqual((home.match(/<button\b/g)||[]).length,6);
-for(const label of ['Food','Exercise','Profile','Utilities','Contact Admin','Users Guide']) assert.ok(home.includes(`>${label}</button>`));
-assert.ok(!home.includes('>Account</button>'));
+const mainMenu=html.slice(html.indexOf('id="mainMenuScreen"'),html.indexOf('</section>',html.indexOf('id="mainMenuScreen"')));
+assert.strictEqual((mainMenu.match(/<button\b/g)||[]).length,3);
+for(const label of ['Contact Admin','Proceed to Tracker','Back to Account']) assert.ok(mainMenu.includes(`>${label}</button>`));
 for(const id of ['contactName','contactEmail','contactSubject','contactMessage','sendContactBtn','contactStatus']) assert.ok(html.includes(`id="${id}"`));
 assert.ok(html.includes('<h2>Contact Administrator</h2>'));
 assert.ok(account.includes("client.functions.invoke('contact-admin'"));
@@ -36,10 +35,11 @@ assert.ok(migration.includes('revoke select, update, delete on public.contact_me
 for(const field of ['delivery_error','provider_message_id','delivered_at']) assert.ok(migration.includes(field),`missing contact delivery field: ${field}`);
 
 const contact=html.slice(html.indexOf('id="contactScreen"'),html.indexOf('</section>',html.indexOf('id="contactScreen"')));
-assert.ok(contact.includes('data-screen="homeScreen">← Back to Menu</button>'));
-assert.ok(contact.includes('data-screen="profileScreen">Profile</button>'));
+assert.ok(contact.includes('data-screen="mainMenuScreen">← Back to Main Menu</button>'));
 const profile=html.slice(html.indexOf('id="profileScreen"'),html.indexOf('</section>',html.indexOf('id="profileScreen"')));
 assert.ok(profile.includes('data-screen="homeScreen">← Back to Menu</button>'));
-assert.ok(profile.includes('id="logoutBtn">Log Out</button>'));
+assert.ok(!profile.includes('id="logoutBtn">Log Out</button>'));
+const accountScreen=html.slice(html.indexOf('id="accountScreen"'),html.indexOf('</section>',html.indexOf('id="accountScreen"')));
+assert.ok(accountScreen.includes('id="logoutBtn">Log Out</button>'));
 
 console.log('Contact security tests: PASS (fixed recipient, authenticated identity, validation, durable queue, RLS)');

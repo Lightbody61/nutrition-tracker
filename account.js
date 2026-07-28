@@ -12,7 +12,7 @@ const SAVE_DEBOUNCE_MS=1800;
 (function(){
   let client=null,session=null,currentUserId=null,lastKnownUpdatedAt=null;
   let cloudReady=false,loading=false,dirty=false,saveTimer=null,recovery=false;
-  let conflictRecord=null,conflictMode=null,lastLoadedUserId=null,logoutPending=false;
+  let conflictRecord=null,conflictMode=null,lastLoadedUserId=null,logoutPending=false,logoutInProgress=false;
   let deletionInProgress=false,persistenceGeneration=0,saveInFlight=null;
   let stateRevision=0,followUpSaveRequested=false,queuedSaveOptions=null,sessionGeneration=0;
   let deletionOperationGeneration=0,activeDeletion=null;
@@ -75,7 +75,7 @@ const SAVE_DEBOUNCE_MS=1800;
   function showConflict(record,mode,message){
     conflictRecord=record||null;conflictMode=mode;el('conflictActions').classList.remove('hide');
     el('keepDeviceVersionBtn').textContent=mode==='cache-recovery'?'Save Cached Version to Cloud':'Keep This Device Version';
-    cloudStatus('Conflict — choice required');safeMessage(message,'error');showScreen('profileScreen');
+    cloudStatus('Conflict — choice required');safeMessage(message,'error');showScreen('accountScreen');
   }
   function hideConflict(){conflictRecord=null;conflictMode=null;el('conflictActions').classList.add('hide');}
   async function verifiedSession(){const result=await client.auth.getSession();if(result.error||!result.data.session)return null;return result.data.session;}
@@ -192,6 +192,7 @@ const SAVE_DEBOUNCE_MS=1800;
   window.trackerAccountStateChanged=stateChanged;window.loadAuthenticatedUserState=loadAuthenticatedUserState;window.saveAuthenticatedUserState=saveAuthenticatedUserState;
 
   async function handleSession(nextSession,event){
+    if(logoutInProgress&&nextSession&&event!=='SIGNED_OUT')return;
     const nextId=nextSession&&nextSession.user&&nextSession.user.id||null,previousId=currentUserId;session=nextSession;
     const changed=nextId!==previousId;
     if(changed){
@@ -204,7 +205,7 @@ const SAVE_DEBOUNCE_MS=1800;
     if(!changed){currentUserId=nextId;setAuthView(nextSession.user);}
     if(event==='PASSWORD_RECOVERY'){recovery=true;recoveryContext={userId:nextId,sessionGeneration};cloudReady=false;setAuthView(nextSession.user);document.body.classList.toggle('trackerLocked',true);safeMessage('Enter and confirm your new password.');return;}
     if(recovery){document.body.classList.toggle('trackerLocked',true);return;}
-    if(changed||lastLoadedUserId!==nextId){const generation=sessionGeneration;const loaded=await loadAuthenticatedUserState(generation,nextId);if(loaded&&generation===sessionGeneration&&nextId===currentUserId){setAuthView(nextSession.user);showScreen(conflictRecord?'profileScreen':'homeScreen');}}
+    if(changed||lastLoadedUserId!==nextId){const generation=sessionGeneration;const loaded=await loadAuthenticatedUserState(generation,nextId);if(loaded&&generation===sessionGeneration&&nextId===currentUserId){setAuthView(nextSession.user);showScreen(conflictRecord?'accountScreen':'mainMenuScreen');}}
   }
   async function register(){const email=el('accountEmail').value.trim(),password=el('accountPassword').value;if(!validEmail(email)){safeMessage('Enter a valid email address.','error');return;}if(password.length<8){safeMessage('Password must be at least 8 characters.','error');return;}safeMessage('Creating account…');const result=await client.auth.signUp({email,password,options:{emailRedirectTo:AUTH_REDIRECT_URL}});if(result.error){safeMessage(friendlyError(result.error),'error');return;}if(result.data.session)safeMessage('Account created and signed in. Loading your Tracker…','success');else{safeMessage('Account created. Check your email to confirm it before logging in.','success');el('resendConfirmationBtn').classList.remove('hide');}}
   async function login(){const email=el('accountEmail').value.trim(),password=el('accountPassword').value;if(!validEmail(email)||!password){safeMessage('Enter a valid email and password.','error');return;}safeMessage('Logging in…');el('loginBtn').disabled=true;const result=await client.auth.signInWithPassword({email,password});el('loginBtn').disabled=false;if(result.error)safeMessage(friendlyError(result.error),'error');}
@@ -232,11 +233,12 @@ const SAVE_DEBOUNCE_MS=1800;
     finally{button.disabled=false;}
   }
   async function completeLogout(discard=false){
-    const id=currentUserId;const result=await client.auth.signOut();if(result.error){safeMessage(friendlyError(result.error),'error');return false;}
-    if(id)try{localStorage.removeItem(cacheKey(id));}catch(_e){}logoutPending=false;el('logoutProtectionActions').classList.add('hide');safeMessage(discard?'Unsaved changes were discarded and you were logged out.':'Logged out. Personal Tracker data has been cleared from this screen.','success');return true;
+    logoutInProgress=true;const result=await client.auth.signOut();if(result.error){logoutInProgress=false;safeMessage(friendlyError(result.error),'error');return false;}
+    const confirmed=await client.auth.getSession();if(confirmed.error||confirmed.data.session){logoutInProgress=false;safeMessage('Sign-out could not be confirmed. Please try again.','error');return false;}
+    await handleSession(null,'SIGNED_OUT');logoutInProgress=false;logoutPending=false;el('logoutProtectionActions').classList.add('hide');safeMessage(discard?'Unsaved changes were discarded and you were logged out.':'Logged out successfully.','success');showScreen('accountScreen');return true;
   }
   async function logout(){
-    if(dirty){const saved=await saveAuthenticatedUserState();if(!saved){logoutPending=true;el('logoutProtectionActions').classList.remove('hide');safeMessage('Logout was stopped to protect unsaved changes. Retry saving, stay signed in, or explicitly discard the changes.','error');showScreen('profileScreen');return false;}}
+    if(dirty){const saved=await saveAuthenticatedUserState();if(!saved){logoutPending=true;el('logoutProtectionActions').classList.remove('hide');safeMessage('Logout was stopped to protect unsaved changes. Retry saving, stay signed in, or explicitly discard the changes.','error');showScreen('accountScreen');return false;}}
     return completeLogout(false);
   }
   async function retryLogoutSave(){if(!logoutPending)return;const saved=await saveAuthenticatedUserState();if(saved)await completeLogout(false);else safeMessage('Save still failed. Logout remains stopped and your account cache is preserved.','error');}

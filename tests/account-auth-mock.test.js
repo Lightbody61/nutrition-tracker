@@ -9,15 +9,15 @@ class FakeElement{
 }
 const ids=['accountMessage','cloudSaveStatus','signedInEmail','accountEmail','accountPassword','createAccountBtn','loginBtn','logoutBtn','forgotPasswordBtn','updatePasswordBtn','retryRecoveryLoadBtn','deleteAccountDataBtn','resendConfirmationBtn','saveNowBtn','loadCloudVersionBtn','keepDeviceVersionBtn','conflictActions','newPassword','confirmNewPassword','storageStatus','date','dailyTotalsDate','exerciseDate','copyFromDate','shoppingMonth','weightHistoryEnd','weightHistoryStart','foodOrder','exerciseTime'];
 const elements=Object.fromEntries(ids.map(id=>[id,new FakeElement()]));
-const calls={signUp:[],reset:[]};
+const calls={signUp:[],reset:[],signOut:0,getSession:0,screens:[]};
 let authListener=null;
 const auth={
-  getSession:async()=>({data:{session:null},error:null}),
+  getSession:async()=>(calls.getSession++,{data:{session:null},error:null}),
   onAuthStateChange(callback){authListener=callback;return {data:{subscription:{unsubscribe(){}}}};},
   signUp:async options=>(calls.signUp.push(options),{data:{session:null,user:{}},error:null}),
   resetPasswordForEmail:async(email,options)=>(calls.reset.push({email,options}),{data:{},error:null}),
   signInWithPassword:async()=>({data:{},error:{message:'Invalid login credentials'}}),
-  signOut:async()=>({error:null}),updateUser:async()=>({error:null}),resend:async()=>({error:null})
+  signOut:async()=>(calls.signOut++,{error:null}),updateUser:async()=>({error:null}),resend:async()=>({error:null})
 };
 const empty={schemaVersion:1,foods:[],oneOffFoods:[],entries:[],exercises:[],dailyWeights:[],profile:{age:0,feet:0,inches:0,weight:0,goalWeight:0,activity:1.2,plan:0,manualMaintenance:0}};
 const context={
@@ -25,7 +25,7 @@ const context={
   document:{readyState:'complete',visibilityState:'visible',body:{classList:{toggle(){},contains(){return true;}}},getElementById:id=>elements[id]||new FakeElement(),querySelectorAll:()=>[],addEventListener(){}},
   addEventListener(){},supabase:{createClient:(url,key)=>{context.created={url,key};return {auth,from(){throw new Error('cloud should not be called while signed out');}};}},
   createEmptyTrackerState:()=>JSON.parse(JSON.stringify(empty)),validateTrackerState:()=>true,applyTrackerState:()=>true,getTrackerState:()=>empty,
-  init(){},render(){},showScreen(){},setStorageStatus(){}
+  init(){},render(){},showScreen(id){calls.screens.push(id);},setStorageStatus(){}
 };
 context.window=context;vm.createContext(context);vm.runInContext(fs.readFileSync('account.js','utf8'),context);
 
@@ -43,6 +43,11 @@ context.window=context;vm.createContext(context);vm.runInContext(fs.readFileSync
   await elements.forgotPasswordBtn.click();
   assert.deepStrictEqual(JSON.parse(JSON.stringify(calls.reset[0])),{email:'person@example.com',options:{redirectTo:'https://nutrition-tracker.jodydmccord.workers.dev'}});
   assert.ok(elements.accountMessage.textContent.includes('request has been sent'));
+
+  await elements.logoutBtn.click();
+  assert.strictEqual(calls.signOut,1,'logout calls Supabase signOut');
+  assert.strictEqual(calls.getSession,1,'logout confirms the session is absent');
+  assert.strictEqual(calls.screens.at(-1),'accountScreen','logout returns to the Account landing page');
 
   // A direct account switch clears immediately and generation-checks both stale loads and saves.
   const visible=[];let generation=1,currentUser='user-a',oldSaveApplied=false;

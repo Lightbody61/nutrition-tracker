@@ -108,13 +108,21 @@ assert.ok(!html.includes('type="file"'));
 assert.ok(!source.includes('createObjectURL'));
 assert.ok(!source.includes('.download='));
 
-// Hierarchical SPA navigation keeps Home clean, uses designated parents, and shows one screen at a time.
+// Three-level SPA navigation keeps account, authenticated main menu, and tracker menu distinct.
+assert.ok(html.includes('<header><h1>Nutrition Tracker</h1>'));
+const accountMarkup=html.slice(html.indexOf('id="accountScreen"'),html.indexOf('</section>',html.indexOf('id="accountScreen"')));
+assert.ok(accountMarkup.includes('id="signedOutAccount"')&&accountMarkup.includes('id="loginBtn"'));
+assert.ok(accountMarkup.includes('id="signedInEmail"')&&accountMarkup.includes('id="logoutBtn"'));
+assert.ok(accountMarkup.includes('data-screen="mainMenuScreen">Back to Main Menu</button>'));
+const mainMenuMarkup=html.slice(html.indexOf('id="mainMenuScreen"'),html.indexOf('</section>',html.indexOf('id="mainMenuScreen"')));
+for(const label of ['Contact Admin','Proceed to Tracker','Back to Account']) assert.ok(mainMenuMarkup.includes(`>${label}</button>`),`missing Main Menu button: ${label}`);
+for(const label of ['Food','Exercise','Utilities','Profile','Users Guide']) assert.ok(!mainMenuMarkup.includes(`>${label}</button>`),`tracker button leaked into Main Menu: ${label}`);
 const homeMarkup=html.slice(html.indexOf('id="homeScreen"'),html.indexOf('</section>',html.indexOf('id="homeScreen"')));
 assert.strictEqual((homeMarkup.match(/<button\b/g)||[]).length,6);
-for(const label of ['Food','Exercise','Profile','Utilities','Contact Admin','Users Guide']) assert.ok(homeMarkup.includes(`>${label}</button>`),`missing Home button: ${label}`);
-assert.ok(!homeMarkup.includes('>Account</button>'));
+for(const label of ['Food','Exercise','Profile','Utilities','Users Guide','Back to Main Menu']) assert.ok(homeMarkup.includes(`>${label}</button>`),`missing Tracker Menu button: ${label}`);
+assert.ok(!homeMarkup.includes('>Contact Admin</button>')&&!homeMarkup.includes('>Admin</button>'));
 for(const forbiddenHomeContent of ['<form','signedInEmail','cloudSaveStatus','foodSelect','menuTotals','profileResults']) assert.ok(!homeMarkup.includes(forbiddenHomeContent),`Home contains module content: ${forbiddenHomeContent}`);
-assert.ok(html.includes("const SCREEN_PARENTS={foodHubScreen:'homeScreen',exerciseHubScreen:'homeScreen',utilitiesScreen:'homeScreen',profileScreen:'homeScreen',contactScreen:'homeScreen',usersGuideScreen:'homeScreen'"));
+assert.ok(html.includes("const SCREEN_PARENTS={homeScreen:'mainMenuScreen',accountScreen:'mainMenuScreen',contactScreen:'mainMenuScreen',foodHubScreen:'homeScreen'"));
 assert.ok(html.includes("foodListsHubScreen:'foodHubScreen'"));
 assert.ok(html.includes("statsHubScreen:'foodHubScreen'"));
 assert.ok(html.includes("reportsScreen:'utilitiesScreen'"));
@@ -125,7 +133,7 @@ assert.ok(html.includes('@media(max-width:899px){.homeMenu{grid-template-columns
 assert.ok(html.includes('@media(max-width:599px){.homeMenu{grid-template-columns:1fr'));
 assert.ok(html.includes('.trackerLocked main .screen:not(#accountScreen){display:none!important}'));
 
-const navIds=['homeScreen','accountScreen','foodHubScreen','foodListsHubScreen','statsHubScreen','exerciseHubScreen','utilitiesScreen','reportsScreen','profileScreen','contactScreen','usersGuideScreen','dailyTotalsScreen'];
+const navIds=['mainMenuScreen','homeScreen','accountScreen','foodHubScreen','foodListsHubScreen','statsHubScreen','exerciseHubScreen','utilitiesScreen','reportsScreen','profileScreen','contactScreen','usersGuideScreen','dailyTotalsScreen'];
 const navScreens=Object.fromEntries(navIds.map(id=>[id,{id,active:id==='homeScreen',classList:{add(name){if(name==='active')this.owner.active=true;},remove(name){if(name==='active')this.owner.active=false;}}}]));
 for(const screen of Object.values(navScreens)) screen.classList.owner=screen;
 const dailyReturn={dataset:{screen:'statsHubScreen'},textContent:''};
@@ -136,7 +144,7 @@ context.document.getElementById=id=>navScreens[id]||elements[id]||null;
 context.document.body={classList:{contains:()=>false}};
 context.scrollTo=(x,y)=>{assert.strictEqual(x,0);assert.strictEqual(y,0);scrollCalls++;};
 context.render=()=>{};context.renderProfile=()=>{};context.renderVitABreakdown=()=>{};context.renderDailyBreakdown=()=>{};
-for(const id of ['foodHubScreen','foodListsHubScreen','statsHubScreen','exerciseHubScreen','utilitiesScreen','reportsScreen','accountScreen','profileScreen','contactScreen','usersGuideScreen']){
+for(const id of ['mainMenuScreen','foodHubScreen','foodListsHubScreen','statsHubScreen','exerciseHubScreen','utilitiesScreen','reportsScreen','accountScreen','profileScreen','contactScreen','usersGuideScreen']){
   assert.strictEqual(run(`showScreen('${id}')`),true);
   assert.deepStrictEqual(Object.values(navScreens).filter(screen=>screen.active).map(screen=>screen.id),[id]);
 }
