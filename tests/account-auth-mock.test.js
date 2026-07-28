@@ -35,6 +35,7 @@ context.window=context;vm.createContext(context);vm.runInContext(fs.readFileSync
 (async()=>{
   await new Promise(resolve=>setTimeout(resolve,10));
   assert.ok(authListener,'auth state listener registered');
+  assert.strictEqual(calls.screens[0],'publicLandingScreen','fresh page load starts on public landing');
   assert.strictEqual(context.created.url,'https://bwihhbcfthkfsogqmgdq.supabase.co');
   assert.ok(context.created.key.startsWith('sb_publishable_'));
 
@@ -50,7 +51,7 @@ context.window=context;vm.createContext(context);vm.runInContext(fs.readFileSync
   await elements.logoutBtn.click();
   assert.strictEqual(calls.signOut,1,'logout calls Supabase signOut');
   assert.strictEqual(calls.getSession,1,'logout confirms the session is absent');
-  assert.strictEqual(calls.screens.at(-1),'accountScreen','logout returns to the Account landing page');
+  assert.strictEqual(calls.screens.at(-1),'publicLandingScreen','logout returns to the public landing page');
 
   // A direct account switch clears immediately and generation-checks both stale loads and saves.
   const visible=[];let generation=1,currentUser='user-a',oldSaveApplied=false;

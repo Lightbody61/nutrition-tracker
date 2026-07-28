@@ -17,7 +17,7 @@ const SAVE_DEBOUNCE_MS=1800;
   let stateRevision=0,followUpSaveRequested=false,queuedSaveOptions=null,sessionGeneration=0;
   let deletionOperationGeneration=0,activeDeletion=null;
   const completedDeletionUsers=new Set();
-  let loadInFlight=null,loadInFlightKey=null,recoveryContext=null,forumPosting=false,forumProfile=null,forumIsAdmin=false,forumComments=[],forumProfiles=new Map(),forumAdminUsers=[],forumAdminComments=[];
+  let loadInFlight=null,loadInFlightKey=null,recoveryContext=null,forumPosting=false,forumProfile=null,forumIsAdmin=false,forumComments=[],forumProfiles=new Map(),forumAdminUsers=[],forumAdminComments=[],accountRequested=false;
 
   const el=id=>document.getElementById(id);
   const safeMessage=(message,type='')=>{const locked=document.body.classList.contains&&document.body.classList.contains('trackerLocked');const node=locked?el('accountMessage'):(el('profileAccountMessage')||el('cloudSaveStatus')||el('accountMessage'));if(!node)return;node.textContent=message;node.className='accountStatus'+(type?' '+type:'');};
@@ -51,7 +51,7 @@ const SAVE_DEBOUNCE_MS=1800;
     document.querySelectorAll('.recoveryOnly').forEach(n=>n.style.display=recovery?'block':'none');
     if(el('signedInEmail'))el('signedInEmail').textContent=user&&user.email||'';
     if(user){const metadata=user.user_metadata||{};if(el('contactName')&&!el('contactName').value)el('contactName').value=metadata.full_name||metadata.name||'';if(el('contactEmail')&&!el('contactEmail').value)el('contactEmail').value=user.email||'';}
-    if(!user){forumProfile=null;forumIsAdmin=false;window.forumAdminAccessConfirmed=false;forumComments=[];forumProfiles.clear();renderCommunityForumComments([]);forumStatus('');if(el('forumAdministrationBtn'))el('forumAdministrationBtn').classList.add('hide');showScreen('accountScreen');}
+    if(!user){forumProfile=null;forumIsAdmin=false;window.forumAdminAccessConfirmed=false;forumComments=[];forumProfiles.clear();renderCommunityForumComments([]);forumStatus('');if(el('forumAdministrationBtn'))el('forumAdministrationBtn').classList.add('hide');}
   }
   function clearVisibleState(){applyTrackerState(createEmptyTrackerState());try{init(false,false);}catch(_e){}}
   function writeCache(){
@@ -201,11 +201,11 @@ const SAVE_DEBOUNCE_MS=1800;
       clearVisibleState();hideConflict();el('logoutProtectionActions').classList.add('hide');if(el('lastCloudSave'))el('lastCloudSave').textContent='';safeMessage(nextId?'Loading this account’s Tracker…':'');cloudStatus(nextId?'Loading cloud data…':'Not signed in');setAuthView(nextSession&&nextSession.user||null);
       document.body.classList.toggle('trackerLocked',true);
     }
-    if(!nextId){setAuthView(null);return;}
+    if(!nextId){setAuthView(null);if(event==='SIGNED_OUT'){accountRequested=false;showScreen('publicLandingScreen');}return;}
     if(!changed){currentUserId=nextId;setAuthView(nextSession.user);}
     if(event==='PASSWORD_RECOVERY'){recovery=true;recoveryContext={userId:nextId,sessionGeneration};cloudReady=false;setAuthView(nextSession.user);document.body.classList.toggle('trackerLocked',true);safeMessage('Enter and confirm your new password.');return;}
     if(recovery){document.body.classList.toggle('trackerLocked',true);return;}
-    if(changed||lastLoadedUserId!==nextId){const generation=sessionGeneration;const loaded=await loadAuthenticatedUserState(generation,nextId);if(loaded&&generation===sessionGeneration&&nextId===currentUserId){setAuthView(nextSession.user);showScreen(conflictRecord?'accountScreen':'mainMenuScreen');}}
+    if(changed||lastLoadedUserId!==nextId){const generation=sessionGeneration;const loaded=await loadAuthenticatedUserState(generation,nextId);if(loaded&&generation===sessionGeneration&&nextId===currentUserId){setAuthView(nextSession.user);if(conflictRecord)showScreen('accountScreen');else if(event==='INITIAL_SESSION')showScreen(accountRequested?'accountScreen':'publicLandingScreen');else{accountRequested=false;showScreen('mainMenuScreen');}}}
   }
   async function register(){const email=el('accountEmail').value.trim(),password=el('accountPassword').value;if(!validEmail(email)){safeMessage('Enter a valid email address.','error');return;}if(password.length<8){safeMessage('Password must be at least 8 characters.','error');return;}safeMessage('Creating account…');const result=await client.auth.signUp({email,password,options:{emailRedirectTo:AUTH_REDIRECT_URL}});if(result.error){safeMessage(friendlyError(result.error),'error');return;}if(result.data.session)safeMessage('Account created and signed in. Loading your Tracker…','success');else{safeMessage('Account created. Check your email to confirm it before logging in.','success');el('resendConfirmationBtn').classList.remove('hide');}}
   async function login(){const email=el('accountEmail').value.trim(),password=el('accountPassword').value;if(!validEmail(email)||!password){safeMessage('Enter a valid email and password.','error');return;}safeMessage('Logging in…');el('loginBtn').disabled=true;const result=await client.auth.signInWithPassword({email,password});el('loginBtn').disabled=false;if(result.error)safeMessage(friendlyError(result.error),'error');}
@@ -268,7 +268,7 @@ const SAVE_DEBOUNCE_MS=1800;
   async function completeLogout(discard=false){
     logoutInProgress=true;const result=await client.auth.signOut();if(result.error){logoutInProgress=false;safeMessage(friendlyError(result.error),'error');return false;}
     const confirmed=await client.auth.getSession();if(confirmed.error||confirmed.data.session){logoutInProgress=false;safeMessage('Sign-out could not be confirmed. Please try again.','error');return false;}
-    await handleSession(null,'SIGNED_OUT');logoutInProgress=false;logoutPending=false;el('logoutProtectionActions').classList.add('hide');safeMessage(discard?'Unsaved changes were discarded and you were logged out.':'Logged out successfully.','success');showScreen('accountScreen');return true;
+    accountRequested=false;await handleSession(null,'SIGNED_OUT');logoutInProgress=false;logoutPending=false;el('logoutProtectionActions').classList.add('hide');safeMessage(discard?'Unsaved changes were discarded and you were logged out.':'Logged out successfully.','success');showScreen('publicLandingScreen');return true;
   }
   async function logout(){
     if(dirty){const saved=await saveAuthenticatedUserState();if(!saved){logoutPending=true;el('logoutProtectionActions').classList.remove('hide');safeMessage('Logout was stopped to protect unsaved changes. Retry saving, stay signed in, or explicitly discard the changes.','error');showScreen('accountScreen');return false;}}
@@ -341,9 +341,10 @@ const SAVE_DEBOUNCE_MS=1800;
   function bind(){
     [['createAccountBtn',register],['loginBtn',login],['logoutBtn',logout],['forgotPasswordBtn',forgot],['updatePasswordBtn',updatePassword],['retryRecoveryLoadBtn',retryRecoveryLoad],['deleteAccountDataBtn',deleteData],['resendConfirmationBtn',resend],['saveNowBtn',()=>saveAuthenticatedUserState()],['loadCloudVersionBtn',loadConflictCloud],['keepDeviceVersionBtn',saveConflictDevice],['retryLogoutSaveBtn',retryLogoutSave],['staySignedInBtn',staySignedIn],['discardAndLogoutBtn',discardAndLogout]].forEach(([id,fn])=>el(id).addEventListener('click',fn));
     el('contactForm').addEventListener('submit',submitContact);
+    document.querySelectorAll('[data-screen="accountScreen"]').forEach(button=>button.addEventListener('click',()=>{accountRequested=true;}));
     el('communityForumForm').addEventListener('submit',postCommunityForumComment);el('communityForumComment').addEventListener('input',updateCommunityForumCharacterCount);el('refreshCommunityForumCommentsBtn').addEventListener('click',loadCommunityForumComments);document.querySelectorAll('[data-screen="communityForumScreen"]').forEach(button=>button.addEventListener('click',loadCommunityForumComments));el('forumScreenNameForm').addEventListener('submit',saveForumScreenName);el('changeForumScreenNameBtn').addEventListener('click',beginForumScreenNameChange);el('cancelForumScreenNameBtn').addEventListener('click',cancelForumScreenNameChange);el('forumAdministrationBtn').addEventListener('click',loadForumAdministration);el('refreshForumAdministrationBtn').addEventListener('click',loadForumAdministration);el('forumAdminUserSearch').addEventListener('input',renderForumAdministration);el('forumAdminCommentSearch').addEventListener('input',renderForumAdministration);
     document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'&&dirty&&cloudReady)saveAuthenticatedUserState();});window.addEventListener('pagehide',()=>{if(dirty&&cloudReady)saveAuthenticatedUserState();});window.addEventListener('online',()=>{if(dirty&&cloudReady&&!deletionInProgress)saveAuthenticatedUserState();});
   }
-  async function start(){clearVisibleState();setAuthView(null);showScreen('accountScreen');if(!window.supabase||!window.supabase.createClient){cloudStatus('Offline');safeMessage('Account service could not load. Check your network connection.','error');return;}client=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});bind();client.auth.onAuthStateChange((event,nextSession)=>{setTimeout(()=>handleSession(nextSession,event),0)});}
+  async function start(){clearVisibleState();setAuthView(null);showScreen('publicLandingScreen');if(!window.supabase||!window.supabase.createClient){cloudStatus('Offline');safeMessage('Account service could not load. Check your network connection.','error');return;}client=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});bind();client.auth.onAuthStateChange((event,nextSession)=>{setTimeout(()=>handleSession(nextSession,event),0)});}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
 })();

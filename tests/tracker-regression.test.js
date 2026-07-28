@@ -110,6 +110,12 @@ assert.ok(!source.includes('.download='));
 
 // Three-level SPA navigation keeps account, authenticated main menu, and tracker menu distinct.
 assert.ok(html.includes('<header><h1>Nutrition Tracker</h1>'));
+const landingMarkup=html.slice(html.indexOf('id="publicLandingScreen"'),html.indexOf('</section>',html.indexOf('id="publicLandingScreen"')));
+assert.ok(landingMarkup.includes('<h2>A Healthy You Starts Here</h2>'));
+assert.ok(landingMarkup.includes("Welcome to the Community! More than looking good and feeling great (both are awesome!!), our goal is to become healthy and lead vibrant, energetic lives. We will learn and encourage each other to eat healthy, natural, real and delicious foods as well as build strong bodies. Whether you are under the care of a weight management doctor or are just exploring healthy alternatives to modern diets and lifestyles that have left you feeling sluggish and sick, you'll find recipes and encouragement here to build healthy habits for life. You should absolutely consult with a medical professional before embarking on major changes that affect any conditions that you may have."));
+assert.ok(landingMarkup.includes('Set up a free account and join us in our commitment to good health!'));
+assert.ok(landingMarkup.includes('id="openAccountBtn" data-screen="accountScreen">Create Account / Log In</button>'));
+assert.ok(html.includes('<section class="screen active" id="publicLandingScreen"'));
 const accountMarkup=html.slice(html.indexOf('id="accountScreen"'),html.indexOf('</section>',html.indexOf('id="accountScreen"')));
 assert.ok(accountMarkup.includes('id="signedOutAccount"')&&accountMarkup.includes('id="loginBtn"'));
 assert.ok(accountMarkup.includes('id="signedInEmail"')&&accountMarkup.includes('id="logoutBtn"'));
@@ -132,9 +138,9 @@ assert.ok(html.includes("SHARED_DESTINATION_PARENTS={dailyTotalsScreen:['statsHu
 assert.ok(html.includes('.homeMenu{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))'));
 assert.ok(html.includes('@media(max-width:899px){.homeMenu{grid-template-columns:repeat(2,minmax(0,1fr))'));
 assert.ok(html.includes('@media(max-width:599px){.homeMenu{grid-template-columns:1fr'));
-assert.ok(html.includes('.trackerLocked main .screen:not(#accountScreen){display:none!important}'));
+assert.ok(html.includes('.trackerLocked main .screen:not(#accountScreen):not(#publicLandingScreen){display:none!important}'));
 
-const navIds=['mainMenuScreen','communityForumScreen','homeScreen','accountScreen','foodHubScreen','foodListsHubScreen','statsHubScreen','exerciseHubScreen','utilitiesScreen','reportsScreen','profileScreen','contactScreen','usersGuideScreen','dailyTotalsScreen'];
+const navIds=['publicLandingScreen','mainMenuScreen','communityForumScreen','homeScreen','accountScreen','foodHubScreen','foodListsHubScreen','statsHubScreen','exerciseHubScreen','utilitiesScreen','reportsScreen','profileScreen','contactScreen','usersGuideScreen','dailyTotalsScreen'];
 const navScreens=Object.fromEntries(navIds.map(id=>[id,{id,active:id==='homeScreen',classList:{add(name){if(name==='active')this.owner.active=true;},remove(name){if(name==='active')this.owner.active=false;}}}]));
 for(const screen of Object.values(navScreens)) screen.classList.owner=screen;
 const dailyReturn={dataset:{screen:'statsHubScreen'},textContent:''};
@@ -145,10 +151,14 @@ context.document.getElementById=id=>navScreens[id]||elements[id]||null;
 context.document.body={classList:{contains:()=>false}};
 context.scrollTo=(x,y)=>{assert.strictEqual(x,0);assert.strictEqual(y,0);scrollCalls++;};
 context.render=()=>{};context.renderProfile=()=>{};context.renderVitABreakdown=()=>{};context.renderDailyBreakdown=()=>{};
-for(const id of ['mainMenuScreen','communityForumScreen','foodHubScreen','foodListsHubScreen','statsHubScreen','exerciseHubScreen','utilitiesScreen','reportsScreen','accountScreen','profileScreen','contactScreen','usersGuideScreen']){
+for(const id of ['publicLandingScreen','mainMenuScreen','communityForumScreen','foodHubScreen','foodListsHubScreen','statsHubScreen','exerciseHubScreen','utilitiesScreen','reportsScreen','accountScreen','profileScreen','contactScreen','usersGuideScreen']){
   assert.strictEqual(run(`showScreen('${id}')`),true);
   assert.deepStrictEqual(Object.values(navScreens).filter(screen=>screen.active).map(screen=>screen.id),[id]);
 }
+context.document.body={classList:{contains:()=>true}};
+assert.strictEqual(run("showScreen('foodHubScreen')"),true);
+assert.deepStrictEqual(Object.values(navScreens).filter(screen=>screen.active).map(screen=>screen.id),['publicLandingScreen']);
+context.document.body={classList:{contains:()=>false}};
 run("showScreen('exerciseHubScreen');showScreen('dailyTotalsScreen','exerciseHubScreen')");
 assert.strictEqual(dailyReturn.dataset.screen,'exerciseHubScreen');
 assert.strictEqual(dailyReturn.textContent,'← Exercise');

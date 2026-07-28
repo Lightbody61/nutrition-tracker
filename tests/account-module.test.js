@@ -23,6 +23,10 @@ assert.ok(source.includes("if(recovery){document.body.classList.toggle('trackerL
 const startBody=source.slice(source.indexOf('async function start()'),source.indexOf("if(document.readyState==='loading'"));
 assert.ok(startBody.includes('auth.onAuthStateChange'));
 assert.ok(!startBody.includes('auth.getSession'),'boot must use the authoritative INITIAL_SESSION callback only');
+assert.ok(startBody.includes("showScreen('publicLandingScreen')"),'fresh loads must start on the public landing screen');
+assert.ok(source.includes("else if(event==='INITIAL_SESSION')showScreen(accountRequested?'accountScreen':'publicLandingScreen')"),'an existing session must not bypass the landing screen');
+assert.ok(source.includes("else{accountRequested=false;showScreen('mainMenuScreen');}"),'interactive authentication must open Main Menu');
+assert.ok(source.includes("accountRequested=false;await handleSession(null,'SIGNED_OUT')"));
 
 // Cloud reads/writes always derive IDs from the authenticated session; no form/URL user ID exists.
 assert.ok(source.includes("from('tracker_states')"));
@@ -64,7 +68,7 @@ assert.ok(source.includes("if(dirty)saveTimer=setTimeout(()=>saveAuthenticatedUs
 assert.ok(source.includes("confirm('Discard unsaved cached/device changes"));
 assert.ok(source.includes('clearVisibleState()'));
 assert.ok(!source.includes('localStorage.removeItem(cacheKey(id))'),'logout must preserve account-scoped tracker cache');
-assert.ok(source.includes("showScreen(conflictRecord?'accountScreen':'mainMenuScreen')"));
+assert.ok(source.includes("if(conflictRecord)showScreen('accountScreen')"));
 assert.ok(source.includes('const confirmed=await client.auth.getSession()'));
 assert.ok(source.includes("await handleSession(null,'SIGNED_OUT')"));
 assert.ok(source.includes("if(logoutInProgress&&nextSession&&event!=='SIGNED_OUT')return"));
