@@ -17,7 +17,7 @@ const SAVE_DEBOUNCE_MS=1800;
   let stateRevision=0,followUpSaveRequested=false,queuedSaveOptions=null,sessionGeneration=0;
   let deletionOperationGeneration=0,activeDeletion=null;
   const completedDeletionUsers=new Set();
-  let loadInFlight=null,loadInFlightKey=null,recoveryContext=null;
+  let loadInFlight=null,loadInFlightKey=null,recoveryContext=null,forumPosting=false;
 
   const el=id=>document.getElementById(id);
   const safeMessage=(message,type='')=>{const locked=document.body.classList.contains&&document.body.classList.contains('trackerLocked');const node=locked?el('accountMessage'):(el('profileAccountMessage')||el('cloudSaveStatus')||el('accountMessage'));if(!node)return;node.textContent=message;node.className='accountStatus'+(type?' '+type:'');};
@@ -51,7 +51,7 @@ const SAVE_DEBOUNCE_MS=1800;
     document.querySelectorAll('.recoveryOnly').forEach(n=>n.style.display=recovery?'block':'none');
     if(el('signedInEmail'))el('signedInEmail').textContent=user&&user.email||'';
     if(user){const metadata=user.user_metadata||{};if(el('contactName')&&!el('contactName').value)el('contactName').value=metadata.full_name||metadata.name||'';if(el('contactEmail')&&!el('contactEmail').value)el('contactEmail').value=user.email||'';}
-    if(!user)showScreen('accountScreen');
+    if(!user){renderCommunityForumComments([]);forumStatus('');showScreen('accountScreen');}
   }
   function clearVisibleState(){applyTrackerState(createEmptyTrackerState());try{init(false,false);}catch(_e){}}
   function writeCache(){
@@ -232,6 +232,35 @@ const SAVE_DEBOUNCE_MS=1800;
     catch(error){console.error('Contact Admin submission failed',{status:null,error:sanitizedContactError(error&&error.message)});report('Your message could not be sent. Please try again.','error');}
     finally{button.disabled=false;}
   }
+  const forumStatus=(message,type='')=>{const node=el('communityForumStatus');if(!node)return;node.textContent=message;node.className='forumStatus'+(type?' '+type:'');};
+  function privacyReducedEmail(email){
+    const value=String(email||'').trim(),at=value.indexOf('@');if(at<1)return 'Nutrition Tracker user';
+    return value.slice(0,Math.min(2,at))+'***'+value.slice(at);
+  }
+  function forumAuthor(user){
+    const metadata=user&&user.user_metadata||{};
+    const displayName=String(metadata.display_name||metadata.full_name||metadata.name||'').trim().slice(0,100);
+    return displayName?(displayName.includes('@')?privacyReducedEmail(displayName):displayName):privacyReducedEmail(user&&user.email);
+  }
+  function renderCommunityForumComments(comments){
+    const list=el('communityForumComments');if(!list)return;list.replaceChildren();
+    if(!Array.isArray(comments)||!comments.length){const empty=document.createElement('p');empty.textContent='No comments yet. Be the first to post.';list.appendChild(empty);return;}
+    comments.forEach(comment=>{const article=document.createElement('article'),meta=document.createElement('div'),text=document.createElement('div');article.className='forumComment';meta.className='forumCommentMeta';text.className='forumCommentText';const author=String(comment.author_name||'Nutrition Tracker user').trim();meta.textContent=(author.includes('@')?privacyReducedEmail(author):author.slice(0,100))+' · '+new Date(comment.created_at).toLocaleString();text.textContent=String(comment.comment_text||'');article.append(meta,text);list.appendChild(article);});
+  }
+  async function loadCommunityForumComments(){
+    const active=await verifiedSession();if(!active){renderCommunityForumComments([]);forumStatus('Log in to view Community Forum comments.','error');await handleSession(null,'SIGNED_OUT');return false;}
+    forumStatus('Loading comments…');const result=await client.from('community_forum_comments').select('id,user_id,author_name,comment_text,created_at').order('created_at',{ascending:false}).limit(100);
+    if(result.error){forumStatus(friendlyError(result.error),'error');return false;}renderCommunityForumComments(result.data||[]);forumStatus('Comments refreshed.','success');return true;
+  }
+  async function postCommunityForumComment(event){
+    if(event)event.preventDefault();if(forumPosting)return false;const textarea=el('communityForumComment'),button=el('postCommunityForumCommentBtn'),comment=textarea.value.trim();
+    if(!comment){forumStatus('Enter a comment before posting.','error');return false;}if(comment.length>2000){forumStatus('Comments cannot exceed 2,000 characters.','error');return false;}
+    forumPosting=true;button.disabled=true;forumStatus('Posting comment…');
+    try{const active=await verifiedSession();if(!active||!active.user){forumStatus('Log in to post a comment.','error');await handleSession(null,'SIGNED_OUT');return false;}const result=await client.from('community_forum_comments').insert({user_id:active.user.id,author_name:forumAuthor(active.user),comment_text:comment}).select('id,user_id,author_name,comment_text,created_at').single();if(result.error){forumStatus(friendlyError(result.error),'error');return false;}textarea.value='';updateCommunityForumCharacterCount();await loadCommunityForumComments();forumStatus('Comment posted successfully.','success');return true;}
+    finally{forumPosting=false;button.disabled=false;}
+  }
+  function updateCommunityForumCharacterCount(){const textarea=el('communityForumComment'),counter=el('communityForumCharacterCount');if(textarea&&counter)counter.textContent=(2000-textarea.value.length)+' characters remaining';}
+  window.loadCommunityForumComments=loadCommunityForumComments;window.postCommunityForumComment=postCommunityForumComment;window.renderCommunityForumComments=renderCommunityForumComments;
   async function completeLogout(discard=false){
     logoutInProgress=true;const result=await client.auth.signOut();if(result.error){logoutInProgress=false;safeMessage(friendlyError(result.error),'error');return false;}
     const confirmed=await client.auth.getSession();if(confirmed.error||confirmed.data.session){logoutInProgress=false;safeMessage('Sign-out could not be confirmed. Please try again.','error');return false;}
@@ -308,6 +337,7 @@ const SAVE_DEBOUNCE_MS=1800;
   function bind(){
     [['createAccountBtn',register],['loginBtn',login],['logoutBtn',logout],['forgotPasswordBtn',forgot],['updatePasswordBtn',updatePassword],['retryRecoveryLoadBtn',retryRecoveryLoad],['deleteAccountDataBtn',deleteData],['resendConfirmationBtn',resend],['saveNowBtn',()=>saveAuthenticatedUserState()],['loadCloudVersionBtn',loadConflictCloud],['keepDeviceVersionBtn',saveConflictDevice],['retryLogoutSaveBtn',retryLogoutSave],['staySignedInBtn',staySignedIn],['discardAndLogoutBtn',discardAndLogout]].forEach(([id,fn])=>el(id).addEventListener('click',fn));
     el('contactForm').addEventListener('submit',submitContact);
+    el('communityForumForm').addEventListener('submit',postCommunityForumComment);el('communityForumComment').addEventListener('input',updateCommunityForumCharacterCount);el('refreshCommunityForumCommentsBtn').addEventListener('click',loadCommunityForumComments);document.querySelectorAll('[data-screen="communityForumScreen"]').forEach(button=>button.addEventListener('click',loadCommunityForumComments));
     document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'&&dirty&&cloudReady)saveAuthenticatedUserState();});window.addEventListener('pagehide',()=>{if(dirty&&cloudReady)saveAuthenticatedUserState();});window.addEventListener('online',()=>{if(dirty&&cloudReady&&!deletionInProgress)saveAuthenticatedUserState();});
   }
   async function start(){clearVisibleState();setAuthView(null);showScreen('accountScreen');if(!window.supabase||!window.supabase.createClient){cloudStatus('Offline');safeMessage('Account service could not load. Check your network connection.','error');return;}client=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});bind();client.auth.onAuthStateChange((event,nextSession)=>{setTimeout(()=>handleSession(nextSession,event),0)});}

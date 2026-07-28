@@ -3,9 +3,12 @@ const fs=require('fs');
 const vm=require('vm');
 
 class FakeElement{
-  constructor(){this.value='';this.textContent='';this.className='';this.style={};this.disabled=false;this.listeners={};this.classList={add(){},remove(){},toggle(){}};}
+  constructor(){this.value='';this.textContent='';this.className='';this.style={};this.disabled=false;this.listeners={};this.children=[];this.classList={add(){},remove(){},toggle(){}};}
   addEventListener(type,handler){this.listeners[type]=handler;}
   click(){return this.listeners.click();}
+  replaceChildren(...children){this.children=children;}
+  appendChild(child){this.children.push(child);return child;}
+  append(...children){this.children.push(...children);}
 }
 const ids=['accountMessage','cloudSaveStatus','signedInEmail','accountEmail','accountPassword','createAccountBtn','loginBtn','logoutBtn','forgotPasswordBtn','updatePasswordBtn','retryRecoveryLoadBtn','deleteAccountDataBtn','resendConfirmationBtn','saveNowBtn','loadCloudVersionBtn','keepDeviceVersionBtn','conflictActions','newPassword','confirmNewPassword','storageStatus','date','dailyTotalsDate','exerciseDate','copyFromDate','shoppingMonth','weightHistoryEnd','weightHistoryStart','foodOrder','exerciseTime'];
 const elements=Object.fromEntries(ids.map(id=>[id,new FakeElement()]));
@@ -22,7 +25,7 @@ const auth={
 const empty={schemaVersion:1,foods:[],oneOffFoods:[],entries:[],exercises:[],dailyWeights:[],profile:{age:0,feet:0,inches:0,weight:0,goalWeight:0,activity:1.2,plan:0,manualMaintenance:0}};
 const context={
   console,setTimeout,clearTimeout,Date,JSON,confirm:()=>true,prompt:()=>'',navigator:{onLine:true},localStorage:{getItem:()=>null,setItem(){},removeItem(){}},
-  document:{readyState:'complete',visibilityState:'visible',body:{classList:{toggle(){},contains(){return true;}}},getElementById:id=>elements[id]||new FakeElement(),querySelectorAll:()=>[],addEventListener(){}},
+  document:{readyState:'complete',visibilityState:'visible',body:{classList:{toggle(){},contains(){return true;}}},createElement:()=>new FakeElement(),getElementById:id=>elements[id]||new FakeElement(),querySelectorAll:()=>[],addEventListener(){}},
   addEventListener(){},supabase:{createClient:(url,key)=>{context.created={url,key};return {auth,from(){throw new Error('cloud should not be called while signed out');}};}},
   createEmptyTrackerState:()=>JSON.parse(JSON.stringify(empty)),validateTrackerState:()=>true,applyTrackerState:()=>true,getTrackerState:()=>empty,
   init(){},render(){},showScreen(id){calls.screens.push(id);},setStorageStatus(){}
