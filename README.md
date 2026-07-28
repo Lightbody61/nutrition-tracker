@@ -18,6 +18,8 @@ Before deploying this browser release, open the production Supabase SQL editor a
 
 Also run [`supabase/contact_messages.sql`](supabase/contact_messages.sql). It creates the private `contact_messages` queue with RLS enabled. Authenticated users can insert only rows whose `user_id` is their own; they cannot read, update, or delete submitted messages.
 
+This checkout does not use an automated production database migration runner. In the Supabase Dashboard, open **SQL Editor** for project `bwihhbcfthkfsogqmgdq`, paste the complete contents of `supabase/contact_messages.sql`, and choose **Run**. The SQL is additive and safe to rerun; it does not reset the database or delete messages.
+
 ### Contact Administrator Edge Function
 
 Deploy `supabase/functions/contact-admin` with Supabase's normal JWT verification enabled. The function authenticates the caller again, derives `user_id` from the verified session, validates all fields, and fixes the recipient server-side. It stores the message before attempting email delivery, then records the delivery result.
@@ -28,7 +30,21 @@ Configure these Edge Function secrets in Supabase (never in browser code or a co
 - `CONTACT_FROM_EMAIL` — a verified Resend sender address.
 - `ADMIN_EMAIL` — optional; defaults server-side to `clanmccord@hotmail.com`.
 
-`SUPABASE_URL`, `SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY` are supplied by the Supabase Edge Function environment. The service-role key is used only inside the server function so it can update delivery status; it must never be copied into frontend code. Without the Resend settings, submissions remain safely stored with `pending_configuration` status and the user is told that email delivery is pending.
+After authenticating the Supabase CLI, deploy and configure the function with:
+
+```bash
+supabase login
+supabase functions deploy contact-admin --project-ref bwihhbcfthkfsogqmgdq
+supabase secrets set --project-ref bwihhbcfthkfsogqmgdq RESEND_API_KEY='YOUR_REAL_RESEND_KEY' CONTACT_FROM_EMAIL='YOUR_VERIFIED_RESEND_SENDER' ADMIN_EMAIL='clanmccord@hotmail.com'
+```
+
+Replace the two placeholders locally with real values; do not commit them. Supabase automatically supplies `SUPABASE_URL`, `SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY` to the deployed function. Verify that an unauthenticated request is rejected (401) rather than missing (404):
+
+```bash
+curl -i -X POST 'https://bwihhbcfthkfsogqmgdq.supabase.co/functions/v1/contact-admin' -H 'Content-Type: application/json' --data '{}'
+```
+
+`SUPABASE_URL`, `SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY` are supplied by the Supabase Edge Function environment. The service-role key is used only inside the server function so it can update delivery status; it must never be copied into frontend code. Without the Resend settings, submissions remain safely stored with `pending_configuration` status and the user is told that storage succeeded but email delivery failed.
 
 ## Cloud state flow
 

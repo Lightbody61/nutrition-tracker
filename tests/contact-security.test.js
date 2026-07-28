@@ -12,8 +12,13 @@ for(const label of ['Food','Exercise','Profile','Utilities','Contact Admin','Use
 assert.ok(!home.includes('>Account</button>'));
 for(const id of ['contactName','contactEmail','contactSubject','contactMessage','sendContactBtn','contactStatus']) assert.ok(html.includes(`id="${id}"`));
 assert.ok(html.includes('<h2>Contact Administrator</h2>'));
-assert.ok(account.includes("client.functions.invoke('contact-admin',{body:{name,sender_email,subject,message}})"));
+assert.ok(account.includes("client.functions.invoke('contact-admin'"));
+assert.ok(account.includes('Authorization:`Bearer ${active.access_token}`'));
+assert.ok(account.includes('Your message could not be sent. Please try again.'));
+assert.ok(account.includes('Message saved, but email delivery failed.'));
+assert.ok(account.includes("data.ok===true&&data.stored===true&&data.delivered===true"));
 assert.ok(account.includes('button.disabled=true'));
+assert.ok(account.includes('if(button.disabled)return'));
 assert.ok(account.includes('finally{button.disabled=false;}'));
 assert.ok(!account.includes('clanmccord@hotmail.com'),'recipient must not exist in frontend JavaScript');
 assert.ok(edge.includes("Deno.env.get('ADMIN_EMAIL') || 'clanmccord@hotmail.com'"));
@@ -23,8 +28,18 @@ assert.ok(edge.indexOf("from('contact_messages').insert")<edge.indexOf("fetch('h
 assert.ok(edge.includes("Deno.env.get('RESEND_API_KEY')"));
 assert.ok(edge.includes("Deno.env.get('CONTACT_FROM_EMAIL')"));
 assert.ok(!edge.includes('input.recipient')&&!edge.includes('input.to'));
+assert.ok(edge.includes("{ ok: true, stored: true, delivered: true }"));
+assert.ok(edge.includes("{ ok: false, stored: true, delivered: false, error }"));
 assert.ok(migration.includes('alter table public.contact_messages enable row level security'));
 assert.ok(migration.includes('with check (user_id = auth.uid())'));
 assert.ok(migration.includes('revoke select, update, delete on public.contact_messages from authenticated'));
+for(const field of ['delivery_error','provider_message_id','delivered_at']) assert.ok(migration.includes(field),`missing contact delivery field: ${field}`);
+
+const contact=html.slice(html.indexOf('id="contactScreen"'),html.indexOf('</section>',html.indexOf('id="contactScreen"')));
+assert.ok(contact.includes('data-screen="homeScreen">← Back to Menu</button>'));
+assert.ok(contact.includes('data-screen="profileScreen">Profile</button>'));
+const profile=html.slice(html.indexOf('id="profileScreen"'),html.indexOf('</section>',html.indexOf('id="profileScreen"')));
+assert.ok(profile.includes('data-screen="homeScreen">← Back to Menu</button>'));
+assert.ok(profile.includes('id="logoutBtn">Log Out</button>'));
 
 console.log('Contact security tests: PASS (fixed recipient, authenticated identity, validation, durable queue, RLS)');

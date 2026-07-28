@@ -7,8 +7,16 @@ create table if not exists public.contact_messages (
   subject text not null check (char_length(subject) between 1 and 200),
   message text not null check (char_length(message) between 1 and 5000),
   delivery_status text not null default 'pending',
-  created_at timestamptz not null default now()
+  delivery_error text,
+  provider_message_id text,
+  created_at timestamptz not null default now(),
+  delivered_at timestamptz
 );
+
+-- Keep this migration safe to run against an existing queue.
+alter table public.contact_messages add column if not exists delivery_error text;
+alter table public.contact_messages add column if not exists provider_message_id text;
+alter table public.contact_messages add column if not exists delivered_at timestamptz;
 
 alter table public.contact_messages enable row level security;
 

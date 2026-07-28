@@ -36,6 +36,14 @@ const SAVE_DEBOUNCE_MS=1800;
     if(message.includes('fetch')||message.includes('network'))return 'Network unavailable. Check your connection and try again.';
     return 'The account service could not complete that request. Please try again.';
   };
+  const sanitizedContactError=value=>String(value||'Contact Administrator request failed.').replace(/[\r\n]+/g,' ').slice(0,300);
+  async function contactResultDetails(result){
+    let data=result&&result.data&&typeof result.data==='object'?result.data:null,status=null;
+    const response=result&&result.error&&result.error.context;
+    if(response&&typeof response.status==='number')status=response.status;
+    if(!data&&response&&typeof response.clone==='function')try{data=await response.clone().json();}catch(_e){}
+    return {data,status,error:sanitizedContactError(data&&data.error||result&&result.error&&result.error.message)};
+  }
   function setAuthView(user){
     document.body.classList.toggle('trackerLocked',!user);
     document.querySelectorAll('.signedOutOnly').forEach(n=>n.style.display=user?'none':'block');
@@ -205,12 +213,22 @@ const SAVE_DEBOUNCE_MS=1800;
     const name=el('contactName').value.trim(),sender_email=el('contactEmail').value.trim(),subject=el('contactSubject').value.trim(),message=el('contactMessage').value.trim();
     const status=el('contactStatus'),button=el('sendContactBtn');
     const report=(text,type='')=>{status.textContent=text;status.className='contactStatus'+(type?' '+type:'');};
+    if(button.disabled)return;
     if(!name||!sender_email||!subject||!message){report('Complete all required fields.','error');return;}
     if(!validEmail(sender_email)){report('Enter a valid email address.','error');return;}
     if(name.length>100||sender_email.length>254||subject.length>200||message.length>5000){report('One or more fields exceed the allowed length.','error');return;}
     button.disabled=true;report('Sending message…');
-    try{const result=await client.functions.invoke('contact-admin',{body:{name,sender_email,subject,message}});if(result.error)throw result.error;el('contactSubject').value='';el('contactMessage').value='';report(result.data&&result.data.delivered===false?'Your message was saved securely and is awaiting email delivery.':'Your message was sent to the administrator.','success');}
-    catch(error){report(friendlyError(error),'error');}
+    try{
+      const active=await verifiedSession();
+      if(!active||!active.access_token){await handleSession(null,'SIGNED_OUT');safeMessage('Your session expired. Please log in again.','error');return;}
+      const result=await client.functions.invoke('contact-admin',{headers:{Authorization:`Bearer ${active.access_token}`},body:{name,sender_email,subject,message}});
+      const details=await contactResultDetails(result),data=details.data;
+      if(data&&data.ok===true&&data.stored===true&&data.delivered===true){el('contactSubject').value='';el('contactMessage').value='';report('Message sent successfully.','success');return;}
+      if(data&&data.stored===true&&data.delivered===false){console.warn('Contact Admin delivery failed after storage',{status:details.status,error:details.error});report('Message saved, but email delivery failed. Please contact the administrator another way if the matter is urgent.','error');return;}
+      console.error('Contact Admin submission failed',{status:details.status,error:details.error});
+      report('Your message could not be sent. Please try again.','error');
+    }
+    catch(error){console.error('Contact Admin submission failed',{status:null,error:sanitizedContactError(error&&error.message)});report('Your message could not be sent. Please try again.','error');}
     finally{button.disabled=false;}
   }
   async function completeLogout(discard=false){

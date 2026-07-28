@@ -68,9 +68,11 @@ assert.ok(source.includes("navigator.onLine===false?'Offline':'Error'"));
 assert.ok(source.includes('if(dirty){const saved=await saveAuthenticatedUserState();if(!saved)'));
 assert.ok(source.includes("Type DISCARD AND LOG OUT"));
 
-// Privacy: state and tokens are never logged or placed in URL/history.
-assert.ok(!source.includes('console.'));
+// Privacy: sanitized contact diagnostics are allowed; tokens are never logged or placed in URL/history.
+assert.ok(!source.includes('console.log'));
+assert.ok(!source.includes('console.error(active')&&!source.includes('console.warn(active'));
 assert.ok(!source.includes('location.search')&&!source.includes('location.hash')&&!source.includes('history.'));
-assert.ok(!source.includes('access_token')&&!source.includes('refresh_token'));
+assert.ok(source.includes('active.access_token'));
+assert.ok(!source.includes('refresh_token'));
 
 console.log('Account module tests: PASS (auth flows, session-derived IDs, cloud boundary, cache separation, debounce, conflicts, recovery, privacy)');
