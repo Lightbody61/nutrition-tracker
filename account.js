@@ -20,7 +20,7 @@ const SAVE_DEBOUNCE_MS=1800;
   let loadInFlight=null,loadInFlightKey=null,recoveryContext=null;
 
   const el=id=>document.getElementById(id);
-  const safeMessage=(message,type='')=>{const node=el('accountMessage');if(!node)return;node.textContent=message;node.className='accountStatus'+(type?' '+type:'');};
+  const safeMessage=(message,type='')=>{const locked=document.body.classList.contains&&document.body.classList.contains('trackerLocked');const node=locked?el('accountMessage'):(el('profileAccountMessage')||el('cloudSaveStatus')||el('accountMessage'));if(!node)return;node.textContent=message;node.className='accountStatus'+(type?' '+type:'');};
   const cloudStatus=text=>{if(el('cloudSaveStatus'))el('cloudSaveStatus').textContent=text;setStorageStatus(text,text==='Error'||text==='Offline'||text==='Authentication expired'||text.startsWith('Conflict'))};
   const cacheKey=id=>CACHE_PREFIX+id;
   const validEmail=value=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
@@ -42,6 +42,7 @@ const SAVE_DEBOUNCE_MS=1800;
     document.querySelectorAll('.signedInOnly').forEach(n=>n.style.display=user&&!recovery?'block':'none');
     document.querySelectorAll('.recoveryOnly').forEach(n=>n.style.display=recovery?'block':'none');
     if(el('signedInEmail'))el('signedInEmail').textContent=user&&user.email||'';
+    if(user){const metadata=user.user_metadata||{};if(el('contactName')&&!el('contactName').value)el('contactName').value=metadata.full_name||metadata.name||'';if(el('contactEmail')&&!el('contactEmail').value)el('contactEmail').value=user.email||'';}
     if(!user)showScreen('accountScreen');
   }
   function clearVisibleState(){applyTrackerState(createEmptyTrackerState());try{init(false,false);}catch(_e){}}
@@ -66,7 +67,7 @@ const SAVE_DEBOUNCE_MS=1800;
   function showConflict(record,mode,message){
     conflictRecord=record||null;conflictMode=mode;el('conflictActions').classList.remove('hide');
     el('keepDeviceVersionBtn').textContent=mode==='cache-recovery'?'Save Cached Version to Cloud':'Keep This Device Version';
-    cloudStatus('Conflict — choice required');safeMessage(message,'error');showScreen('accountScreen');
+    cloudStatus('Conflict — choice required');safeMessage(message,'error');showScreen('profileScreen');
   }
   function hideConflict(){conflictRecord=null;conflictMode=null;el('conflictActions').classList.add('hide');}
   async function verifiedSession(){const result=await client.auth.getSession();if(result.error||!result.data.session)return null;return result.data.session;}
@@ -195,16 +196,29 @@ const SAVE_DEBOUNCE_MS=1800;
     if(!changed){currentUserId=nextId;setAuthView(nextSession.user);}
     if(event==='PASSWORD_RECOVERY'){recovery=true;recoveryContext={userId:nextId,sessionGeneration};cloudReady=false;setAuthView(nextSession.user);document.body.classList.toggle('trackerLocked',true);safeMessage('Enter and confirm your new password.');return;}
     if(recovery){document.body.classList.toggle('trackerLocked',true);return;}
-    if(changed||lastLoadedUserId!==nextId){const generation=sessionGeneration;const loaded=await loadAuthenticatedUserState(generation,nextId);if(loaded&&generation===sessionGeneration&&nextId===currentUserId)setAuthView(nextSession.user);}
+    if(changed||lastLoadedUserId!==nextId){const generation=sessionGeneration;const loaded=await loadAuthenticatedUserState(generation,nextId);if(loaded&&generation===sessionGeneration&&nextId===currentUserId){setAuthView(nextSession.user);showScreen(conflictRecord?'profileScreen':'homeScreen');}}
   }
   async function register(){const email=el('accountEmail').value.trim(),password=el('accountPassword').value;if(!validEmail(email)){safeMessage('Enter a valid email address.','error');return;}if(password.length<8){safeMessage('Password must be at least 8 characters.','error');return;}safeMessage('Creating account…');const result=await client.auth.signUp({email,password,options:{emailRedirectTo:AUTH_REDIRECT_URL}});if(result.error){safeMessage(friendlyError(result.error),'error');return;}if(result.data.session)safeMessage('Account created and signed in. Loading your Tracker…','success');else{safeMessage('Account created. Check your email to confirm it before logging in.','success');el('resendConfirmationBtn').classList.remove('hide');}}
   async function login(){const email=el('accountEmail').value.trim(),password=el('accountPassword').value;if(!validEmail(email)||!password){safeMessage('Enter a valid email and password.','error');return;}safeMessage('Logging in…');el('loginBtn').disabled=true;const result=await client.auth.signInWithPassword({email,password});el('loginBtn').disabled=false;if(result.error)safeMessage(friendlyError(result.error),'error');}
+  async function submitContact(event){
+    event.preventDefault();
+    const name=el('contactName').value.trim(),sender_email=el('contactEmail').value.trim(),subject=el('contactSubject').value.trim(),message=el('contactMessage').value.trim();
+    const status=el('contactStatus'),button=el('sendContactBtn');
+    const report=(text,type='')=>{status.textContent=text;status.className='contactStatus'+(type?' '+type:'');};
+    if(!name||!sender_email||!subject||!message){report('Complete all required fields.','error');return;}
+    if(!validEmail(sender_email)){report('Enter a valid email address.','error');return;}
+    if(name.length>100||sender_email.length>254||subject.length>200||message.length>5000){report('One or more fields exceed the allowed length.','error');return;}
+    button.disabled=true;report('Sending message…');
+    try{const result=await client.functions.invoke('contact-admin',{body:{name,sender_email,subject,message}});if(result.error)throw result.error;el('contactSubject').value='';el('contactMessage').value='';report(result.data&&result.data.delivered===false?'Your message was saved securely and is awaiting email delivery.':'Your message was sent to the administrator.','success');}
+    catch(error){report(friendlyError(error),'error');}
+    finally{button.disabled=false;}
+  }
   async function completeLogout(discard=false){
     const id=currentUserId;const result=await client.auth.signOut();if(result.error){safeMessage(friendlyError(result.error),'error');return false;}
     if(id)try{localStorage.removeItem(cacheKey(id));}catch(_e){}logoutPending=false;el('logoutProtectionActions').classList.add('hide');safeMessage(discard?'Unsaved changes were discarded and you were logged out.':'Logged out. Personal Tracker data has been cleared from this screen.','success');return true;
   }
   async function logout(){
-    if(dirty){const saved=await saveAuthenticatedUserState();if(!saved){logoutPending=true;el('logoutProtectionActions').classList.remove('hide');safeMessage('Logout was stopped to protect unsaved changes. Retry saving, stay signed in, or explicitly discard the changes.','error');showScreen('accountScreen');return false;}}
+    if(dirty){const saved=await saveAuthenticatedUserState();if(!saved){logoutPending=true;el('logoutProtectionActions').classList.remove('hide');safeMessage('Logout was stopped to protect unsaved changes. Retry saving, stay signed in, or explicitly discard the changes.','error');showScreen('profileScreen');return false;}}
     return completeLogout(false);
   }
   async function retryLogoutSave(){if(!logoutPending)return;const saved=await saveAuthenticatedUserState();if(saved)await completeLogout(false);else safeMessage('Save still failed. Logout remains stopped and your account cache is preserved.','error');}
@@ -273,6 +287,7 @@ const SAVE_DEBOUNCE_MS=1800;
   }
   function bind(){
     [['createAccountBtn',register],['loginBtn',login],['logoutBtn',logout],['forgotPasswordBtn',forgot],['updatePasswordBtn',updatePassword],['retryRecoveryLoadBtn',retryRecoveryLoad],['deleteAccountDataBtn',deleteData],['resendConfirmationBtn',resend],['saveNowBtn',()=>saveAuthenticatedUserState()],['loadCloudVersionBtn',loadConflictCloud],['keepDeviceVersionBtn',saveConflictDevice],['retryLogoutSaveBtn',retryLogoutSave],['staySignedInBtn',staySignedIn],['discardAndLogoutBtn',discardAndLogout]].forEach(([id,fn])=>el(id).addEventListener('click',fn));
+    el('contactForm').addEventListener('submit',submitContact);
     document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'&&dirty&&cloudReady)saveAuthenticatedUserState();});window.addEventListener('pagehide',()=>{if(dirty&&cloudReady)saveAuthenticatedUserState();});window.addEventListener('online',()=>{if(dirty&&cloudReady&&!deletionInProgress)saveAuthenticatedUserState();});
   }
   async function start(){clearVisibleState();setAuthView(null);showScreen('accountScreen');if(!window.supabase||!window.supabase.createClient){cloudStatus('Offline');safeMessage('Account service could not load. Check your network connection.','error');return;}client=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});bind();client.auth.onAuthStateChange((event,nextSession)=>{setTimeout(()=>handleSession(nextSession,event),0)});}

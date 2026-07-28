@@ -22,7 +22,7 @@ const auth={
 const empty={schemaVersion:1,foods:[],oneOffFoods:[],entries:[],exercises:[],dailyWeights:[],profile:{age:0,feet:0,inches:0,weight:0,goalWeight:0,activity:1.2,plan:0,manualMaintenance:0}};
 const context={
   console,setTimeout,clearTimeout,Date,JSON,confirm:()=>true,prompt:()=>'',navigator:{onLine:true},localStorage:{getItem:()=>null,setItem(){},removeItem(){}},
-  document:{readyState:'complete',visibilityState:'visible',body:{classList:{toggle(){}}},getElementById:id=>elements[id]||new FakeElement(),querySelectorAll:()=>[],addEventListener(){}},
+  document:{readyState:'complete',visibilityState:'visible',body:{classList:{toggle(){},contains(){return true;}}},getElementById:id=>elements[id]||new FakeElement(),querySelectorAll:()=>[],addEventListener(){}},
   addEventListener(){},supabase:{createClient:(url,key)=>{context.created={url,key};return {auth,from(){throw new Error('cloud should not be called while signed out');}};}},
   createEmptyTrackerState:()=>JSON.parse(JSON.stringify(empty)),validateTrackerState:()=>true,applyTrackerState:()=>true,getTrackerState:()=>empty,
   init(){},render(){},showScreen(){},setStorageStatus(){}

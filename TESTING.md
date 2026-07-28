@@ -11,9 +11,14 @@ node tests/tracker-regression.test.js
 node tests/account-module.test.js
 node tests/account-auth-mock.test.js
 node tests/cloud-persistence-correctness.test.js
+node tests/contact-security.test.js
 cmp -s index.html nutrition-tracker.html
 git diff --check
 ```
+
+Contact coverage should verify signed-out access remains locked, form required/email/length validation, duplicate-submit prevention, message preservation on failure, fixed server-side recipient, authenticated session-derived `user_id`, storage-before-delivery, and RLS denial of message reads/updates/deletes. Production delivery requires the migration, deployed Edge Function, and configured Resend secrets described in README.
+
+Navigation coverage verifies the six-button Home screen has no module or account data, every parent and submenu destination opens independently, return controls use designated immediate parents, shared Daily Totals returns to its launching menu, only one screen is active, and every navigation resets scroll position. Responsive Home layout should be manually checked at wide desktop (three columns), tablet (two columns), and Android phone (one column), including overflow, spacing, return-control visibility, tables, forms, and cloud status.
 
 Coverage includes signed-out startup; Auth flows; dirty/clean/no-cache startup reconciliation; identical, older, and newer cloud/cache cases; failed dirty-cache retries; atomic first insert, matching update, stale rejection, and simulated concurrent devices; server-derived identity and absence of a user-ID RPC parameter; conflict non-mutation; debounce and Save Now; clean/successful/failed/conflicted/expired/discard logout paths and cache retention; user separation; retained Tracker regression behavior; static configuration; and URL/log privacy.
 

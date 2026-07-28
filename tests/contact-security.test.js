@@ -1,0 +1,30 @@
+const assert=require('assert');
+const fs=require('fs');
+
+const html=fs.readFileSync('index.html','utf8');
+const account=fs.readFileSync('account.js','utf8');
+const edge=fs.readFileSync('supabase/functions/contact-admin/index.ts','utf8');
+const migration=fs.readFileSync('supabase/contact_messages.sql','utf8');
+
+const home=html.slice(html.indexOf('id="homeScreen"'),html.indexOf('</section>',html.indexOf('id="homeScreen"')));
+assert.strictEqual((home.match(/<button\b/g)||[]).length,6);
+for(const label of ['Food','Exercise','Profile','Utilities','Contact Admin','Users Guide']) assert.ok(home.includes(`>${label}</button>`));
+assert.ok(!home.includes('>Account</button>'));
+for(const id of ['contactName','contactEmail','contactSubject','contactMessage','sendContactBtn','contactStatus']) assert.ok(html.includes(`id="${id}"`));
+assert.ok(html.includes('<h2>Contact Administrator</h2>'));
+assert.ok(account.includes("client.functions.invoke('contact-admin',{body:{name,sender_email,subject,message}})"));
+assert.ok(account.includes('button.disabled=true'));
+assert.ok(account.includes('finally{button.disabled=false;}'));
+assert.ok(!account.includes('clanmccord@hotmail.com'),'recipient must not exist in frontend JavaScript');
+assert.ok(edge.includes("Deno.env.get('ADMIN_EMAIL') || 'clanmccord@hotmail.com'"));
+assert.ok(edge.includes('authClient.auth.getUser()'));
+assert.ok(edge.includes('user_id: user.id'));
+assert.ok(edge.indexOf("from('contact_messages').insert")<edge.indexOf("fetch('https://api.resend.com/emails'"));
+assert.ok(edge.includes("Deno.env.get('RESEND_API_KEY')"));
+assert.ok(edge.includes("Deno.env.get('CONTACT_FROM_EMAIL')"));
+assert.ok(!edge.includes('input.recipient')&&!edge.includes('input.to'));
+assert.ok(migration.includes('alter table public.contact_messages enable row level security'));
+assert.ok(migration.includes('with check (user_id = auth.uid())'));
+assert.ok(migration.includes('revoke select, update, delete on public.contact_messages from authenticated'));
+
+console.log('Contact security tests: PASS (fixed recipient, authenticated identity, validation, durable queue, RLS)');

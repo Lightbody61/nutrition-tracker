@@ -1,5 +1,18 @@
 # Changelog
 
+## Login landing page and authenticated navigation
+
+- Made the existing Supabase account interface the opening login view and navigate authenticated users to the six-button tracker menu.
+- Moved signed-in account and logout controls into Profile, and added Contact Admin and updated Users Guide destinations.
+- Added a private RLS-protected contact-message queue and authenticated Supabase Edge Function with server-fixed administrator delivery.
+
+## Navigation hierarchy redesign
+
+- Replaced the horizontal header navigation with a dedicated responsive Home screen containing exactly six primary menu buttons.
+- Added full-screen Food, Food Lists, Stats, Exercise, Utilities, and Reports menu levels with explicit immediate-parent return buttons.
+- Centralized single-page navigation and shared-destination parent handling without changing URLs, Tracker state, schemas, calculations, or account persistence.
+- Added navigation regression coverage for Home isolation, menu destinations, return mappings, single-screen visibility, and scroll-to-top behavior.
+
 ## Stage 2 — Supabase accounts and private cloud saving
 
 - Added email/password registration, confirmation guidance/resend, login, logout, password-reset request, recovery-session handling, and password update.

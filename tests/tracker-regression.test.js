@@ -108,4 +108,44 @@ assert.ok(!html.includes('type="file"'));
 assert.ok(!source.includes('createObjectURL'));
 assert.ok(!source.includes('.download='));
 
-console.log('Tracker regression tests: PASS (retained nutrition reports, clean state, account boundary, local persistence, logging, copy/reset, removal scans)');
+// Hierarchical SPA navigation keeps Home clean, uses designated parents, and shows one screen at a time.
+const homeMarkup=html.slice(html.indexOf('id="homeScreen"'),html.indexOf('</section>',html.indexOf('id="homeScreen"')));
+assert.strictEqual((homeMarkup.match(/<button\b/g)||[]).length,6);
+for(const label of ['Food','Exercise','Profile','Utilities','Contact Admin','Users Guide']) assert.ok(homeMarkup.includes(`>${label}</button>`),`missing Home button: ${label}`);
+assert.ok(!homeMarkup.includes('>Account</button>'));
+for(const forbiddenHomeContent of ['<form','signedInEmail','cloudSaveStatus','foodSelect','menuTotals','profileResults']) assert.ok(!homeMarkup.includes(forbiddenHomeContent),`Home contains module content: ${forbiddenHomeContent}`);
+assert.ok(html.includes("const SCREEN_PARENTS={foodHubScreen:'homeScreen',exerciseHubScreen:'homeScreen',utilitiesScreen:'homeScreen',profileScreen:'homeScreen',contactScreen:'homeScreen',usersGuideScreen:'homeScreen'"));
+assert.ok(html.includes("foodListsHubScreen:'foodHubScreen'"));
+assert.ok(html.includes("statsHubScreen:'foodHubScreen'"));
+assert.ok(html.includes("reportsScreen:'utilitiesScreen'"));
+assert.ok(html.includes("recipePrintScreen:'reportsScreen',weightHistoryScreen:'reportsScreen'"));
+assert.ok(html.includes("SHARED_DESTINATION_PARENTS={dailyTotalsScreen:['statsHubScreen','exerciseHubScreen']}"));
+assert.ok(html.includes('.homeMenu{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))'));
+assert.ok(html.includes('@media(max-width:899px){.homeMenu{grid-template-columns:repeat(2,minmax(0,1fr))'));
+assert.ok(html.includes('@media(max-width:599px){.homeMenu{grid-template-columns:1fr'));
+assert.ok(html.includes('.trackerLocked main .screen:not(#accountScreen){display:none!important}'));
+
+const navIds=['homeScreen','accountScreen','foodHubScreen','foodListsHubScreen','statsHubScreen','exerciseHubScreen','utilitiesScreen','reportsScreen','profileScreen','contactScreen','usersGuideScreen','dailyTotalsScreen'];
+const navScreens=Object.fromEntries(navIds.map(id=>[id,{id,active:id==='homeScreen',classList:{add(name){if(name==='active')this.owner.active=true;},remove(name){if(name==='active')this.owner.active=false;}}}]));
+for(const screen of Object.values(navScreens)) screen.classList.owner=screen;
+const dailyReturn={dataset:{screen:'statsHubScreen'},textContent:''};
+let scrollCalls=0;
+context.document.querySelectorAll=selector=>selector==='.screen'?Object.values(navScreens):[];
+context.document.querySelector=selector=>selector==='.screen.active'?(Object.values(navScreens).find(screen=>screen.active)||null):(selector==='[data-return-for="dailyTotalsScreen"]'?dailyReturn:null);
+context.document.getElementById=id=>navScreens[id]||elements[id]||null;
+context.document.body={classList:{contains:()=>false}};
+context.scrollTo=(x,y)=>{assert.strictEqual(x,0);assert.strictEqual(y,0);scrollCalls++;};
+context.render=()=>{};context.renderProfile=()=>{};context.renderVitABreakdown=()=>{};context.renderDailyBreakdown=()=>{};
+for(const id of ['foodHubScreen','foodListsHubScreen','statsHubScreen','exerciseHubScreen','utilitiesScreen','reportsScreen','accountScreen','profileScreen','contactScreen','usersGuideScreen']){
+  assert.strictEqual(run(`showScreen('${id}')`),true);
+  assert.deepStrictEqual(Object.values(navScreens).filter(screen=>screen.active).map(screen=>screen.id),[id]);
+}
+run("showScreen('exerciseHubScreen');showScreen('dailyTotalsScreen','exerciseHubScreen')");
+assert.strictEqual(dailyReturn.dataset.screen,'exerciseHubScreen');
+assert.strictEqual(dailyReturn.textContent,'← Exercise');
+run("showScreen('statsHubScreen');showScreen('dailyTotalsScreen','statsHubScreen')");
+assert.strictEqual(dailyReturn.dataset.screen,'statsHubScreen');
+assert.strictEqual(dailyReturn.textContent,'← Stats');
+assert.ok(scrollCalls>=14);
+
+console.log('Tracker regression tests: PASS (hierarchical navigation, retained nutrition reports, clean state, account boundary, local persistence, logging, copy/reset, removal scans)');

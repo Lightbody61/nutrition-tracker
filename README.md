@@ -16,6 +16,20 @@ Static HTML/CSS/JavaScript nutrition and exercise Tracker with Supabase email/pa
 
 Before deploying this browser release, open the production Supabase SQL editor and run the complete, exact contents of [`supabase/atomic_tracker_state.sql`](supabase/atomic_tracker_state.sql). The migration creates `public.save_tracker_state_if_version_matches(jsonb, integer, timestamptz)` as `SECURITY INVOKER`, derives identity from `auth.uid()`, leaves RLS in force, revokes public/anonymous execution, and grants execution only to `authenticated`. The browser release must not be deployed before this function exists.
 
+Also run [`supabase/contact_messages.sql`](supabase/contact_messages.sql). It creates the private `contact_messages` queue with RLS enabled. Authenticated users can insert only rows whose `user_id` is their own; they cannot read, update, or delete submitted messages.
+
+### Contact Administrator Edge Function
+
+Deploy `supabase/functions/contact-admin` with Supabase's normal JWT verification enabled. The function authenticates the caller again, derives `user_id` from the verified session, validates all fields, and fixes the recipient server-side. It stores the message before attempting email delivery, then records the delivery result.
+
+Configure these Edge Function secrets in Supabase (never in browser code or a committed `.env` file):
+
+- `RESEND_API_KEY` — Resend server API key.
+- `CONTACT_FROM_EMAIL` — a verified Resend sender address.
+- `ADMIN_EMAIL` — optional; defaults server-side to `clanmccord@hotmail.com`.
+
+`SUPABASE_URL`, `SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY` are supplied by the Supabase Edge Function environment. The service-role key is used only inside the server function so it can update delivery status; it must never be copied into frontend code. Without the Resend settings, submissions remain safely stored with `pending_configuration` status and the user is told that email delivery is pending.
+
 ## Cloud state flow
 
 After authentication resolves, the Tracker reads only that user's row and the matching account-scoped cache. Dirty cached edits are compared with cloud state before either is applied. Different dirty cache/cloud versions require Save Cached Version to Cloud or a confirmed Load Cloud Version choice; identical versions load normally. A missing row with no cache creates a clean state. Old unscoped Stage 1 data is never uploaded.
@@ -41,6 +55,7 @@ node tests/tracker-regression.test.js
 node tests/account-module.test.js
 node tests/account-auth-mock.test.js
 node tests/cloud-persistence-correctness.test.js
+node tests/contact-security.test.js
 cmp -s index.html nutrition-tracker.html
 git diff --check
 ```
