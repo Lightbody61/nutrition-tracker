@@ -9,12 +9,13 @@ const herbs=JSON.parse(fs.readFileSync('data/herbs-spices/herbs.json','utf8'));
 const spices=JSON.parse(fs.readFileSync('data/herbs-spices/spices.json','utf8'));
 const alpha=items=>items.map(x=>x.name).every((name,i,names)=>i===0||names[i-1].localeCompare(name)<=0);
 
-for(const id of ['foodReferenceSearch','clearFoodReferenceSearchBtn','expandAllFoodGroupsBtn','collapseAllFoodGroupsBtn','herbSpiceScreen','herbSpiceSearch','clearHerbSpiceSearchBtn','expandAllHerbSpiceBtn','collapseAllHerbSpiceBtn','foodPickerToggle','foodPickerPanel','foodPickerSearch','clearFoodPickerSearchBtn','expandAllFoodPickerBtn','collapseAllFoodPickerBtn','foodPickerGroups'])assert.ok(html.includes(`id="${id}"`),`missing ${id}`);
+for(const id of ['foodReferenceSearch','clearFoodReferenceSearchBtn','expandAllFoodGroupsBtn','collapseAllFoodGroupsBtn','herbSpiceScreen','herbSpiceSearch','clearHerbSpiceSearchBtn','foodPickerToggle','foodPickerPanel','foodPickerSearch','clearFoodPickerSearchBtn','expandAllFoodPickerBtn','collapseAllFoodPickerBtn','foodPickerGroups'])assert.ok(html.includes(`id="${id}"`),`missing ${id}`);
 assert.ok(html.includes('data-screen="herbSpiceScreen">Herbs and Spices<span>'));
-assert.ok(html.includes('<h2>Herbs and Spices</h2>'));
+assert.ok(html.includes('<h1>Herbs and Spices Pairing Guide</h1>'));
+assert.ok(html.includes('Flavor profile and foods they complement'));
 assert.ok(!html.includes(['Herb and Spice','Encyclopedia'].join(' ')));
-assert.ok(html.includes('Search by herb or spice name, taste, or suggested food.'));
-assert.ok(html.includes('placeholder="Search names, tastes, or foods"'));
+assert.ok(html.includes('Search by name, flavor, or complementary food'));
+assert.ok(html.includes('placeholder="Search names, flavors, or foods"'));
 assert.ok(html.includes('← Back to Food'));
 assert.ok(html.includes("herbSpiceScreen:'foodHubScreen'"));
 assert.ok(html.includes("entry.taste"));assert.ok(html.includes("entry.suggestedFoods"));
@@ -22,7 +23,11 @@ for(const forbidden of ['record.description','record.scientificName','record.alt
 assert.ok(!html.includes("nutrientDetails(record.nutrition||{})"));
 assert.ok(!html.includes("element('h3','','Common Culinary Uses')"));
 assert.ok(html.includes("image.addEventListener('error'"));assert.ok(html.includes("image.alt=entry.imageAlt"));assert.ok(html.includes("image.loading='lazy'"));assert.ok(html.includes("image.decoding='async'"));assert.ok(html.includes("image.src='assets/herbs-spices/image-unavailable.webp'"));
-assert.ok(html.includes("element('article','herbSpiceCard')"));assert.ok(html.includes("element('h3','',entry.name)"));assert.ok(html.includes("element('h4','','Taste')"));assert.ok(html.includes("element('h4','','Suggested Foods')"));assert.ok(!html.includes("summary.textContent='Taste and Suggested Foods'"),'cards must not be names-only collapsed details');
+const rowRenderer=html.slice(html.indexOf('function createHerbSpiceRow'),html.indexOf('function herbSpiceSectionLabel'));
+assert.ok(rowRenderer.includes("element('article','herbSpiceRow')"));assert.ok(rowRenderer.includes("element('div','herbSpiceName',entry.name)"));assert.ok(rowRenderer.includes("element('div','herbSpiceTaste',entry.taste)"));assert.ok(rowRenderer.includes("element('div','herbSpiceFoods'"));assert.ok(rowRenderer.includes('row.append(imageCell,nameCell,tasteCell,foodsCell)'));
+assert.ok(!rowRenderer.includes('details'));assert.ok(!rowRenderer.includes('summary'));assert.ok(!html.includes('herbSpiceCard'));assert.ok(!html.includes('Taste and Suggested Foods'));
+for(const heading of ['Image','Name','Flavor','Pairs Well With'])assert.ok(html.includes(`element('div','',\'${heading}\')`)||html.includes(`element('div','','${heading}')`),`missing table heading ${heading}`);
+for(const banner of ['HERBS A–F','HERBS G–M','HERBS O–W','SPICES A–C','SPICES C–M','SPICES M–W'])assert.ok(html.includes(`'${banner}'`),`missing ${banner}`);
 
 assert.ok(index.total>=300);assert.ok(index.groups.length>=10);
 assert.deepStrictEqual(index.groups.map(x=>x.group),[...index.groups.map(x=>x.group)].sort((a,b)=>a.localeCompare(b)));
@@ -35,7 +40,9 @@ const search=(items,q)=>items.filter(item=>normalize([item.name,item.taste,...it
 assert.ok(search(herbs,'bAs').some(x=>x.name==='Basil'));assert.ok(search(spices,'GING').some(x=>x.name==='Ginger'));
 for(const query of ['spicy','sweet','savory','smoky','earthy','fish','pork','chicken','pasta','soup','vegetables','dessert'])assert.ok(search([...herbs,...spices],query).length,`culinary search: ${query}`);
 assert.ok(search([...herbs,...spices],'tart').length>=5);assert.ok(search([...herbs,...spices],'SWE').length>1,'partial and case-insensitive search');
-assert.ok(html.includes("normalize('NFD').replace(/[\\u0300-\\u036f]/g,''"));assert.ok(html.includes("encyclopediaReference.query=normalizeHerbSpiceSearch"));assert.ok(html.includes("open=!!query||encyclopediaReference.expanded.has(name)"));assert.ok(html.includes('No herbs or spices match your search.'));assert.ok(html.includes("encyclopediaReference.query=''"));
+assert.ok(html.includes("normalize('NFD').replace(/[\\u0300-\\u036f]/g,''"));assert.ok(html.includes('function herbSpiceMatches(entry,query)'));assert.ok(html.includes("encyclopediaReference.query=normalizeHerbSpiceSearch"));assert.ok(html.includes('No herbs or spices match your search.'));assert.ok(html.includes("encyclopediaReference.query=''"));
+assert.ok(!html.includes('expandAllHerbSpiceBtn'));assert.ok(!html.includes('collapseAllHerbSpiceBtn'));assert.ok(!html.includes('setAllHerbSpiceSections'));
+assert.ok(html.includes('.herbSpiceTableHead,.herbSpiceRow{display:grid'));assert.ok(html.includes('@media(max-width:700px)'));assert.ok(html.includes('.herbSpiceTaste::before{content:"Flavor: "'));assert.ok(html.includes('.herbSpiceFoods::before{content:"Pairs Well With: "'));
 assert.ok(html.includes('Herbs and Spices could not be loaded. Please try again.'));assert.ok(html.includes("console.error('Herbs and Spices data load failed'"));
 
 assert.ok(html.includes('role="combobox"'));assert.ok(html.includes('role="listbox"'));assert.ok(html.includes("event.key==='Escape'"));assert.ok(html.includes("picker.contains(event.target)"));
