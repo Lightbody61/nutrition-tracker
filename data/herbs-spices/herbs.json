@@ -14,12 +14,12 @@
       "Salads",
       "Vegetables"
     ],
-    "image": "assets/herbs-spices/herb.svg",
-    "imageAlt": "Stylized illustration representing Basil"
+    "image": "assets/herbs-spices/basil.webp",
+    "imageAlt": "Representative culinary basil"
   },
   {
     "id": "bay-leaf",
-    "name": "Bay leaf",
+    "name": "Bay Leaf",
     "type": "herb",
     "taste": "Woody, floral, herbal, and gently bitter.",
     "suggestedFoods": [
@@ -31,8 +31,24 @@
       "Braised beef",
       "Chicken"
     ],
-    "image": "assets/herbs-spices/herb.svg",
-    "imageAlt": "Stylized illustration representing Bay leaf"
+    "image": "assets/herbs-spices/bay-leaf.webp",
+    "imageAlt": "Representative culinary bay leaf"
+  },
+  {
+    "id": "borage",
+    "name": "Borage",
+    "type": "herb",
+    "taste": "Fresh, mild, and cucumber-like.",
+    "suggestedFoods": [
+      "Salads",
+      "Fish",
+      "Yogurt",
+      "Vegetables",
+      "Cold soups",
+      "Drinks"
+    ],
+    "image": "assets/herbs-spices/borage.webp",
+    "imageAlt": "Representative culinary borage"
   },
   {
     "id": "chervil",
@@ -48,8 +64,8 @@
       "Soups",
       "Cream sauces"
     ],
-    "image": "assets/herbs-spices/herb.svg",
-    "imageAlt": "Stylized illustration representing Chervil"
+    "image": "assets/herbs-spices/chervil.webp",
+    "imageAlt": "Representative culinary chervil"
   },
   {
     "id": "chives",
@@ -65,8 +81,8 @@
       "Cream cheese",
       "Vegetables"
     ],
-    "image": "assets/herbs-spices/herb.svg",
-    "imageAlt": "Stylized illustration representing Chives"
+    "image": "assets/herbs-spices/chives.webp",
+    "imageAlt": "Representative culinary chives"
   },
   {
     "id": "cilantro",
@@ -83,8 +99,25 @@
       "Beans",
       "Salads"
     ],
-    "image": "assets/herbs-spices/herb.svg",
-    "imageAlt": "Stylized illustration representing Cilantro"
+    "image": "assets/herbs-spices/cilantro.webp",
+    "imageAlt": "Representative culinary cilantro"
+  },
+  {
+    "id": "culantro",
+    "name": "Culantro",
+    "type": "herb",
+    "taste": "Strong, savory, citrusy, and cilantro-like.",
+    "suggestedFoods": [
+      "Beans",
+      "Rice",
+      "Chicken",
+      "Beef",
+      "Soup",
+      "Stews",
+      "Caribbean dishes"
+    ],
+    "image": "assets/herbs-spices/culantro.webp",
+    "imageAlt": "Representative culinary culantro"
   },
   {
     "id": "dill",
@@ -101,8 +134,8 @@
       "Salads",
       "Soup"
     ],
-    "image": "assets/herbs-spices/herb.svg",
-    "imageAlt": "Stylized illustration representing Dill"
+    "image": "assets/herbs-spices/dill.webp",
+    "imageAlt": "Representative culinary dill"
   },
   {
     "id": "epazote",
@@ -117,12 +150,12 @@
       "Soups",
       "Mexican stews"
     ],
-    "image": "assets/herbs-spices/herb.svg",
-    "imageAlt": "Stylized illustration representing Epazote"
+    "image": "assets/herbs-spices/epazote.webp",
+    "imageAlt": "Representative culinary epazote"
   },
   {
     "id": "fennel-fronds",
-    "name": "Fennel fronds",
+    "name": "Fennel Fronds",
     "type": "herb",
     "taste": "Fresh, green, and sweetly anise-like.",
     "suggestedFoods": [
@@ -134,8 +167,72 @@
       "Chicken",
       "Roasted vegetables"
     ],
-    "image": "assets/herbs-spices/herb.svg",
-    "imageAlt": "Stylized illustration representing Fennel fronds"
+    "image": "assets/herbs-spices/fennel-fronds.webp",
+    "imageAlt": "Representative culinary fennel fronds"
+  },
+  {
+    "id": "fenugreek-leaves",
+    "name": "Fenugreek Leaves",
+    "type": "herb",
+    "taste": "Savory, earthy, slightly bitter, and maple-like.",
+    "suggestedFoods": [
+      "Chicken",
+      "Lamb",
+      "Lentils",
+      "Potatoes",
+      "Curries",
+      "Flatbreads"
+    ],
+    "image": "assets/herbs-spices/fenugreek-leaves.webp",
+    "imageAlt": "Representative culinary fenugreek leaves"
+  },
+  {
+    "id": "greek-oregano",
+    "name": "Greek Oregano",
+    "type": "herb",
+    "taste": "Earthy, peppery, and slightly bitter.",
+    "suggestedFoods": [
+      "Lamb",
+      "Chicken",
+      "Tomatoes",
+      "Potatoes",
+      "Feta",
+      "Grilled vegetables"
+    ],
+    "image": "assets/herbs-spices/greek-oregano.webp",
+    "imageAlt": "Representative culinary greek oregano"
+  },
+  {
+    "id": "hyssop",
+    "name": "Hyssop",
+    "type": "herb",
+    "taste": "Minty, floral, and slightly bitter.",
+    "suggestedFoods": [
+      "Lamb",
+      "Poultry",
+      "Beans",
+      "Fruit",
+      "Salads",
+      "Herbal teas"
+    ],
+    "image": "assets/herbs-spices/hyssop.webp",
+    "imageAlt": "Representative culinary hyssop"
+  },
+  {
+    "id": "kaffir-lime-leaves",
+    "name": "Kaffir Lime Leaves",
+    "type": "herb",
+    "taste": "Intensely citrusy, floral, and fragrant.",
+    "suggestedFoods": [
+      "Fish",
+      "Chicken",
+      "Shrimp",
+      "Curries",
+      "Soup",
+      "Coconut dishes"
+    ],
+    "image": "assets/herbs-spices/kaffir-lime-leaves.webp",
+    "imageAlt": "Representative culinary kaffir lime leaves"
   },
   {
     "id": "lavender",
@@ -150,12 +247,12 @@
       "Fruit",
       "Herb blends"
     ],
-    "image": "assets/herbs-spices/herb.svg",
-    "imageAlt": "Stylized illustration representing Lavender"
+    "image": "assets/herbs-spices/lavender.webp",
+    "imageAlt": "Representative culinary lavender"
   },
   {
     "id": "lemon-balm",
-    "name": "Lemon balm",
+    "name": "Lemon Balm",
     "type": "herb",
     "taste": "Fresh, lemony, lightly sweet, and mint-like.",
     "suggestedFoods": [
@@ -166,8 +263,24 @@
       "Chicken",
       "Cold drinks"
     ],
-    "image": "assets/herbs-spices/herb.svg",
-    "imageAlt": "Stylized illustration representing Lemon balm"
+    "image": "assets/herbs-spices/lemon-balm.webp",
+    "imageAlt": "Representative culinary lemon balm"
+  },
+  {
+    "id": "lemon-thyme",
+    "name": "Lemon Thyme",
+    "type": "herb",
+    "taste": "Citrusy, savory, and earthy.",
+    "suggestedFoods": [
+      "Fish",
+      "Chicken",
+      "Pork",
+      "Vegetables",
+      "Potatoes",
+      "Sauces"
+    ],
+    "image": "assets/herbs-spices/lemon-thyme.webp",
+    "imageAlt": "Representative culinary lemon thyme"
   },
   {
     "id": "lemongrass",
@@ -183,8 +296,24 @@
       "Soups",
       "Coconut dishes"
     ],
-    "image": "assets/herbs-spices/herb.svg",
-    "imageAlt": "Stylized illustration representing Lemongrass"
+    "image": "assets/herbs-spices/lemongrass.webp",
+    "imageAlt": "Representative culinary lemongrass"
+  },
+  {
+    "id": "lovage",
+    "name": "Lovage",
+    "type": "herb",
+    "taste": "Strongly celery-like, parsley-like, and savory.",
+    "suggestedFoods": [
+      "Soup",
+      "Stew",
+      "Potatoes",
+      "Beans",
+      "Poultry",
+      "Stocks"
+    ],
+    "image": "assets/herbs-spices/lovage.webp",
+    "imageAlt": "Representative culinary lovage"
   },
   {
     "id": "marjoram",
@@ -200,8 +329,8 @@
       "Soups",
       "Sausage"
     ],
-    "image": "assets/herbs-spices/herb.svg",
-    "imageAlt": "Stylized illustration representing Marjoram"
+    "image": "assets/herbs-spices/marjoram.webp",
+    "imageAlt": "Representative culinary marjoram"
   },
   {
     "id": "mint",
@@ -217,8 +346,8 @@
       "Yogurt",
       "Chocolate"
     ],
-    "image": "assets/herbs-spices/herb.svg",
-    "imageAlt": "Stylized illustration representing Mint"
+    "image": "assets/herbs-spices/mint.webp",
+    "imageAlt": "Representative culinary mint"
   },
   {
     "id": "oregano",
@@ -234,8 +363,8 @@
       "Beans",
       "Roasted vegetables"
     ],
-    "image": "assets/herbs-spices/herb.svg",
-    "imageAlt": "Stylized illustration representing Oregano"
+    "image": "assets/herbs-spices/oregano.webp",
+    "imageAlt": "Representative culinary oregano"
   },
   {
     "id": "parsley",
@@ -251,8 +380,24 @@
       "Salads",
       "Eggs"
     ],
-    "image": "assets/herbs-spices/herb.svg",
-    "imageAlt": "Stylized illustration representing Parsley"
+    "image": "assets/herbs-spices/parsley.webp",
+    "imageAlt": "Representative culinary parsley"
+  },
+  {
+    "id": "perilla-shiso",
+    "name": "Perilla (Shiso)",
+    "type": "herb",
+    "taste": "Minty, citrusy, anise-like, and slightly spicy.",
+    "suggestedFoods": [
+      "Fish",
+      "Rice",
+      "Pork",
+      "Noodles",
+      "Salads",
+      "Pickles"
+    ],
+    "image": "assets/herbs-spices/perilla-shiso.webp",
+    "imageAlt": "Representative culinary perilla (shiso)"
   },
   {
     "id": "rosemary",
@@ -269,8 +414,8 @@
       "Soup",
       "Roasted vegetables"
     ],
-    "image": "assets/herbs-spices/herb.svg",
-    "imageAlt": "Stylized illustration representing Rosemary"
+    "image": "assets/herbs-spices/rosemary.webp",
+    "imageAlt": "Representative culinary rosemary"
   },
   {
     "id": "sage",
@@ -288,8 +433,8 @@
       "Soup",
       "Butter sauces"
     ],
-    "image": "assets/herbs-spices/herb.svg",
-    "imageAlt": "Stylized illustration representing Sage"
+    "image": "assets/herbs-spices/sage.webp",
+    "imageAlt": "Representative culinary sage"
   },
   {
     "id": "savory",
@@ -305,8 +450,8 @@
       "Soups",
       "Stuffing"
     ],
-    "image": "assets/herbs-spices/herb.svg",
-    "imageAlt": "Stylized illustration representing Savory"
+    "image": "assets/herbs-spices/savory.webp",
+    "imageAlt": "Representative culinary savory"
   },
   {
     "id": "sorrel",
@@ -321,8 +466,8 @@
       "Salads",
       "Cream sauces"
     ],
-    "image": "assets/herbs-spices/herb.svg",
-    "imageAlt": "Stylized illustration representing Sorrel"
+    "image": "assets/herbs-spices/sorrel.webp",
+    "imageAlt": "Representative culinary sorrel"
   },
   {
     "id": "tarragon",
@@ -338,8 +483,25 @@
       "Salads",
       "Vinegar"
     ],
-    "image": "assets/herbs-spices/herb.svg",
-    "imageAlt": "Stylized illustration representing Tarragon"
+    "image": "assets/herbs-spices/tarragon.webp",
+    "imageAlt": "Representative culinary tarragon"
+  },
+  {
+    "id": "thai-basil",
+    "name": "Thai Basil",
+    "type": "herb",
+    "taste": "Sweet, spicy, and anise-like.",
+    "suggestedFoods": [
+      "Beef",
+      "Chicken",
+      "Pork",
+      "Noodles",
+      "Curries",
+      "Stir-fries",
+      "Soup"
+    ],
+    "image": "assets/herbs-spices/thai-basil.webp",
+    "imageAlt": "Representative culinary thai basil"
   },
   {
     "id": "thyme",
@@ -357,7 +519,40 @@
       "Tomatoes",
       "Vegetables"
     ],
-    "image": "assets/herbs-spices/herb.svg",
-    "imageAlt": "Stylized illustration representing Thyme"
+    "image": "assets/herbs-spices/thyme.webp",
+    "imageAlt": "Representative culinary thyme"
+  },
+  {
+    "id": "vietnamese-coriander",
+    "name": "Vietnamese Coriander",
+    "type": "herb",
+    "taste": "Peppery, citrusy, and cilantro-like.",
+    "suggestedFoods": [
+      "Fish",
+      "Poultry",
+      "Noodles",
+      "Soup",
+      "Salads",
+      "Southeast Asian dishes"
+    ],
+    "image": "assets/herbs-spices/vietnamese-coriander.webp",
+    "imageAlt": "Representative culinary vietnamese coriander"
+  },
+  {
+    "id": "watercress",
+    "name": "Watercress",
+    "type": "herb",
+    "taste": "Peppery, fresh, and mildly bitter.",
+    "suggestedFoods": [
+      "Beef",
+      "Fish",
+      "Eggs",
+      "Potatoes",
+      "Sandwiches",
+      "Soup",
+      "Salads"
+    ],
+    "image": "assets/herbs-spices/watercress.webp",
+    "imageAlt": "Representative culinary watercress"
   }
 ]

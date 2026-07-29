@@ -23,6 +23,6 @@ This culinary dataset is separate from the USDA Food Reference nutrition dataset
 
 Pairings reflect common culinary practice and focus on familiar foods and dishes. Every generated record contains only its stable identity and grouping fields, `taste`, `suggestedFoods`, and local image metadata. The generator rejects blank tastes or lists with fewer than five suggested foods.
 
-## Images
+## Herbs and Spices images
 
-`assets/herbs-spices/herb.svg` and `spice.svg` are lightweight original vector illustrations created for this project and dedicated under CC0-1.0. Every encyclopedia record has descriptive alt text and uses one of these local assets. Attribution metadata is in `data/herbs-spices/image-sources.json`. These are category illustrations rather than documentary botanical-identification photographs and must not be used to identify plants.
+Every Herbs and Spices entry uses its own local, original generated illustration of the culinary plant part or spice. The assets are optimized 360 x 240 WebP files; the interface lazy-loads them and uses `image-unavailable.webp` only when an individual image unexpectedly fails. The images are culinary reference illustrations, not botanical-identification photographs. Per-file source and usage records are in `HERB_SPICE_IMAGE_SOURCES.md`.
