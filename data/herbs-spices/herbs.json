@@ -14,7 +14,7 @@
       "Salads",
       "Vegetables"
     ],
-    "image": "assets/herbs-spices/basil.webp",
+    "image": "/assets/herbs-spices/basil.webp",
     "imageAlt": "Representative culinary basil"
   },
   {
@@ -31,7 +31,7 @@
       "Braised beef",
       "Chicken"
     ],
-    "image": "assets/herbs-spices/bay-leaf.webp",
+    "image": "/assets/herbs-spices/bay-leaf.webp",
     "imageAlt": "Representative culinary bay leaf"
   },
   {
@@ -47,7 +47,7 @@
       "Cold soups",
       "Drinks"
     ],
-    "image": "assets/herbs-spices/borage.webp",
+    "image": "/assets/herbs-spices/borage.webp",
     "imageAlt": "Representative culinary borage"
   },
   {
@@ -64,7 +64,7 @@
       "Soups",
       "Cream sauces"
     ],
-    "image": "assets/herbs-spices/chervil.webp",
+    "image": "/assets/herbs-spices/chervil.webp",
     "imageAlt": "Representative culinary chervil"
   },
   {
@@ -81,7 +81,7 @@
       "Cream cheese",
       "Vegetables"
     ],
-    "image": "assets/herbs-spices/chives.webp",
+    "image": "/assets/herbs-spices/chives.webp",
     "imageAlt": "Representative culinary chives"
   },
   {
@@ -99,7 +99,7 @@
       "Beans",
       "Salads"
     ],
-    "image": "assets/herbs-spices/cilantro.webp",
+    "image": "/assets/herbs-spices/cilantro.webp",
     "imageAlt": "Representative culinary cilantro"
   },
   {
@@ -116,7 +116,7 @@
       "Stews",
       "Caribbean dishes"
     ],
-    "image": "assets/herbs-spices/culantro.webp",
+    "image": "/assets/herbs-spices/culantro.webp",
     "imageAlt": "Representative culinary culantro"
   },
   {
@@ -134,7 +134,7 @@
       "Salads",
       "Soup"
     ],
-    "image": "assets/herbs-spices/dill.webp",
+    "image": "/assets/herbs-spices/dill.webp",
     "imageAlt": "Representative culinary dill"
   },
   {
@@ -150,7 +150,7 @@
       "Soups",
       "Mexican stews"
     ],
-    "image": "assets/herbs-spices/epazote.webp",
+    "image": "/assets/herbs-spices/epazote.webp",
     "imageAlt": "Representative culinary epazote"
   },
   {
@@ -167,7 +167,7 @@
       "Chicken",
       "Roasted vegetables"
     ],
-    "image": "assets/herbs-spices/fennel-fronds.webp",
+    "image": "/assets/herbs-spices/fennel-fronds.webp",
     "imageAlt": "Representative culinary fennel fronds"
   },
   {
@@ -183,7 +183,7 @@
       "Curries",
       "Flatbreads"
     ],
-    "image": "assets/herbs-spices/fenugreek-leaves.webp",
+    "image": "/assets/herbs-spices/fenugreek-leaves.webp",
     "imageAlt": "Representative culinary fenugreek leaves"
   },
   {
@@ -199,7 +199,7 @@
       "Feta",
       "Grilled vegetables"
     ],
-    "image": "assets/herbs-spices/greek-oregano.webp",
+    "image": "/assets/herbs-spices/greek-oregano.webp",
     "imageAlt": "Representative culinary greek oregano"
   },
   {
@@ -215,7 +215,7 @@
       "Salads",
       "Herbal teas"
     ],
-    "image": "assets/herbs-spices/hyssop.webp",
+    "image": "/assets/herbs-spices/hyssop.webp",
     "imageAlt": "Representative culinary hyssop"
   },
   {
@@ -231,7 +231,7 @@
       "Soup",
       "Coconut dishes"
     ],
-    "image": "assets/herbs-spices/kaffir-lime-leaves.webp",
+    "image": "/assets/herbs-spices/kaffir-lime-leaves.webp",
     "imageAlt": "Representative culinary kaffir lime leaves"
   },
   {
@@ -247,7 +247,7 @@
       "Fruit",
       "Herb blends"
     ],
-    "image": "assets/herbs-spices/lavender.webp",
+    "image": "/assets/herbs-spices/lavender.webp",
     "imageAlt": "Representative culinary lavender"
   },
   {
@@ -263,7 +263,7 @@
       "Chicken",
       "Cold drinks"
     ],
-    "image": "assets/herbs-spices/lemon-balm.webp",
+    "image": "/assets/herbs-spices/lemon-balm.webp",
     "imageAlt": "Representative culinary lemon balm"
   },
   {
@@ -279,7 +279,7 @@
       "Potatoes",
       "Sauces"
     ],
-    "image": "assets/herbs-spices/lemon-thyme.webp",
+    "image": "/assets/herbs-spices/lemon-thyme.webp",
     "imageAlt": "Representative culinary lemon thyme"
   },
   {
@@ -296,7 +296,7 @@
       "Soups",
       "Coconut dishes"
     ],
-    "image": "assets/herbs-spices/lemongrass.webp",
+    "image": "/assets/herbs-spices/lemongrass.webp",
     "imageAlt": "Representative culinary lemongrass"
   },
   {
@@ -312,7 +312,7 @@
       "Poultry",
       "Stocks"
     ],
-    "image": "assets/herbs-spices/lovage.webp",
+    "image": "/assets/herbs-spices/lovage.webp",
     "imageAlt": "Representative culinary lovage"
   },
   {
@@ -329,7 +329,7 @@
       "Soups",
       "Sausage"
     ],
-    "image": "assets/herbs-spices/marjoram.webp",
+    "image": "/assets/herbs-spices/marjoram.webp",
     "imageAlt": "Representative culinary marjoram"
   },
   {
@@ -346,7 +346,7 @@
       "Yogurt",
       "Chocolate"
     ],
-    "image": "assets/herbs-spices/mint.webp",
+    "image": "/assets/herbs-spices/mint.webp",
     "imageAlt": "Representative culinary mint"
   },
   {
@@ -363,7 +363,7 @@
       "Beans",
       "Roasted vegetables"
     ],
-    "image": "assets/herbs-spices/oregano.webp",
+    "image": "/assets/herbs-spices/oregano.webp",
     "imageAlt": "Representative culinary oregano"
   },
   {
@@ -380,7 +380,7 @@
       "Salads",
       "Eggs"
     ],
-    "image": "assets/herbs-spices/parsley.webp",
+    "image": "/assets/herbs-spices/parsley.webp",
     "imageAlt": "Representative culinary parsley"
   },
   {
@@ -396,7 +396,7 @@
       "Salads",
       "Pickles"
     ],
-    "image": "assets/herbs-spices/perilla-shiso.webp",
+    "image": "/assets/herbs-spices/perilla-shiso.webp",
     "imageAlt": "Representative culinary perilla (shiso)"
   },
   {
@@ -414,7 +414,7 @@
       "Soup",
       "Roasted vegetables"
     ],
-    "image": "assets/herbs-spices/rosemary.webp",
+    "image": "/assets/herbs-spices/rosemary.webp",
     "imageAlt": "Representative culinary rosemary"
   },
   {
@@ -433,7 +433,7 @@
       "Soup",
       "Butter sauces"
     ],
-    "image": "assets/herbs-spices/sage.webp",
+    "image": "/assets/herbs-spices/sage.webp",
     "imageAlt": "Representative culinary sage"
   },
   {
@@ -450,7 +450,7 @@
       "Soups",
       "Stuffing"
     ],
-    "image": "assets/herbs-spices/savory.webp",
+    "image": "/assets/herbs-spices/savory.webp",
     "imageAlt": "Representative culinary savory"
   },
   {
@@ -466,7 +466,7 @@
       "Salads",
       "Cream sauces"
     ],
-    "image": "assets/herbs-spices/sorrel.webp",
+    "image": "/assets/herbs-spices/sorrel.webp",
     "imageAlt": "Representative culinary sorrel"
   },
   {
@@ -483,7 +483,7 @@
       "Salads",
       "Vinegar"
     ],
-    "image": "assets/herbs-spices/tarragon.webp",
+    "image": "/assets/herbs-spices/tarragon.webp",
     "imageAlt": "Representative culinary tarragon"
   },
   {
@@ -500,7 +500,7 @@
       "Stir-fries",
       "Soup"
     ],
-    "image": "assets/herbs-spices/thai-basil.webp",
+    "image": "/assets/herbs-spices/thai-basil.webp",
     "imageAlt": "Representative culinary thai basil"
   },
   {
@@ -519,7 +519,7 @@
       "Tomatoes",
       "Vegetables"
     ],
-    "image": "assets/herbs-spices/thyme.webp",
+    "image": "/assets/herbs-spices/thyme.webp",
     "imageAlt": "Representative culinary thyme"
   },
   {
@@ -535,7 +535,7 @@
       "Salads",
       "Southeast Asian dishes"
     ],
-    "image": "assets/herbs-spices/vietnamese-coriander.webp",
+    "image": "/assets/herbs-spices/vietnamese-coriander.webp",
     "imageAlt": "Representative culinary vietnamese coriander"
   },
   {
@@ -552,7 +552,7 @@
       "Soup",
       "Salads"
     ],
-    "image": "assets/herbs-spices/watercress.webp",
+    "image": "/assets/herbs-spices/watercress.webp",
     "imageAlt": "Representative culinary watercress"
   }
 ]

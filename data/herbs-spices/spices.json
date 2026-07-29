@@ -11,7 +11,7 @@
       "Potatoes",
       "Vegetables"
     ],
-    "image": "assets/herbs-spices/ajwain.webp",
+    "image": "/assets/herbs-spices/ajwain.webp",
     "imageAlt": "Representative culinary ajwain"
   },
   {
@@ -28,7 +28,7 @@
       "Baked goods",
       "Desserts"
     ],
-    "image": "assets/herbs-spices/allspice.webp",
+    "image": "/assets/herbs-spices/allspice.webp",
     "imageAlt": "Representative culinary allspice"
   },
   {
@@ -44,7 +44,7 @@
       "Curries",
       "Vegetables"
     ],
-    "image": "assets/herbs-spices/amchur.webp",
+    "image": "/assets/herbs-spices/amchur.webp",
     "imageAlt": "Representative culinary amchur"
   },
   {
@@ -60,7 +60,7 @@
       "Vegetables",
       "Breads"
     ],
-    "image": "assets/herbs-spices/anardana.webp",
+    "image": "/assets/herbs-spices/anardana.webp",
     "imageAlt": "Representative culinary anardana"
   },
   {
@@ -76,7 +76,7 @@
       "Sausage",
       "Tomato sauces"
     ],
-    "image": "assets/herbs-spices/anise-seed.webp",
+    "image": "/assets/herbs-spices/anise-seed.webp",
     "imageAlt": "Representative culinary anise seed"
   },
   {
@@ -93,7 +93,7 @@
       "Stews",
       "Sauces"
     ],
-    "image": "assets/herbs-spices/annatto.webp",
+    "image": "/assets/herbs-spices/annatto.webp",
     "imageAlt": "Representative culinary annatto"
   },
   {
@@ -109,7 +109,7 @@
       "Rice",
       "Vegetables"
     ],
-    "image": "assets/herbs-spices/asafoetida.webp",
+    "image": "/assets/herbs-spices/asafoetida.webp",
     "imageAlt": "Representative culinary asafoetida"
   },
   {
@@ -125,7 +125,7 @@
       "Curries",
       "Stews"
     ],
-    "image": "assets/herbs-spices/black-cardamom.webp",
+    "image": "/assets/herbs-spices/black-cardamom.webp",
     "imageAlt": "Representative culinary black cardamom"
   },
   {
@@ -143,7 +143,7 @@
       "Soups",
       "Vegetables"
     ],
-    "image": "assets/herbs-spices/black-pepper.webp",
+    "image": "/assets/herbs-spices/black-pepper.webp",
     "imageAlt": "Representative culinary black pepper"
   },
   {
@@ -160,7 +160,7 @@
       "Sausage",
       "Soups"
     ],
-    "image": "assets/herbs-spices/caraway.webp",
+    "image": "/assets/herbs-spices/caraway.webp",
     "imageAlt": "Representative culinary caraway"
   },
   {
@@ -177,7 +177,7 @@
       "Fruit",
       "Lamb"
     ],
-    "image": "assets/herbs-spices/cardamom.webp",
+    "image": "/assets/herbs-spices/cardamom.webp",
     "imageAlt": "Representative culinary cardamom"
   },
   {
@@ -195,7 +195,7 @@
       "Sauces",
       "Vegetables"
     ],
-    "image": "assets/herbs-spices/cayenne.webp",
+    "image": "/assets/herbs-spices/cayenne.webp",
     "imageAlt": "Representative culinary cayenne"
   },
   {
@@ -211,7 +211,7 @@
       "Tomatoes",
       "Bread"
     ],
-    "image": "assets/herbs-spices/celery-seed.webp",
+    "image": "/assets/herbs-spices/celery-seed.webp",
     "imageAlt": "Representative culinary celery seed"
   },
   {
@@ -228,7 +228,7 @@
       "Soup",
       "Sauces"
     ],
-    "image": "assets/herbs-spices/chili-flakes.webp",
+    "image": "/assets/herbs-spices/chili-flakes.webp",
     "imageAlt": "Representative culinary chili flakes"
   },
   {
@@ -246,7 +246,7 @@
       "Squash",
       "Sweet potatoes"
     ],
-    "image": "assets/herbs-spices/cinnamon.webp",
+    "image": "/assets/herbs-spices/cinnamon.webp",
     "imageAlt": "Representative culinary cinnamon"
   },
   {
@@ -263,7 +263,7 @@
       "Rice",
       "Drinks"
     ],
-    "image": "assets/herbs-spices/cloves.webp",
+    "image": "/assets/herbs-spices/cloves.webp",
     "imageAlt": "Representative culinary cloves"
   },
   {
@@ -280,7 +280,7 @@
       "Pickles",
       "Bread"
     ],
-    "image": "assets/herbs-spices/coriander-seed.webp",
+    "image": "/assets/herbs-spices/coriander-seed.webp",
     "imageAlt": "Representative culinary coriander seed"
   },
   {
@@ -295,7 +295,7 @@
       "Sauces",
       "Spice blends"
     ],
-    "image": "assets/herbs-spices/cubeb-pepper.webp",
+    "image": "/assets/herbs-spices/cubeb-pepper.webp",
     "imageAlt": "Representative culinary cubeb pepper"
   },
   {
@@ -314,7 +314,7 @@
       "Tacos",
       "Curries"
     ],
-    "image": "assets/herbs-spices/cumin.webp",
+    "image": "/assets/herbs-spices/cumin.webp",
     "imageAlt": "Representative culinary cumin"
   },
   {
@@ -330,7 +330,7 @@
       "Vegetables",
       "Curries"
     ],
-    "image": "assets/herbs-spices/curry-leaf.webp",
+    "image": "/assets/herbs-spices/curry-leaf.webp",
     "imageAlt": "Representative culinary curry leaf"
   },
   {
@@ -346,7 +346,7 @@
       "Bread",
       "Soup"
     ],
-    "image": "assets/herbs-spices/dill-seed.webp",
+    "image": "/assets/herbs-spices/dill-seed.webp",
     "imageAlt": "Representative culinary dill seed"
   },
   {
@@ -362,7 +362,7 @@
       "Bread",
       "Vegetables"
     ],
-    "image": "assets/herbs-spices/fennel-seed.webp",
+    "image": "/assets/herbs-spices/fennel-seed.webp",
     "imageAlt": "Representative culinary fennel seed"
   },
   {
@@ -379,7 +379,7 @@
       "Pickles",
       "Vegetables"
     ],
-    "image": "assets/herbs-spices/fenugreek-seed.webp",
+    "image": "/assets/herbs-spices/fenugreek-seed.webp",
     "imageAlt": "Representative culinary fenugreek seed"
   },
   {
@@ -395,7 +395,7 @@
       "Noodles",
       "Coconut dishes"
     ],
-    "image": "assets/herbs-spices/galangal.webp",
+    "image": "/assets/herbs-spices/galangal.webp",
     "imageAlt": "Representative culinary galangal"
   },
   {
@@ -413,7 +413,7 @@
       "Desserts",
       "Fruit"
     ],
-    "image": "assets/herbs-spices/ginger.webp",
+    "image": "/assets/herbs-spices/ginger.webp",
     "imageAlt": "Representative culinary ginger"
   },
   {
@@ -430,7 +430,7 @@
       "Vegetables",
       "Spice blends"
     ],
-    "image": "assets/herbs-spices/grains-of-paradise.webp",
+    "image": "/assets/herbs-spices/grains-of-paradise.webp",
     "imageAlt": "Representative culinary grains of paradise"
   },
   {
@@ -445,7 +445,7 @@
       "Fish",
       "Cream sauces"
     ],
-    "image": "assets/herbs-spices/green-peppercorn.webp",
+    "image": "/assets/herbs-spices/green-peppercorn.webp",
     "imageAlt": "Representative culinary green peppercorn"
   },
   {
@@ -462,7 +462,7 @@
       "Stews",
       "Marinades"
     ],
-    "image": "assets/herbs-spices/juniper-berry.webp",
+    "image": "/assets/herbs-spices/juniper-berry.webp",
     "imageAlt": "Representative culinary juniper berry"
   },
   {
@@ -477,7 +477,7 @@
       "Lentils",
       "Coconut dishes"
     ],
-    "image": "assets/herbs-spices/kokum.webp",
+    "image": "/assets/herbs-spices/kokum.webp",
     "imageAlt": "Representative culinary kokum"
   },
   {
@@ -493,7 +493,7 @@
       "Sausage",
       "Fish"
     ],
-    "image": "assets/herbs-spices/mace.webp",
+    "image": "/assets/herbs-spices/mace.webp",
     "imageAlt": "Representative culinary mace"
   },
   {
@@ -508,7 +508,7 @@
       "Cakes",
       "Desserts"
     ],
-    "image": "assets/herbs-spices/mahlab.webp",
+    "image": "/assets/herbs-spices/mahlab.webp",
     "imageAlt": "Representative culinary mahlab"
   },
   {
@@ -525,7 +525,7 @@
       "Sauces",
       "Salad dressings"
     ],
-    "image": "assets/herbs-spices/mustard-seed.webp",
+    "image": "/assets/herbs-spices/mustard-seed.webp",
     "imageAlt": "Representative culinary mustard seed"
   },
   {
@@ -541,7 +541,7 @@
       "Curry",
       "Pickles"
     ],
-    "image": "assets/herbs-spices/nigella-seed.webp",
+    "image": "/assets/herbs-spices/nigella-seed.webp",
     "imageAlt": "Representative culinary nigella seed"
   },
   {
@@ -558,7 +558,7 @@
       "Coffee",
       "Squash"
     ],
-    "image": "assets/herbs-spices/nutmeg.webp",
+    "image": "/assets/herbs-spices/nutmeg.webp",
     "imageAlt": "Representative culinary nutmeg"
   },
   {
@@ -577,7 +577,7 @@
       "Soup",
       "Vegetables"
     ],
-    "image": "assets/herbs-spices/paprika.webp",
+    "image": "/assets/herbs-spices/paprika.webp",
     "imageAlt": "Representative culinary paprika"
   },
   {
@@ -594,7 +594,7 @@
       "Fruit",
       "Sauces"
     ],
-    "image": "assets/herbs-spices/pink-peppercorn.webp",
+    "image": "/assets/herbs-spices/pink-peppercorn.webp",
     "imageAlt": "Representative culinary pink peppercorn"
   },
   {
@@ -610,7 +610,7 @@
       "Noodles",
       "Salad dressings"
     ],
-    "image": "assets/herbs-spices/poppy-seed.webp",
+    "image": "/assets/herbs-spices/poppy-seed.webp",
     "imageAlt": "Representative culinary poppy seed"
   },
   {
@@ -627,7 +627,7 @@
       "Bread",
       "Desserts"
     ],
-    "image": "assets/herbs-spices/saffron.webp",
+    "image": "/assets/herbs-spices/saffron.webp",
     "imageAlt": "Representative culinary saffron"
   },
   {
@@ -644,7 +644,7 @@
       "Stir-fries",
       "Chili"
     ],
-    "image": "assets/herbs-spices/sichuan-pepper.webp",
+    "image": "/assets/herbs-spices/sichuan-pepper.webp",
     "imageAlt": "Representative culinary sichuan pepper"
   },
   {
@@ -661,7 +661,7 @@
       "Fruit",
       "Desserts"
     ],
-    "image": "assets/herbs-spices/star-anise.webp",
+    "image": "/assets/herbs-spices/star-anise.webp",
     "imageAlt": "Representative culinary star anise"
   },
   {
@@ -678,7 +678,7 @@
       "Yogurt",
       "Vegetables"
     ],
-    "image": "assets/herbs-spices/sumac.webp",
+    "image": "/assets/herbs-spices/sumac.webp",
     "imageAlt": "Representative culinary sumac"
   },
   {
@@ -695,7 +695,7 @@
       "Sauces",
       "Chutneys"
     ],
-    "image": "assets/herbs-spices/tamarind.webp",
+    "image": "/assets/herbs-spices/tamarind.webp",
     "imageAlt": "Representative culinary tamarind"
   },
   {
@@ -713,7 +713,7 @@
       "Soups",
       "Vegetables"
     ],
-    "image": "assets/herbs-spices/turmeric.webp",
+    "image": "/assets/herbs-spices/turmeric.webp",
     "imageAlt": "Representative culinary turmeric"
   },
   {
@@ -729,7 +729,7 @@
       "Custards",
       "Coffee"
     ],
-    "image": "assets/herbs-spices/vanilla.webp",
+    "image": "/assets/herbs-spices/vanilla.webp",
     "imageAlt": "Representative culinary vanilla"
   },
   {
@@ -746,7 +746,7 @@
       "Soups",
       "Stir-fries"
     ],
-    "image": "assets/herbs-spices/white-pepper.webp",
+    "image": "/assets/herbs-spices/white-pepper.webp",
     "imageAlt": "Representative culinary white pepper"
   }
 ]

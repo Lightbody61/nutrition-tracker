@@ -54,7 +54,7 @@ Object.assign(profiles,{
 });
 function encyclopediaRecord(name,type){
   const profile=profiles[name];if(!profile)throw new Error(`Missing culinary profile for ${name}`);const suggestedFoods=profile[1].split('|');if(!profile[0].trim()||suggestedFoods.length<5||suggestedFoods.some(x=>!x.trim()))throw new Error(`Incomplete culinary profile for ${name}`);
-  return {id:slug(name),name,type,taste:profile[0],suggestedFoods,image:`assets/herbs-spices/${slug(name)}.webp`,imageAlt:`Representative culinary ${name.toLowerCase()}`};
+  return {id:slug(name),name,type,taste:profile[0],suggestedFoods,image:`/assets/herbs-spices/${slug(name)}.webp`,imageAlt:`Representative culinary ${name.toLowerCase()}`};
 }
 const herbRecords=herbs.map(x=>encyclopediaRecord(x,'herb'));
 const spiceRecords=spices.map(x=>encyclopediaRecord(x,'spice'));
@@ -65,7 +65,7 @@ for(const entry of [...herbRecords,...spiceRecords]){
   if(!Array.isArray(entry.suggestedFoods)||entry.suggestedFoods.length<4)throw new Error(`Missing suggested foods: ${entry.name}`);
   if(!entry.image)throw new Error(`Missing image: ${entry.name}`);
   if(!entry.imageAlt)throw new Error(`Missing image alt: ${entry.name}`);
-  const imagePath=path.join(root,entry.image);
+  const imagePath=path.join(root,entry.image.replace(/^\//,''));
   if(!fs.existsSync(imagePath)||!fs.statSync(imagePath).size)throw new Error(`Missing image file: ${entry.name}`);
 }
 fs.writeFileSync(path.join(hsDir,'herbs.json'),JSON.stringify(herbRecords,null,2)+'\n');
