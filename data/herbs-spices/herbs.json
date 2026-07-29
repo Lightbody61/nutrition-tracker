@@ -1,0 +1,558 @@
+[
+  {
+    "id": "basil",
+    "name": "Basil",
+    "type": "herb",
+    "taste": "Sweet, fresh, peppery, and mildly savory.",
+    "suggestedFoods": [
+      "Pasta",
+      "Tomatoes",
+      "Pizza",
+      "Chicken",
+      "Fish",
+      "Soup",
+      "Salads",
+      "Vegetables"
+    ],
+    "image": "/assets/herbs-spices/basil.webp",
+    "imageAlt": "Representative culinary basil"
+  },
+  {
+    "id": "bay-leaf",
+    "name": "Bay Leaf",
+    "type": "herb",
+    "taste": "Woody, floral, herbal, and gently bitter.",
+    "suggestedFoods": [
+      "Soups",
+      "Stews",
+      "Beans",
+      "Rice",
+      "Tomato sauces",
+      "Braised beef",
+      "Chicken"
+    ],
+    "image": "/assets/herbs-spices/bay-leaf.webp",
+    "imageAlt": "Representative culinary bay leaf"
+  },
+  {
+    "id": "borage",
+    "name": "Borage",
+    "type": "herb",
+    "taste": "Fresh, mild, and cucumber-like.",
+    "suggestedFoods": [
+      "Salads",
+      "Fish",
+      "Yogurt",
+      "Vegetables",
+      "Cold soups",
+      "Drinks"
+    ],
+    "image": "/assets/herbs-spices/borage.webp",
+    "imageAlt": "Representative culinary borage"
+  },
+  {
+    "id": "chervil",
+    "name": "Chervil",
+    "type": "herb",
+    "taste": "Delicate, fresh, lightly anise-like, and grassy.",
+    "suggestedFoods": [
+      "Eggs",
+      "Fish",
+      "Chicken",
+      "Potatoes",
+      "Salads",
+      "Soups",
+      "Cream sauces"
+    ],
+    "image": "/assets/herbs-spices/chervil.webp",
+    "imageAlt": "Representative culinary chervil"
+  },
+  {
+    "id": "chives",
+    "name": "Chives",
+    "type": "herb",
+    "taste": "Fresh, grassy, and mildly onion-like.",
+    "suggestedFoods": [
+      "Potatoes",
+      "Eggs",
+      "Fish",
+      "Soups",
+      "Salads",
+      "Cream cheese",
+      "Vegetables"
+    ],
+    "image": "/assets/herbs-spices/chives.webp",
+    "imageAlt": "Representative culinary chives"
+  },
+  {
+    "id": "cilantro",
+    "name": "Cilantro",
+    "type": "herb",
+    "taste": "Bright, citrusy, grassy, and slightly peppery.",
+    "suggestedFoods": [
+      "Tacos",
+      "Salsa",
+      "Curry",
+      "Chicken",
+      "Fish",
+      "Rice",
+      "Beans",
+      "Salads"
+    ],
+    "image": "/assets/herbs-spices/cilantro.webp",
+    "imageAlt": "Representative culinary cilantro"
+  },
+  {
+    "id": "culantro",
+    "name": "Culantro",
+    "type": "herb",
+    "taste": "Strong, savory, citrusy, and cilantro-like.",
+    "suggestedFoods": [
+      "Beans",
+      "Rice",
+      "Chicken",
+      "Beef",
+      "Soup",
+      "Stews",
+      "Caribbean dishes"
+    ],
+    "image": "/assets/herbs-spices/culantro.webp",
+    "imageAlt": "Representative culinary culantro"
+  },
+  {
+    "id": "dill",
+    "name": "Dill",
+    "type": "herb",
+    "taste": "Fresh, grassy, citrusy, and mildly anise-like.",
+    "suggestedFoods": [
+      "Fish",
+      "Potatoes",
+      "Cucumbers",
+      "Yogurt",
+      "Eggs",
+      "Pickles",
+      "Salads",
+      "Soup"
+    ],
+    "image": "/assets/herbs-spices/dill.webp",
+    "imageAlt": "Representative culinary dill"
+  },
+  {
+    "id": "epazote",
+    "name": "Epazote",
+    "type": "herb",
+    "taste": "Pungent, resinous, earthy, and citrus-like.",
+    "suggestedFoods": [
+      "Black beans",
+      "Corn",
+      "Mushrooms",
+      "Quesadillas",
+      "Soups",
+      "Mexican stews"
+    ],
+    "image": "/assets/herbs-spices/epazote.webp",
+    "imageAlt": "Representative culinary epazote"
+  },
+  {
+    "id": "fennel-fronds",
+    "name": "Fennel Fronds",
+    "type": "herb",
+    "taste": "Fresh, green, and sweetly anise-like.",
+    "suggestedFoods": [
+      "Fish",
+      "Pasta",
+      "Potatoes",
+      "Salads",
+      "Soups",
+      "Chicken",
+      "Roasted vegetables"
+    ],
+    "image": "/assets/herbs-spices/fennel-fronds.webp",
+    "imageAlt": "Representative culinary fennel fronds"
+  },
+  {
+    "id": "fenugreek-leaves",
+    "name": "Fenugreek Leaves",
+    "type": "herb",
+    "taste": "Savory, earthy, slightly bitter, and maple-like.",
+    "suggestedFoods": [
+      "Chicken",
+      "Lamb",
+      "Lentils",
+      "Potatoes",
+      "Curries",
+      "Flatbreads"
+    ],
+    "image": "/assets/herbs-spices/fenugreek-leaves.webp",
+    "imageAlt": "Representative culinary fenugreek leaves"
+  },
+  {
+    "id": "greek-oregano",
+    "name": "Greek Oregano",
+    "type": "herb",
+    "taste": "Earthy, peppery, and slightly bitter.",
+    "suggestedFoods": [
+      "Lamb",
+      "Chicken",
+      "Tomatoes",
+      "Potatoes",
+      "Feta",
+      "Grilled vegetables"
+    ],
+    "image": "/assets/herbs-spices/greek-oregano.webp",
+    "imageAlt": "Representative culinary greek oregano"
+  },
+  {
+    "id": "hyssop",
+    "name": "Hyssop",
+    "type": "herb",
+    "taste": "Minty, floral, and slightly bitter.",
+    "suggestedFoods": [
+      "Lamb",
+      "Poultry",
+      "Beans",
+      "Fruit",
+      "Salads",
+      "Herbal teas"
+    ],
+    "image": "/assets/herbs-spices/hyssop.webp",
+    "imageAlt": "Representative culinary hyssop"
+  },
+  {
+    "id": "kaffir-lime-leaves",
+    "name": "Kaffir Lime Leaves",
+    "type": "herb",
+    "taste": "Intensely citrusy, floral, and fragrant.",
+    "suggestedFoods": [
+      "Fish",
+      "Chicken",
+      "Shrimp",
+      "Curries",
+      "Soup",
+      "Coconut dishes"
+    ],
+    "image": "/assets/herbs-spices/kaffir-lime-leaves.webp",
+    "imageAlt": "Representative culinary kaffir lime leaves"
+  },
+  {
+    "id": "lavender",
+    "name": "Lavender",
+    "type": "herb",
+    "taste": "Floral, fragrant, and subtly sweet.",
+    "suggestedFoods": [
+      "Baked goods",
+      "Desserts",
+      "Shortbread",
+      "Lemon dishes",
+      "Fruit",
+      "Herb blends"
+    ],
+    "image": "/assets/herbs-spices/lavender.webp",
+    "imageAlt": "Representative culinary lavender"
+  },
+  {
+    "id": "lemon-balm",
+    "name": "Lemon Balm",
+    "type": "herb",
+    "taste": "Fresh, lemony, lightly sweet, and mint-like.",
+    "suggestedFoods": [
+      "Fruit",
+      "Desserts",
+      "Salads",
+      "Fish",
+      "Chicken",
+      "Cold drinks"
+    ],
+    "image": "/assets/herbs-spices/lemon-balm.webp",
+    "imageAlt": "Representative culinary lemon balm"
+  },
+  {
+    "id": "lemon-thyme",
+    "name": "Lemon Thyme",
+    "type": "herb",
+    "taste": "Citrusy, savory, and earthy.",
+    "suggestedFoods": [
+      "Fish",
+      "Chicken",
+      "Pork",
+      "Vegetables",
+      "Potatoes",
+      "Sauces"
+    ],
+    "image": "/assets/herbs-spices/lemon-thyme.webp",
+    "imageAlt": "Representative culinary lemon thyme"
+  },
+  {
+    "id": "lemongrass",
+    "name": "Lemongrass",
+    "type": "herb",
+    "taste": "Bright, lemony, floral, and lightly ginger-like.",
+    "suggestedFoods": [
+      "Chicken",
+      "Fish",
+      "Curry",
+      "Rice",
+      "Noodles",
+      "Soups",
+      "Coconut dishes"
+    ],
+    "image": "/assets/herbs-spices/lemongrass.webp",
+    "imageAlt": "Representative culinary lemongrass"
+  },
+  {
+    "id": "lovage",
+    "name": "Lovage",
+    "type": "herb",
+    "taste": "Strongly celery-like, parsley-like, and savory.",
+    "suggestedFoods": [
+      "Soup",
+      "Stew",
+      "Potatoes",
+      "Beans",
+      "Poultry",
+      "Stocks"
+    ],
+    "image": "/assets/herbs-spices/lovage.webp",
+    "imageAlt": "Representative culinary lovage"
+  },
+  {
+    "id": "marjoram",
+    "name": "Marjoram",
+    "type": "herb",
+    "taste": "Sweet, woodsy, floral, and mildly citrusy.",
+    "suggestedFoods": [
+      "Chicken",
+      "Pork",
+      "Potatoes",
+      "Beans",
+      "Tomato sauces",
+      "Soups",
+      "Sausage"
+    ],
+    "image": "/assets/herbs-spices/marjoram.webp",
+    "imageAlt": "Representative culinary marjoram"
+  },
+  {
+    "id": "mint",
+    "name": "Mint",
+    "type": "herb",
+    "taste": "Cool, fresh, sweet, and strongly minty.",
+    "suggestedFoods": [
+      "Lamb",
+      "Peas",
+      "Fruit",
+      "Salads",
+      "Desserts",
+      "Yogurt",
+      "Chocolate"
+    ],
+    "image": "/assets/herbs-spices/mint.webp",
+    "imageAlt": "Representative culinary mint"
+  },
+  {
+    "id": "oregano",
+    "name": "Oregano",
+    "type": "herb",
+    "taste": "Earthy, robust, peppery, and slightly bitter.",
+    "suggestedFoods": [
+      "Tomatoes",
+      "Pizza",
+      "Pasta",
+      "Chicken",
+      "Lamb",
+      "Beans",
+      "Roasted vegetables"
+    ],
+    "image": "/assets/herbs-spices/oregano.webp",
+    "imageAlt": "Representative culinary oregano"
+  },
+  {
+    "id": "parsley",
+    "name": "Parsley",
+    "type": "herb",
+    "taste": "Fresh, grassy, clean, and lightly peppery.",
+    "suggestedFoods": [
+      "Fish",
+      "Chicken",
+      "Potatoes",
+      "Pasta",
+      "Soups",
+      "Salads",
+      "Eggs"
+    ],
+    "image": "/assets/herbs-spices/parsley.webp",
+    "imageAlt": "Representative culinary parsley"
+  },
+  {
+    "id": "perilla-shiso",
+    "name": "Perilla (Shiso)",
+    "type": "herb",
+    "taste": "Minty, citrusy, anise-like, and slightly spicy.",
+    "suggestedFoods": [
+      "Fish",
+      "Rice",
+      "Pork",
+      "Noodles",
+      "Salads",
+      "Pickles"
+    ],
+    "image": "/assets/herbs-spices/perilla-shiso.webp",
+    "imageAlt": "Representative culinary perilla (shiso)"
+  },
+  {
+    "id": "rosemary",
+    "name": "Rosemary",
+    "type": "herb",
+    "taste": "Savory, woody, pine-like, and strongly aromatic.",
+    "suggestedFoods": [
+      "Chicken",
+      "Lamb",
+      "Pork",
+      "Potatoes",
+      "Bread",
+      "Beans",
+      "Soup",
+      "Roasted vegetables"
+    ],
+    "image": "/assets/herbs-spices/rosemary.webp",
+    "imageAlt": "Representative culinary rosemary"
+  },
+  {
+    "id": "sage",
+    "name": "Sage",
+    "type": "herb",
+    "taste": "Savory, earthy, pine-like, and slightly peppery.",
+    "suggestedFoods": [
+      "Pork",
+      "Poultry",
+      "Stuffing",
+      "Sausage",
+      "Squash",
+      "Beans",
+      "Potatoes",
+      "Soup",
+      "Butter sauces"
+    ],
+    "image": "/assets/herbs-spices/sage.webp",
+    "imageAlt": "Representative culinary sage"
+  },
+  {
+    "id": "savory",
+    "name": "Savory",
+    "type": "herb",
+    "taste": "Peppery, earthy, herbaceous, and thyme-like.",
+    "suggestedFoods": [
+      "Beans",
+      "Lentils",
+      "Poultry",
+      "Pork",
+      "Potatoes",
+      "Soups",
+      "Stuffing"
+    ],
+    "image": "/assets/herbs-spices/savory.webp",
+    "imageAlt": "Representative culinary savory"
+  },
+  {
+    "id": "sorrel",
+    "name": "Sorrel",
+    "type": "herb",
+    "taste": "Bright, tart, lemony, and fresh.",
+    "suggestedFoods": [
+      "Fish",
+      "Eggs",
+      "Potatoes",
+      "Soups",
+      "Salads",
+      "Cream sauces"
+    ],
+    "image": "/assets/herbs-spices/sorrel.webp",
+    "imageAlt": "Representative culinary sorrel"
+  },
+  {
+    "id": "tarragon",
+    "name": "Tarragon",
+    "type": "herb",
+    "taste": "Sweet, delicate, anise-like, and lightly peppery.",
+    "suggestedFoods": [
+      "Chicken",
+      "Fish",
+      "Eggs",
+      "Mushrooms",
+      "Mustard sauces",
+      "Salads",
+      "Vinegar"
+    ],
+    "image": "/assets/herbs-spices/tarragon.webp",
+    "imageAlt": "Representative culinary tarragon"
+  },
+  {
+    "id": "thai-basil",
+    "name": "Thai Basil",
+    "type": "herb",
+    "taste": "Sweet, spicy, and anise-like.",
+    "suggestedFoods": [
+      "Beef",
+      "Chicken",
+      "Pork",
+      "Noodles",
+      "Curries",
+      "Stir-fries",
+      "Soup"
+    ],
+    "image": "/assets/herbs-spices/thai-basil.webp",
+    "imageAlt": "Representative culinary thai basil"
+  },
+  {
+    "id": "thyme",
+    "name": "Thyme",
+    "type": "herb",
+    "taste": "Earthy, minty, lemony, and gently woody.",
+    "suggestedFoods": [
+      "Chicken",
+      "Fish",
+      "Beef",
+      "Soup",
+      "Stew",
+      "Potatoes",
+      "Beans",
+      "Tomatoes",
+      "Vegetables"
+    ],
+    "image": "/assets/herbs-spices/thyme.webp",
+    "imageAlt": "Representative culinary thyme"
+  },
+  {
+    "id": "vietnamese-coriander",
+    "name": "Vietnamese Coriander",
+    "type": "herb",
+    "taste": "Peppery, citrusy, and cilantro-like.",
+    "suggestedFoods": [
+      "Fish",
+      "Poultry",
+      "Noodles",
+      "Soup",
+      "Salads",
+      "Southeast Asian dishes"
+    ],
+    "image": "/assets/herbs-spices/vietnamese-coriander.webp",
+    "imageAlt": "Representative culinary vietnamese coriander"
+  },
+  {
+    "id": "watercress",
+    "name": "Watercress",
+    "type": "herb",
+    "taste": "Peppery, fresh, and mildly bitter.",
+    "suggestedFoods": [
+      "Beef",
+      "Fish",
+      "Eggs",
+      "Potatoes",
+      "Sandwiches",
+      "Soup",
+      "Salads"
+    ],
+    "image": "/assets/herbs-spices/watercress.webp",
+    "imageAlt": "Representative culinary watercress"
+  }
+]

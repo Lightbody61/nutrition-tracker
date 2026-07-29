@@ -1,0 +1,752 @@
+[
+  {
+    "id": "ajwain",
+    "name": "Ajwain",
+    "type": "spice",
+    "taste": "Pungent, thyme-like, peppery, and slightly bitter.",
+    "suggestedFoods": [
+      "Lentils",
+      "Beans",
+      "Bread",
+      "Potatoes",
+      "Vegetables"
+    ],
+    "image": "/assets/herbs-spices/ajwain.webp",
+    "imageAlt": "Representative culinary ajwain"
+  },
+  {
+    "id": "allspice",
+    "name": "Allspice",
+    "type": "spice",
+    "taste": "Warm, sweet, peppery, and clove-like.",
+    "suggestedFoods": [
+      "Pork",
+      "Beef",
+      "Jerk chicken",
+      "Stews",
+      "Pickles",
+      "Baked goods",
+      "Desserts"
+    ],
+    "image": "/assets/herbs-spices/allspice.webp",
+    "imageAlt": "Representative culinary allspice"
+  },
+  {
+    "id": "amchur",
+    "name": "Amchur",
+    "type": "spice",
+    "taste": "Tart, fruity, and sour.",
+    "suggestedFoods": [
+      "Chicken",
+      "Fish",
+      "Potatoes",
+      "Lentils",
+      "Curries",
+      "Vegetables"
+    ],
+    "image": "/assets/herbs-spices/amchur.webp",
+    "imageAlt": "Representative culinary amchur"
+  },
+  {
+    "id": "anardana",
+    "name": "Anardana",
+    "type": "spice",
+    "taste": "Tart, fruity, and mildly sweet.",
+    "suggestedFoods": [
+      "Lamb",
+      "Chicken",
+      "Chutneys",
+      "Lentils",
+      "Vegetables",
+      "Breads"
+    ],
+    "image": "/assets/herbs-spices/anardana.webp",
+    "imageAlt": "Representative culinary anardana"
+  },
+  {
+    "id": "anise-seed",
+    "name": "Anise Seed",
+    "type": "spice",
+    "taste": "Sweet, fragrant, and strongly licorice-like.",
+    "suggestedFoods": [
+      "Bread",
+      "Cookies",
+      "Cakes",
+      "Fruit",
+      "Sausage",
+      "Tomato sauces"
+    ],
+    "image": "/assets/herbs-spices/anise-seed.webp",
+    "imageAlt": "Representative culinary anise seed"
+  },
+  {
+    "id": "annatto",
+    "name": "Annatto",
+    "type": "spice",
+    "taste": "Mildly earthy, peppery, and slightly sweet.",
+    "suggestedFoods": [
+      "Rice",
+      "Chicken",
+      "Pork",
+      "Fish",
+      "Cheese",
+      "Stews",
+      "Sauces"
+    ],
+    "image": "/assets/herbs-spices/annatto.webp",
+    "imageAlt": "Representative culinary annatto"
+  },
+  {
+    "id": "asafoetida",
+    "name": "Asafoetida",
+    "type": "spice",
+    "taste": "Pungent, savory, earthy, and onion-like.",
+    "suggestedFoods": [
+      "Lentils",
+      "Beans",
+      "Curry",
+      "Potatoes",
+      "Rice",
+      "Vegetables"
+    ],
+    "image": "/assets/herbs-spices/asafoetida.webp",
+    "imageAlt": "Representative culinary asafoetida"
+  },
+  {
+    "id": "black-cardamom",
+    "name": "Black Cardamom",
+    "type": "spice",
+    "taste": "Smoky, resinous, earthy, and camphor-like.",
+    "suggestedFoods": [
+      "Beef",
+      "Lamb",
+      "Rice",
+      "Lentils",
+      "Curries",
+      "Stews"
+    ],
+    "image": "/assets/herbs-spices/black-cardamom.webp",
+    "imageAlt": "Representative culinary black cardamom"
+  },
+  {
+    "id": "black-pepper",
+    "name": "Black Pepper",
+    "type": "spice",
+    "taste": "Sharp, piney, woody, and distinctly peppery.",
+    "suggestedFoods": [
+      "Beef",
+      "Chicken",
+      "Fish",
+      "Eggs",
+      "Potatoes",
+      "Pasta",
+      "Soups",
+      "Vegetables"
+    ],
+    "image": "/assets/herbs-spices/black-pepper.webp",
+    "imageAlt": "Representative culinary black pepper"
+  },
+  {
+    "id": "caraway",
+    "name": "Caraway",
+    "type": "spice",
+    "taste": "Earthy, warm, citrusy, and anise-like.",
+    "suggestedFoods": [
+      "Rye bread",
+      "Cabbage",
+      "Pork",
+      "Potatoes",
+      "Cheese",
+      "Sausage",
+      "Soups"
+    ],
+    "image": "/assets/herbs-spices/caraway.webp",
+    "imageAlt": "Representative culinary caraway"
+  },
+  {
+    "id": "cardamom",
+    "name": "Cardamom",
+    "type": "spice",
+    "taste": "Floral, citrusy, sweet, and eucalyptus-like.",
+    "suggestedFoods": [
+      "Curry",
+      "Rice",
+      "Bread",
+      "Coffee",
+      "Desserts",
+      "Fruit",
+      "Lamb"
+    ],
+    "image": "/assets/herbs-spices/cardamom.webp",
+    "imageAlt": "Representative culinary cardamom"
+  },
+  {
+    "id": "cayenne",
+    "name": "Cayenne",
+    "type": "spice",
+    "taste": "Hot, spicy, pungent, and slightly earthy.",
+    "suggestedFoods": [
+      "Chili",
+      "Chicken",
+      "Fish",
+      "Eggs",
+      "Beans",
+      "Curry",
+      "Sauces",
+      "Vegetables"
+    ],
+    "image": "/assets/herbs-spices/cayenne.webp",
+    "imageAlt": "Representative culinary cayenne"
+  },
+  {
+    "id": "celery-seed",
+    "name": "Celery Seed",
+    "type": "spice",
+    "taste": "Earthy, grassy, slightly bitter, and celery-like.",
+    "suggestedFoods": [
+      "Potato salad",
+      "Coleslaw",
+      "Pickles",
+      "Soups",
+      "Tomatoes",
+      "Bread"
+    ],
+    "image": "/assets/herbs-spices/celery-seed.webp",
+    "imageAlt": "Representative culinary celery seed"
+  },
+  {
+    "id": "chili-flakes",
+    "name": "Chili Flakes",
+    "type": "spice",
+    "taste": "Hot, fruity, and pungent.",
+    "suggestedFoods": [
+      "Pizza",
+      "Pasta",
+      "Chicken",
+      "Seafood",
+      "Vegetables",
+      "Soup",
+      "Sauces"
+    ],
+    "image": "/assets/herbs-spices/chili-flakes.webp",
+    "imageAlt": "Representative culinary chili flakes"
+  },
+  {
+    "id": "cinnamon",
+    "name": "Cinnamon",
+    "type": "spice",
+    "taste": "Sweet, warm, woody, and mildly spicy.",
+    "suggestedFoods": [
+      "Apples",
+      "Oatmeal",
+      "Bread",
+      "Baked goods",
+      "Desserts",
+      "Coffee",
+      "Squash",
+      "Sweet potatoes"
+    ],
+    "image": "/assets/herbs-spices/cinnamon.webp",
+    "imageAlt": "Representative culinary cinnamon"
+  },
+  {
+    "id": "cloves",
+    "name": "Cloves",
+    "type": "spice",
+    "taste": "Intensely warm, sweet, woody, and slightly bitter.",
+    "suggestedFoods": [
+      "Ham",
+      "Baked goods",
+      "Desserts",
+      "Fruit",
+      "Curries",
+      "Rice",
+      "Drinks"
+    ],
+    "image": "/assets/herbs-spices/cloves.webp",
+    "imageAlt": "Representative culinary cloves"
+  },
+  {
+    "id": "coriander-seed",
+    "name": "Coriander Seed",
+    "type": "spice",
+    "taste": "Citrusy, warm, nutty, and lightly floral.",
+    "suggestedFoods": [
+      "Curry",
+      "Chicken",
+      "Fish",
+      "Lentils",
+      "Sausage",
+      "Pickles",
+      "Bread"
+    ],
+    "image": "/assets/herbs-spices/coriander-seed.webp",
+    "imageAlt": "Representative culinary coriander seed"
+  },
+  {
+    "id": "cubeb-pepper",
+    "name": "Cubeb Pepper",
+    "type": "spice",
+    "taste": "Peppery, pine-like, floral, and slightly bitter.",
+    "suggestedFoods": [
+      "Beef",
+      "Lamb",
+      "Fish",
+      "Sauces",
+      "Spice blends"
+    ],
+    "image": "/assets/herbs-spices/cubeb-pepper.webp",
+    "imageAlt": "Representative culinary cubeb pepper"
+  },
+  {
+    "id": "cumin",
+    "name": "Cumin",
+    "type": "spice",
+    "taste": "Earthy, warm, nutty, and slightly smoky.",
+    "suggestedFoods": [
+      "Beef",
+      "Lamb",
+      "Chicken",
+      "Beans",
+      "Lentils",
+      "Rice",
+      "Chili",
+      "Tacos",
+      "Curries"
+    ],
+    "image": "/assets/herbs-spices/cumin.webp",
+    "imageAlt": "Representative culinary cumin"
+  },
+  {
+    "id": "curry-leaf",
+    "name": "Curry Leaf",
+    "type": "spice",
+    "taste": "Citrusy, nutty, savory, and aromatic.",
+    "suggestedFoods": [
+      "Lentils",
+      "Rice",
+      "Fish",
+      "Chicken",
+      "Vegetables",
+      "Curries"
+    ],
+    "image": "/assets/herbs-spices/curry-leaf.webp",
+    "imageAlt": "Representative culinary curry leaf"
+  },
+  {
+    "id": "dill-seed",
+    "name": "Dill Seed",
+    "type": "spice",
+    "taste": "Warm, grassy, and slightly bitter.",
+    "suggestedFoods": [
+      "Pickles",
+      "Cabbage",
+      "Potatoes",
+      "Fish",
+      "Bread",
+      "Soup"
+    ],
+    "image": "/assets/herbs-spices/dill-seed.webp",
+    "imageAlt": "Representative culinary dill seed"
+  },
+  {
+    "id": "fennel-seed",
+    "name": "Fennel Seed",
+    "type": "spice",
+    "taste": "Sweet, warm, and licorice-like.",
+    "suggestedFoods": [
+      "Pork",
+      "Sausage",
+      "Fish",
+      "Tomatoes",
+      "Bread",
+      "Vegetables"
+    ],
+    "image": "/assets/herbs-spices/fennel-seed.webp",
+    "imageAlt": "Representative culinary fennel seed"
+  },
+  {
+    "id": "fenugreek-seed",
+    "name": "Fenugreek Seed",
+    "type": "spice",
+    "taste": "Bittersweet, nutty, maple-like, and earthy.",
+    "suggestedFoods": [
+      "Curry",
+      "Lentils",
+      "Potatoes",
+      "Chicken",
+      "Bread",
+      "Pickles",
+      "Vegetables"
+    ],
+    "image": "/assets/herbs-spices/fenugreek-seed.webp",
+    "imageAlt": "Representative culinary fenugreek seed"
+  },
+  {
+    "id": "galangal",
+    "name": "Galangal",
+    "type": "spice",
+    "taste": "Citrusy, piney, peppery, and ginger-like.",
+    "suggestedFoods": [
+      "Curry",
+      "Chicken",
+      "Fish",
+      "Soups",
+      "Noodles",
+      "Coconut dishes"
+    ],
+    "image": "/assets/herbs-spices/galangal.webp",
+    "imageAlt": "Representative culinary galangal"
+  },
+  {
+    "id": "ginger",
+    "name": "Ginger",
+    "type": "spice",
+    "taste": "Warm, citrusy, peppery, and mildly sweet.",
+    "suggestedFoods": [
+      "Chicken",
+      "Fish",
+      "Curry",
+      "Stir-fries",
+      "Rice",
+      "Bread",
+      "Desserts",
+      "Fruit"
+    ],
+    "image": "/assets/herbs-spices/ginger.webp",
+    "imageAlt": "Representative culinary ginger"
+  },
+  {
+    "id": "grains-of-paradise",
+    "name": "Grains of Paradise",
+    "type": "spice",
+    "taste": "Peppery, citrusy, warm, and cardamom-like.",
+    "suggestedFoods": [
+      "Fish",
+      "Chicken",
+      "Lamb",
+      "Stews",
+      "Rice",
+      "Vegetables",
+      "Spice blends"
+    ],
+    "image": "/assets/herbs-spices/grains-of-paradise.webp",
+    "imageAlt": "Representative culinary grains of paradise"
+  },
+  {
+    "id": "green-peppercorn",
+    "name": "Green Peppercorn",
+    "type": "spice",
+    "taste": "Fresh, mild, peppery, and slightly fruity.",
+    "suggestedFoods": [
+      "Beef",
+      "Pork",
+      "Chicken",
+      "Fish",
+      "Cream sauces"
+    ],
+    "image": "/assets/herbs-spices/green-peppercorn.webp",
+    "imageAlt": "Representative culinary green peppercorn"
+  },
+  {
+    "id": "juniper-berry",
+    "name": "Juniper Berry",
+    "type": "spice",
+    "taste": "Piney, resinous, citrusy, and bittersweet.",
+    "suggestedFoods": [
+      "Venison",
+      "Pork",
+      "Beef",
+      "Cabbage",
+      "Sauerkraut",
+      "Stews",
+      "Marinades"
+    ],
+    "image": "/assets/herbs-spices/juniper-berry.webp",
+    "imageAlt": "Representative culinary juniper berry"
+  },
+  {
+    "id": "kokum",
+    "name": "Kokum",
+    "type": "spice",
+    "taste": "Tart, fruity, and slightly smoky.",
+    "suggestedFoods": [
+      "Fish",
+      "Seafood",
+      "Curries",
+      "Lentils",
+      "Coconut dishes"
+    ],
+    "image": "/assets/herbs-spices/kokum.webp",
+    "imageAlt": "Representative culinary kokum"
+  },
+  {
+    "id": "mace",
+    "name": "Mace",
+    "type": "spice",
+    "taste": "Warm, sweet, woody, and mildly spicy.",
+    "suggestedFoods": [
+      "Baked goods",
+      "Desserts",
+      "Potatoes",
+      "Cream sauces",
+      "Sausage",
+      "Fish"
+    ],
+    "image": "/assets/herbs-spices/mace.webp",
+    "imageAlt": "Representative culinary mace"
+  },
+  {
+    "id": "mahlab",
+    "name": "Mahlab",
+    "type": "spice",
+    "taste": "Floral, nutty, cherry-like, and lightly bitter.",
+    "suggestedFoods": [
+      "Bread",
+      "Pastries",
+      "Cookies",
+      "Cakes",
+      "Desserts"
+    ],
+    "image": "/assets/herbs-spices/mahlab.webp",
+    "imageAlt": "Representative culinary mahlab"
+  },
+  {
+    "id": "mustard-seed",
+    "name": "Mustard Seed",
+    "type": "spice",
+    "taste": "Sharp, pungent, nutty, and warming.",
+    "suggestedFoods": [
+      "Pickles",
+      "Curry",
+      "Potatoes",
+      "Cabbage",
+      "Pork",
+      "Sauces",
+      "Salad dressings"
+    ],
+    "image": "/assets/herbs-spices/mustard-seed.webp",
+    "imageAlt": "Representative culinary mustard seed"
+  },
+  {
+    "id": "nigella-seed",
+    "name": "Nigella Seed",
+    "type": "spice",
+    "taste": "Peppery, onion-like, nutty, and slightly bitter.",
+    "suggestedFoods": [
+      "Bread",
+      "Lentils",
+      "Potatoes",
+      "Vegetables",
+      "Curry",
+      "Pickles"
+    ],
+    "image": "/assets/herbs-spices/nigella-seed.webp",
+    "imageAlt": "Representative culinary nigella seed"
+  },
+  {
+    "id": "nutmeg",
+    "name": "Nutmeg",
+    "type": "spice",
+    "taste": "Sweet, warm, nutty, and woody.",
+    "suggestedFoods": [
+      "Baked goods",
+      "Desserts",
+      "Potatoes",
+      "Spinach",
+      "Cream sauces",
+      "Coffee",
+      "Squash"
+    ],
+    "image": "/assets/herbs-spices/nutmeg.webp",
+    "imageAlt": "Representative culinary nutmeg"
+  },
+  {
+    "id": "paprika",
+    "name": "Paprika",
+    "type": "spice",
+    "taste": "Sweet, earthy, peppery, and sometimes smoky.",
+    "suggestedFoods": [
+      "Chicken",
+      "Pork",
+      "Fish",
+      "Potatoes",
+      "Eggs",
+      "Rice",
+      "Beans",
+      "Soup",
+      "Vegetables"
+    ],
+    "image": "/assets/herbs-spices/paprika.webp",
+    "imageAlt": "Representative culinary paprika"
+  },
+  {
+    "id": "pink-peppercorn",
+    "name": "Pink Peppercorn",
+    "type": "spice",
+    "taste": "Mild, sweet, fruity, and peppery.",
+    "suggestedFoods": [
+      "Fish",
+      "Chicken",
+      "Pork",
+      "Cheese",
+      "Salads",
+      "Fruit",
+      "Sauces"
+    ],
+    "image": "/assets/herbs-spices/pink-peppercorn.webp",
+    "imageAlt": "Representative culinary pink peppercorn"
+  },
+  {
+    "id": "poppy-seed",
+    "name": "Poppy Seed",
+    "type": "spice",
+    "taste": "Nutty, mild, earthy, and lightly sweet.",
+    "suggestedFoods": [
+      "Bread",
+      "Bagels",
+      "Cakes",
+      "Pastries",
+      "Noodles",
+      "Salad dressings"
+    ],
+    "image": "/assets/herbs-spices/poppy-seed.webp",
+    "imageAlt": "Representative culinary poppy seed"
+  },
+  {
+    "id": "saffron",
+    "name": "Saffron",
+    "type": "spice",
+    "taste": "Floral, honey-like, earthy, and subtly bitter.",
+    "suggestedFoods": [
+      "Rice",
+      "Seafood",
+      "Chicken",
+      "Paella",
+      "Risotto",
+      "Bread",
+      "Desserts"
+    ],
+    "image": "/assets/herbs-spices/saffron.webp",
+    "imageAlt": "Representative culinary saffron"
+  },
+  {
+    "id": "sichuan-pepper",
+    "name": "Sichuan Pepper",
+    "type": "spice",
+    "taste": "Citrusy, floral, woody, and tingling.",
+    "suggestedFoods": [
+      "Chicken",
+      "Pork",
+      "Beef",
+      "Noodles",
+      "Tofu",
+      "Stir-fries",
+      "Chili"
+    ],
+    "image": "/assets/herbs-spices/sichuan-pepper.webp",
+    "imageAlt": "Representative culinary sichuan pepper"
+  },
+  {
+    "id": "star-anise",
+    "name": "Star Anise",
+    "type": "spice",
+    "taste": "Sweet, warm, fragrant, and strongly licorice-like.",
+    "suggestedFoods": [
+      "Pork",
+      "Beef",
+      "Chicken",
+      "Broths",
+      "Rice",
+      "Fruit",
+      "Desserts"
+    ],
+    "image": "/assets/herbs-spices/star-anise.webp",
+    "imageAlt": "Representative culinary star anise"
+  },
+  {
+    "id": "sumac",
+    "name": "Sumac",
+    "type": "spice",
+    "taste": "Tart, fruity, and lemony.",
+    "suggestedFoods": [
+      "Chicken",
+      "Lamb",
+      "Fish",
+      "Salads",
+      "Rice",
+      "Yogurt",
+      "Vegetables"
+    ],
+    "image": "/assets/herbs-spices/sumac.webp",
+    "imageAlt": "Representative culinary sumac"
+  },
+  {
+    "id": "tamarind",
+    "name": "Tamarind",
+    "type": "spice",
+    "taste": "Sour, fruity, tangy, and mildly sweet.",
+    "suggestedFoods": [
+      "Fish",
+      "Chicken",
+      "Pork",
+      "Lentils",
+      "Curries",
+      "Sauces",
+      "Chutneys"
+    ],
+    "image": "/assets/herbs-spices/tamarind.webp",
+    "imageAlt": "Representative culinary tamarind"
+  },
+  {
+    "id": "turmeric",
+    "name": "Turmeric",
+    "type": "spice",
+    "taste": "Earthy, warm, slightly bitter, and mildly peppery.",
+    "suggestedFoods": [
+      "Curry",
+      "Rice",
+      "Chicken",
+      "Lentils",
+      "Potatoes",
+      "Eggs",
+      "Soups",
+      "Vegetables"
+    ],
+    "image": "/assets/herbs-spices/turmeric.webp",
+    "imageAlt": "Representative culinary turmeric"
+  },
+  {
+    "id": "vanilla",
+    "name": "Vanilla",
+    "type": "spice",
+    "taste": "Sweet, floral, creamy, and aromatic.",
+    "suggestedFoods": [
+      "Cakes",
+      "Cookies",
+      "Chocolate",
+      "Fruit",
+      "Custards",
+      "Coffee"
+    ],
+    "image": "/assets/herbs-spices/vanilla.webp",
+    "imageAlt": "Representative culinary vanilla"
+  },
+  {
+    "id": "white-pepper",
+    "name": "White Pepper",
+    "type": "spice",
+    "taste": "Earthy, pungent, hot, and sharply peppery.",
+    "suggestedFoods": [
+      "Fish",
+      "Chicken",
+      "Eggs",
+      "Potatoes",
+      "Sauces",
+      "Soups",
+      "Stir-fries"
+    ],
+    "image": "/assets/herbs-spices/white-pepper.webp",
+    "imageAlt": "Representative culinary white pepper"
+  }
+]
