@@ -7,8 +7,9 @@ const edge=fs.readFileSync('supabase/functions/contact-admin/index.ts','utf8');
 const migration=fs.readFileSync('supabase/contact_messages.sql','utf8');
 
 const mainMenu=html.slice(html.indexOf('id="mainMenuScreen"'),html.indexOf('</section>',html.indexOf('id="mainMenuScreen"')));
-assert.strictEqual((mainMenu.match(/<button\b/g)||[]).length,3);
-for(const label of ['Proceed to Tracker','Community Forum','Back to Account']) assert.ok(mainMenu.includes(`>${label}</button>`));
+assert.strictEqual((mainMenu.match(/<button\b/g)||[]).length,4);
+for(const label of ['Proceed to Tracker','Community Forum','Admin','Back to Account']) assert.ok(mainMenu.includes(`>${label}</button>`));
+assert.ok(mainMenu.includes('class="secondary hide" id="adminMenuBtn"'));
 assert.ok(!mainMenu.includes('>Contact Admin</button>'));
 for(const id of ['contactName','contactEmail','contactSubject','contactMessage','sendContactBtn','contactStatus']) assert.ok(html.includes(`id="${id}"`));
 assert.ok(html.includes('<h2>Contact Administrator</h2>'));

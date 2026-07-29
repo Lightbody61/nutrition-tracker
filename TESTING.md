@@ -12,6 +12,7 @@ node tests/account-module.test.js
 node tests/account-auth-mock.test.js
 node tests/cloud-persistence-correctness.test.js
 node tests/contact-security.test.js
+node tests/admin-module.test.js
 cmp -s index.html nutrition-tracker.html
 git diff --check
 ```

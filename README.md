@@ -18,6 +18,8 @@ Before deploying this browser release, open the production Supabase SQL editor a
 
 Also run [`supabase/contact_messages.sql`](supabase/contact_messages.sql). It creates the private `contact_messages` queue with RLS enabled. Authenticated users can insert only rows whose `user_id` is their own; they cannot read, update, or delete submitted messages.
 
+The optional secure administrator activity dashboard requires the separate migration, role assignment, Edge Function deployment, and verification steps in [`supabase/ADMIN_MODULE_SETUP.md`](supabase/ADMIN_MODULE_SETUP.md). Committing the frontend alone does not make the Admin module operational.
+
 This checkout does not use an automated production database migration runner. In the Supabase Dashboard, open **SQL Editor** for project `bwihhbcfthkfsogqmgdq`, paste the complete contents of `supabase/contact_messages.sql`, and choose **Run**. The SQL is additive and safe to rerun; it does not reset the database or delete messages.
 
 ### Contact Administrator Edge Function
@@ -84,7 +86,7 @@ See `TESTING.md` for complete automated and production manual procedures.
 - Conflict resolution is whole-state choice, not merging.
 - Offline cache is best-effort and browser/origin specific.
 - Delete Account Data does not delete the authentication identity.
-- No ecommerce, subscriptions, analytics, administration, JSON transfer, or old-format migration is included.
+- No ecommerce, subscriptions, destructive user administration, JSON transfer, or old-format migration is included. The optional read-only activity dashboard requires the separate secured deployment steps above.
 - Supabase Auth normally persists its own session; application code does not manually store tokens.
 
 Do not commit or push without repository-owner approval.
