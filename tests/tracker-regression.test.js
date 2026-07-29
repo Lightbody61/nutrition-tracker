@@ -109,7 +109,10 @@ assert.ok(!source.includes('createObjectURL'));
 assert.ok(!source.includes('.download='));
 
 // Three-level SPA navigation keeps account, authenticated main menu, and tracker menu distinct.
-assert.ok(html.includes('<header><h1>Nutrition Tracker</h1>'));
+assert.ok(!html.includes('<header><h1>Nutrition Tracker</h1>'));
+assert.ok(!html.includes('Private account-based nutrition and exercise tracking with Supabase cloud synchronization.'));
+assert.ok(!html.includes('id="accountGateMessage"'));
+assert.ok(!html.includes('Sign in or create an account to use and save your Tracker.'));
 const landingMarkup=html.slice(html.indexOf('id="publicLandingScreen"'),html.indexOf('</section>',html.indexOf('id="publicLandingScreen"')));
 assert.ok(landingMarkup.includes('<h2>A Healthy You Starts Here</h2>'));
 assert.ok(landingMarkup.includes("Welcome to the Community! More than looking good and feeling great (both are awesome!!), our goal is to become healthy and lead vibrant, energetic lives. We will learn and encourage each other to eat healthy, natural, real and delicious foods as well as build strong bodies. Whether you are under the care of a weight management doctor or are just exploring healthy alternatives to modern diets and lifestyles that have left you feeling sluggish and sick, you'll find recipes and encouragement here to build healthy habits for life. You should absolutely consult with a medical professional before embarking on major changes that affect any conditions that you may have."));
