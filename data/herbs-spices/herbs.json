@@ -3,46 +3,16 @@
     "id": "basil",
     "name": "Basil",
     "type": "herb",
-    "alternateNames": [
-      "Sweet basil"
-    ],
-    "scientificName": "Ocimum basilicum",
-    "description": "A culinary herb valued for its fresh, sweet, peppery, and lightly mint-like.",
-    "taste": "Fresh, sweet, peppery, and lightly mint-like.",
+    "taste": "Sweet, fresh, peppery, and mildly savory.",
     "suggestedFoods": [
-      "Tomatoes",
       "Pasta",
+      "Tomatoes",
       "Pizza",
-      "Pesto",
       "Chicken",
       "Fish",
+      "Soup",
       "Salads",
-      "Soups",
-      "Roasted vegetables"
-    ],
-    "culinaryUses": [
-      "Tomatoes",
-      "Pasta",
-      "Pizza",
-      "Pesto"
-    ],
-    "searchKeywords": [
-      "fresh",
-      "sweet",
-      "peppery",
-      "and",
-      "lightly",
-      "mintlike",
-      "tomatoes",
-      "pasta",
-      "pizza",
-      "pesto",
-      "chicken",
-      "fish",
-      "salads",
-      "soups",
-      "roasted",
-      "vegetables"
+      "Vegetables"
     ],
     "image": "assets/herbs-spices/herb.svg",
     "imageAlt": "Stylized illustration representing Basil"
@@ -51,11 +21,6 @@
     "id": "bay-leaf",
     "name": "Bay leaf",
     "type": "herb",
-    "alternateNames": [
-      "Bay laurel"
-    ],
-    "scientificName": "Laurus nobilis",
-    "description": "A culinary herb valued for its woody, floral, herbal, and gently bitter.",
     "taste": "Woody, floral, herbal, and gently bitter.",
     "suggestedFoods": [
       "Soups",
@@ -66,29 +31,6 @@
       "Braised beef",
       "Chicken"
     ],
-    "culinaryUses": [
-      "Soups",
-      "Stews",
-      "Beans",
-      "Rice"
-    ],
-    "searchKeywords": [
-      "woody",
-      "floral",
-      "herbal",
-      "and",
-      "gently",
-      "bitter",
-      "soups",
-      "stews",
-      "beans",
-      "rice",
-      "tomato",
-      "sauces",
-      "braised",
-      "beef",
-      "chicken"
-    ],
     "image": "assets/herbs-spices/herb.svg",
     "imageAlt": "Stylized illustration representing Bay leaf"
   },
@@ -96,9 +38,6 @@
     "id": "chervil",
     "name": "Chervil",
     "type": "herb",
-    "alternateNames": [],
-    "scientificName": "",
-    "description": "A culinary herb valued for its delicate, fresh, lightly anise-like, and grassy.",
     "taste": "Delicate, fresh, lightly anise-like, and grassy.",
     "suggestedFoods": [
       "Eggs",
@@ -109,28 +48,6 @@
       "Soups",
       "Cream sauces"
     ],
-    "culinaryUses": [
-      "Eggs",
-      "Fish",
-      "Chicken",
-      "Potatoes"
-    ],
-    "searchKeywords": [
-      "delicate",
-      "fresh",
-      "lightly",
-      "aniselike",
-      "and",
-      "grassy",
-      "eggs",
-      "fish",
-      "chicken",
-      "potatoes",
-      "salads",
-      "soups",
-      "cream",
-      "sauces"
-    ],
     "image": "assets/herbs-spices/herb.svg",
     "imageAlt": "Stylized illustration representing Chervil"
   },
@@ -138,9 +55,6 @@
     "id": "chives",
     "name": "Chives",
     "type": "herb",
-    "alternateNames": [],
-    "scientificName": "",
-    "description": "A culinary herb valued for its fresh, grassy, and mildly onion-like.",
     "taste": "Fresh, grassy, and mildly onion-like.",
     "suggestedFoods": [
       "Potatoes",
@@ -151,27 +65,6 @@
       "Cream cheese",
       "Vegetables"
     ],
-    "culinaryUses": [
-      "Potatoes",
-      "Eggs",
-      "Fish",
-      "Soups"
-    ],
-    "searchKeywords": [
-      "fresh",
-      "grassy",
-      "and",
-      "mildly",
-      "onionlike",
-      "potatoes",
-      "eggs",
-      "fish",
-      "soups",
-      "salads",
-      "cream",
-      "cheese",
-      "vegetables"
-    ],
     "image": "assets/herbs-spices/herb.svg",
     "imageAlt": "Stylized illustration representing Chives"
   },
@@ -179,12 +72,6 @@
     "id": "cilantro",
     "name": "Cilantro",
     "type": "herb",
-    "alternateNames": [
-      "Coriander leaf",
-      "Chinese parsley"
-    ],
-    "scientificName": "Coriandrum sativum",
-    "description": "A culinary herb valued for its bright, citrusy, grassy, and slightly peppery.",
     "taste": "Bright, citrusy, grassy, and slightly peppery.",
     "suggestedFoods": [
       "Tacos",
@@ -196,28 +83,6 @@
       "Beans",
       "Salads"
     ],
-    "culinaryUses": [
-      "Tacos",
-      "Salsa",
-      "Curry",
-      "Chicken"
-    ],
-    "searchKeywords": [
-      "bright",
-      "citrusy",
-      "grassy",
-      "and",
-      "slightly",
-      "peppery",
-      "tacos",
-      "salsa",
-      "curry",
-      "chicken",
-      "fish",
-      "rice",
-      "beans",
-      "salads"
-    ],
     "image": "assets/herbs-spices/herb.svg",
     "imageAlt": "Stylized illustration representing Cilantro"
   },
@@ -225,42 +90,16 @@
     "id": "dill",
     "name": "Dill",
     "type": "herb",
-    "alternateNames": [],
-    "scientificName": "",
-    "description": "A culinary herb valued for its fresh, grassy, citrusy, and mildly anise-like.",
     "taste": "Fresh, grassy, citrusy, and mildly anise-like.",
     "suggestedFoods": [
       "Fish",
       "Potatoes",
       "Cucumbers",
-      "Yogurt sauces",
+      "Yogurt",
       "Eggs",
       "Pickles",
       "Salads",
-      "Soups"
-    ],
-    "culinaryUses": [
-      "Fish",
-      "Potatoes",
-      "Cucumbers",
-      "Yogurt sauces"
-    ],
-    "searchKeywords": [
-      "fresh",
-      "grassy",
-      "citrusy",
-      "and",
-      "mildly",
-      "aniselike",
-      "fish",
-      "potatoes",
-      "cucumbers",
-      "yogurt",
-      "sauces",
-      "eggs",
-      "pickles",
-      "salads",
-      "soups"
+      "Soup"
     ],
     "image": "assets/herbs-spices/herb.svg",
     "imageAlt": "Stylized illustration representing Dill"
@@ -269,9 +108,6 @@
     "id": "epazote",
     "name": "Epazote",
     "type": "herb",
-    "alternateNames": [],
-    "scientificName": "",
-    "description": "A culinary herb valued for its pungent, resinous, earthy, and citrus-like.",
     "taste": "Pungent, resinous, earthy, and citrus-like.",
     "suggestedFoods": [
       "Black beans",
@@ -281,27 +117,6 @@
       "Soups",
       "Mexican stews"
     ],
-    "culinaryUses": [
-      "Black beans",
-      "Corn",
-      "Mushrooms",
-      "Quesadillas"
-    ],
-    "searchKeywords": [
-      "pungent",
-      "resinous",
-      "earthy",
-      "and",
-      "citruslike",
-      "black",
-      "beans",
-      "corn",
-      "mushrooms",
-      "quesadillas",
-      "soups",
-      "mexican",
-      "stews"
-    ],
     "image": "assets/herbs-spices/herb.svg",
     "imageAlt": "Stylized illustration representing Epazote"
   },
@@ -309,9 +124,6 @@
     "id": "fennel-fronds",
     "name": "Fennel fronds",
     "type": "herb",
-    "alternateNames": [],
-    "scientificName": "",
-    "description": "A culinary herb valued for its fresh, green, and sweetly anise-like.",
     "taste": "Fresh, green, and sweetly anise-like.",
     "suggestedFoods": [
       "Fish",
@@ -322,27 +134,6 @@
       "Chicken",
       "Roasted vegetables"
     ],
-    "culinaryUses": [
-      "Fish",
-      "Pasta",
-      "Potatoes",
-      "Salads"
-    ],
-    "searchKeywords": [
-      "fresh",
-      "green",
-      "and",
-      "sweetly",
-      "aniselike",
-      "fish",
-      "pasta",
-      "potatoes",
-      "salads",
-      "soups",
-      "chicken",
-      "roasted",
-      "vegetables"
-    ],
     "image": "assets/herbs-spices/herb.svg",
     "imageAlt": "Stylized illustration representing Fennel fronds"
   },
@@ -350,11 +141,6 @@
     "id": "lavender",
     "name": "Lavender",
     "type": "herb",
-    "alternateNames": [
-      "English lavender"
-    ],
-    "scientificName": "Lavandula angustifolia",
-    "description": "A culinary herb valued for its floral, fragrant, and subtly sweet.",
     "taste": "Floral, fragrant, and subtly sweet.",
     "suggestedFoods": [
       "Baked goods",
@@ -364,28 +150,6 @@
       "Fruit",
       "Herb blends"
     ],
-    "culinaryUses": [
-      "Baked goods",
-      "Desserts",
-      "Shortbread",
-      "Lemon dishes"
-    ],
-    "searchKeywords": [
-      "floral",
-      "fragrant",
-      "and",
-      "subtly",
-      "sweet",
-      "baked",
-      "goods",
-      "desserts",
-      "shortbread",
-      "lemon",
-      "dishes",
-      "fruit",
-      "herb",
-      "blends"
-    ],
     "image": "assets/herbs-spices/herb.svg",
     "imageAlt": "Stylized illustration representing Lavender"
   },
@@ -393,9 +157,6 @@
     "id": "lemon-balm",
     "name": "Lemon balm",
     "type": "herb",
-    "alternateNames": [],
-    "scientificName": "",
-    "description": "A culinary herb valued for its fresh, lemony, lightly sweet, and mint-like.",
     "taste": "Fresh, lemony, lightly sweet, and mint-like.",
     "suggestedFoods": [
       "Fruit",
@@ -405,27 +166,6 @@
       "Chicken",
       "Cold drinks"
     ],
-    "culinaryUses": [
-      "Fruit",
-      "Desserts",
-      "Salads",
-      "Fish"
-    ],
-    "searchKeywords": [
-      "fresh",
-      "lemony",
-      "lightly",
-      "sweet",
-      "and",
-      "mintlike",
-      "fruit",
-      "desserts",
-      "salads",
-      "fish",
-      "chicken",
-      "cold",
-      "drinks"
-    ],
     "image": "assets/herbs-spices/herb.svg",
     "imageAlt": "Stylized illustration representing Lemon balm"
   },
@@ -433,9 +173,6 @@
     "id": "lemongrass",
     "name": "Lemongrass",
     "type": "herb",
-    "alternateNames": [],
-    "scientificName": "",
-    "description": "A culinary herb valued for its bright, lemony, floral, and lightly ginger-like.",
     "taste": "Bright, lemony, floral, and lightly ginger-like.",
     "suggestedFoods": [
       "Chicken",
@@ -446,28 +183,6 @@
       "Soups",
       "Coconut dishes"
     ],
-    "culinaryUses": [
-      "Chicken",
-      "Fish",
-      "Curry",
-      "Rice"
-    ],
-    "searchKeywords": [
-      "bright",
-      "lemony",
-      "floral",
-      "and",
-      "lightly",
-      "gingerlike",
-      "chicken",
-      "fish",
-      "curry",
-      "rice",
-      "noodles",
-      "soups",
-      "coconut",
-      "dishes"
-    ],
     "image": "assets/herbs-spices/herb.svg",
     "imageAlt": "Stylized illustration representing Lemongrass"
   },
@@ -475,9 +190,6 @@
     "id": "marjoram",
     "name": "Marjoram",
     "type": "herb",
-    "alternateNames": [],
-    "scientificName": "",
-    "description": "A culinary herb valued for its sweet, woodsy, floral, and mildly citrusy.",
     "taste": "Sweet, woodsy, floral, and mildly citrusy.",
     "suggestedFoods": [
       "Chicken",
@@ -488,28 +200,6 @@
       "Soups",
       "Sausage"
     ],
-    "culinaryUses": [
-      "Chicken",
-      "Pork",
-      "Potatoes",
-      "Beans"
-    ],
-    "searchKeywords": [
-      "sweet",
-      "woodsy",
-      "floral",
-      "and",
-      "mildly",
-      "citrusy",
-      "chicken",
-      "pork",
-      "potatoes",
-      "beans",
-      "tomato",
-      "sauces",
-      "soups",
-      "sausage"
-    ],
     "image": "assets/herbs-spices/herb.svg",
     "imageAlt": "Stylized illustration representing Marjoram"
   },
@@ -517,43 +207,15 @@
     "id": "mint",
     "name": "Mint",
     "type": "herb",
-    "alternateNames": [
-      "Spearmint",
-      "Peppermint"
-    ],
-    "scientificName": "Mentha species",
-    "description": "A culinary herb valued for its cool, fresh, sweet, and strongly aromatic.",
-    "taste": "Cool, fresh, sweet, and strongly aromatic.",
+    "taste": "Cool, fresh, sweet, and strongly minty.",
     "suggestedFoods": [
       "Lamb",
       "Peas",
       "Fruit",
       "Salads",
       "Desserts",
-      "Yogurt sauces",
+      "Yogurt",
       "Chocolate"
-    ],
-    "culinaryUses": [
-      "Lamb",
-      "Peas",
-      "Fruit",
-      "Salads"
-    ],
-    "searchKeywords": [
-      "cool",
-      "fresh",
-      "sweet",
-      "and",
-      "strongly",
-      "aromatic",
-      "lamb",
-      "peas",
-      "fruit",
-      "salads",
-      "desserts",
-      "yogurt",
-      "sauces",
-      "chocolate"
     ],
     "image": "assets/herbs-spices/herb.svg",
     "imageAlt": "Stylized illustration representing Mint"
@@ -562,9 +224,6 @@
     "id": "oregano",
     "name": "Oregano",
     "type": "herb",
-    "alternateNames": [],
-    "scientificName": "",
-    "description": "A culinary herb valued for its earthy, robust, peppery, and slightly bitter.",
     "taste": "Earthy, robust, peppery, and slightly bitter.",
     "suggestedFoods": [
       "Tomatoes",
@@ -575,28 +234,6 @@
       "Beans",
       "Roasted vegetables"
     ],
-    "culinaryUses": [
-      "Tomatoes",
-      "Pizza",
-      "Pasta",
-      "Chicken"
-    ],
-    "searchKeywords": [
-      "earthy",
-      "robust",
-      "peppery",
-      "and",
-      "slightly",
-      "bitter",
-      "tomatoes",
-      "pizza",
-      "pasta",
-      "chicken",
-      "lamb",
-      "beans",
-      "roasted",
-      "vegetables"
-    ],
     "image": "assets/herbs-spices/herb.svg",
     "imageAlt": "Stylized illustration representing Oregano"
   },
@@ -604,9 +241,6 @@
     "id": "parsley",
     "name": "Parsley",
     "type": "herb",
-    "alternateNames": [],
-    "scientificName": "",
-    "description": "A culinary herb valued for its fresh, grassy, clean, and lightly peppery.",
     "taste": "Fresh, grassy, clean, and lightly peppery.",
     "suggestedFoods": [
       "Fish",
@@ -617,27 +251,6 @@
       "Salads",
       "Eggs"
     ],
-    "culinaryUses": [
-      "Fish",
-      "Chicken",
-      "Potatoes",
-      "Pasta"
-    ],
-    "searchKeywords": [
-      "fresh",
-      "grassy",
-      "clean",
-      "and",
-      "lightly",
-      "peppery",
-      "fish",
-      "chicken",
-      "potatoes",
-      "pasta",
-      "soups",
-      "salads",
-      "eggs"
-    ],
     "image": "assets/herbs-spices/herb.svg",
     "imageAlt": "Stylized illustration representing Parsley"
   },
@@ -645,10 +258,7 @@
     "id": "rosemary",
     "name": "Rosemary",
     "type": "herb",
-    "alternateNames": [],
-    "scientificName": "",
-    "description": "A culinary herb valued for its pine-like, woody, savory, and strongly aromatic.",
-    "taste": "Pine-like, woody, savory, and strongly aromatic.",
+    "taste": "Savory, woody, pine-like, and strongly aromatic.",
     "suggestedFoods": [
       "Chicken",
       "Lamb",
@@ -656,31 +266,8 @@
       "Potatoes",
       "Bread",
       "Beans",
-      "Soups",
+      "Soup",
       "Roasted vegetables"
-    ],
-    "culinaryUses": [
-      "Chicken",
-      "Lamb",
-      "Pork",
-      "Potatoes"
-    ],
-    "searchKeywords": [
-      "pinelike",
-      "woody",
-      "savory",
-      "and",
-      "strongly",
-      "aromatic",
-      "chicken",
-      "lamb",
-      "pork",
-      "potatoes",
-      "bread",
-      "beans",
-      "soups",
-      "roasted",
-      "vegetables"
     ],
     "image": "assets/herbs-spices/herb.svg",
     "imageAlt": "Stylized illustration representing Rosemary"
@@ -689,40 +276,17 @@
     "id": "sage",
     "name": "Sage",
     "type": "herb",
-    "alternateNames": [],
-    "scientificName": "",
-    "description": "A culinary herb valued for its savory, earthy, pine-like, and slightly peppery.",
     "taste": "Savory, earthy, pine-like, and slightly peppery.",
     "suggestedFoods": [
       "Pork",
       "Poultry",
+      "Stuffing",
       "Sausage",
       "Squash",
       "Beans",
-      "Stuffing",
-      "Brown butter"
-    ],
-    "culinaryUses": [
-      "Pork",
-      "Poultry",
-      "Sausage",
-      "Squash"
-    ],
-    "searchKeywords": [
-      "savory",
-      "earthy",
-      "pinelike",
-      "and",
-      "slightly",
-      "peppery",
-      "pork",
-      "poultry",
-      "sausage",
-      "squash",
-      "beans",
-      "stuffing",
-      "brown",
-      "butter"
+      "Potatoes",
+      "Soup",
+      "Butter sauces"
     ],
     "image": "assets/herbs-spices/herb.svg",
     "imageAlt": "Stylized illustration representing Sage"
@@ -731,9 +295,6 @@
     "id": "savory",
     "name": "Savory",
     "type": "herb",
-    "alternateNames": [],
-    "scientificName": "",
-    "description": "A culinary herb valued for its peppery, earthy, herbaceous, and thyme-like.",
     "taste": "Peppery, earthy, herbaceous, and thyme-like.",
     "suggestedFoods": [
       "Beans",
@@ -744,26 +305,6 @@
       "Soups",
       "Stuffing"
     ],
-    "culinaryUses": [
-      "Beans",
-      "Lentils",
-      "Poultry",
-      "Pork"
-    ],
-    "searchKeywords": [
-      "peppery",
-      "earthy",
-      "herbaceous",
-      "and",
-      "thymelike",
-      "beans",
-      "lentils",
-      "poultry",
-      "pork",
-      "potatoes",
-      "soups",
-      "stuffing"
-    ],
     "image": "assets/herbs-spices/herb.svg",
     "imageAlt": "Stylized illustration representing Savory"
   },
@@ -771,9 +312,6 @@
     "id": "sorrel",
     "name": "Sorrel",
     "type": "herb",
-    "alternateNames": [],
-    "scientificName": "",
-    "description": "A culinary herb valued for its bright, tart, lemony, and fresh.",
     "taste": "Bright, tart, lemony, and fresh.",
     "suggestedFoods": [
       "Fish",
@@ -783,26 +321,6 @@
       "Salads",
       "Cream sauces"
     ],
-    "culinaryUses": [
-      "Fish",
-      "Eggs",
-      "Potatoes",
-      "Soups"
-    ],
-    "searchKeywords": [
-      "bright",
-      "tart",
-      "lemony",
-      "and",
-      "fresh",
-      "fish",
-      "eggs",
-      "potatoes",
-      "soups",
-      "salads",
-      "cream",
-      "sauces"
-    ],
     "image": "assets/herbs-spices/herb.svg",
     "imageAlt": "Stylized illustration representing Sorrel"
   },
@@ -810,9 +328,6 @@
     "id": "tarragon",
     "name": "Tarragon",
     "type": "herb",
-    "alternateNames": [],
-    "scientificName": "",
-    "description": "A culinary herb valued for its sweet, delicate, anise-like, and lightly peppery.",
     "taste": "Sweet, delicate, anise-like, and lightly peppery.",
     "suggestedFoods": [
       "Chicken",
@@ -823,28 +338,6 @@
       "Salads",
       "Vinegar"
     ],
-    "culinaryUses": [
-      "Chicken",
-      "Fish",
-      "Eggs",
-      "Mushrooms"
-    ],
-    "searchKeywords": [
-      "sweet",
-      "delicate",
-      "aniselike",
-      "and",
-      "lightly",
-      "peppery",
-      "chicken",
-      "fish",
-      "eggs",
-      "mushrooms",
-      "mustard",
-      "sauces",
-      "salads",
-      "vinegar"
-    ],
     "image": "assets/herbs-spices/herb.svg",
     "imageAlt": "Stylized illustration representing Tarragon"
   },
@@ -852,41 +345,17 @@
     "id": "thyme",
     "name": "Thyme",
     "type": "herb",
-    "alternateNames": [],
-    "scientificName": "",
-    "description": "A culinary herb valued for its earthy, minty, lemony, and gently woody.",
     "taste": "Earthy, minty, lemony, and gently woody.",
     "suggestedFoods": [
       "Chicken",
-      "Beef",
       "Fish",
-      "Beans",
-      "Mushrooms",
+      "Beef",
+      "Soup",
+      "Stew",
       "Potatoes",
-      "Soups",
-      "Tomatoes"
-    ],
-    "culinaryUses": [
-      "Chicken",
-      "Beef",
-      "Fish",
-      "Beans"
-    ],
-    "searchKeywords": [
-      "earthy",
-      "minty",
-      "lemony",
-      "and",
-      "gently",
-      "woody",
-      "chicken",
-      "beef",
-      "fish",
-      "beans",
-      "mushrooms",
-      "potatoes",
-      "soups",
-      "tomatoes"
+      "Beans",
+      "Tomatoes",
+      "Vegetables"
     ],
     "image": "assets/herbs-spices/herb.svg",
     "imageAlt": "Stylized illustration representing Thyme"

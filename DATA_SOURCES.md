@@ -17,11 +17,11 @@ The complete static reference is intentionally excluded from localStorage and Su
 
 ## Herbs and Spices culinary reference
 
-The initial names, culinary classifications, concise taste descriptions, common culinary uses, and suggested food pairings are a curated culinary reference. They are maintained in `scripts/build-reference-data.js` and written to `data/herbs-spices/herbs.json` and `spices.json`.
+The herb and spice names, concise taste descriptions, and suggested food pairings form a focused culinary pairing reference. They are maintained in `scripts/build-reference-data.js` and written to `data/herbs-spices/herbs.json` and `spices.json`.
 
 This culinary dataset is separate from the USDA Food Reference nutrition dataset described above. Herbs and Spices records are not nutrition-entry records and are not offered by the Today's Menu selector unless a separately sourced USDA or built-in food record has the same ingredient.
 
-Pairings reflect common culinary practice across the cuisines in which these ingredients are used. Future editors can extend the JSON schema with additional culinary descriptions, cuisine keywords, or pairings without changing screen code. Every record must retain a specific `taste`, nonempty `suggestedFoods`, culinary search keywords, and image metadata.
+Pairings reflect common culinary practice and focus on familiar foods and dishes. Every generated record contains only its stable identity and grouping fields, `taste`, `suggestedFoods`, and local image metadata. The generator rejects blank tastes or lists with fewer than five suggested foods.
 
 ## Images
 

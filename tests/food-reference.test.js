@@ -13,23 +13,25 @@ for(const id of ['foodReferenceSearch','clearFoodReferenceSearchBtn','expandAllF
 assert.ok(html.includes('data-screen="herbSpiceScreen">Herbs and Spices<span>'));
 assert.ok(html.includes('<h2>Herbs and Spices</h2>'));
 assert.ok(!html.includes(['Herb and Spice','Encyclopedia'].join(' ')));
-assert.ok(html.includes('Search by herb or spice name, alternate name, flavor, or suggested food.'));
-assert.ok(html.includes('placeholder="Search herbs, spices, flavors, or foods"'));
+assert.ok(html.includes('Search by herb or spice name, taste, or suggested food.'));
+assert.ok(html.includes('placeholder="Search names, tastes, or foods"'));
 assert.ok(html.includes('← Back to Food'));
 assert.ok(html.includes("herbSpiceScreen:'foodHubScreen'"));
-assert.ok(html.includes("record.taste"));assert.ok(html.includes("record.suggestedFoods"));assert.ok(html.includes("record.searchKeywords"));
-for(const forbidden of [['Traditional','Uses'].join(' '),['traditional','-use'].join(''),['medicinal','ly'].join(''),['record.','traditionalUses'].join(''),['record.','usageKeywords'].join('')])assert.ok(!html.includes(forbidden),`removed Herbs and Spices UI remains: ${forbidden}`);
+assert.ok(html.includes("record.taste"));assert.ok(html.includes("record.suggestedFoods"));
+for(const forbidden of ['record.description','record.scientificName','record.alternateNames','record.culinaryUses','record.searchKeywords',['Traditional','Uses'].join(' '),['traditional','-use'].join(''),['medicinal','ly'].join(''),['record.','traditionalUses'].join(''),['record.','usageKeywords'].join('')])assert.ok(!html.includes(forbidden),`removed Herbs and Spices UI remains: ${forbidden}`);
 assert.ok(!html.includes("nutrientDetails(record.nutrition||{})"));
+assert.ok(!html.includes("element('h3','','Common Culinary Uses')"));
 assert.ok(html.includes("image.addEventListener('error'"));assert.ok(html.includes("image.alt=record.imageAlt"));assert.ok(html.includes("loading='lazy'"));
 
 assert.ok(index.total>=300);assert.ok(index.groups.length>=10);
 assert.deepStrictEqual(index.groups.map(x=>x.group),[...index.groups.map(x=>x.group)].sort((a,b)=>a.localeCompare(b)));
 let total=0;for(const meta of index.groups){const items=JSON.parse(fs.readFileSync(path.join('data','foods',meta.file),'utf8'));assert.strictEqual(items.length,meta.count);assert.ok(alpha(items));assert.ok(items.every(x=>x.nutritionBasis==='per 100 g'));total+=items.length;}assert.strictEqual(total,index.total);
 assert.strictEqual(herbs.length,21);assert.strictEqual(spices.length,32);assert.ok(alpha(herbs));assert.ok(alpha(spices));
-for(const record of [...herbs,...spices]){assert.strictEqual(typeof record.taste,'string');assert.ok(record.taste.length>10);assert.ok(Array.isArray(record.suggestedFoods)&&record.suggestedFoods.length>=5);assert.ok(Array.isArray(record.culinaryUses)&&record.culinaryUses.length);assert.ok(Array.isArray(record.searchKeywords)&&record.searchKeywords.length);assert.ok(!('nutrition' in record));assert.ok(!('nutritionBasis' in record));assert.ok(!('traditionalUses' in record));assert.ok(!('usageKeywords' in record));assert.ok(record.imageAlt);assert.ok(fs.existsSync(record.image));}
-const search=(items,q)=>items.filter(item=>[item.name,item.scientificName,item.description,item.taste,...item.alternateNames,...item.suggestedFoods,...item.culinaryUses,...item.searchKeywords].join(' ').toLowerCase().includes(q.toLowerCase()));
-assert.ok(search(herbs,'sweet basil').some(x=>x.name==='Basil'));assert.ok(search(spices,'GING').some(x=>x.name==='Ginger'));
-for(const query of ['peppery','sweet','earthy','chicken','fish','potatoes','curry','tomato','bread','dessert'])assert.ok(search([...herbs,...spices],query).length,`culinary search: ${query}`);
+const allowedFields=['id','name','type','taste','suggestedFoods','image','imageAlt'],flavorWords=/spicy|sweet|savory|earthy|smoky|peppery|bitter|pungent|citrusy|floral|woody|nutty|warm|fresh|grassy|minty|pine-like|licorice-like|tangy|mild|hot|aromatic/i;
+for(const record of [...herbs,...spices]){assert.deepStrictEqual(Object.keys(record).sort(),[...allowedFields].sort(),`${record.name} schema`);assert.strictEqual(typeof record.taste,'string');assert.ok(record.taste.length>10&&flavorWords.test(record.taste),`${record.name} useful taste`);assert.ok(Array.isArray(record.suggestedFoods)&&record.suggestedFoods.length>=5&&record.suggestedFoods.length<=10);assert.ok(record.suggestedFoods.every(x=>typeof x==='string'&&x.trim()),`${record.name} suggested foods`);assert.ok(record.imageAlt);assert.ok(fs.existsSync(record.image));}
+const search=(items,q)=>items.filter(item=>[item.name,item.taste,...item.suggestedFoods].join(' ').toLowerCase().includes(q.toLowerCase()));
+assert.ok(search(herbs,'bAs').some(x=>x.name==='Basil'));assert.ok(search(spices,'GING').some(x=>x.name==='Ginger'));
+for(const query of ['spicy','sweet','savory','smoky','earthy','fish','pork','chicken','pasta','soup','vegetables','dessert'])assert.ok(search([...herbs,...spices],query).length,`culinary search: ${query}`);
 
 assert.ok(html.includes('role="combobox"'));assert.ok(html.includes('role="listbox"'));assert.ok(html.includes("event.key==='Escape'"));assert.ok(html.includes("picker.contains(event.target)"));
 assert.ok(html.includes("const groups=pickerLegacyGroups()"));assert.ok(html.includes("foodReference.index.groups"));assert.ok(html.includes("items.map(pickerReferenceChoice)"));assert.ok(html.includes("f.custom?'Custom Foods'"));

@@ -3,9 +3,6 @@
     "id": "allspice",
     "name": "Allspice",
     "type": "spice",
-    "alternateNames": [],
-    "scientificName": "",
-    "description": "A culinary spice valued for its warm, sweet, peppery, and clove-like.",
     "taste": "Warm, sweet, peppery, and clove-like.",
     "suggestedFoods": [
       "Pork",
@@ -16,28 +13,6 @@
       "Baked goods",
       "Desserts"
     ],
-    "culinaryUses": [
-      "Pork",
-      "Beef",
-      "Jerk chicken",
-      "Stews"
-    ],
-    "searchKeywords": [
-      "warm",
-      "sweet",
-      "peppery",
-      "and",
-      "clovelike",
-      "pork",
-      "beef",
-      "jerk",
-      "chicken",
-      "stews",
-      "pickles",
-      "baked",
-      "goods",
-      "desserts"
-    ],
     "image": "assets/herbs-spices/spice.svg",
     "imageAlt": "Stylized illustration representing Allspice"
   },
@@ -45,9 +20,6 @@
     "id": "anise",
     "name": "Anise",
     "type": "spice",
-    "alternateNames": [],
-    "scientificName": "",
-    "description": "A culinary spice valued for its sweet, fragrant, and strongly licorice-like.",
     "taste": "Sweet, fragrant, and strongly licorice-like.",
     "suggestedFoods": [
       "Bread",
@@ -57,26 +29,6 @@
       "Sausage",
       "Tomato sauces"
     ],
-    "culinaryUses": [
-      "Bread",
-      "Cookies",
-      "Cakes",
-      "Fruit"
-    ],
-    "searchKeywords": [
-      "sweet",
-      "fragrant",
-      "and",
-      "strongly",
-      "licoricelike",
-      "bread",
-      "cookies",
-      "cakes",
-      "fruit",
-      "sausage",
-      "tomato",
-      "sauces"
-    ],
     "image": "assets/herbs-spices/spice.svg",
     "imageAlt": "Stylized illustration representing Anise"
   },
@@ -84,9 +36,6 @@
     "id": "annatto",
     "name": "Annatto",
     "type": "spice",
-    "alternateNames": [],
-    "scientificName": "",
-    "description": "A culinary spice valued for its mildly earthy, peppery, and slightly sweet.",
     "taste": "Mildly earthy, peppery, and slightly sweet.",
     "suggestedFoods": [
       "Rice",
@@ -95,29 +44,7 @@
       "Fish",
       "Cheese",
       "Stews",
-      "Latin sauces"
-    ],
-    "culinaryUses": [
-      "Rice",
-      "Chicken",
-      "Pork",
-      "Fish"
-    ],
-    "searchKeywords": [
-      "mildly",
-      "earthy",
-      "peppery",
-      "and",
-      "slightly",
-      "sweet",
-      "rice",
-      "chicken",
-      "pork",
-      "fish",
-      "cheese",
-      "stews",
-      "latin",
-      "sauces"
+      "Sauces"
     ],
     "image": "assets/herbs-spices/spice.svg",
     "imageAlt": "Stylized illustration representing Annatto"
@@ -126,41 +53,14 @@
     "id": "asafoetida",
     "name": "Asafoetida",
     "type": "spice",
-    "alternateNames": [],
-    "scientificName": "",
-    "description": "A culinary spice valued for its pungent and sulfurous when raw, becoming savory and onion-like when cooked.",
-    "taste": "Pungent and sulfurous when raw, becoming savory and onion-like when cooked.",
+    "taste": "Pungent, savory, earthy, and onion-like.",
     "suggestedFoods": [
       "Lentils",
       "Beans",
       "Curry",
       "Potatoes",
       "Rice",
-      "Vegetable dishes"
-    ],
-    "culinaryUses": [
-      "Lentils",
-      "Beans",
-      "Curry",
-      "Potatoes"
-    ],
-    "searchKeywords": [
-      "pungent",
-      "and",
-      "sulfurous",
-      "when",
-      "raw",
-      "becoming",
-      "savory",
-      "onionlike",
-      "cooked",
-      "lentils",
-      "beans",
-      "curry",
-      "potatoes",
-      "rice",
-      "vegetable",
-      "dishes"
+      "Vegetables"
     ],
     "image": "assets/herbs-spices/spice.svg",
     "imageAlt": "Stylized illustration representing Asafoetida"
@@ -169,11 +69,6 @@
     "id": "black-pepper",
     "name": "Black pepper",
     "type": "spice",
-    "alternateNames": [
-      "Peppercorn"
-    ],
-    "scientificName": "Piper nigrum",
-    "description": "A culinary spice valued for its sharp, piney, woody, and distinctly peppery.",
     "taste": "Sharp, piney, woody, and distinctly peppery.",
     "suggestedFoods": [
       "Beef",
@@ -185,28 +80,6 @@
       "Soups",
       "Vegetables"
     ],
-    "culinaryUses": [
-      "Beef",
-      "Chicken",
-      "Fish",
-      "Eggs"
-    ],
-    "searchKeywords": [
-      "sharp",
-      "piney",
-      "woody",
-      "and",
-      "distinctly",
-      "peppery",
-      "beef",
-      "chicken",
-      "fish",
-      "eggs",
-      "potatoes",
-      "pasta",
-      "soups",
-      "vegetables"
-    ],
     "image": "assets/herbs-spices/spice.svg",
     "imageAlt": "Stylized illustration representing Black pepper"
   },
@@ -214,9 +87,6 @@
     "id": "caraway",
     "name": "Caraway",
     "type": "spice",
-    "alternateNames": [],
-    "scientificName": "",
-    "description": "A culinary spice valued for its earthy, warm, citrusy, and anise-like.",
     "taste": "Earthy, warm, citrusy, and anise-like.",
     "suggestedFoods": [
       "Rye bread",
@@ -227,27 +97,6 @@
       "Sausage",
       "Soups"
     ],
-    "culinaryUses": [
-      "Rye bread",
-      "Cabbage",
-      "Pork",
-      "Potatoes"
-    ],
-    "searchKeywords": [
-      "earthy",
-      "warm",
-      "citrusy",
-      "and",
-      "aniselike",
-      "rye",
-      "bread",
-      "cabbage",
-      "pork",
-      "potatoes",
-      "cheese",
-      "sausage",
-      "soups"
-    ],
     "image": "assets/herbs-spices/spice.svg",
     "imageAlt": "Stylized illustration representing Caraway"
   },
@@ -255,9 +104,6 @@
     "id": "cardamom",
     "name": "Cardamom",
     "type": "spice",
-    "alternateNames": [],
-    "scientificName": "",
-    "description": "A culinary spice valued for its floral, citrusy, sweet, and eucalyptus-like.",
     "taste": "Floral, citrusy, sweet, and eucalyptus-like.",
     "suggestedFoods": [
       "Curry",
@@ -268,26 +114,6 @@
       "Fruit",
       "Lamb"
     ],
-    "culinaryUses": [
-      "Curry",
-      "Rice",
-      "Bread",
-      "Coffee"
-    ],
-    "searchKeywords": [
-      "floral",
-      "citrusy",
-      "sweet",
-      "and",
-      "eucalyptuslike",
-      "curry",
-      "rice",
-      "bread",
-      "coffee",
-      "desserts",
-      "fruit",
-      "lamb"
-    ],
     "image": "assets/herbs-spices/spice.svg",
     "imageAlt": "Stylized illustration representing Cardamom"
   },
@@ -295,9 +121,6 @@
     "id": "cassia",
     "name": "Cassia",
     "type": "spice",
-    "alternateNames": [],
-    "scientificName": "",
-    "description": "A culinary spice valued for its sweet, warm, woody, and strongly spicy.",
     "taste": "Sweet, warm, woody, and strongly spicy.",
     "suggestedFoods": [
       "Baked goods",
@@ -305,29 +128,7 @@
       "Oatmeal",
       "Coffee",
       "Curries",
-      "Braised meat"
-    ],
-    "culinaryUses": [
-      "Baked goods",
-      "Desserts",
-      "Oatmeal",
-      "Coffee"
-    ],
-    "searchKeywords": [
-      "sweet",
-      "warm",
-      "woody",
-      "and",
-      "strongly",
-      "spicy",
-      "baked",
-      "goods",
-      "desserts",
-      "oatmeal",
-      "coffee",
-      "curries",
-      "braised",
-      "meat"
+      "Beef"
     ],
     "image": "assets/herbs-spices/spice.svg",
     "imageAlt": "Stylized illustration representing Cassia"
@@ -336,12 +137,7 @@
     "id": "cayenne",
     "name": "Cayenne",
     "type": "spice",
-    "alternateNames": [
-      "Red pepper"
-    ],
-    "scientificName": "Capsicum annuum",
-    "description": "A culinary spice valued for its hot, sharp, earthy, and lightly smoky.",
-    "taste": "Hot, sharp, earthy, and lightly smoky.",
+    "taste": "Hot, spicy, pungent, and slightly earthy.",
     "suggestedFoods": [
       "Chili",
       "Chicken",
@@ -350,30 +146,7 @@
       "Beans",
       "Curry",
       "Sauces",
-      "Roasted vegetables"
-    ],
-    "culinaryUses": [
-      "Chili",
-      "Chicken",
-      "Fish",
-      "Eggs"
-    ],
-    "searchKeywords": [
-      "hot",
-      "sharp",
-      "earthy",
-      "and",
-      "lightly",
-      "smoky",
-      "chili",
-      "chicken",
-      "fish",
-      "eggs",
-      "beans",
-      "curry",
-      "sauces",
-      "roasted",
-      "vegetables"
+      "Vegetables"
     ],
     "image": "assets/herbs-spices/spice.svg",
     "imageAlt": "Stylized illustration representing Cayenne"
@@ -382,39 +155,14 @@
     "id": "celery-seed",
     "name": "Celery seed",
     "type": "spice",
-    "alternateNames": [],
-    "scientificName": "",
-    "description": "A culinary spice valued for its earthy, grassy, slightly bitter, and celery-like.",
     "taste": "Earthy, grassy, slightly bitter, and celery-like.",
     "suggestedFoods": [
       "Potato salad",
       "Coleslaw",
       "Pickles",
       "Soups",
-      "Tomato dishes",
+      "Tomatoes",
       "Bread"
-    ],
-    "culinaryUses": [
-      "Potato salad",
-      "Coleslaw",
-      "Pickles",
-      "Soups"
-    ],
-    "searchKeywords": [
-      "earthy",
-      "grassy",
-      "slightly",
-      "bitter",
-      "and",
-      "celerylike",
-      "potato",
-      "salad",
-      "coleslaw",
-      "pickles",
-      "soups",
-      "tomato",
-      "dishes",
-      "bread"
     ],
     "image": "assets/herbs-spices/spice.svg",
     "imageAlt": "Stylized illustration representing Celery seed"
@@ -423,44 +171,16 @@
     "id": "cinnamon",
     "name": "Cinnamon",
     "type": "spice",
-    "alternateNames": [],
-    "scientificName": "",
-    "description": "A culinary spice valued for its sweet, warm, woody, and fragrant.",
-    "taste": "Sweet, warm, woody, and fragrant.",
+    "taste": "Sweet, warm, woody, and mildly spicy.",
     "suggestedFoods": [
       "Apples",
       "Oatmeal",
+      "Bread",
       "Baked goods",
       "Desserts",
       "Coffee",
-      "Sweet potatoes",
       "Squash",
-      "Middle Eastern meat dishes"
-    ],
-    "culinaryUses": [
-      "Apples",
-      "Oatmeal",
-      "Baked goods",
-      "Desserts"
-    ],
-    "searchKeywords": [
-      "sweet",
-      "warm",
-      "woody",
-      "and",
-      "fragrant",
-      "apples",
-      "oatmeal",
-      "baked",
-      "goods",
-      "desserts",
-      "coffee",
-      "potatoes",
-      "squash",
-      "middle",
-      "eastern",
-      "meat",
-      "dishes"
+      "Sweet potatoes"
     ],
     "image": "assets/herbs-spices/spice.svg",
     "imageAlt": "Stylized illustration representing Cinnamon"
@@ -469,9 +189,6 @@
     "id": "clove",
     "name": "Clove",
     "type": "spice",
-    "alternateNames": [],
-    "scientificName": "",
-    "description": "A culinary spice valued for its intensely warm, sweet, woody, and slightly bitter.",
     "taste": "Intensely warm, sweet, woody, and slightly bitter.",
     "suggestedFoods": [
       "Ham",
@@ -480,31 +197,7 @@
       "Fruit",
       "Curries",
       "Rice",
-      "Spiced drinks"
-    ],
-    "culinaryUses": [
-      "Ham",
-      "Baked goods",
-      "Desserts",
-      "Fruit"
-    ],
-    "searchKeywords": [
-      "intensely",
-      "warm",
-      "sweet",
-      "woody",
-      "and",
-      "slightly",
-      "bitter",
-      "ham",
-      "baked",
-      "goods",
-      "desserts",
-      "fruit",
-      "curries",
-      "rice",
-      "spiced",
-      "drinks"
+      "Drinks"
     ],
     "image": "assets/herbs-spices/spice.svg",
     "imageAlt": "Stylized illustration representing Clove"
@@ -513,9 +206,6 @@
     "id": "coriander-seed",
     "name": "Coriander seed",
     "type": "spice",
-    "alternateNames": [],
-    "scientificName": "",
-    "description": "A culinary spice valued for its citrusy, warm, nutty, and lightly floral.",
     "taste": "Citrusy, warm, nutty, and lightly floral.",
     "suggestedFoods": [
       "Curry",
@@ -526,27 +216,6 @@
       "Pickles",
       "Bread"
     ],
-    "culinaryUses": [
-      "Curry",
-      "Chicken",
-      "Fish",
-      "Lentils"
-    ],
-    "searchKeywords": [
-      "citrusy",
-      "warm",
-      "nutty",
-      "and",
-      "lightly",
-      "floral",
-      "curry",
-      "chicken",
-      "fish",
-      "lentils",
-      "sausage",
-      "pickles",
-      "bread"
-    ],
     "image": "assets/herbs-spices/spice.svg",
     "imageAlt": "Stylized illustration representing Coriander seed"
   },
@@ -554,46 +223,17 @@
     "id": "cumin",
     "name": "Cumin",
     "type": "spice",
-    "alternateNames": [],
-    "scientificName": "",
-    "description": "A culinary spice valued for its earthy, warm, nutty, and slightly smoky.",
     "taste": "Earthy, warm, nutty, and slightly smoky.",
     "suggestedFoods": [
-      "Beans",
       "Beef",
       "Lamb",
       "Chicken",
+      "Beans",
+      "Lentils",
+      "Rice",
       "Chili",
       "Tacos",
-      "Curries",
-      "Rice",
-      "Lentils",
-      "Roasted vegetables"
-    ],
-    "culinaryUses": [
-      "Beans",
-      "Beef",
-      "Lamb",
-      "Chicken"
-    ],
-    "searchKeywords": [
-      "earthy",
-      "warm",
-      "nutty",
-      "and",
-      "slightly",
-      "smoky",
-      "beans",
-      "beef",
-      "lamb",
-      "chicken",
-      "chili",
-      "tacos",
-      "curries",
-      "rice",
-      "lentils",
-      "roasted",
-      "vegetables"
+      "Curries"
     ],
     "image": "assets/herbs-spices/spice.svg",
     "imageAlt": "Stylized illustration representing Cumin"
@@ -602,9 +242,6 @@
     "id": "fenugreek",
     "name": "Fenugreek",
     "type": "spice",
-    "alternateNames": [],
-    "scientificName": "",
-    "description": "A culinary spice valued for its bittersweet, nutty, maple-like, and earthy.",
     "taste": "Bittersweet, nutty, maple-like, and earthy.",
     "suggestedFoods": [
       "Curry",
@@ -613,28 +250,7 @@
       "Chicken",
       "Bread",
       "Pickles",
-      "Vegetable dishes"
-    ],
-    "culinaryUses": [
-      "Curry",
-      "Lentils",
-      "Potatoes",
-      "Chicken"
-    ],
-    "searchKeywords": [
-      "bittersweet",
-      "nutty",
-      "maplelike",
-      "and",
-      "earthy",
-      "curry",
-      "lentils",
-      "potatoes",
-      "chicken",
-      "bread",
-      "pickles",
-      "vegetable",
-      "dishes"
+      "Vegetables"
     ],
     "image": "assets/herbs-spices/spice.svg",
     "imageAlt": "Stylized illustration representing Fenugreek"
@@ -643,9 +259,6 @@
     "id": "galangal",
     "name": "Galangal",
     "type": "spice",
-    "alternateNames": [],
-    "scientificName": "",
-    "description": "A culinary spice valued for its citrusy, piney, peppery, and ginger-like.",
     "taste": "Citrusy, piney, peppery, and ginger-like.",
     "suggestedFoods": [
       "Curry",
@@ -655,26 +268,6 @@
       "Noodles",
       "Coconut dishes"
     ],
-    "culinaryUses": [
-      "Curry",
-      "Chicken",
-      "Fish",
-      "Soups"
-    ],
-    "searchKeywords": [
-      "citrusy",
-      "piney",
-      "peppery",
-      "and",
-      "gingerlike",
-      "curry",
-      "chicken",
-      "fish",
-      "soups",
-      "noodles",
-      "coconut",
-      "dishes"
-    ],
     "image": "assets/herbs-spices/spice.svg",
     "imageAlt": "Stylized illustration representing Galangal"
   },
@@ -682,11 +275,6 @@
     "id": "ginger",
     "name": "Ginger",
     "type": "spice",
-    "alternateNames": [
-      "Ginger root"
-    ],
-    "scientificName": "Zingiber officinale",
-    "description": "A culinary spice valued for its warm, citrusy, peppery, and mildly sweet.",
     "taste": "Warm, citrusy, peppery, and mildly sweet.",
     "suggestedFoods": [
       "Chicken",
@@ -698,28 +286,6 @@
       "Desserts",
       "Fruit"
     ],
-    "culinaryUses": [
-      "Chicken",
-      "Fish",
-      "Curry",
-      "Stir-fries"
-    ],
-    "searchKeywords": [
-      "warm",
-      "citrusy",
-      "peppery",
-      "and",
-      "mildly",
-      "sweet",
-      "chicken",
-      "fish",
-      "curry",
-      "stirfries",
-      "rice",
-      "bread",
-      "desserts",
-      "fruit"
-    ],
     "image": "assets/herbs-spices/spice.svg",
     "imageAlt": "Stylized illustration representing Ginger"
   },
@@ -727,9 +293,6 @@
     "id": "grains-of-paradise",
     "name": "Grains of paradise",
     "type": "spice",
-    "alternateNames": [],
-    "scientificName": "",
-    "description": "A culinary spice valued for its peppery, citrusy, warm, and cardamom-like.",
     "taste": "Peppery, citrusy, warm, and cardamom-like.",
     "suggestedFoods": [
       "Fish",
@@ -740,27 +303,6 @@
       "Vegetables",
       "Spice blends"
     ],
-    "culinaryUses": [
-      "Fish",
-      "Chicken",
-      "Lamb",
-      "Stews"
-    ],
-    "searchKeywords": [
-      "peppery",
-      "citrusy",
-      "warm",
-      "and",
-      "cardamomlike",
-      "fish",
-      "chicken",
-      "lamb",
-      "stews",
-      "rice",
-      "vegetables",
-      "spice",
-      "blends"
-    ],
     "image": "assets/herbs-spices/spice.svg",
     "imageAlt": "Stylized illustration representing Grains of paradise"
   },
@@ -768,9 +310,6 @@
     "id": "juniper-berry",
     "name": "Juniper berry",
     "type": "spice",
-    "alternateNames": [],
-    "scientificName": "",
-    "description": "A culinary spice valued for its piney, resinous, citrusy, and bittersweet.",
     "taste": "Piney, resinous, citrusy, and bittersweet.",
     "suggestedFoods": [
       "Venison",
@@ -781,26 +320,6 @@
       "Stews",
       "Marinades"
     ],
-    "culinaryUses": [
-      "Venison",
-      "Pork",
-      "Beef",
-      "Cabbage"
-    ],
-    "searchKeywords": [
-      "piney",
-      "resinous",
-      "citrusy",
-      "and",
-      "bittersweet",
-      "venison",
-      "pork",
-      "beef",
-      "cabbage",
-      "sauerkraut",
-      "stews",
-      "marinades"
-    ],
     "image": "assets/herbs-spices/spice.svg",
     "imageAlt": "Stylized illustration representing Juniper berry"
   },
@@ -808,10 +327,7 @@
     "id": "mace",
     "name": "Mace",
     "type": "spice",
-    "alternateNames": [],
-    "scientificName": "",
-    "description": "A culinary spice valued for its warm, sweet, woody, and more delicate than nutmeg.",
-    "taste": "Warm, sweet, woody, and more delicate than nutmeg.",
+    "taste": "Warm, sweet, woody, and mildly spicy.",
     "suggestedFoods": [
       "Baked goods",
       "Desserts",
@@ -820,30 +336,6 @@
       "Sausage",
       "Fish"
     ],
-    "culinaryUses": [
-      "Baked goods",
-      "Desserts",
-      "Potatoes",
-      "Cream sauces"
-    ],
-    "searchKeywords": [
-      "warm",
-      "sweet",
-      "woody",
-      "and",
-      "more",
-      "delicate",
-      "than",
-      "nutmeg",
-      "baked",
-      "goods",
-      "desserts",
-      "potatoes",
-      "cream",
-      "sauces",
-      "sausage",
-      "fish"
-    ],
     "image": "assets/herbs-spices/spice.svg",
     "imageAlt": "Stylized illustration representing Mace"
   },
@@ -851,36 +343,13 @@
     "id": "mahlab",
     "name": "Mahlab",
     "type": "spice",
-    "alternateNames": [],
-    "scientificName": "",
-    "description": "A culinary spice valued for its floral, nutty, cherry-like, and lightly bitter.",
     "taste": "Floral, nutty, cherry-like, and lightly bitter.",
     "suggestedFoods": [
       "Bread",
       "Pastries",
       "Cookies",
       "Cakes",
-      "Dairy desserts"
-    ],
-    "culinaryUses": [
-      "Bread",
-      "Pastries",
-      "Cookies",
-      "Cakes"
-    ],
-    "searchKeywords": [
-      "floral",
-      "nutty",
-      "cherrylike",
-      "and",
-      "lightly",
-      "bitter",
-      "bread",
-      "pastries",
-      "cookies",
-      "cakes",
-      "dairy",
-      "desserts"
+      "Desserts"
     ],
     "image": "assets/herbs-spices/spice.svg",
     "imageAlt": "Stylized illustration representing Mahlab"
@@ -889,9 +358,6 @@
     "id": "mustard-seed",
     "name": "Mustard seed",
     "type": "spice",
-    "alternateNames": [],
-    "scientificName": "",
-    "description": "A culinary spice valued for its sharp, pungent, nutty, and warming.",
     "taste": "Sharp, pungent, nutty, and warming.",
     "suggestedFoods": [
       "Pickles",
@@ -902,27 +368,6 @@
       "Sauces",
       "Salad dressings"
     ],
-    "culinaryUses": [
-      "Pickles",
-      "Curry",
-      "Potatoes",
-      "Cabbage"
-    ],
-    "searchKeywords": [
-      "sharp",
-      "pungent",
-      "nutty",
-      "and",
-      "warming",
-      "pickles",
-      "curry",
-      "potatoes",
-      "cabbage",
-      "pork",
-      "sauces",
-      "salad",
-      "dressings"
-    ],
     "image": "assets/herbs-spices/spice.svg",
     "imageAlt": "Stylized illustration representing Mustard seed"
   },
@@ -930,9 +375,6 @@
     "id": "nigella",
     "name": "Nigella",
     "type": "spice",
-    "alternateNames": [],
-    "scientificName": "",
-    "description": "A culinary spice valued for its peppery, onion-like, nutty, and slightly bitter.",
     "taste": "Peppery, onion-like, nutty, and slightly bitter.",
     "suggestedFoods": [
       "Bread",
@@ -942,26 +384,6 @@
       "Curry",
       "Pickles"
     ],
-    "culinaryUses": [
-      "Bread",
-      "Lentils",
-      "Potatoes",
-      "Vegetables"
-    ],
-    "searchKeywords": [
-      "peppery",
-      "onionlike",
-      "nutty",
-      "and",
-      "slightly",
-      "bitter",
-      "bread",
-      "lentils",
-      "potatoes",
-      "vegetables",
-      "curry",
-      "pickles"
-    ],
     "image": "assets/herbs-spices/spice.svg",
     "imageAlt": "Stylized illustration representing Nigella"
   },
@@ -969,9 +391,6 @@
     "id": "nutmeg",
     "name": "Nutmeg",
     "type": "spice",
-    "alternateNames": [],
-    "scientificName": "",
-    "description": "A culinary spice valued for its sweet, warm, nutty, and woody.",
     "taste": "Sweet, warm, nutty, and woody.",
     "suggestedFoods": [
       "Baked goods",
@@ -982,28 +401,6 @@
       "Coffee",
       "Squash"
     ],
-    "culinaryUses": [
-      "Baked goods",
-      "Desserts",
-      "Potatoes",
-      "Spinach"
-    ],
-    "searchKeywords": [
-      "sweet",
-      "warm",
-      "nutty",
-      "and",
-      "woody",
-      "baked",
-      "goods",
-      "desserts",
-      "potatoes",
-      "spinach",
-      "cream",
-      "sauces",
-      "coffee",
-      "squash"
-    ],
     "image": "assets/herbs-spices/spice.svg",
     "imageAlt": "Stylized illustration representing Nutmeg"
   },
@@ -1011,47 +408,17 @@
     "id": "paprika",
     "name": "Paprika",
     "type": "spice",
-    "alternateNames": [],
-    "scientificName": "",
-    "description": "A culinary spice valued for its sweet, earthy, and mildly peppery; smoked varieties are deeper and smoky.",
-    "taste": "Sweet, earthy, and mildly peppery; smoked varieties are deeper and smoky.",
+    "taste": "Sweet, earthy, peppery, and sometimes smoky.",
     "suggestedFoods": [
       "Chicken",
       "Pork",
+      "Fish",
       "Potatoes",
       "Eggs",
-      "Stews",
-      "Beans",
       "Rice",
-      "Vegetables",
-      "Sauces"
-    ],
-    "culinaryUses": [
-      "Chicken",
-      "Pork",
-      "Potatoes",
-      "Eggs"
-    ],
-    "searchKeywords": [
-      "sweet",
-      "earthy",
-      "and",
-      "mildly",
-      "peppery",
-      "smoked",
-      "varieties",
-      "are",
-      "deeper",
-      "smoky",
-      "chicken",
-      "pork",
-      "potatoes",
-      "eggs",
-      "stews",
-      "beans",
-      "rice",
-      "vegetables",
-      "sauces"
+      "Beans",
+      "Soup",
+      "Vegetables"
     ],
     "image": "assets/herbs-spices/spice.svg",
     "imageAlt": "Stylized illustration representing Paprika"
@@ -1060,9 +427,6 @@
     "id": "poppy-seed",
     "name": "Poppy seed",
     "type": "spice",
-    "alternateNames": [],
-    "scientificName": "",
-    "description": "A culinary spice valued for its nutty, mild, earthy, and lightly sweet.",
     "taste": "Nutty, mild, earthy, and lightly sweet.",
     "suggestedFoods": [
       "Bread",
@@ -1072,27 +436,6 @@
       "Noodles",
       "Salad dressings"
     ],
-    "culinaryUses": [
-      "Bread",
-      "Bagels",
-      "Cakes",
-      "Pastries"
-    ],
-    "searchKeywords": [
-      "nutty",
-      "mild",
-      "earthy",
-      "and",
-      "lightly",
-      "sweet",
-      "bread",
-      "bagels",
-      "cakes",
-      "pastries",
-      "noodles",
-      "salad",
-      "dressings"
-    ],
     "image": "assets/herbs-spices/spice.svg",
     "imageAlt": "Stylized illustration representing Poppy seed"
   },
@@ -1100,9 +443,6 @@
     "id": "saffron",
     "name": "Saffron",
     "type": "spice",
-    "alternateNames": [],
-    "scientificName": "",
-    "description": "A culinary spice valued for its floral, honey-like, earthy, and subtly bitter.",
     "taste": "Floral, honey-like, earthy, and subtly bitter.",
     "suggestedFoods": [
       "Rice",
@@ -1113,27 +453,6 @@
       "Bread",
       "Desserts"
     ],
-    "culinaryUses": [
-      "Rice",
-      "Seafood",
-      "Chicken",
-      "Paella"
-    ],
-    "searchKeywords": [
-      "floral",
-      "honeylike",
-      "earthy",
-      "and",
-      "subtly",
-      "bitter",
-      "rice",
-      "seafood",
-      "chicken",
-      "paella",
-      "risotto",
-      "bread",
-      "desserts"
-    ],
     "image": "assets/herbs-spices/spice.svg",
     "imageAlt": "Stylized illustration representing Saffron"
   },
@@ -1141,9 +460,6 @@
     "id": "sichuan-pepper",
     "name": "Sichuan pepper",
     "type": "spice",
-    "alternateNames": [],
-    "scientificName": "",
-    "description": "A culinary spice valued for its citrusy, floral, woody, and tingling.",
     "taste": "Citrusy, floral, woody, and tingling.",
     "suggestedFoods": [
       "Chicken",
@@ -1152,28 +468,7 @@
       "Noodles",
       "Tofu",
       "Stir-fries",
-      "Chili dishes"
-    ],
-    "culinaryUses": [
-      "Chicken",
-      "Pork",
-      "Beef",
-      "Noodles"
-    ],
-    "searchKeywords": [
-      "citrusy",
-      "floral",
-      "woody",
-      "and",
-      "tingling",
-      "chicken",
-      "pork",
-      "beef",
-      "noodles",
-      "tofu",
-      "stirfries",
-      "chili",
-      "dishes"
+      "Chili"
     ],
     "image": "assets/herbs-spices/spice.svg",
     "imageAlt": "Stylized illustration representing Sichuan pepper"
@@ -1182,9 +477,6 @@
     "id": "star-anise",
     "name": "Star anise",
     "type": "spice",
-    "alternateNames": [],
-    "scientificName": "",
-    "description": "A culinary spice valued for its sweet, warm, fragrant, and strongly licorice-like.",
     "taste": "Sweet, warm, fragrant, and strongly licorice-like.",
     "suggestedFoods": [
       "Pork",
@@ -1195,27 +487,6 @@
       "Fruit",
       "Desserts"
     ],
-    "culinaryUses": [
-      "Pork",
-      "Beef",
-      "Chicken",
-      "Broths"
-    ],
-    "searchKeywords": [
-      "sweet",
-      "warm",
-      "fragrant",
-      "and",
-      "strongly",
-      "licoricelike",
-      "pork",
-      "beef",
-      "chicken",
-      "broths",
-      "rice",
-      "fruit",
-      "desserts"
-    ],
     "image": "assets/herbs-spices/spice.svg",
     "imageAlt": "Stylized illustration representing Star anise"
   },
@@ -1223,10 +494,7 @@
     "id": "sumac",
     "name": "Sumac",
     "type": "spice",
-    "alternateNames": [],
-    "scientificName": "",
-    "description": "A culinary spice valued for its tart, fruity, lemony, and lightly earthy.",
-    "taste": "Tart, fruity, lemony, and lightly earthy.",
+    "taste": "Tangy, fruity, lemony, and lightly earthy.",
     "suggestedFoods": [
       "Chicken",
       "Fish",
@@ -1234,29 +502,7 @@
       "Salads",
       "Rice",
       "Hummus",
-      "Roasted vegetables"
-    ],
-    "culinaryUses": [
-      "Chicken",
-      "Fish",
-      "Lamb",
-      "Salads"
-    ],
-    "searchKeywords": [
-      "tart",
-      "fruity",
-      "lemony",
-      "and",
-      "lightly",
-      "earthy",
-      "chicken",
-      "fish",
-      "lamb",
-      "salads",
-      "rice",
-      "hummus",
-      "roasted",
-      "vegetables"
+      "Vegetables"
     ],
     "image": "assets/herbs-spices/spice.svg",
     "imageAlt": "Stylized illustration representing Sumac"
@@ -1265,12 +511,7 @@
     "id": "turmeric",
     "name": "Turmeric",
     "type": "spice",
-    "alternateNames": [
-      "Indian saffron"
-    ],
-    "scientificName": "Curcuma longa",
-    "description": "A culinary spice valued for its earthy, bitter, warm, and mildly peppery.",
-    "taste": "Earthy, bitter, warm, and mildly peppery.",
+    "taste": "Earthy, warm, slightly bitter, and mildly peppery.",
     "suggestedFoods": [
       "Curry",
       "Rice",
@@ -1281,28 +522,6 @@
       "Soups",
       "Vegetables"
     ],
-    "culinaryUses": [
-      "Curry",
-      "Rice",
-      "Chicken",
-      "Lentils"
-    ],
-    "searchKeywords": [
-      "earthy",
-      "bitter",
-      "warm",
-      "and",
-      "mildly",
-      "peppery",
-      "curry",
-      "rice",
-      "chicken",
-      "lentils",
-      "potatoes",
-      "eggs",
-      "soups",
-      "vegetables"
-    ],
     "image": "assets/herbs-spices/spice.svg",
     "imageAlt": "Stylized illustration representing Turmeric"
   },
@@ -1310,42 +529,15 @@
     "id": "white-pepper",
     "name": "White pepper",
     "type": "spice",
-    "alternateNames": [
-      "White peppercorn"
-    ],
-    "scientificName": "Piper nigrum",
-    "description": "A culinary spice valued for its earthy, fermented, hot, and sharply peppery.",
-    "taste": "Earthy, fermented, hot, and sharply peppery.",
+    "taste": "Earthy, pungent, hot, and sharply peppery.",
     "suggestedFoods": [
       "Fish",
       "Chicken",
       "Eggs",
       "Potatoes",
-      "Light sauces",
+      "Sauces",
       "Soups",
       "Stir-fries"
-    ],
-    "culinaryUses": [
-      "Fish",
-      "Chicken",
-      "Eggs",
-      "Potatoes"
-    ],
-    "searchKeywords": [
-      "earthy",
-      "fermented",
-      "hot",
-      "and",
-      "sharply",
-      "peppery",
-      "fish",
-      "chicken",
-      "eggs",
-      "potatoes",
-      "light",
-      "sauces",
-      "soups",
-      "stirfries"
     ],
     "image": "assets/herbs-spices/spice.svg",
     "imageAlt": "Stylized illustration representing White pepper"
