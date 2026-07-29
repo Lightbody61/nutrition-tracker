@@ -48,6 +48,12 @@ const renderCode=account.slice(account.indexOf('function renderForumComment'),ac
 assert.ok(renderCode.includes('text.textContent=String(comment.comment_text||\'\')'));
 assert.ok(renderCode.includes("new Date(comment.created_at).toLocaleString()"));
 assert.ok(!renderCode.includes('innerHTML'));
+assert.ok(renderCode.includes("actions.className='forumCommentActions'"));
+assert.ok(renderCode.includes("forumButton('Reply'"));
+assert.ok(renderCode.includes("const likeLabel='Like'"));
+assert.ok(!renderCode.includes("forumButton('Delete'"),'delete must not appear in the bulletin board comment UI');
+assert.ok(!/dislike|thumbs?\s*down/i.test(renderCode),'negative reactions must not appear in the bulletin board comment UI');
+for(const compactStyle of ['.forumCommentActions{display:flex','gap:8px','width:auto','padding:4px 10px']) assert.ok(html.includes(compactStyle),`missing compact forum style: ${compactStyle}`);
 
 // Thread ordering and one-level reply behavior.
 assert.ok(account.includes("filter(comment=>!comment.parent_comment_id).sort((a,b)=>new Date(b.created_at)-new Date(a.created_at))"));
@@ -65,10 +71,9 @@ assert.ok(account.indexOf("textarea.value=''",account.indexOf('async function po
 assert.ok(account.includes("if(parentCommentId){if(replyForm)replyForm.remove();}"));
 assert.ok(account.includes("Enter a reply before posting."));
 
-// Author/admin deletion and protected administration.
+// Deletion remains available only through protected administration.
 assert.ok(account.includes("message=isReply?'Delete this reply?':'Delete this comment and any replies to it?'"));
 assert.ok(account.includes("from('community_forum_comments').delete().eq('id',comment.id)"));
-assert.ok(account.includes('comment.user_id===currentUserId||forumIsAdmin'));
 assert.ok(account.includes("if(!forumIsAdmin){showScreen('communityForumScreen');forumStatus('Administrator access is required.'"));
 assert.ok(account.includes("client.rpc('is_forum_admin')"));
 assert.ok(html.includes("id==='forumAdministrationScreen'&&window.forumAdminAccessConfirmed!==true"));
@@ -76,6 +81,17 @@ assert.ok(account.includes('window.forumAdminAccessConfirmed=forumIsAdmin'));
 assert.ok(!account.includes("from('forum_admins')"),'browser must not read or modify forum_admins');
 assert.ok(account.includes("profile.screen_name+' · '+profile.user_id"));
 assert.ok(!account.slice(account.indexOf('function renderForumAdministration'),account.indexOf('async function completeLogout')).includes('.email'));
+
+// Likes are per-user, countable, toggleable, and protected by RLS.
+assert.ok(account.includes("from('forum_comment_likes').select('comment_id,user_id')"));
+assert.ok(account.includes("client.from('forum_comment_likes').insert({comment_id:comment.id,user_id:active.user.id})"));
+assert.ok(account.includes("client.from('forum_comment_likes').delete().eq('comment_id',comment.id).eq('user_id',active.user.id)"));
+assert.ok(sql.includes('create table if not exists public.forum_comment_likes'));
+assert.ok(sql.includes('primary key (comment_id, user_id)'));
+assert.ok(sql.includes('alter table public.forum_comment_likes enable row level security'));
+assert.ok(sql.includes('Authenticated users can read forum likes'));
+assert.ok(sql.includes('Users can add their own forum likes'));
+assert.ok(sql.includes('Users can remove their own forum likes'));
 
 // Consolidated, rerunnable migration preserves old comments and enforces RLS.
 for(const table of ['forum_profiles','forum_admins','community_forum_comments']) assert.ok(sql.includes(`alter table public.${table} enable row level security`));

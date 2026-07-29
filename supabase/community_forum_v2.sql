@@ -22,6 +22,13 @@ create table if not exists public.community_forum_comments (
   created_at timestamptz not null default now()
 );
 
+create table if not exists public.forum_comment_likes (
+  comment_id uuid not null references public.community_forum_comments(id) on delete cascade,
+  user_id uuid not null references auth.users(id) on delete cascade,
+  created_at timestamptz not null default now(),
+  primary key (comment_id, user_id)
+);
+
 alter table public.community_forum_comments
   add column if not exists parent_comment_id uuid null,
   add column if not exists reply_to_user_id uuid null;
@@ -63,6 +70,7 @@ create index if not exists community_forum_comments_created_at_idx on public.com
 create index if not exists community_forum_comments_parent_comment_id_idx on public.community_forum_comments (parent_comment_id);
 create index if not exists community_forum_comments_user_id_idx on public.community_forum_comments (user_id);
 create index if not exists community_forum_comments_reply_to_user_id_idx on public.community_forum_comments (reply_to_user_id);
+create index if not exists forum_comment_likes_user_id_idx on public.forum_comment_likes (user_id);
 
 create or replace function public.set_forum_profile_updated_at()
 returns trigger
@@ -112,11 +120,12 @@ create trigger community_forum_validate_reply_target before insert or update of 
 alter table public.forum_profiles enable row level security;
 alter table public.forum_admins enable row level security;
 alter table public.community_forum_comments enable row level security;
+alter table public.forum_comment_likes enable row level security;
 
 do $$
 declare policy_row record;
 begin
-  for policy_row in select schemaname, tablename, policyname from pg_policies where schemaname = 'public' and tablename in ('forum_profiles','forum_admins','community_forum_comments') loop
+  for policy_row in select schemaname, tablename, policyname from pg_policies where schemaname = 'public' and tablename in ('forum_profiles','forum_admins','community_forum_comments','forum_comment_likes') loop
     execute format('drop policy if exists %I on %I.%I', policy_row.policyname, policy_row.schemaname, policy_row.tablename);
   end loop;
 end
@@ -135,16 +144,21 @@ create policy "Profiled users can create their own forum comments" on public.com
 create policy "Authors and forum administrators can delete comments" on public.community_forum_comments for delete to authenticated using (
   auth.uid() = user_id or public.is_forum_admin()
 );
+create policy "Authenticated users can read forum likes" on public.forum_comment_likes for select to authenticated using (true);
+create policy "Users can add their own forum likes" on public.forum_comment_likes for insert to authenticated with check (auth.uid() = user_id);
+create policy "Users can remove their own forum likes" on public.forum_comment_likes for delete to authenticated using (auth.uid() = user_id);
 
 revoke all on table public.forum_profiles from anon;
 revoke all on table public.forum_admins from anon, authenticated;
 revoke all on table public.community_forum_comments from anon;
+revoke all on table public.forum_comment_likes from anon;
 revoke all on function public.is_forum_admin() from public, anon;
 revoke all on function public.set_forum_profile_updated_at() from public, anon, authenticated;
 revoke all on function public.validate_forum_reply_target() from public, anon, authenticated;
 
 grant select, insert, update on table public.forum_profiles to authenticated;
 grant select, insert, delete on table public.community_forum_comments to authenticated;
+grant select, insert, delete on table public.forum_comment_likes to authenticated;
 grant execute on function public.is_forum_admin() to authenticated;
 
 -- After this migration succeeds, add Jody manually as an administrator.
