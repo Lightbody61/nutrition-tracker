@@ -1,0 +1,613 @@
+[
+  {
+    "id": "basil",
+    "name": "Basil",
+    "type": "herb",
+    "alternateNames": [
+      "Sweet basil"
+    ],
+    "scientificName": "Ocimum basilicum",
+    "description": "Basil is a recognized culinary herb used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Basil has been historically used in culinary and traditional practices.",
+      "Traditionally prepared in foods or teas."
+    ],
+    "culinaryUses": [
+      "Pesto",
+      "Tomato dishes",
+      "Soups",
+      "Salads"
+    ],
+    "usageKeywords": [
+      "aromatic",
+      "digestion",
+      "tea",
+      "tomato",
+      "pesto",
+      "pesto",
+      "tomato-dishes",
+      "soups",
+      "salads"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/herb.svg",
+    "imageAlt": "Stylized illustration representing Basil",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "bay-leaf",
+    "name": "Bay leaf",
+    "type": "herb",
+    "alternateNames": [
+      "Bay laurel"
+    ],
+    "scientificName": "Laurus nobilis",
+    "description": "Bay leaf is a recognized culinary herb used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Bay leaf has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Soups",
+      "Stews",
+      "Sauces"
+    ],
+    "usageKeywords": [
+      "aromatic",
+      "digestion",
+      "stew",
+      "soups",
+      "stews",
+      "sauces"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/herb.svg",
+    "imageAlt": "Stylized illustration representing Bay leaf",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "chervil",
+    "name": "Chervil",
+    "type": "herb",
+    "alternateNames": [],
+    "scientificName": "",
+    "description": "Chervil is a recognized culinary herb used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Chervil has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Seasoning",
+      "Culinary preparations"
+    ],
+    "usageKeywords": [
+      "seasoning",
+      "culinary-preparations"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/herb.svg",
+    "imageAlt": "Stylized illustration representing Chervil",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "chives",
+    "name": "Chives",
+    "type": "herb",
+    "alternateNames": [],
+    "scientificName": "",
+    "description": "Chives is a recognized culinary herb used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Chives has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Seasoning",
+      "Culinary preparations"
+    ],
+    "usageKeywords": [
+      "seasoning",
+      "culinary-preparations"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/herb.svg",
+    "imageAlt": "Stylized illustration representing Chives",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "cilantro",
+    "name": "Cilantro",
+    "type": "herb",
+    "alternateNames": [
+      "Coriander leaf",
+      "Chinese parsley"
+    ],
+    "scientificName": "Coriandrum sativum",
+    "description": "Cilantro is a recognized culinary herb used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Cilantro has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Salsa",
+      "Curry",
+      "Salads"
+    ],
+    "usageKeywords": [
+      "curry",
+      "aromatic",
+      "digestion",
+      "salsa",
+      "curry",
+      "salads"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/herb.svg",
+    "imageAlt": "Stylized illustration representing Cilantro",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "dill",
+    "name": "Dill",
+    "type": "herb",
+    "alternateNames": [],
+    "scientificName": "",
+    "description": "Dill is a recognized culinary herb used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Dill has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Seasoning",
+      "Culinary preparations"
+    ],
+    "usageKeywords": [
+      "seasoning",
+      "culinary-preparations"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/herb.svg",
+    "imageAlt": "Stylized illustration representing Dill",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "epazote",
+    "name": "Epazote",
+    "type": "herb",
+    "alternateNames": [],
+    "scientificName": "",
+    "description": "Epazote is a recognized culinary herb used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Epazote has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Seasoning",
+      "Culinary preparations"
+    ],
+    "usageKeywords": [
+      "seasoning",
+      "culinary-preparations"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/herb.svg",
+    "imageAlt": "Stylized illustration representing Epazote",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "fennel-fronds",
+    "name": "Fennel fronds",
+    "type": "herb",
+    "alternateNames": [],
+    "scientificName": "",
+    "description": "Fennel fronds is a recognized culinary herb used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Fennel fronds has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Seasoning",
+      "Culinary preparations"
+    ],
+    "usageKeywords": [
+      "seasoning",
+      "culinary-preparations"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/herb.svg",
+    "imageAlt": "Stylized illustration representing Fennel fronds",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "lavender",
+    "name": "Lavender",
+    "type": "herb",
+    "alternateNames": [
+      "English lavender"
+    ],
+    "scientificName": "Lavandula angustifolia",
+    "description": "Lavender is a recognized culinary herb used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Lavender has been historically used in culinary and traditional practices.",
+      "Traditionally prepared in foods or teas."
+    ],
+    "culinaryUses": [
+      "Tea",
+      "Baked goods"
+    ],
+    "usageKeywords": [
+      "tea",
+      "aromatic",
+      "sleep",
+      "relaxation",
+      "tea",
+      "baked-goods"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/herb.svg",
+    "imageAlt": "Stylized illustration representing Lavender",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "lemon-balm",
+    "name": "Lemon balm",
+    "type": "herb",
+    "alternateNames": [],
+    "scientificName": "",
+    "description": "Lemon balm is a recognized culinary herb used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Lemon balm has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Seasoning",
+      "Culinary preparations"
+    ],
+    "usageKeywords": [
+      "seasoning",
+      "culinary-preparations"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/herb.svg",
+    "imageAlt": "Stylized illustration representing Lemon balm",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "lemongrass",
+    "name": "Lemongrass",
+    "type": "herb",
+    "alternateNames": [],
+    "scientificName": "",
+    "description": "Lemongrass is a recognized culinary herb used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Lemongrass has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Seasoning",
+      "Culinary preparations"
+    ],
+    "usageKeywords": [
+      "seasoning",
+      "culinary-preparations"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/herb.svg",
+    "imageAlt": "Stylized illustration representing Lemongrass",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "marjoram",
+    "name": "Marjoram",
+    "type": "herb",
+    "alternateNames": [],
+    "scientificName": "",
+    "description": "Marjoram is a recognized culinary herb used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Marjoram has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Seasoning",
+      "Culinary preparations"
+    ],
+    "usageKeywords": [
+      "seasoning",
+      "culinary-preparations"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/herb.svg",
+    "imageAlt": "Stylized illustration representing Marjoram",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "mint",
+    "name": "Mint",
+    "type": "herb",
+    "alternateNames": [
+      "Spearmint",
+      "Peppermint"
+    ],
+    "scientificName": "Mentha species",
+    "description": "Mint is a recognized culinary herb used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Mint has been historically used in culinary and traditional practices.",
+      "Traditionally prepared in foods or teas."
+    ],
+    "culinaryUses": [
+      "Tea",
+      "Salads",
+      "Sauces"
+    ],
+    "usageKeywords": [
+      "tea",
+      "digestion",
+      "nausea",
+      "aromatic",
+      "tea",
+      "salads",
+      "sauces"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/herb.svg",
+    "imageAlt": "Stylized illustration representing Mint",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "oregano",
+    "name": "Oregano",
+    "type": "herb",
+    "alternateNames": [],
+    "scientificName": "",
+    "description": "Oregano is a recognized culinary herb used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Oregano has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Seasoning",
+      "Culinary preparations"
+    ],
+    "usageKeywords": [
+      "seasoning",
+      "culinary-preparations"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/herb.svg",
+    "imageAlt": "Stylized illustration representing Oregano",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "parsley",
+    "name": "Parsley",
+    "type": "herb",
+    "alternateNames": [],
+    "scientificName": "",
+    "description": "Parsley is a recognized culinary herb used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Parsley has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Seasoning",
+      "Culinary preparations"
+    ],
+    "usageKeywords": [
+      "seasoning",
+      "culinary-preparations"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/herb.svg",
+    "imageAlt": "Stylized illustration representing Parsley",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "rosemary",
+    "name": "Rosemary",
+    "type": "herb",
+    "alternateNames": [],
+    "scientificName": "",
+    "description": "Rosemary is a recognized culinary herb used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Rosemary has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Seasoning",
+      "Culinary preparations"
+    ],
+    "usageKeywords": [
+      "seasoning",
+      "culinary-preparations"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/herb.svg",
+    "imageAlt": "Stylized illustration representing Rosemary",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "sage",
+    "name": "Sage",
+    "type": "herb",
+    "alternateNames": [],
+    "scientificName": "",
+    "description": "Sage is a recognized culinary herb used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Sage has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Seasoning",
+      "Culinary preparations"
+    ],
+    "usageKeywords": [
+      "seasoning",
+      "culinary-preparations"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/herb.svg",
+    "imageAlt": "Stylized illustration representing Sage",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "savory",
+    "name": "Savory",
+    "type": "herb",
+    "alternateNames": [],
+    "scientificName": "",
+    "description": "Savory is a recognized culinary herb used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Savory has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Seasoning",
+      "Culinary preparations"
+    ],
+    "usageKeywords": [
+      "seasoning",
+      "culinary-preparations"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/herb.svg",
+    "imageAlt": "Stylized illustration representing Savory",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "sorrel",
+    "name": "Sorrel",
+    "type": "herb",
+    "alternateNames": [],
+    "scientificName": "",
+    "description": "Sorrel is a recognized culinary herb used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Sorrel has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Seasoning",
+      "Culinary preparations"
+    ],
+    "usageKeywords": [
+      "seasoning",
+      "culinary-preparations"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/herb.svg",
+    "imageAlt": "Stylized illustration representing Sorrel",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "tarragon",
+    "name": "Tarragon",
+    "type": "herb",
+    "alternateNames": [],
+    "scientificName": "",
+    "description": "Tarragon is a recognized culinary herb used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Tarragon has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Seasoning",
+      "Culinary preparations"
+    ],
+    "usageKeywords": [
+      "seasoning",
+      "culinary-preparations"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/herb.svg",
+    "imageAlt": "Stylized illustration representing Tarragon",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "thyme",
+    "name": "Thyme",
+    "type": "herb",
+    "alternateNames": [],
+    "scientificName": "",
+    "description": "Thyme is a recognized culinary herb used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Thyme has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Seasoning",
+      "Culinary preparations"
+    ],
+    "usageKeywords": [
+      "seasoning",
+      "culinary-preparations"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/herb.svg",
+    "imageAlt": "Stylized illustration representing Thyme",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  }
+]

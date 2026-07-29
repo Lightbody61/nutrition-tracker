@@ -1,0 +1,903 @@
+[
+  {
+    "id": "allspice",
+    "name": "Allspice",
+    "type": "spice",
+    "alternateNames": [],
+    "scientificName": "",
+    "description": "Allspice is a recognized culinary spice used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Allspice has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Seasoning",
+      "Culinary preparations"
+    ],
+    "usageKeywords": [
+      "seasoning",
+      "culinary-preparations"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/spice.svg",
+    "imageAlt": "Stylized illustration representing Allspice",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "anise",
+    "name": "Anise",
+    "type": "spice",
+    "alternateNames": [],
+    "scientificName": "",
+    "description": "Anise is a recognized culinary spice used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Anise has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Seasoning",
+      "Culinary preparations"
+    ],
+    "usageKeywords": [
+      "seasoning",
+      "culinary-preparations"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/spice.svg",
+    "imageAlt": "Stylized illustration representing Anise",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "annatto",
+    "name": "Annatto",
+    "type": "spice",
+    "alternateNames": [],
+    "scientificName": "",
+    "description": "Annatto is a recognized culinary spice used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Annatto has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Seasoning",
+      "Culinary preparations"
+    ],
+    "usageKeywords": [
+      "seasoning",
+      "culinary-preparations"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/spice.svg",
+    "imageAlt": "Stylized illustration representing Annatto",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "asafoetida",
+    "name": "Asafoetida",
+    "type": "spice",
+    "alternateNames": [],
+    "scientificName": "",
+    "description": "Asafoetida is a recognized culinary spice used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Asafoetida has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Seasoning",
+      "Culinary preparations"
+    ],
+    "usageKeywords": [
+      "seasoning",
+      "culinary-preparations"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/spice.svg",
+    "imageAlt": "Stylized illustration representing Asafoetida",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "black-pepper",
+    "name": "Black pepper",
+    "type": "spice",
+    "alternateNames": [
+      "Peppercorn"
+    ],
+    "scientificName": "Piper nigrum",
+    "description": "Black pepper is a recognized culinary spice used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Black pepper has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Seasoning",
+      "Sauces",
+      "Marinades"
+    ],
+    "usageKeywords": [
+      "pepper",
+      "digestion",
+      "aromatic",
+      "seasoning",
+      "sauces",
+      "marinades"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/spice.svg",
+    "imageAlt": "Stylized illustration representing Black pepper",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "caraway",
+    "name": "Caraway",
+    "type": "spice",
+    "alternateNames": [],
+    "scientificName": "",
+    "description": "Caraway is a recognized culinary spice used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Caraway has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Seasoning",
+      "Culinary preparations"
+    ],
+    "usageKeywords": [
+      "seasoning",
+      "culinary-preparations"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/spice.svg",
+    "imageAlt": "Stylized illustration representing Caraway",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "cardamom",
+    "name": "Cardamom",
+    "type": "spice",
+    "alternateNames": [],
+    "scientificName": "",
+    "description": "Cardamom is a recognized culinary spice used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Cardamom has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Seasoning",
+      "Culinary preparations"
+    ],
+    "usageKeywords": [
+      "seasoning",
+      "culinary-preparations"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/spice.svg",
+    "imageAlt": "Stylized illustration representing Cardamom",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "cassia",
+    "name": "Cassia",
+    "type": "spice",
+    "alternateNames": [],
+    "scientificName": "",
+    "description": "Cassia is a recognized culinary spice used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Cassia has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Seasoning",
+      "Culinary preparations"
+    ],
+    "usageKeywords": [
+      "seasoning",
+      "culinary-preparations"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/spice.svg",
+    "imageAlt": "Stylized illustration representing Cassia",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "cayenne",
+    "name": "Cayenne",
+    "type": "spice",
+    "alternateNames": [
+      "Red pepper"
+    ],
+    "scientificName": "Capsicum annuum",
+    "description": "Cayenne is a recognized culinary spice used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Cayenne has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Hot sauces",
+      "Curry",
+      "Seasoning"
+    ],
+    "usageKeywords": [
+      "pepper",
+      "curry",
+      "warming",
+      "hot-sauces",
+      "curry",
+      "seasoning"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/spice.svg",
+    "imageAlt": "Stylized illustration representing Cayenne",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "celery-seed",
+    "name": "Celery seed",
+    "type": "spice",
+    "alternateNames": [],
+    "scientificName": "",
+    "description": "Celery seed is a recognized culinary spice used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Celery seed has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Seasoning",
+      "Culinary preparations"
+    ],
+    "usageKeywords": [
+      "seasoning",
+      "culinary-preparations"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/spice.svg",
+    "imageAlt": "Stylized illustration representing Celery seed",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "cinnamon",
+    "name": "Cinnamon",
+    "type": "spice",
+    "alternateNames": [],
+    "scientificName": "",
+    "description": "Cinnamon is a recognized culinary spice used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Cinnamon has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Seasoning",
+      "Culinary preparations"
+    ],
+    "usageKeywords": [
+      "seasoning",
+      "culinary-preparations"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/spice.svg",
+    "imageAlt": "Stylized illustration representing Cinnamon",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "clove",
+    "name": "Clove",
+    "type": "spice",
+    "alternateNames": [],
+    "scientificName": "",
+    "description": "Clove is a recognized culinary spice used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Clove has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Seasoning",
+      "Culinary preparations"
+    ],
+    "usageKeywords": [
+      "seasoning",
+      "culinary-preparations"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/spice.svg",
+    "imageAlt": "Stylized illustration representing Clove",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "coriander-seed",
+    "name": "Coriander seed",
+    "type": "spice",
+    "alternateNames": [],
+    "scientificName": "",
+    "description": "Coriander seed is a recognized culinary spice used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Coriander seed has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Seasoning",
+      "Culinary preparations"
+    ],
+    "usageKeywords": [
+      "seasoning",
+      "culinary-preparations"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/spice.svg",
+    "imageAlt": "Stylized illustration representing Coriander seed",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "cumin",
+    "name": "Cumin",
+    "type": "spice",
+    "alternateNames": [],
+    "scientificName": "",
+    "description": "Cumin is a recognized culinary spice used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Cumin has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Seasoning",
+      "Culinary preparations"
+    ],
+    "usageKeywords": [
+      "seasoning",
+      "culinary-preparations"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/spice.svg",
+    "imageAlt": "Stylized illustration representing Cumin",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "fenugreek",
+    "name": "Fenugreek",
+    "type": "spice",
+    "alternateNames": [],
+    "scientificName": "",
+    "description": "Fenugreek is a recognized culinary spice used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Fenugreek has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Seasoning",
+      "Culinary preparations"
+    ],
+    "usageKeywords": [
+      "seasoning",
+      "culinary-preparations"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/spice.svg",
+    "imageAlt": "Stylized illustration representing Fenugreek",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "galangal",
+    "name": "Galangal",
+    "type": "spice",
+    "alternateNames": [],
+    "scientificName": "",
+    "description": "Galangal is a recognized culinary spice used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Galangal has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Seasoning",
+      "Culinary preparations"
+    ],
+    "usageKeywords": [
+      "seasoning",
+      "culinary-preparations"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/spice.svg",
+    "imageAlt": "Stylized illustration representing Galangal",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "ginger",
+    "name": "Ginger",
+    "type": "spice",
+    "alternateNames": [
+      "Ginger root"
+    ],
+    "scientificName": "Zingiber officinale",
+    "description": "Ginger is a recognized culinary spice used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Ginger has been historically used in culinary and traditional practices.",
+      "Traditionally prepared in foods or teas."
+    ],
+    "culinaryUses": [
+      "Curry",
+      "Tea",
+      "Baked goods"
+    ],
+    "usageKeywords": [
+      "curry",
+      "tea",
+      "nausea",
+      "digestion",
+      "anti-inflammatory",
+      "curry",
+      "tea",
+      "baked-goods"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/spice.svg",
+    "imageAlt": "Stylized illustration representing Ginger",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "grains-of-paradise",
+    "name": "Grains of paradise",
+    "type": "spice",
+    "alternateNames": [],
+    "scientificName": "",
+    "description": "Grains of paradise is a recognized culinary spice used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Grains of paradise has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Seasoning",
+      "Culinary preparations"
+    ],
+    "usageKeywords": [
+      "seasoning",
+      "culinary-preparations"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/spice.svg",
+    "imageAlt": "Stylized illustration representing Grains of paradise",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "juniper-berry",
+    "name": "Juniper berry",
+    "type": "spice",
+    "alternateNames": [],
+    "scientificName": "",
+    "description": "Juniper berry is a recognized culinary spice used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Juniper berry has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Seasoning",
+      "Culinary preparations"
+    ],
+    "usageKeywords": [
+      "seasoning",
+      "culinary-preparations"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/spice.svg",
+    "imageAlt": "Stylized illustration representing Juniper berry",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "mace",
+    "name": "Mace",
+    "type": "spice",
+    "alternateNames": [],
+    "scientificName": "",
+    "description": "Mace is a recognized culinary spice used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Mace has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Seasoning",
+      "Culinary preparations"
+    ],
+    "usageKeywords": [
+      "seasoning",
+      "culinary-preparations"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/spice.svg",
+    "imageAlt": "Stylized illustration representing Mace",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "mahlab",
+    "name": "Mahlab",
+    "type": "spice",
+    "alternateNames": [],
+    "scientificName": "",
+    "description": "Mahlab is a recognized culinary spice used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Mahlab has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Seasoning",
+      "Culinary preparations"
+    ],
+    "usageKeywords": [
+      "seasoning",
+      "culinary-preparations"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/spice.svg",
+    "imageAlt": "Stylized illustration representing Mahlab",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "mustard-seed",
+    "name": "Mustard seed",
+    "type": "spice",
+    "alternateNames": [],
+    "scientificName": "",
+    "description": "Mustard seed is a recognized culinary spice used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Mustard seed has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Seasoning",
+      "Culinary preparations"
+    ],
+    "usageKeywords": [
+      "seasoning",
+      "culinary-preparations"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/spice.svg",
+    "imageAlt": "Stylized illustration representing Mustard seed",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "nigella",
+    "name": "Nigella",
+    "type": "spice",
+    "alternateNames": [],
+    "scientificName": "",
+    "description": "Nigella is a recognized culinary spice used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Nigella has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Seasoning",
+      "Culinary preparations"
+    ],
+    "usageKeywords": [
+      "seasoning",
+      "culinary-preparations"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/spice.svg",
+    "imageAlt": "Stylized illustration representing Nigella",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "nutmeg",
+    "name": "Nutmeg",
+    "type": "spice",
+    "alternateNames": [],
+    "scientificName": "",
+    "description": "Nutmeg is a recognized culinary spice used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Nutmeg has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Seasoning",
+      "Culinary preparations"
+    ],
+    "usageKeywords": [
+      "seasoning",
+      "culinary-preparations"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/spice.svg",
+    "imageAlt": "Stylized illustration representing Nutmeg",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "paprika",
+    "name": "Paprika",
+    "type": "spice",
+    "alternateNames": [],
+    "scientificName": "",
+    "description": "Paprika is a recognized culinary spice used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Paprika has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Seasoning",
+      "Culinary preparations"
+    ],
+    "usageKeywords": [
+      "seasoning",
+      "culinary-preparations"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/spice.svg",
+    "imageAlt": "Stylized illustration representing Paprika",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "poppy-seed",
+    "name": "Poppy seed",
+    "type": "spice",
+    "alternateNames": [],
+    "scientificName": "",
+    "description": "Poppy seed is a recognized culinary spice used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Poppy seed has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Seasoning",
+      "Culinary preparations"
+    ],
+    "usageKeywords": [
+      "seasoning",
+      "culinary-preparations"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/spice.svg",
+    "imageAlt": "Stylized illustration representing Poppy seed",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "saffron",
+    "name": "Saffron",
+    "type": "spice",
+    "alternateNames": [],
+    "scientificName": "",
+    "description": "Saffron is a recognized culinary spice used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Saffron has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Seasoning",
+      "Culinary preparations"
+    ],
+    "usageKeywords": [
+      "seasoning",
+      "culinary-preparations"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/spice.svg",
+    "imageAlt": "Stylized illustration representing Saffron",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "sichuan-pepper",
+    "name": "Sichuan pepper",
+    "type": "spice",
+    "alternateNames": [],
+    "scientificName": "",
+    "description": "Sichuan pepper is a recognized culinary spice used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Sichuan pepper has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Seasoning",
+      "Culinary preparations"
+    ],
+    "usageKeywords": [
+      "seasoning",
+      "culinary-preparations"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/spice.svg",
+    "imageAlt": "Stylized illustration representing Sichuan pepper",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "star-anise",
+    "name": "Star anise",
+    "type": "spice",
+    "alternateNames": [],
+    "scientificName": "",
+    "description": "Star anise is a recognized culinary spice used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Star anise has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Seasoning",
+      "Culinary preparations"
+    ],
+    "usageKeywords": [
+      "seasoning",
+      "culinary-preparations"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/spice.svg",
+    "imageAlt": "Stylized illustration representing Star anise",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "sumac",
+    "name": "Sumac",
+    "type": "spice",
+    "alternateNames": [],
+    "scientificName": "",
+    "description": "Sumac is a recognized culinary spice used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Sumac has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Seasoning",
+      "Culinary preparations"
+    ],
+    "usageKeywords": [
+      "seasoning",
+      "culinary-preparations"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/spice.svg",
+    "imageAlt": "Stylized illustration representing Sumac",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "turmeric",
+    "name": "Turmeric",
+    "type": "spice",
+    "alternateNames": [
+      "Indian saffron"
+    ],
+    "scientificName": "Curcuma longa",
+    "description": "Turmeric is a recognized culinary spice used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "Turmeric has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Curry",
+      "Rice",
+      "Soups"
+    ],
+    "usageKeywords": [
+      "curry",
+      "anti-inflammatory",
+      "traditional wellness",
+      "curry",
+      "rice",
+      "soups"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/spice.svg",
+    "imageAlt": "Stylized illustration representing Turmeric",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  },
+  {
+    "id": "white-pepper",
+    "name": "White pepper",
+    "type": "spice",
+    "alternateNames": [
+      "White peppercorn"
+    ],
+    "scientificName": "Piper nigrum",
+    "description": "White pepper is a recognized culinary spice used to add aroma, flavor, or color to foods.",
+    "traditionalUses": [
+      "White pepper has been historically used in culinary and traditional practices."
+    ],
+    "culinaryUses": [
+      "Seasoning",
+      "Light sauces",
+      "Soups"
+    ],
+    "usageKeywords": [
+      "pepper",
+      "digestion",
+      "seasoning",
+      "light-sauces",
+      "soups"
+    ],
+    "nutritionBasis": "per 100 g when available",
+    "nutrition": {},
+    "image": "assets/herbs-spices/spice.svg",
+    "imageAlt": "Stylized illustration representing White pepper",
+    "sources": [
+      "USDA FoodData Central",
+      "NCCIH Herbs at a Glance (general safety context)"
+    ]
+  }
+]

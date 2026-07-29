@@ -1,0 +1,52 @@
+'use strict';
+const assert=require('assert');
+const fs=require('fs');
+const path=require('path');
+const html=fs.readFileSync('index.html','utf8');
+const duplicate=fs.readFileSync('nutrition-tracker.html','utf8');
+const index=JSON.parse(fs.readFileSync('data/foods/food-index.json','utf8'));
+const herbs=JSON.parse(fs.readFileSync('data/herbs-spices/herbs.json','utf8'));
+const spices=JSON.parse(fs.readFileSync('data/herbs-spices/spices.json','utf8'));
+const alpha=items=>items.map(x=>x.name).every((name,i,names)=>i===0||names[i-1].localeCompare(name)<=0);
+
+for(const id of ['foodReferenceSearch','clearFoodReferenceSearchBtn','expandAllFoodGroupsBtn','collapseAllFoodGroupsBtn','foodReferenceStatus','herbSpiceScreen','herbSpiceSearch','clearHerbSpiceSearchBtn','expandAllHerbSpiceBtn','collapseAllHerbSpiceBtn'])assert.ok(html.includes(`id="${id}"`),`missing ${id}`);
+assert.ok(html.includes('placeholder="Search foods by name"'));
+assert.ok(html.includes('placeholder="Search names or traditional uses"'));
+assert.ok(html.includes('Herb and Spice Encyclopedia'));
+assert.ok(html.includes('← Back to Food'));
+assert.ok(html.includes("herbSpiceScreen:'foodHubScreen'"));
+assert.ok(html.includes("normalizedSearch(value)"));
+assert.ok(html.includes(".toLocaleLowerCase()"));
+assert.ok(html.includes("normalizedSearch(x.name).includes(query)"));
+assert.ok(html.includes("foodReference.query=''"));
+assert.ok(html.includes("foodReference.expanded.clear()"));
+assert.ok(html.includes("searchActive||foodReference.expanded.has(name)"));
+assert.ok(html.includes('No foods match your search.'));
+assert.ok(html.includes('No herbs or spices match your search.'));
+assert.ok(html.includes("...(record.alternateNames||[])"));
+assert.ok(html.includes("...(record.traditionalUses||[])"));
+assert.ok(html.includes("...(record.usageKeywords||[])"));
+assert.ok(html.includes("textContent=String")||html.includes('textContent=use'));
+assert.ok(!html.includes('innerHTML=foodReference.query'));
+assert.ok(html.includes("image.addEventListener('error'"));
+assert.ok(html.includes("image.alt=record.imageAlt"));
+assert.ok(html.includes("loading='lazy'"));
+assert.ok(html.includes("filter(x=>x.f&&x.f.custom)"));
+assert.ok(html.includes("candidate.entries.map(copyKnownEntryFields)"));
+assert.ok(html.includes("entries:(state.entries||[]).map(copyKnownEntryFields)"));
+assert.ok(html.includes("value===undefined||value===null||value===''?'Not available'"));
+
+assert.ok(index.total>=300,'expected a broad USDA Foundation Foods reference');
+assert.ok(index.groups.length>=10);
+assert.deepStrictEqual(index.groups.map(x=>x.group),[...index.groups.map(x=>x.group)].sort((a,b)=>a.localeCompare(b)),'groups alphabetized');
+let total=0;
+for(const meta of index.groups){const items=JSON.parse(fs.readFileSync(path.join('data','foods',meta.file),'utf8'));assert.strictEqual(items.length,meta.count);assert.ok(alpha(items),`${meta.group} foods alphabetized`);assert.ok(items.every(x=>x.nutritionBasis==='per 100 g'));assert.ok(items.every(x=>Object.values(x.nutrition).every(value=>value!==null)),`${meta.group} must omit missing values`);total+=items.length;}
+assert.strictEqual(total,index.total);
+assert.strictEqual(herbs.length,21);assert.strictEqual(spices.length,32);assert.ok(alpha(herbs));assert.ok(alpha(spices));
+const search=(items,q)=>items.filter(item=>[item.name,item.scientificName,item.description,...item.alternateNames,...item.culinaryUses,...item.traditionalUses,...item.usageKeywords].join(' ').toLowerCase().includes(q.toLowerCase()));
+assert.ok(search(herbs,'sweet basil').some(x=>x.name==='Basil'),'alternate-name search');
+assert.ok(search(spices,'ging').some(x=>x.name==='Ginger'),'partial and case-insensitive name search');
+for(const query of ['digestion','tea','anti-inflammatory','pepper','curry','sleep','nausea'])assert.ok(search([...herbs,...spices],query).length,`keyword search: ${query}`);
+for(const record of [...herbs,...spices]){assert.ok(record.imageAlt);assert.ok(fs.existsSync(record.image),`missing image ${record.image}`);}
+assert.strictEqual(html,duplicate,'HTML entry points must remain identical');
+console.log(`Food reference tests: PASS (${index.total} foods, ${index.groups.length} groups, ${herbs.length} herbs, ${spices.length} spices)`);
