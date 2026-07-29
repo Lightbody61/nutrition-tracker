@@ -43,7 +43,8 @@ assert.ok(search([...herbs,...spices],'tart').length>=5);assert.ok(search([...he
 assert.ok(html.includes("normalize('NFD').replace(/[\\u0300-\\u036f]/g,''"));assert.ok(html.includes('function herbSpiceMatches(entry,query)'));assert.ok(html.includes("encyclopediaReference.query=normalizeHerbSpiceSearch"));assert.ok(html.includes('No herbs or spices match your search.'));assert.ok(html.includes("encyclopediaReference.query=''"));
 assert.ok(!html.includes('expandAllHerbSpiceBtn'));assert.ok(!html.includes('collapseAllHerbSpiceBtn'));assert.ok(!html.includes('setAllHerbSpiceSections'));
 assert.ok(html.includes('.herbSpiceTableHead,.herbSpiceRow{display:grid'));assert.ok(html.includes('@media(max-width:700px)'));assert.ok(html.includes('.herbSpiceTaste::before{content:"Flavor: "'));assert.ok(html.includes('.herbSpiceFoods::before{content:"Pairs Well With: "'));
-assert.ok(html.includes('Herbs and Spices could not be loaded. Please try again.'));assert.ok(html.includes("console.error('Herbs and Spices data load failed'"));
+assert.ok(html.includes('Herbs and Spices could not be loaded. Please try again.'));assert.ok(html.includes("console.error('Herbs and Spices load failed:'"));
+assert.ok(html.includes("HERBS_URL='/data/herbs-spices/herbs.json?v=illustrated-table-v1'"));assert.ok(html.includes("SPICES_URL='/data/herbs-spices/spices.json?v=illustrated-table-v1'"));assert.ok(html.includes("cache:'no-cache'"));assert.ok(html.includes("contentType.includes('application/json')"));
 
 assert.ok(html.includes('role="combobox"'));assert.ok(html.includes('role="listbox"'));assert.ok(html.includes("event.key==='Escape'"));assert.ok(html.includes("picker.contains(event.target)"));
 assert.ok(html.includes("const groups=pickerLegacyGroups()"));assert.ok(html.includes("foodReference.index.groups"));assert.ok(html.includes("items.map(pickerReferenceChoice)"));assert.ok(html.includes("f.custom?'Custom Foods'"));
