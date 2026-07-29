@@ -7,36 +7,45 @@
       "Sweet basil"
     ],
     "scientificName": "Ocimum basilicum",
-    "description": "Basil is a recognized culinary herb used to add aroma, flavor, or color to foods.",
-    "traditionalUses": [
-      "Basil has been historically used in culinary and traditional practices.",
-      "Traditionally prepared in foods or teas."
+    "description": "A culinary herb valued for its fresh, sweet, peppery, and lightly mint-like.",
+    "taste": "Fresh, sweet, peppery, and lightly mint-like.",
+    "suggestedFoods": [
+      "Tomatoes",
+      "Pasta",
+      "Pizza",
+      "Pesto",
+      "Chicken",
+      "Fish",
+      "Salads",
+      "Soups",
+      "Roasted vegetables"
     ],
     "culinaryUses": [
-      "Pesto",
-      "Tomato dishes",
-      "Soups",
-      "Salads"
+      "Tomatoes",
+      "Pasta",
+      "Pizza",
+      "Pesto"
     ],
-    "usageKeywords": [
-      "aromatic",
-      "digestion",
-      "tea",
-      "tomato",
+    "searchKeywords": [
+      "fresh",
+      "sweet",
+      "peppery",
+      "and",
+      "lightly",
+      "mintlike",
+      "tomatoes",
+      "pasta",
+      "pizza",
       "pesto",
-      "pesto",
-      "tomato-dishes",
+      "chicken",
+      "fish",
+      "salads",
       "soups",
-      "salads"
+      "roasted",
+      "vegetables"
     ],
-    "nutritionBasis": "per 100 g when available",
-    "nutrition": {},
     "image": "assets/herbs-spices/herb.svg",
-    "imageAlt": "Stylized illustration representing Basil",
-    "sources": [
-      "USDA FoodData Central",
-      "NCCIH Herbs at a Glance (general safety context)"
-    ]
+    "imageAlt": "Stylized illustration representing Basil"
   },
   {
     "id": "bay-leaf",
@@ -46,31 +55,42 @@
       "Bay laurel"
     ],
     "scientificName": "Laurus nobilis",
-    "description": "Bay leaf is a recognized culinary herb used to add aroma, flavor, or color to foods.",
-    "traditionalUses": [
-      "Bay leaf has been historically used in culinary and traditional practices."
+    "description": "A culinary herb valued for its woody, floral, herbal, and gently bitter.",
+    "taste": "Woody, floral, herbal, and gently bitter.",
+    "suggestedFoods": [
+      "Soups",
+      "Stews",
+      "Beans",
+      "Rice",
+      "Tomato sauces",
+      "Braised beef",
+      "Chicken"
     ],
     "culinaryUses": [
       "Soups",
       "Stews",
-      "Sauces"
+      "Beans",
+      "Rice"
     ],
-    "usageKeywords": [
-      "aromatic",
-      "digestion",
-      "stew",
+    "searchKeywords": [
+      "woody",
+      "floral",
+      "herbal",
+      "and",
+      "gently",
+      "bitter",
       "soups",
       "stews",
-      "sauces"
+      "beans",
+      "rice",
+      "tomato",
+      "sauces",
+      "braised",
+      "beef",
+      "chicken"
     ],
-    "nutritionBasis": "per 100 g when available",
-    "nutrition": {},
     "image": "assets/herbs-spices/herb.svg",
-    "imageAlt": "Stylized illustration representing Bay leaf",
-    "sources": [
-      "USDA FoodData Central",
-      "NCCIH Herbs at a Glance (general safety context)"
-    ]
+    "imageAlt": "Stylized illustration representing Bay leaf"
   },
   {
     "id": "chervil",
@@ -78,26 +98,41 @@
     "type": "herb",
     "alternateNames": [],
     "scientificName": "",
-    "description": "Chervil is a recognized culinary herb used to add aroma, flavor, or color to foods.",
-    "traditionalUses": [
-      "Chervil has been historically used in culinary and traditional practices."
+    "description": "A culinary herb valued for its delicate, fresh, lightly anise-like, and grassy.",
+    "taste": "Delicate, fresh, lightly anise-like, and grassy.",
+    "suggestedFoods": [
+      "Eggs",
+      "Fish",
+      "Chicken",
+      "Potatoes",
+      "Salads",
+      "Soups",
+      "Cream sauces"
     ],
     "culinaryUses": [
-      "Seasoning",
-      "Culinary preparations"
+      "Eggs",
+      "Fish",
+      "Chicken",
+      "Potatoes"
     ],
-    "usageKeywords": [
-      "seasoning",
-      "culinary-preparations"
+    "searchKeywords": [
+      "delicate",
+      "fresh",
+      "lightly",
+      "aniselike",
+      "and",
+      "grassy",
+      "eggs",
+      "fish",
+      "chicken",
+      "potatoes",
+      "salads",
+      "soups",
+      "cream",
+      "sauces"
     ],
-    "nutritionBasis": "per 100 g when available",
-    "nutrition": {},
     "image": "assets/herbs-spices/herb.svg",
-    "imageAlt": "Stylized illustration representing Chervil",
-    "sources": [
-      "USDA FoodData Central",
-      "NCCIH Herbs at a Glance (general safety context)"
-    ]
+    "imageAlt": "Stylized illustration representing Chervil"
   },
   {
     "id": "chives",
@@ -105,26 +140,40 @@
     "type": "herb",
     "alternateNames": [],
     "scientificName": "",
-    "description": "Chives is a recognized culinary herb used to add aroma, flavor, or color to foods.",
-    "traditionalUses": [
-      "Chives has been historically used in culinary and traditional practices."
+    "description": "A culinary herb valued for its fresh, grassy, and mildly onion-like.",
+    "taste": "Fresh, grassy, and mildly onion-like.",
+    "suggestedFoods": [
+      "Potatoes",
+      "Eggs",
+      "Fish",
+      "Soups",
+      "Salads",
+      "Cream cheese",
+      "Vegetables"
     ],
     "culinaryUses": [
-      "Seasoning",
-      "Culinary preparations"
+      "Potatoes",
+      "Eggs",
+      "Fish",
+      "Soups"
     ],
-    "usageKeywords": [
-      "seasoning",
-      "culinary-preparations"
+    "searchKeywords": [
+      "fresh",
+      "grassy",
+      "and",
+      "mildly",
+      "onionlike",
+      "potatoes",
+      "eggs",
+      "fish",
+      "soups",
+      "salads",
+      "cream",
+      "cheese",
+      "vegetables"
     ],
-    "nutritionBasis": "per 100 g when available",
-    "nutrition": {},
     "image": "assets/herbs-spices/herb.svg",
-    "imageAlt": "Stylized illustration representing Chives",
-    "sources": [
-      "USDA FoodData Central",
-      "NCCIH Herbs at a Glance (general safety context)"
-    ]
+    "imageAlt": "Stylized illustration representing Chives"
   },
   {
     "id": "cilantro",
@@ -135,31 +184,42 @@
       "Chinese parsley"
     ],
     "scientificName": "Coriandrum sativum",
-    "description": "Cilantro is a recognized culinary herb used to add aroma, flavor, or color to foods.",
-    "traditionalUses": [
-      "Cilantro has been historically used in culinary and traditional practices."
-    ],
-    "culinaryUses": [
+    "description": "A culinary herb valued for its bright, citrusy, grassy, and slightly peppery.",
+    "taste": "Bright, citrusy, grassy, and slightly peppery.",
+    "suggestedFoods": [
+      "Tacos",
       "Salsa",
       "Curry",
+      "Chicken",
+      "Fish",
+      "Rice",
+      "Beans",
       "Salads"
     ],
-    "usageKeywords": [
-      "curry",
-      "aromatic",
-      "digestion",
+    "culinaryUses": [
+      "Tacos",
+      "Salsa",
+      "Curry",
+      "Chicken"
+    ],
+    "searchKeywords": [
+      "bright",
+      "citrusy",
+      "grassy",
+      "and",
+      "slightly",
+      "peppery",
+      "tacos",
       "salsa",
       "curry",
+      "chicken",
+      "fish",
+      "rice",
+      "beans",
       "salads"
     ],
-    "nutritionBasis": "per 100 g when available",
-    "nutrition": {},
     "image": "assets/herbs-spices/herb.svg",
-    "imageAlt": "Stylized illustration representing Cilantro",
-    "sources": [
-      "USDA FoodData Central",
-      "NCCIH Herbs at a Glance (general safety context)"
-    ]
+    "imageAlt": "Stylized illustration representing Cilantro"
   },
   {
     "id": "dill",
@@ -167,26 +227,43 @@
     "type": "herb",
     "alternateNames": [],
     "scientificName": "",
-    "description": "Dill is a recognized culinary herb used to add aroma, flavor, or color to foods.",
-    "traditionalUses": [
-      "Dill has been historically used in culinary and traditional practices."
+    "description": "A culinary herb valued for its fresh, grassy, citrusy, and mildly anise-like.",
+    "taste": "Fresh, grassy, citrusy, and mildly anise-like.",
+    "suggestedFoods": [
+      "Fish",
+      "Potatoes",
+      "Cucumbers",
+      "Yogurt sauces",
+      "Eggs",
+      "Pickles",
+      "Salads",
+      "Soups"
     ],
     "culinaryUses": [
-      "Seasoning",
-      "Culinary preparations"
+      "Fish",
+      "Potatoes",
+      "Cucumbers",
+      "Yogurt sauces"
     ],
-    "usageKeywords": [
-      "seasoning",
-      "culinary-preparations"
+    "searchKeywords": [
+      "fresh",
+      "grassy",
+      "citrusy",
+      "and",
+      "mildly",
+      "aniselike",
+      "fish",
+      "potatoes",
+      "cucumbers",
+      "yogurt",
+      "sauces",
+      "eggs",
+      "pickles",
+      "salads",
+      "soups"
     ],
-    "nutritionBasis": "per 100 g when available",
-    "nutrition": {},
     "image": "assets/herbs-spices/herb.svg",
-    "imageAlt": "Stylized illustration representing Dill",
-    "sources": [
-      "USDA FoodData Central",
-      "NCCIH Herbs at a Glance (general safety context)"
-    ]
+    "imageAlt": "Stylized illustration representing Dill"
   },
   {
     "id": "epazote",
@@ -194,26 +271,39 @@
     "type": "herb",
     "alternateNames": [],
     "scientificName": "",
-    "description": "Epazote is a recognized culinary herb used to add aroma, flavor, or color to foods.",
-    "traditionalUses": [
-      "Epazote has been historically used in culinary and traditional practices."
+    "description": "A culinary herb valued for its pungent, resinous, earthy, and citrus-like.",
+    "taste": "Pungent, resinous, earthy, and citrus-like.",
+    "suggestedFoods": [
+      "Black beans",
+      "Corn",
+      "Mushrooms",
+      "Quesadillas",
+      "Soups",
+      "Mexican stews"
     ],
     "culinaryUses": [
-      "Seasoning",
-      "Culinary preparations"
+      "Black beans",
+      "Corn",
+      "Mushrooms",
+      "Quesadillas"
     ],
-    "usageKeywords": [
-      "seasoning",
-      "culinary-preparations"
+    "searchKeywords": [
+      "pungent",
+      "resinous",
+      "earthy",
+      "and",
+      "citruslike",
+      "black",
+      "beans",
+      "corn",
+      "mushrooms",
+      "quesadillas",
+      "soups",
+      "mexican",
+      "stews"
     ],
-    "nutritionBasis": "per 100 g when available",
-    "nutrition": {},
     "image": "assets/herbs-spices/herb.svg",
-    "imageAlt": "Stylized illustration representing Epazote",
-    "sources": [
-      "USDA FoodData Central",
-      "NCCIH Herbs at a Glance (general safety context)"
-    ]
+    "imageAlt": "Stylized illustration representing Epazote"
   },
   {
     "id": "fennel-fronds",
@@ -221,26 +311,40 @@
     "type": "herb",
     "alternateNames": [],
     "scientificName": "",
-    "description": "Fennel fronds is a recognized culinary herb used to add aroma, flavor, or color to foods.",
-    "traditionalUses": [
-      "Fennel fronds has been historically used in culinary and traditional practices."
+    "description": "A culinary herb valued for its fresh, green, and sweetly anise-like.",
+    "taste": "Fresh, green, and sweetly anise-like.",
+    "suggestedFoods": [
+      "Fish",
+      "Pasta",
+      "Potatoes",
+      "Salads",
+      "Soups",
+      "Chicken",
+      "Roasted vegetables"
     ],
     "culinaryUses": [
-      "Seasoning",
-      "Culinary preparations"
+      "Fish",
+      "Pasta",
+      "Potatoes",
+      "Salads"
     ],
-    "usageKeywords": [
-      "seasoning",
-      "culinary-preparations"
+    "searchKeywords": [
+      "fresh",
+      "green",
+      "and",
+      "sweetly",
+      "aniselike",
+      "fish",
+      "pasta",
+      "potatoes",
+      "salads",
+      "soups",
+      "chicken",
+      "roasted",
+      "vegetables"
     ],
-    "nutritionBasis": "per 100 g when available",
-    "nutrition": {},
     "image": "assets/herbs-spices/herb.svg",
-    "imageAlt": "Stylized illustration representing Fennel fronds",
-    "sources": [
-      "USDA FoodData Central",
-      "NCCIH Herbs at a Glance (general safety context)"
-    ]
+    "imageAlt": "Stylized illustration representing Fennel fronds"
   },
   {
     "id": "lavender",
@@ -250,31 +354,40 @@
       "English lavender"
     ],
     "scientificName": "Lavandula angustifolia",
-    "description": "Lavender is a recognized culinary herb used to add aroma, flavor, or color to foods.",
-    "traditionalUses": [
-      "Lavender has been historically used in culinary and traditional practices.",
-      "Traditionally prepared in foods or teas."
+    "description": "A culinary herb valued for its floral, fragrant, and subtly sweet.",
+    "taste": "Floral, fragrant, and subtly sweet.",
+    "suggestedFoods": [
+      "Baked goods",
+      "Desserts",
+      "Shortbread",
+      "Lemon dishes",
+      "Fruit",
+      "Herb blends"
     ],
     "culinaryUses": [
-      "Tea",
-      "Baked goods"
+      "Baked goods",
+      "Desserts",
+      "Shortbread",
+      "Lemon dishes"
     ],
-    "usageKeywords": [
-      "tea",
-      "aromatic",
-      "sleep",
-      "relaxation",
-      "tea",
-      "baked-goods"
+    "searchKeywords": [
+      "floral",
+      "fragrant",
+      "and",
+      "subtly",
+      "sweet",
+      "baked",
+      "goods",
+      "desserts",
+      "shortbread",
+      "lemon",
+      "dishes",
+      "fruit",
+      "herb",
+      "blends"
     ],
-    "nutritionBasis": "per 100 g when available",
-    "nutrition": {},
     "image": "assets/herbs-spices/herb.svg",
-    "imageAlt": "Stylized illustration representing Lavender",
-    "sources": [
-      "USDA FoodData Central",
-      "NCCIH Herbs at a Glance (general safety context)"
-    ]
+    "imageAlt": "Stylized illustration representing Lavender"
   },
   {
     "id": "lemon-balm",
@@ -282,26 +395,39 @@
     "type": "herb",
     "alternateNames": [],
     "scientificName": "",
-    "description": "Lemon balm is a recognized culinary herb used to add aroma, flavor, or color to foods.",
-    "traditionalUses": [
-      "Lemon balm has been historically used in culinary and traditional practices."
+    "description": "A culinary herb valued for its fresh, lemony, lightly sweet, and mint-like.",
+    "taste": "Fresh, lemony, lightly sweet, and mint-like.",
+    "suggestedFoods": [
+      "Fruit",
+      "Desserts",
+      "Salads",
+      "Fish",
+      "Chicken",
+      "Cold drinks"
     ],
     "culinaryUses": [
-      "Seasoning",
-      "Culinary preparations"
+      "Fruit",
+      "Desserts",
+      "Salads",
+      "Fish"
     ],
-    "usageKeywords": [
-      "seasoning",
-      "culinary-preparations"
+    "searchKeywords": [
+      "fresh",
+      "lemony",
+      "lightly",
+      "sweet",
+      "and",
+      "mintlike",
+      "fruit",
+      "desserts",
+      "salads",
+      "fish",
+      "chicken",
+      "cold",
+      "drinks"
     ],
-    "nutritionBasis": "per 100 g when available",
-    "nutrition": {},
     "image": "assets/herbs-spices/herb.svg",
-    "imageAlt": "Stylized illustration representing Lemon balm",
-    "sources": [
-      "USDA FoodData Central",
-      "NCCIH Herbs at a Glance (general safety context)"
-    ]
+    "imageAlt": "Stylized illustration representing Lemon balm"
   },
   {
     "id": "lemongrass",
@@ -309,26 +435,41 @@
     "type": "herb",
     "alternateNames": [],
     "scientificName": "",
-    "description": "Lemongrass is a recognized culinary herb used to add aroma, flavor, or color to foods.",
-    "traditionalUses": [
-      "Lemongrass has been historically used in culinary and traditional practices."
+    "description": "A culinary herb valued for its bright, lemony, floral, and lightly ginger-like.",
+    "taste": "Bright, lemony, floral, and lightly ginger-like.",
+    "suggestedFoods": [
+      "Chicken",
+      "Fish",
+      "Curry",
+      "Rice",
+      "Noodles",
+      "Soups",
+      "Coconut dishes"
     ],
     "culinaryUses": [
-      "Seasoning",
-      "Culinary preparations"
+      "Chicken",
+      "Fish",
+      "Curry",
+      "Rice"
     ],
-    "usageKeywords": [
-      "seasoning",
-      "culinary-preparations"
+    "searchKeywords": [
+      "bright",
+      "lemony",
+      "floral",
+      "and",
+      "lightly",
+      "gingerlike",
+      "chicken",
+      "fish",
+      "curry",
+      "rice",
+      "noodles",
+      "soups",
+      "coconut",
+      "dishes"
     ],
-    "nutritionBasis": "per 100 g when available",
-    "nutrition": {},
     "image": "assets/herbs-spices/herb.svg",
-    "imageAlt": "Stylized illustration representing Lemongrass",
-    "sources": [
-      "USDA FoodData Central",
-      "NCCIH Herbs at a Glance (general safety context)"
-    ]
+    "imageAlt": "Stylized illustration representing Lemongrass"
   },
   {
     "id": "marjoram",
@@ -336,26 +477,41 @@
     "type": "herb",
     "alternateNames": [],
     "scientificName": "",
-    "description": "Marjoram is a recognized culinary herb used to add aroma, flavor, or color to foods.",
-    "traditionalUses": [
-      "Marjoram has been historically used in culinary and traditional practices."
+    "description": "A culinary herb valued for its sweet, woodsy, floral, and mildly citrusy.",
+    "taste": "Sweet, woodsy, floral, and mildly citrusy.",
+    "suggestedFoods": [
+      "Chicken",
+      "Pork",
+      "Potatoes",
+      "Beans",
+      "Tomato sauces",
+      "Soups",
+      "Sausage"
     ],
     "culinaryUses": [
-      "Seasoning",
-      "Culinary preparations"
+      "Chicken",
+      "Pork",
+      "Potatoes",
+      "Beans"
     ],
-    "usageKeywords": [
-      "seasoning",
-      "culinary-preparations"
+    "searchKeywords": [
+      "sweet",
+      "woodsy",
+      "floral",
+      "and",
+      "mildly",
+      "citrusy",
+      "chicken",
+      "pork",
+      "potatoes",
+      "beans",
+      "tomato",
+      "sauces",
+      "soups",
+      "sausage"
     ],
-    "nutritionBasis": "per 100 g when available",
-    "nutrition": {},
     "image": "assets/herbs-spices/herb.svg",
-    "imageAlt": "Stylized illustration representing Marjoram",
-    "sources": [
-      "USDA FoodData Central",
-      "NCCIH Herbs at a Glance (general safety context)"
-    ]
+    "imageAlt": "Stylized illustration representing Marjoram"
   },
   {
     "id": "mint",
@@ -366,33 +522,41 @@
       "Peppermint"
     ],
     "scientificName": "Mentha species",
-    "description": "Mint is a recognized culinary herb used to add aroma, flavor, or color to foods.",
-    "traditionalUses": [
-      "Mint has been historically used in culinary and traditional practices.",
-      "Traditionally prepared in foods or teas."
+    "description": "A culinary herb valued for its cool, fresh, sweet, and strongly aromatic.",
+    "taste": "Cool, fresh, sweet, and strongly aromatic.",
+    "suggestedFoods": [
+      "Lamb",
+      "Peas",
+      "Fruit",
+      "Salads",
+      "Desserts",
+      "Yogurt sauces",
+      "Chocolate"
     ],
     "culinaryUses": [
-      "Tea",
-      "Salads",
-      "Sauces"
+      "Lamb",
+      "Peas",
+      "Fruit",
+      "Salads"
     ],
-    "usageKeywords": [
-      "tea",
-      "digestion",
-      "nausea",
+    "searchKeywords": [
+      "cool",
+      "fresh",
+      "sweet",
+      "and",
+      "strongly",
       "aromatic",
-      "tea",
+      "lamb",
+      "peas",
+      "fruit",
       "salads",
-      "sauces"
+      "desserts",
+      "yogurt",
+      "sauces",
+      "chocolate"
     ],
-    "nutritionBasis": "per 100 g when available",
-    "nutrition": {},
     "image": "assets/herbs-spices/herb.svg",
-    "imageAlt": "Stylized illustration representing Mint",
-    "sources": [
-      "USDA FoodData Central",
-      "NCCIH Herbs at a Glance (general safety context)"
-    ]
+    "imageAlt": "Stylized illustration representing Mint"
   },
   {
     "id": "oregano",
@@ -400,26 +564,41 @@
     "type": "herb",
     "alternateNames": [],
     "scientificName": "",
-    "description": "Oregano is a recognized culinary herb used to add aroma, flavor, or color to foods.",
-    "traditionalUses": [
-      "Oregano has been historically used in culinary and traditional practices."
+    "description": "A culinary herb valued for its earthy, robust, peppery, and slightly bitter.",
+    "taste": "Earthy, robust, peppery, and slightly bitter.",
+    "suggestedFoods": [
+      "Tomatoes",
+      "Pizza",
+      "Pasta",
+      "Chicken",
+      "Lamb",
+      "Beans",
+      "Roasted vegetables"
     ],
     "culinaryUses": [
-      "Seasoning",
-      "Culinary preparations"
+      "Tomatoes",
+      "Pizza",
+      "Pasta",
+      "Chicken"
     ],
-    "usageKeywords": [
-      "seasoning",
-      "culinary-preparations"
+    "searchKeywords": [
+      "earthy",
+      "robust",
+      "peppery",
+      "and",
+      "slightly",
+      "bitter",
+      "tomatoes",
+      "pizza",
+      "pasta",
+      "chicken",
+      "lamb",
+      "beans",
+      "roasted",
+      "vegetables"
     ],
-    "nutritionBasis": "per 100 g when available",
-    "nutrition": {},
     "image": "assets/herbs-spices/herb.svg",
-    "imageAlt": "Stylized illustration representing Oregano",
-    "sources": [
-      "USDA FoodData Central",
-      "NCCIH Herbs at a Glance (general safety context)"
-    ]
+    "imageAlt": "Stylized illustration representing Oregano"
   },
   {
     "id": "parsley",
@@ -427,26 +606,40 @@
     "type": "herb",
     "alternateNames": [],
     "scientificName": "",
-    "description": "Parsley is a recognized culinary herb used to add aroma, flavor, or color to foods.",
-    "traditionalUses": [
-      "Parsley has been historically used in culinary and traditional practices."
+    "description": "A culinary herb valued for its fresh, grassy, clean, and lightly peppery.",
+    "taste": "Fresh, grassy, clean, and lightly peppery.",
+    "suggestedFoods": [
+      "Fish",
+      "Chicken",
+      "Potatoes",
+      "Pasta",
+      "Soups",
+      "Salads",
+      "Eggs"
     ],
     "culinaryUses": [
-      "Seasoning",
-      "Culinary preparations"
+      "Fish",
+      "Chicken",
+      "Potatoes",
+      "Pasta"
     ],
-    "usageKeywords": [
-      "seasoning",
-      "culinary-preparations"
+    "searchKeywords": [
+      "fresh",
+      "grassy",
+      "clean",
+      "and",
+      "lightly",
+      "peppery",
+      "fish",
+      "chicken",
+      "potatoes",
+      "pasta",
+      "soups",
+      "salads",
+      "eggs"
     ],
-    "nutritionBasis": "per 100 g when available",
-    "nutrition": {},
     "image": "assets/herbs-spices/herb.svg",
-    "imageAlt": "Stylized illustration representing Parsley",
-    "sources": [
-      "USDA FoodData Central",
-      "NCCIH Herbs at a Glance (general safety context)"
-    ]
+    "imageAlt": "Stylized illustration representing Parsley"
   },
   {
     "id": "rosemary",
@@ -454,26 +647,43 @@
     "type": "herb",
     "alternateNames": [],
     "scientificName": "",
-    "description": "Rosemary is a recognized culinary herb used to add aroma, flavor, or color to foods.",
-    "traditionalUses": [
-      "Rosemary has been historically used in culinary and traditional practices."
+    "description": "A culinary herb valued for its pine-like, woody, savory, and strongly aromatic.",
+    "taste": "Pine-like, woody, savory, and strongly aromatic.",
+    "suggestedFoods": [
+      "Chicken",
+      "Lamb",
+      "Pork",
+      "Potatoes",
+      "Bread",
+      "Beans",
+      "Soups",
+      "Roasted vegetables"
     ],
     "culinaryUses": [
-      "Seasoning",
-      "Culinary preparations"
+      "Chicken",
+      "Lamb",
+      "Pork",
+      "Potatoes"
     ],
-    "usageKeywords": [
-      "seasoning",
-      "culinary-preparations"
+    "searchKeywords": [
+      "pinelike",
+      "woody",
+      "savory",
+      "and",
+      "strongly",
+      "aromatic",
+      "chicken",
+      "lamb",
+      "pork",
+      "potatoes",
+      "bread",
+      "beans",
+      "soups",
+      "roasted",
+      "vegetables"
     ],
-    "nutritionBasis": "per 100 g when available",
-    "nutrition": {},
     "image": "assets/herbs-spices/herb.svg",
-    "imageAlt": "Stylized illustration representing Rosemary",
-    "sources": [
-      "USDA FoodData Central",
-      "NCCIH Herbs at a Glance (general safety context)"
-    ]
+    "imageAlt": "Stylized illustration representing Rosemary"
   },
   {
     "id": "sage",
@@ -481,26 +691,41 @@
     "type": "herb",
     "alternateNames": [],
     "scientificName": "",
-    "description": "Sage is a recognized culinary herb used to add aroma, flavor, or color to foods.",
-    "traditionalUses": [
-      "Sage has been historically used in culinary and traditional practices."
+    "description": "A culinary herb valued for its savory, earthy, pine-like, and slightly peppery.",
+    "taste": "Savory, earthy, pine-like, and slightly peppery.",
+    "suggestedFoods": [
+      "Pork",
+      "Poultry",
+      "Sausage",
+      "Squash",
+      "Beans",
+      "Stuffing",
+      "Brown butter"
     ],
     "culinaryUses": [
-      "Seasoning",
-      "Culinary preparations"
+      "Pork",
+      "Poultry",
+      "Sausage",
+      "Squash"
     ],
-    "usageKeywords": [
-      "seasoning",
-      "culinary-preparations"
+    "searchKeywords": [
+      "savory",
+      "earthy",
+      "pinelike",
+      "and",
+      "slightly",
+      "peppery",
+      "pork",
+      "poultry",
+      "sausage",
+      "squash",
+      "beans",
+      "stuffing",
+      "brown",
+      "butter"
     ],
-    "nutritionBasis": "per 100 g when available",
-    "nutrition": {},
     "image": "assets/herbs-spices/herb.svg",
-    "imageAlt": "Stylized illustration representing Sage",
-    "sources": [
-      "USDA FoodData Central",
-      "NCCIH Herbs at a Glance (general safety context)"
-    ]
+    "imageAlt": "Stylized illustration representing Sage"
   },
   {
     "id": "savory",
@@ -508,26 +733,39 @@
     "type": "herb",
     "alternateNames": [],
     "scientificName": "",
-    "description": "Savory is a recognized culinary herb used to add aroma, flavor, or color to foods.",
-    "traditionalUses": [
-      "Savory has been historically used in culinary and traditional practices."
+    "description": "A culinary herb valued for its peppery, earthy, herbaceous, and thyme-like.",
+    "taste": "Peppery, earthy, herbaceous, and thyme-like.",
+    "suggestedFoods": [
+      "Beans",
+      "Lentils",
+      "Poultry",
+      "Pork",
+      "Potatoes",
+      "Soups",
+      "Stuffing"
     ],
     "culinaryUses": [
-      "Seasoning",
-      "Culinary preparations"
+      "Beans",
+      "Lentils",
+      "Poultry",
+      "Pork"
     ],
-    "usageKeywords": [
-      "seasoning",
-      "culinary-preparations"
+    "searchKeywords": [
+      "peppery",
+      "earthy",
+      "herbaceous",
+      "and",
+      "thymelike",
+      "beans",
+      "lentils",
+      "poultry",
+      "pork",
+      "potatoes",
+      "soups",
+      "stuffing"
     ],
-    "nutritionBasis": "per 100 g when available",
-    "nutrition": {},
     "image": "assets/herbs-spices/herb.svg",
-    "imageAlt": "Stylized illustration representing Savory",
-    "sources": [
-      "USDA FoodData Central",
-      "NCCIH Herbs at a Glance (general safety context)"
-    ]
+    "imageAlt": "Stylized illustration representing Savory"
   },
   {
     "id": "sorrel",
@@ -535,26 +773,38 @@
     "type": "herb",
     "alternateNames": [],
     "scientificName": "",
-    "description": "Sorrel is a recognized culinary herb used to add aroma, flavor, or color to foods.",
-    "traditionalUses": [
-      "Sorrel has been historically used in culinary and traditional practices."
+    "description": "A culinary herb valued for its bright, tart, lemony, and fresh.",
+    "taste": "Bright, tart, lemony, and fresh.",
+    "suggestedFoods": [
+      "Fish",
+      "Eggs",
+      "Potatoes",
+      "Soups",
+      "Salads",
+      "Cream sauces"
     ],
     "culinaryUses": [
-      "Seasoning",
-      "Culinary preparations"
+      "Fish",
+      "Eggs",
+      "Potatoes",
+      "Soups"
     ],
-    "usageKeywords": [
-      "seasoning",
-      "culinary-preparations"
+    "searchKeywords": [
+      "bright",
+      "tart",
+      "lemony",
+      "and",
+      "fresh",
+      "fish",
+      "eggs",
+      "potatoes",
+      "soups",
+      "salads",
+      "cream",
+      "sauces"
     ],
-    "nutritionBasis": "per 100 g when available",
-    "nutrition": {},
     "image": "assets/herbs-spices/herb.svg",
-    "imageAlt": "Stylized illustration representing Sorrel",
-    "sources": [
-      "USDA FoodData Central",
-      "NCCIH Herbs at a Glance (general safety context)"
-    ]
+    "imageAlt": "Stylized illustration representing Sorrel"
   },
   {
     "id": "tarragon",
@@ -562,26 +812,41 @@
     "type": "herb",
     "alternateNames": [],
     "scientificName": "",
-    "description": "Tarragon is a recognized culinary herb used to add aroma, flavor, or color to foods.",
-    "traditionalUses": [
-      "Tarragon has been historically used in culinary and traditional practices."
+    "description": "A culinary herb valued for its sweet, delicate, anise-like, and lightly peppery.",
+    "taste": "Sweet, delicate, anise-like, and lightly peppery.",
+    "suggestedFoods": [
+      "Chicken",
+      "Fish",
+      "Eggs",
+      "Mushrooms",
+      "Mustard sauces",
+      "Salads",
+      "Vinegar"
     ],
     "culinaryUses": [
-      "Seasoning",
-      "Culinary preparations"
+      "Chicken",
+      "Fish",
+      "Eggs",
+      "Mushrooms"
     ],
-    "usageKeywords": [
-      "seasoning",
-      "culinary-preparations"
+    "searchKeywords": [
+      "sweet",
+      "delicate",
+      "aniselike",
+      "and",
+      "lightly",
+      "peppery",
+      "chicken",
+      "fish",
+      "eggs",
+      "mushrooms",
+      "mustard",
+      "sauces",
+      "salads",
+      "vinegar"
     ],
-    "nutritionBasis": "per 100 g when available",
-    "nutrition": {},
     "image": "assets/herbs-spices/herb.svg",
-    "imageAlt": "Stylized illustration representing Tarragon",
-    "sources": [
-      "USDA FoodData Central",
-      "NCCIH Herbs at a Glance (general safety context)"
-    ]
+    "imageAlt": "Stylized illustration representing Tarragon"
   },
   {
     "id": "thyme",
@@ -589,25 +854,41 @@
     "type": "herb",
     "alternateNames": [],
     "scientificName": "",
-    "description": "Thyme is a recognized culinary herb used to add aroma, flavor, or color to foods.",
-    "traditionalUses": [
-      "Thyme has been historically used in culinary and traditional practices."
+    "description": "A culinary herb valued for its earthy, minty, lemony, and gently woody.",
+    "taste": "Earthy, minty, lemony, and gently woody.",
+    "suggestedFoods": [
+      "Chicken",
+      "Beef",
+      "Fish",
+      "Beans",
+      "Mushrooms",
+      "Potatoes",
+      "Soups",
+      "Tomatoes"
     ],
     "culinaryUses": [
-      "Seasoning",
-      "Culinary preparations"
+      "Chicken",
+      "Beef",
+      "Fish",
+      "Beans"
     ],
-    "usageKeywords": [
-      "seasoning",
-      "culinary-preparations"
+    "searchKeywords": [
+      "earthy",
+      "minty",
+      "lemony",
+      "and",
+      "gently",
+      "woody",
+      "chicken",
+      "beef",
+      "fish",
+      "beans",
+      "mushrooms",
+      "potatoes",
+      "soups",
+      "tomatoes"
     ],
-    "nutritionBasis": "per 100 g when available",
-    "nutrition": {},
     "image": "assets/herbs-spices/herb.svg",
-    "imageAlt": "Stylized illustration representing Thyme",
-    "sources": [
-      "USDA FoodData Central",
-      "NCCIH Herbs at a Glance (general safety context)"
-    ]
+    "imageAlt": "Stylized illustration representing Thyme"
   }
 ]

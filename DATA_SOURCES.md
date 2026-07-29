@@ -15,14 +15,13 @@ All food values in this static reference are reported per 100 g. Values absent f
 
 The complete static reference is intentionally excluded from localStorage and Supabase state. When a reference food is logged, the selected quantity and a nutrition snapshot are stored in the existing daily-entry format, preserving historical totals if the static dataset changes. Existing built-ins remain available to recipes and the Today's Menu selector, while existing custom foods remain user state.
 
-## Herb and Spice Encyclopedia
+## Herbs and Spices culinary reference
 
-The initial names and culinary classifications are a curated educational list. General source context:
+The initial names, culinary classifications, concise taste descriptions, common culinary uses, and suggested food pairings are a curated culinary reference. They are maintained in `scripts/build-reference-data.js` and written to `data/herbs-spices/herbs.json` and `spices.json`.
 
-- USDA FoodData Central: nutrition terminology and available food-composition context, public domain.
-- U.S. National Center for Complementary and Integrative Health, Herbs at a Glance: general traditional-use and safety framing, U.S. government information, <https://www.nccih.nih.gov/health/herbsataglance>.
+This culinary dataset is separate from the USDA Food Reference nutrition dataset described above. Herbs and Spices records are not nutrition-entry records and are not offered by the Today's Menu selector unless a separately sourced USDA or built-in food record has the same ingredient.
 
-Traditional-use statements are neutral historical summaries, not treatment claims. Nutrition objects remain empty when a reliable matching value was not selected; the interface displays those fields as unavailable. Future editors can add sourced records to `data/herbs-spices/herbs.json` or `spices.json` without changing screen code.
+Pairings reflect common culinary practice across the cuisines in which these ingredients are used. Future editors can extend the JSON schema with additional culinary descriptions, cuisine keywords, or pairings without changing screen code. Every record must retain a specific `taste`, nonempty `suggestedFoods`, culinary search keywords, and image metadata.
 
 ## Images
 
