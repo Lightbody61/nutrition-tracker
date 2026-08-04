@@ -28,7 +28,7 @@ vm.runInContext(source,context);
 
 function run(expression){return JSON.parse(JSON.stringify(vm.runInContext(expression,context)));}
 function setState(value){context.testState=value;vm.runInContext('state=testState',context);}
-function accountState(overrides={}){return {schemaVersion:1,foods:[],oneOffFoods:[],entries:[],exercises:[],dailyWeights:[],profile:{sex:'male',age:0,feet:0,inches:0,weight:0,goalWeight:0,activity:1.2,plan:0,manualMaintenance:0},workoutDefinitions:{},workoutLogs:{},customExercises:{},activityLogs:{},customActivities:{},...overrides};}
+function accountState(overrides={}){return {schemaVersion:1,foods:[],recipes:[],oneOffFoods:[],entries:[],exercises:[],dailyWeights:[],profile:{sex:'male',age:0,feet:0,inches:0,weight:0,goalWeight:0,activity:1.2,plan:0,manualMaintenance:0},workoutDefinitions:{},workoutLogs:{},customExercises:{},activityLogs:{},customActivities:{},...overrides};}
 function boundaryContext(initialValue){
   const data={};if(initialValue!==undefined)data['nutritionTracker.rebuild.v1']=initialValue;
   let writes=0;
@@ -66,7 +66,7 @@ assert.strictEqual(run('applyTrackerState(legacyAccount)'),true);
 assert.deepStrictEqual(run(`(()=>({food:state.entries[0].food.name,workouts:state.workoutDefinitions,logs:state.workoutLogs,activities:state.activityLogs}))()`),{food:'Preserved Food',workouts:{},logs:{},activities:{}});
 
 // Daily exercise calories combine legacy entries, completed workout calories, and activities once.
-setState(accountState({profile:{...accountState().profile,weight:154},exercises:[{id:'legacy',date:'2026-07-09',name:'Legacy Walk',minutes:30,calories:100,done:true}],workoutLogs:{'2026-07-09':{date:'2026-07-09',bodyWeight:154,minutes:60,intensity:4,exercises:[{name:'Rows',sets:[{done:true},{done:false}]}]}},activityLogs:{'2026-07-09':[{id:'activity',name:'Yard work',met:4,minutes:30,weight:154}]}}));
+setState(accountState({profile:{...accountState().profile,weight:154},exercises:[{id:'legacy',date:'2026-07-09',name:'Legacy Walk',minutes:30,calories:100,done:true}],workoutLogs:{'2026-07-09':{date:'2026-07-09',bodyWeight:154,minutes:60,intensity:4,exercises:[{name:'Rows',duration:60,met:4,sets:[{done:true},{done:false}]}]}},activityLogs:{'2026-07-09':[{id:'activity',name:'Yard work',met:4,minutes:30,weight:154}]}}));
 assert.strictEqual(Math.round(run("exerciseForDate('2026-07-09')")),393);
 
 // Food and standard exercise logging records remain functional.
