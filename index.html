@@ -24,6 +24,7 @@ select optgroup{
 
 
 .groupTotalsTableWrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;max-width:100%;-webkit-overflow-scrolling:touch}.groupTotalsTable{min-width:max-content;width:100%}.groupTotalsTable th,.groupTotalsTable td{min-width:105px;text-align:right;white-space:nowrap;padding:9px 10px}.groupTotalsTable th:first-child,.groupTotalsTable td:first-child{position:sticky;left:0;z-index:2;min-width:170px;text-align:left;background:#111827}.groupTotalsTable thead th{position:sticky;top:0;z-index:3;background:#0f172a}.groupTotalsTable thead th:first-child{z-index:4;background:#0f172a}.groupTotalsTable tbody tr:nth-child(even) td,.groupTotalsTable tbody tr:nth-child(even) th{background:#0b1220}.groupTotalsTable tbody tr:nth-child(even) th:first-child{background:#0b1220}.groupTotalsTable .dailyTotalCell{border-left:2px solid var(--accent);background:rgba(56,189,248,.08)}
+.trackerSummaryMeta{margin:8px 0 14px;color:var(--muted);font-size:12px}.trackerSummaryTableWrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:14px;margin-top:12px}.trackerSummaryTable{min-width:max-content;width:100%}.trackerSummaryTable th,.trackerSummaryTable td{min-width:118px;text-align:right;white-space:nowrap;padding:9px 10px}.trackerSummaryTable th:first-child,.trackerSummaryTable td:first-child{position:sticky;left:0;z-index:2;min-width:190px;text-align:left;background:#111827}.trackerSummaryTable thead th{position:sticky;top:0;z-index:3;background:#0f172a}.trackerSummaryTable thead th:first-child{z-index:4;background:#0f172a}.trackerSummaryTable tbody tr:nth-child(even) td,.trackerSummaryTable tbody tr:nth-child(even) th{background:#0b1220}.trackerSummaryTable tbody tr:nth-child(even) th:first-child{background:#0b1220}.trackerSummarySection th{background:#0f172a!important;color:#f8fafc;font-size:14px}.trackerSummaryMicroDetails{margin-top:12px}.trackerSummaryMicroDetails summary{cursor:pointer;color:#cbd5e1;font-weight:800}.trackerSummaryFooter{margin-top:16px;color:var(--muted);font-size:12px}@media print{.trackerSummaryTableWrap{overflow:visible;border:0}.trackerSummaryTable{font-size:11px}.trackerSummaryTable th,.trackerSummaryTable td{padding:6px;border-bottom:1px solid #ccc;color:#000}.trackerSummaryTable th:first-child,.trackerSummaryTable td:first-child,.trackerSummaryTable thead th{position:static;background:#fff!important;color:#000}.trackerSummarySection th{background:#eee!important;color:#000}.trackerSummaryTable tr{break-inside:avoid;page-break-inside:avoid}.trackerSummaryMicroDetails,.trackerSummaryMicroDetails[open]{display:block}.trackerSummaryMicroDetails summary{display:block;color:#000}.trackerSummaryFooter{color:#333}}
 #entries,#exerciseEntries,#foodsList,#dailyBreakdown,#shoppingDayList,#shoppingPreview{overflow-x:auto;-webkit-overflow-scrolling:touch}
 .formatNotice{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;padding:20px;background:rgba(2,6,23,.9)}.formatNotice.hide{display:none}.formatNotice .card{width:min(560px,100%);box-shadow:0 24px 80px rgba(0,0,0,.6)}
 .publicLandingCard{max-width:820px;margin:32px auto;padding:28px}.publicLandingCard h2{text-align:center;font-size:30px;margin-bottom:22px}.publicLandingCard p{font-size:17px;line-height:1.65;margin:0 0 20px}.publicLandingCard .actions{justify-content:center}.publicLandingCard .actions button{flex:0 1 320px;min-height:54px;font-size:18px}.accountGate,.contactForm,.forumCard,.forumAdminCard{max-width:900px;margin:14px auto}.accountStatus,.contactStatus,.forumStatus{min-height:22px;margin-top:10px;color:var(--muted)}.accountStatus.error,.contactStatus.error,.forumStatus.error{color:#fecdd3}.accountStatus.success,.contactStatus.success,.forumStatus.success{color:#a7f3d0}.contactForm input,.contactForm textarea,.forumCard textarea,.forumCard input,.forumAdminCard input{width:100%}.contactForm textarea,.forumCard textarea{min-height:140px;resize:vertical;border:1px solid var(--line);border-radius:12px;background:#020617;color:var(--text);padding:10px;font:inherit}.forumComment{margin-top:12px;padding:12px;border:1px solid var(--line);border-radius:12px;background:#020617}.forumReply{margin:10px 0 0 30px;border-left:3px solid var(--accent)}.forumCommentMeta{color:var(--muted);font-size:12px;margin-bottom:8px}.forumCommentText{white-space:pre-wrap;overflow-wrap:anywhere}.forumCommentActions{display:flex;align-items:center;gap:8px;margin-top:8px}.forumCard .forumActionButton{display:inline-flex;flex:0 0 auto;width:auto;min-height:0;padding:4px 10px;border-radius:7px;font-size:13px;line-height:1.25}.forumReplyForm{margin:10px 0 0 30px}.forumReplyForm textarea{min-height:90px}.forumProfilePanel{padding:12px;border:1px solid var(--line);border-radius:12px;background:#0f172a}.forumAdminItem{margin-top:10px;padding:10px;border:1px solid var(--line);border-radius:10px;background:#020617;overflow-wrap:anywhere}@media(max-width:599px){.publicLandingCard{margin:16px auto;padding:20px}.publicLandingCard h2{font-size:25px}.publicLandingCard p{font-size:16px}.forumReply,.forumReplyForm{margin-left:12px}}.trackerLocked main .screen:not(#accountScreen):not(#publicLandingScreen){display:none!important}.signedInOnly,.signedOutOnly,.recoveryOnly{display:none}
@@ -50,7 +51,7 @@ select optgroup{
 <section class="screen" id="statsHubScreen"><div class="card"><p class="breadcrumb"><button class="secondary" data-screen="foodHubScreen">← Food</button></p><h2>Stats</h2><div class="moduleGrid"><button class="moduleBtn" data-screen="dailyTotalsScreen">Daily Totals<span>Calories, macros, net calories, and estimated loss/gain.</span></button><button class="moduleBtn" data-screen="statsScreen">Nutrition Stats<span>Targets, charts, vitamin breakdowns, and insulin-response estimate.</span></button><button class="moduleBtn" data-screen="breakdownScreen">Daily Macro/Micro Breakdown<span>Each nutrient with contributing foods.</span></button></div></div></section>
 <section class="screen" id="exerciseHubScreen"><div class="card"><p class="breadcrumb"><button class="secondary returnButton" data-screen="homeScreen">← Back to Menu</button></p><h2>Exercise</h2><div class="moduleGrid"><button class="moduleBtn" data-screen="exerciseScreen">Workout &amp; Activity Tracker<span>Build reusable workouts, log completed sets, and save other activities.</span></button><button class="moduleBtn" data-screen="dailyTotalsScreen">Daily Totals<span>View workout and activity calories inside daily totals.</span></button></div></div></section>
 <section class="screen" id="utilitiesScreen"><div class="card"><p class="breadcrumb"><button class="secondary returnButton" data-screen="homeScreen">← Back to Menu</button></p><h2>Utilities</h2><p class="small">Copy, reporting, and reset tools for the information stored temporarily in this browser.</p><div class="moduleGrid"><button class="moduleBtn" data-screen="reportsScreen">Reports<span>Print recipes or create a weight-history graph and table for a selected date range.</span></button><div class="card" style="padding:12px;background:#0f172a"><h3 style="margin-top:0">Copy Day</h3><div class="dateRow"><div><label>Copy From Date</label><input id="copyFromDate" type="date"/></div><div><label>Copy To Date</label><input id="copyToDate" type="date"/></div></div><div class="actions"><button id="copyDayBtn">Copy From Date → Copy To Date</button></div></div><button class="moduleBtn danger" id="clearDayBtn">Reset Day<span>Clear the selected day's entries.</span></button><button class="moduleBtn danger" id="resetBtn">Reset App<span>Delete all local tracker data.</span></button></div></div></section>
-<section class="screen" id="reportsScreen"><div class="card"><p class="breadcrumb"><button class="secondary returnButton" data-screen="utilitiesScreen">← Utilities</button></p><h2>Reports</h2><p class="small">Create printable reports from your saved tracker data.</p><div class="moduleGrid"><button class="moduleBtn" data-screen="recipePrintScreen">Print Recipes<span>Select one or more recipes and print them to PDF or a printer.</span></button><button class="moduleBtn" data-screen="weightHistoryScreen">Weight History<span>Select a date range, view a graph and table, then print or save as PDF.</span></button></div></div></section>
+<section class="screen" id="reportsScreen"><div class="card"><p class="breadcrumb"><button class="secondary returnButton" data-screen="utilitiesScreen">← Utilities</button></p><h2>Reports</h2><p class="small">Create printable reports from your saved tracker data.</p><div class="moduleGrid"><button class="moduleBtn" data-screen="recipePrintScreen">Print Recipes<span>Select one or more recipes and print them to PDF or a printer.</span></button><button class="moduleBtn" data-screen="weightHistoryScreen">Weight History<span>Select a date range, view a graph and table, then print or save as PDF.</span></button><button class="moduleBtn" data-screen="trackerSummaryScreen">Tracker Summary<span>Summarize calories, exercise, macros, and micronutrients by day, week, or month.</span></button></div></div></section>
 <section class="screen" id="recipePrintScreen"><div class="card"><p class="breadcrumb"><button class="secondary" data-screen="reportsScreen">← Reports</button></p><h2>Print Recipes</h2><p class="small">Check the recipes you want, then open the browser print dialog. Choose Save as PDF or select a printer.</p><div class="actions noPrint"><button class="secondary" id="selectAllRecipesBtn">Select All</button><button class="secondary" id="clearRecipeSelectionBtn">Clear Selection</button><button id="printSelectedRecipesBtn">Print Selected Recipes</button></div><div id="recipePrintChoices" style="margin-top:14px"></div></div></section>
 <section class="screen" id="mainScreen"><div class="card"><p class="breadcrumb"><button class="secondary" data-screen="foodHubScreen">← Food</button></p><h2>Today's Menu</h2><label>Date</label><input id="date" type="date"/><label style="margin-left:12px">Daily Weight (lb)</label><input id="todayMenuWeight" min="0" placeholder="147.2" step="0.1" type="number"/>
 <label style="margin-left:12px">Schedule</label>
@@ -91,6 +92,20 @@ select optgroup{
 <canvas height="420" id="weightHistoryChart" style="max-width:900px" width="900"></canvas>
 <div class="pillgrid" id="weightHistorySummary" style="margin-top:12px"></div>
 <div id="weightHistoryList" style="margin-top:16px"></div>
+</div></section>
+<section class="screen" id="trackerSummaryScreen"><div class="card">
+<p class="breadcrumb noPrint"><button class="secondary" data-screen="reportsScreen">← Reports</button></p>
+<h2>Tracker Summary</h2>
+<div class="row3 noPrint">
+<div><label>Start Date</label><input id="trackerSummaryStart" type="date"/></div>
+<div><label>End Date</label><input id="trackerSummaryEnd" type="date"/></div>
+<div><label>View</label><select id="trackerSummaryView"><option value="day">Day</option><option value="week">Week</option><option value="month">Month</option></select></div>
+</div>
+<div class="actions noPrint">
+<button id="trackerSummaryRunBtn">Generate/Refresh Report</button>
+<button class="secondary" id="trackerSummaryPrintBtn">Print Report</button>
+</div>
+<div id="trackerSummaryReport" style="margin-top:14px"></div>
 </div></section>
 <section class="screen" id="breakdownScreen"><div class="card"><p class="breadcrumb"><button class="secondary" data-screen="statsHubScreen">← Stats</button></p><h2>Daily Macro/Micro Breakdown</h2><p class="small">Shows each nutrient first, then the foods that make up that nutrient total for the selected date. Use this page to find which foods are driving any high or low macro or micronutrient totals.</p><div id="dailyBreakdown"></div></div></section>
 <section class="screen" id="shoppingListScreen"><div class="card"><p class="breadcrumb"><button class="secondary" data-screen="foodListsHubScreen">← Food Lists</button></p><h2>Current Shopping List</h2><p class="small">Use the calendar to select one day or multiple days, then print a combined shopping list. Only days with food entries are selectable.</p><div class="dateRow noPrint"><div><label>Calendar month</label><input id="shoppingMonth" type="month"/></div><div><label> </label><button class="secondary" id="showLoggedShoppingDaysBtn">Show logged days</button></div></div><div id="shoppingDayList"></div><div class="actions noPrint"><button class="secondary" id="selectAllShoppingDaysBtn">Select visible logged days</button><button class="secondary" id="clearShoppingDaysBtn">Clear selection</button><button id="printShoppingListBtn">Print selected shopping list</button></div><div id="shoppingPreview" style="margin-top:16px"></div></div></section>
@@ -754,11 +769,11 @@ function today(){ return new Date().toISOString().slice(0,10); } function hhmm()
 function fmtTime(t){ if(!t) return ''; const [h,m]=t.split(':').map(Number); const s=h>=12?'PM':'AM'; return (((h+11)%12)+1)+':'+String(m).padStart(2,'0')+' '+s; }
 function selectedDate(){ return document.getElementById('date').value || today(); }
 function setSelectedDate(d){ const val=d||today(); const main=document.getElementById('date'); const totals=document.getElementById('dailyTotalsDate'); if(main) main.value=val; if(totals) totals.value=val; }
-const SCREEN_PARENTS={homeScreen:'mainMenuScreen',accountScreen:'mainMenuScreen',contactScreen:'mainMenuScreen',communityForumScreen:'mainMenuScreen',forumAdministrationScreen:'communityForumScreen',adminScreen:'mainMenuScreen',foodHubScreen:'homeScreen',exerciseHubScreen:'homeScreen',utilitiesScreen:'homeScreen',profileScreen:'homeScreen',usersGuideScreen:'homeScreen',mainScreen:'foodHubScreen',foodEntryScreen:'foodHubScreen',aiAssistanceScreen:'foodHubScreen',oneOffFoodsScreen:'foodHubScreen',foodListsHubScreen:'foodHubScreen',herbSpiceScreen:'foodHubScreen',recipesScreen:'foodHubScreen',statsHubScreen:'foodHubScreen',foodsScreen:'foodListsHubScreen',shoppingListScreen:'foodListsHubScreen',statsScreen:'statsHubScreen',breakdownScreen:'statsHubScreen',exerciseScreen:'exerciseHubScreen',reportsScreen:'utilitiesScreen',recipePrintScreen:'reportsScreen',weightHistoryScreen:'reportsScreen'};
+const SCREEN_PARENTS={homeScreen:'mainMenuScreen',accountScreen:'mainMenuScreen',contactScreen:'mainMenuScreen',communityForumScreen:'mainMenuScreen',forumAdministrationScreen:'communityForumScreen',adminScreen:'mainMenuScreen',foodHubScreen:'homeScreen',exerciseHubScreen:'homeScreen',utilitiesScreen:'homeScreen',profileScreen:'homeScreen',usersGuideScreen:'homeScreen',mainScreen:'foodHubScreen',foodEntryScreen:'foodHubScreen',aiAssistanceScreen:'foodHubScreen',oneOffFoodsScreen:'foodHubScreen',foodListsHubScreen:'foodHubScreen',herbSpiceScreen:'foodHubScreen',recipesScreen:'foodHubScreen',statsHubScreen:'foodHubScreen',foodsScreen:'foodListsHubScreen',shoppingListScreen:'foodListsHubScreen',statsScreen:'statsHubScreen',breakdownScreen:'statsHubScreen',exerciseScreen:'exerciseHubScreen',reportsScreen:'utilitiesScreen',recipePrintScreen:'reportsScreen',weightHistoryScreen:'reportsScreen',trackerSummaryScreen:'reportsScreen'};
 const SHARED_DESTINATION_PARENTS={dailyTotalsScreen:['statsHubScreen','exerciseHubScreen']};
 function activeScreenId(){ const active=document.querySelector('.screen.active'); return active?active.id:null; }
 function setReturnScreen(id,parent){ const button=document.querySelector(`[data-return-for="${id}"]`); if(!button||!parent)return; button.dataset.screen=parent; button.textContent=parent==='exerciseHubScreen'?'← Exercise':'← Stats'; }
-function showScreen(id,fromId){ if(document.body.classList.contains('trackerLocked')&&!['accountScreen','publicLandingScreen'].includes(id))id='publicLandingScreen'; if(id==='forumAdministrationScreen'&&window.forumAdminAccessConfirmed!==true){id='communityForumScreen';if(window.denyForumAdministrationAccess)window.denyForumAdministrationAccess();} if(id==='adminScreen'&&window.adminAccessConfirmed!==true){id='mainMenuScreen';if(window.denyAdminAccess)window.denyAdminAccess();} const el=document.getElementById(id); if(!el)return false; const origin=fromId||activeScreenId(); const allowedParents=SHARED_DESTINATION_PARENTS[id]; const parent=allowedParents&&allowedParents.includes(origin)?origin:SCREEN_PARENTS[id]; if(parent)setReturnScreen(id,parent); document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); el.classList.add('active'); if(id==='foodsScreen') loadFoodReference(); if(id==='herbSpiceScreen') loadHerbSpiceEncyclopedia(); if(id==='statsScreen') renderStats(); if(id==='breakdownScreen') renderDailyBreakdown(); if(id==='shoppingListScreen') renderShoppingListScreen(); if(id==='profileScreen') renderProfile(); if(id==='dailyTotalsScreen') render(); if(id==='weightHistoryScreen') renderWeightHistoryReport();
+function showScreen(id,fromId){ if(document.body.classList.contains('trackerLocked')&&!['accountScreen','publicLandingScreen'].includes(id))id='publicLandingScreen'; if(id==='forumAdministrationScreen'&&window.forumAdminAccessConfirmed!==true){id='communityForumScreen';if(window.denyForumAdministrationAccess)window.denyForumAdministrationAccess();} if(id==='adminScreen'&&window.adminAccessConfirmed!==true){id='mainMenuScreen';if(window.denyAdminAccess)window.denyAdminAccess();} const el=document.getElementById(id); if(!el)return false; const origin=fromId||activeScreenId(); const allowedParents=SHARED_DESTINATION_PARENTS[id]; const parent=allowedParents&&allowedParents.includes(origin)?origin:SCREEN_PARENTS[id]; if(parent)setReturnScreen(id,parent); document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); el.classList.add('active'); if(id==='foodsScreen') loadFoodReference(); if(id==='herbSpiceScreen') loadHerbSpiceEncyclopedia(); if(id==='statsScreen') renderStats(); if(id==='breakdownScreen') renderDailyBreakdown(); if(id==='shoppingListScreen') renderShoppingListScreen(); if(id==='profileScreen') renderProfile(); if(id==='dailyTotalsScreen') render(); if(id==='weightHistoryScreen') renderWeightHistoryReport(); if(id==='trackerSummaryScreen') renderTrackerSummaryReport();
 renderVitABreakdown();
 renderDailyBreakdown();
 renderDailyBreakdown(); if(window.recordTrackerActivity)window.recordTrackerActivity(id); if(id==='exerciseScreen'&&typeof refreshWorkoutTracker==='function')refreshWorkoutTracker(selectedDate()); window.scrollTo(0,0); return true; } window.showScreen=showScreen;
@@ -1158,6 +1173,163 @@ function renderWeightHistoryReport(){
      return `<tr><td>${esc(formatReportDate(r.date))}</td><td>${round(r.weight)}</td><td>${diff===null?'—':(diff>0?'+':'')+diff}</td></tr>`;
    }).join('')
  }</tbody></table>`;
+}
+
+function parseLocalDateKey(d){
+ const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(String(d||''));
+ return m?new Date(Number(m[1]),Number(m[2])-1,Number(m[3])):null;
+}
+function localDateKeyFromDate(dt){
+ return `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`;
+}
+function addLocalDays(d,days){
+ const dt=parseLocalDateKey(d);
+ if(!dt) return d;
+ dt.setDate(dt.getDate()+days);
+ return localDateKeyFromDate(dt);
+}
+function loggedTrackerDates(){
+ const dates=new Set();
+ (state.entries||[]).forEach(e=>{ if(validDateValue(e.date)) dates.add(e.date); });
+ (state.exercises||[]).forEach(e=>{ if(e.done!==false&&validDateValue(e.date)) dates.add(e.date); });
+ Object.keys(state.workoutLogs||{}).forEach(d=>{ if(validDateValue(d)) dates.add(d); });
+ Object.keys(state.activityLogs||{}).forEach(d=>{ if(validDateValue(d)&&((state.activityLogs||{})[d]||[]).length) dates.add(d); });
+ return Array.from(dates).sort();
+}
+function trackerSummaryDefaultRange(){
+ const dates=loggedTrackerDates();
+ if(!dates.length) return {start:selectedDate(),end:selectedDate()};
+ const end=dates[dates.length-1];
+ const recentStart=addLocalDays(end,-29);
+ return {start:dates.find(d=>d>=recentStart)||dates[0],end};
+}
+function initTrackerSummaryControls(force=false){
+ const startEl=document.getElementById('trackerSummaryStart');
+ const endEl=document.getElementById('trackerSummaryEnd');
+ const viewEl=document.getElementById('trackerSummaryView');
+ if(viewEl && !viewEl.value) viewEl.value='day';
+ const range=trackerSummaryDefaultRange();
+ if(startEl && (force||!startEl.value)) startEl.value=range.start;
+ if(endEl && (force||!endEl.value)) endEl.value=range.end;
+}
+function trackerSummaryWeekStart(d){
+ const dt=parseLocalDateKey(d);
+ dt.setDate(dt.getDate()-dt.getDay());
+ return localDateKeyFromDate(dt);
+}
+function trackerSummaryMonthStart(d){ return String(d||'').slice(0,7)+'-01'; }
+function trackerSummaryPeriodForDate(d,view){
+ if(view==='week'){
+   const start=trackerSummaryWeekStart(d), end=addLocalDays(start,6);
+   return {key:start,label:`${formatReportDate(start)} - ${formatReportDate(end)}`,start,end};
+ }
+ if(view==='month'){
+   const start=trackerSummaryMonthStart(d);
+   const dt=parseLocalDateKey(start);
+   dt.setMonth(dt.getMonth()+1);
+   dt.setDate(0);
+   return {key:start,label:dt.toLocaleDateString(undefined,{year:'numeric',month:'short'}),start,end:localDateKeyFromDate(dt)};
+ }
+ return {key:d,label:formatReportDate(d),start:d,end:d};
+}
+function trackerSummaryDailyRecord(d){
+ const totals=totalsForDate(d);
+ totals.netCarbs=Math.max(0,n(totals.carbs)-n(totals.fiber));
+ const exercise=exerciseForDate(d);
+ const maintenance=n(profileCalc().maintenance);
+ const balance=dayEnergyBalance(d,totals.calories,exercise,maintenance).balance;
+ return {date:d,totals,maintenance,calories:n(totals.calories),exercise,balance};
+}
+function buildTrackerSummaryReport(start,end,view='day'){
+ if(!validDateValue(start)||!validDateValue(end)) return {error:'Choose a valid start and end date.'};
+ if(end<start) return {error:'End Date cannot be earlier than Start Date.'};
+ const savedDates=loggedTrackerDates().filter(d=>d>=start&&d<=end);
+ if(!savedDates.length) return {start,end,view,periods:[],empty:true};
+ const periods=[];
+ const byKey={};
+ savedDates.forEach(d=>{
+   const period=trackerSummaryPeriodForDate(d,view);
+   if(!byKey[period.key]){
+     byKey[period.key]={...period,days:[],totals:Object.fromEntries(KEYS.map(k=>[k,0])),maintenanceTotal:0,calories:0,exercise:0,balance:0};
+     periods.push(byKey[period.key]);
+   }
+   const record=trackerSummaryDailyRecord(d);
+   byKey[period.key].days.push(d);
+   KEYS.forEach(k=>{ byKey[period.key].totals[k]+=n(record.totals[k]); });
+   byKey[period.key].totals.netCarbs=(n(byKey[period.key].totals.netCarbs)||0)+n(record.totals.netCarbs);
+   byKey[period.key].maintenanceTotal+=record.maintenance;
+   byKey[period.key].calories+=record.calories;
+   byKey[period.key].exercise+=record.exercise;
+   byKey[period.key].balance+=record.balance;
+ });
+ periods.sort((a,b)=>a.key.localeCompare(b.key));
+ periods.forEach(p=>{
+   const count=p.days.length||1;
+   p.loggedDays=p.days.length;
+   p.maintenance=view==='day'?p.maintenanceTotal:p.maintenanceTotal/count;
+   p.macroAverages={};
+   p.microAverages={};
+   ['protein','fat','netCarbs','fiber'].forEach(k=>p.macroAverages[k]=view==='day'?n(p.totals[k]):n(p.totals[k])/count);
+   trackerSummaryMicronutrients().forEach(m=>p.microAverages[m.key]=view==='day'?n(p.totals[m.key]):n(p.totals[m.key])/count);
+ });
+ return {start,end,view,periods,empty:false};
+}
+function trackerSummaryMicronutrients(){
+ const excluded=new Set(['calories','protein','collagenProtein','carbs','fat','fiber','sugar','glycemicLoad']);
+ return NUTRIENTS.filter(m=>!excluded.has(m.key));
+}
+function formatTrackerSummaryNumber(value,unit=''){
+ const v=n(value);
+ if(!Number.isFinite(v)) return '0';
+ const rounded=Math.abs(v)>=100?Math.round(v):round(v);
+ return `${rounded}${unit?` ${unit}`:''}`;
+}
+function formatTrackerSummaryBalance(value){
+ const v=round(n(value));
+ if(v>0) return `${formatTrackerSummaryNumber(Math.abs(v),'kcal')} Surplus`;
+ if(v<0) return `${formatTrackerSummaryNumber(Math.abs(v),'kcal')} Deficit`;
+ return '0 kcal Balance';
+}
+function trackerSummaryRow(label,values,unit='',balance=false){
+ return `<tr><th scope="row">${esc(label)}</th>${values.map(v=>`<td>${balance?esc(formatTrackerSummaryBalance(v)):esc(formatTrackerSummaryNumber(v,unit))}</td>`).join('')}</tr>`;
+}
+function trackerSummarySection(label,columns){
+ return `<tr class="trackerSummarySection"><th scope="row">${esc(label)}</th><td colspan="${columns}"></td></tr>`;
+}
+function renderTrackerSummaryReport(){
+ initTrackerSummaryControls(false);
+ const start=(document.getElementById('trackerSummaryStart')||{}).value;
+ const end=(document.getElementById('trackerSummaryEnd')||{}).value;
+ const view=(document.getElementById('trackerSummaryView')||{}).value||'day';
+ const box=document.getElementById('trackerSummaryReport');
+ if(!box) return;
+ const report=buildTrackerSummaryReport(start,end,view);
+ if(report.error){ box.innerHTML=`<p class="small">${esc(report.error)}</p>`; return; }
+ const subtitle=`${formatReportDate(report.start)} through ${formatReportDate(report.end)}`;
+ if(report.empty){
+   box.innerHTML=`<h2>Tracker Summary</h2><div class="trackerSummaryMeta">${esc(subtitle)}</div><p class="small">No saved tracker days exist in this date range. Choose a different range or add food, completed workout, activity, or exercise entries.</p>`;
+   return;
+ }
+ const cols=report.periods.length;
+ const averageNote=report.view==='day'?'':' Weekly and monthly maintenance, macro, and micronutrient rows are daily averages across logged days only.';
+ const head=report.periods.map(p=>`<th scope="col">${esc(p.label)}${report.view==='day'?'':`<br><span class="small">${p.loggedDays} logged day${p.loggedDays===1?'':'s'}</span>`}</th>`).join('');
+ const macroRows=[
+   ['Protein','protein','g'],['Fat','fat','g'],['Net Carbs','netCarbs','g'],['Fiber','fiber','g']
+ ].map(([label,key,unit])=>trackerSummaryRow(label,report.periods.map(p=>p.macroAverages[key]),unit)).join('');
+ const microRows=trackerSummaryMicronutrients().map(m=>trackerSummaryRow(m.label,report.periods.map(p=>p.microAverages[m.key]),m.unit)).join('');
+ const energyRows=[
+   trackerSummaryRow('Maintenance',report.periods.map(p=>p.maintenance),'kcal'),
+   trackerSummaryRow('Calories',report.periods.map(p=>p.calories),'kcal'),
+   trackerSummaryRow('Exercise Calories',report.periods.map(p=>p.exercise),'kcal'),
+   trackerSummaryRow('Deficit / Surplus',report.periods.map(p=>p.balance),'',true)
+ ].join('');
+ const tableHead=`<thead><tr><th scope="col">Metric</th>${head}</tr></thead>`;
+ const macroEnergyTable=`<div class="trackerSummaryTableWrap"><table class="trackerSummaryTable">${tableHead}<tbody>${trackerSummarySection(report.view==='day'?'Macronutrients':'Macronutrients (daily average)',cols)}${macroRows}${trackerSummarySection('Energy Summary',cols)}${energyRows}</tbody></table></div>`;
+ const microTable=`<details class="trackerSummaryMicroDetails" open><summary>${esc(report.view==='day'?'Micronutrients':'Micronutrients (daily average)')}</summary><div class="trackerSummaryTableWrap"><table class="trackerSummaryTable">${tableHead}<tbody>${microRows}</tbody></table></div></details>`;
+ box.innerHTML=`<h2>Tracker Summary</h2><div class="trackerSummaryMeta">${esc(subtitle)}${esc(averageNote)}</div>${macroEnergyTable}${microTable}<div class="trackerSummaryFooter">Generated from Nutrition Tracker on ${esc(new Date().toLocaleString())}</div>`;
+}
+function expandTrackerSummaryForPrint(){
+ document.querySelectorAll('.trackerSummaryMicroDetails').forEach(d=>{ d.open=true; });
 }
 
 function dayEnergyBalance(d,foodCalories,exerciseCalories,maintenance){
@@ -1971,14 +2143,14 @@ function copySelectedDay(){
 }
 function clearDay(){ if(!confirm('Clear food, workout, and activity entries for the selected day?')) return; const d=selectedDate(); state.entries=state.entries.filter(e=>e.date!==d); state.exercises=state.exercises.filter(e=>e.date!==d); if(state.workoutLogs)delete state.workoutLogs[d]; if(state.activityLogs)delete state.activityLogs[d]; save(); render(); }
 function resetAll(){ if(!confirm('Reset all Tracker data for this signed-in account?')) return; state=createEmptyTrackerState(); init(false); }
-function init(setDate=true,persist=true){ if(!Array.isArray(state.dailyWeights)) state.dailyWeights=[]; normalizeAllVitaminKData(); normalizeAllFoodEntryOrders(); if(persist) persistInitialState(); else if(automaticSavesBlocked) showIncompatibleStateNotice(); if(setDate) setSelectedDate(today()); else setSelectedDate(selectedDate()); const copyFrom=document.getElementById('copyFromDate'); if(copyFrom) copyFrom.value=selectedDate(); const shopMonth=document.getElementById('shoppingMonth'); if(shopMonth) shopMonth.value=selectedDate().slice(0,7); const whEnd=document.getElementById('weightHistoryEnd'); const whStart=document.getElementById('weightHistoryStart'); if(whEnd) whEnd.value=selectedDate(); if(whStart){ const d=new Date(selectedDate()+'T12:00:00'); d.setDate(d.getDate()-90); whStart.value=d.toISOString().slice(0,10); } const foodOrderEl=document.getElementById('foodOrder'); if(foodOrderEl) foodOrderEl.value=nextFoodOrder(selectedDate()); buildCustomFields(); buildOneOffFields(); renderOneOffFoods(); renderFoodSelect(); renderFoodsList(); renderRecipes(); renderRecipePrintChoices(); renderProfile(); render(); if(typeof refreshWorkoutTracker==='function')refreshWorkoutTracker(); }
+function init(setDate=true,persist=true){ if(!Array.isArray(state.dailyWeights)) state.dailyWeights=[]; normalizeAllVitaminKData(); normalizeAllFoodEntryOrders(); if(persist) persistInitialState(); else if(automaticSavesBlocked) showIncompatibleStateNotice(); if(setDate) setSelectedDate(today()); else setSelectedDate(selectedDate()); const copyFrom=document.getElementById('copyFromDate'); if(copyFrom) copyFrom.value=selectedDate(); const shopMonth=document.getElementById('shoppingMonth'); if(shopMonth) shopMonth.value=selectedDate().slice(0,7); const whEnd=document.getElementById('weightHistoryEnd'); const whStart=document.getElementById('weightHistoryStart'); if(whEnd) whEnd.value=selectedDate(); if(whStart){ const d=new Date(selectedDate()+'T12:00:00'); d.setDate(d.getDate()-90); whStart.value=d.toISOString().slice(0,10); } initTrackerSummaryControls(true); const foodOrderEl=document.getElementById('foodOrder'); if(foodOrderEl) foodOrderEl.value=nextFoodOrder(selectedDate()); buildCustomFields(); buildOneOffFields(); renderOneOffFoods(); renderFoodSelect(); renderFoodsList(); renderRecipes(); renderRecipePrintChoices(); renderProfile(); render(); if(typeof refreshWorkoutTracker==='function')refreshWorkoutTracker(); }
 document.addEventListener('DOMContentLoaded',()=>{ bindReferenceControls(); const acknowledgeReset=document.getElementById('acknowledgeStateResetBtn'); if(acknowledgeReset) acknowledgeReset.addEventListener('click',acknowledgeIncompatibleStateReset); document.querySelectorAll('[data-screen]').forEach(b=>b.addEventListener('click',()=>showScreen(b.dataset.screen,activeScreenId()))); document.getElementById('date').addEventListener('change',()=>{ setSelectedDate(document.getElementById('date').value); const cf=document.getElementById('copyFromDate'); if(cf) cf.value=selectedDate(); render(); }); const dtd=document.getElementById('dailyTotalsDate'); if(dtd) dtd.addEventListener('change',()=>{ setSelectedDate(dtd.value); render(); }); const dailyWeightEl=document.getElementById('dailyWeight');
  if(dailyWeightEl){ dailyWeightEl.addEventListener('change',()=>saveDailyWeight('dailyWeight')); dailyWeightEl.addEventListener('blur',()=>saveDailyWeight('dailyWeight')); }
  const todayWeightEl=document.getElementById('todayMenuWeight');
  if(todayWeightEl){ todayWeightEl.addEventListener('change',()=>saveDailyWeight('todayMenuWeight')); todayWeightEl.addEventListener('blur',()=>saveDailyWeight('todayMenuWeight')); }
  const whRun=document.getElementById('weightHistoryRunBtn'); if(whRun) whRun.addEventListener('click',renderWeightHistoryReport);
  const whPrint=document.getElementById('weightHistoryPrintBtn'); if(whPrint) whPrint.addEventListener('click',()=>{ renderWeightHistoryReport(); window.print(); });
- ['weightHistoryStart','weightHistoryEnd'].forEach(id=>{ const el=document.getElementById(id); if(el) el.addEventListener('change',renderWeightHistoryReport); }); document.getElementById('addFoodBtn').addEventListener('click',addFoodEntry); document.getElementById('submitGroupBtn').addEventListener('click',submitSelectedGroup); document.getElementById('sortGroupsBtn').addEventListener('click',sortEntriesByGroup); document.getElementById('clearGroupsBtn').addEventListener('click',clearGroupsForDate); document.getElementById('saveCustomBtn').addEventListener('click',saveCustomFood); { const b=document.getElementById('saveOneOffBtn'); if(b) b.addEventListener('click',saveOneOffFood); const c=document.getElementById('clearOneOffFormBtn'); if(c) c.addEventListener('click',clearOneOffForm); } document.getElementById('saveProfileBtn').addEventListener('click',saveProfile); document.getElementById('addSelectedRecipeBtn').addEventListener('click',addSelectedRecipeToDay); { const all=document.getElementById('selectAllRecipesBtn'); if(all) all.addEventListener('click',()=>document.querySelectorAll('[data-recipe-print-index]').forEach(c=>c.checked=true)); const clear=document.getElementById('clearRecipeSelectionBtn'); if(clear) clear.addEventListener('click',()=>document.querySelectorAll('[data-recipe-print-index]').forEach(c=>c.checked=false)); const print=document.getElementById('printSelectedRecipesBtn'); if(print) print.addEventListener('click',printSelectedRecipes); } { const suggestBtn=document.getElementById('suggestMenuBtn'); if(suggestBtn) suggestBtn.addEventListener('click',suggestDailyMenu); } { const biblicalBtn=document.getElementById('biblicalMenuBtn'); if(biblicalBtn) biblicalBtn.addEventListener('click',suggestBiblicalDietMenu); } { const shoppingBtn=document.getElementById('shoppingListBtn'); if(shoppingBtn) shoppingBtn.addEventListener('click',()=>showScreen('shoppingListScreen')); } document.getElementById('selectAllShoppingDaysBtn').addEventListener('click',()=>{document.querySelectorAll('[data-shopping-day]').forEach(c=>c.checked=true); renderShoppingPreview();}); document.getElementById('clearShoppingDaysBtn').addEventListener('click',()=>{document.querySelectorAll('[data-shopping-day]').forEach(c=>c.checked=false); renderShoppingPreview();}); document.getElementById('printShoppingListBtn').addEventListener('click',printSelectedShoppingList); const shopMonthEl=document.getElementById('shoppingMonth'); if(shopMonthEl) shopMonthEl.addEventListener('change',renderShoppingListScreen); const showLoggedBtn=document.getElementById('showLoggedShoppingDaysBtn'); if(showLoggedBtn) showLoggedBtn.addEventListener('click',()=>{ const dates=loggedFoodDates(); if(dates.length){ const sm=document.getElementById('shoppingMonth'); if(sm) sm.value=dates[dates.length-1].slice(0,7); } renderShoppingListScreen(); }); document.getElementById('copyDayBtn').addEventListener('click',copySelectedDay); document.getElementById('clearDayBtn').addEventListener('click',clearDay); document.getElementById('resetBtn').addEventListener('click',resetAll); init(true); });
+ ['weightHistoryStart','weightHistoryEnd'].forEach(id=>{ const el=document.getElementById(id); if(el) el.addEventListener('change',renderWeightHistoryReport); }); const tsRun=document.getElementById('trackerSummaryRunBtn'); if(tsRun) tsRun.addEventListener('click',renderTrackerSummaryReport); const tsPrint=document.getElementById('trackerSummaryPrintBtn'); if(tsPrint) tsPrint.addEventListener('click',()=>{ renderTrackerSummaryReport(); expandTrackerSummaryForPrint(); window.print(); }); if(window.addEventListener) window.addEventListener('beforeprint',expandTrackerSummaryForPrint); ['trackerSummaryStart','trackerSummaryEnd','trackerSummaryView'].forEach(id=>{ const el=document.getElementById(id); if(el) el.addEventListener('change',renderTrackerSummaryReport); }); document.getElementById('addFoodBtn').addEventListener('click',addFoodEntry); document.getElementById('submitGroupBtn').addEventListener('click',submitSelectedGroup); document.getElementById('sortGroupsBtn').addEventListener('click',sortEntriesByGroup); document.getElementById('clearGroupsBtn').addEventListener('click',clearGroupsForDate); document.getElementById('saveCustomBtn').addEventListener('click',saveCustomFood); { const b=document.getElementById('saveOneOffBtn'); if(b) b.addEventListener('click',saveOneOffFood); const c=document.getElementById('clearOneOffFormBtn'); if(c) c.addEventListener('click',clearOneOffForm); } document.getElementById('saveProfileBtn').addEventListener('click',saveProfile); document.getElementById('addSelectedRecipeBtn').addEventListener('click',addSelectedRecipeToDay); { const all=document.getElementById('selectAllRecipesBtn'); if(all) all.addEventListener('click',()=>document.querySelectorAll('[data-recipe-print-index]').forEach(c=>c.checked=true)); const clear=document.getElementById('clearRecipeSelectionBtn'); if(clear) clear.addEventListener('click',()=>document.querySelectorAll('[data-recipe-print-index]').forEach(c=>c.checked=false)); const print=document.getElementById('printSelectedRecipesBtn'); if(print) print.addEventListener('click',printSelectedRecipes); } { const suggestBtn=document.getElementById('suggestMenuBtn'); if(suggestBtn) suggestBtn.addEventListener('click',suggestDailyMenu); } { const biblicalBtn=document.getElementById('biblicalMenuBtn'); if(biblicalBtn) biblicalBtn.addEventListener('click',suggestBiblicalDietMenu); } { const shoppingBtn=document.getElementById('shoppingListBtn'); if(shoppingBtn) shoppingBtn.addEventListener('click',()=>showScreen('shoppingListScreen')); } document.getElementById('selectAllShoppingDaysBtn').addEventListener('click',()=>{document.querySelectorAll('[data-shopping-day]').forEach(c=>c.checked=true); renderShoppingPreview();}); document.getElementById('clearShoppingDaysBtn').addEventListener('click',()=>{document.querySelectorAll('[data-shopping-day]').forEach(c=>c.checked=false); renderShoppingPreview();}); document.getElementById('printShoppingListBtn').addEventListener('click',printSelectedShoppingList); const shopMonthEl=document.getElementById('shoppingMonth'); if(shopMonthEl) shopMonthEl.addEventListener('change',renderShoppingListScreen); const showLoggedBtn=document.getElementById('showLoggedShoppingDaysBtn'); if(showLoggedBtn) showLoggedBtn.addEventListener('click',()=>{ const dates=loggedFoodDates(); if(dates.length){ const sm=document.getElementById('shoppingMonth'); if(sm) sm.value=dates[dates.length-1].slice(0,7); } renderShoppingListScreen(); }); document.getElementById('copyDayBtn').addEventListener('click',copySelectedDay); document.getElementById('clearDayBtn').addEventListener('click',clearDay); document.getElementById('resetBtn').addEventListener('click',resetAll); init(true); });
 document.addEventListener('change',e=>{
  const id=e.target.dataset.eatenEntry;
  if(!id)return;

@@ -105,6 +105,61 @@ for(const id of ['foodHubScreen','statsScreen','dailyTotalsScreen','breakdownScr
 assert.deepStrictEqual(run(`({renderStats:typeof renderStats,renderBreakdown:typeof renderDailyBreakdown,totals:typeof totalsForDate})`),{renderStats:'function',renderBreakdown:'function',totals:'function'});
 setState(accountState({entries:[{id:'nutrients',date:'2026-07-10',servings:2,food:{name:'Nutrient Food',calories:100,protein:12,fiber:3,vitC:8}}]}));
 assert.deepStrictEqual(run(`(()=>{const t=totalsForDate('2026-07-10');return {calories:t.calories,protein:t.protein,fiber:t.fiber,vitC:t.vitC};})()`),{calories:200,protein:24,fiber:6,vitC:16});
+assert.ok(html.includes('data-screen="trackerSummaryScreen"'));
+assert.ok(html.includes('id="trackerSummaryScreen"'));
+assert.ok(html.includes('Tracker Summary'));
+assert.deepStrictEqual(run(`typeof buildTrackerSummaryReport`),'function');
+
+// Tracker Summary filters by local date strings and groups saved days without counting missing days as zero.
+setState(accountState({
+  profile:{...accountState().profile,manualMaintenance:2000,weight:154},
+  entries:[
+    {id:'outside',date:'2026-12-01',servings:1,food:{name:'Outside',calories:999,protein:9,fat:9,carbs:9,fiber:1,sodium:9,vitC:9}},
+    {id:'d1',date:'2026-12-31',servings:1,food:{name:'Day 1',calories:1500,protein:100,fat:50,carbs:80,fiber:20,sodium:100,vitC:10}},
+    {id:'d2',date:'2027-01-02',servings:1,food:{name:'Day 2',calories:1000,protein:50,fat:30,carbs:40,fiber:10,sodium:50,vitC:20}},
+    {id:'d3',date:'2027-01-15',servings:1,food:{name:'Day 3',calories:800,protein:20,fat:10,carbs:20,fiber:5,sodium:25,vitC:5}}
+  ],
+  exercises:[
+    {id:'ex1',date:'2026-12-31',name:'Walk',minutes:30,calories:300,done:true},
+    {id:'ex2',date:'2027-01-02',name:'Skipped',minutes:30,calories:999,done:false}
+  ],
+  workoutLogs:{'2027-01-02':{date:'2027-01-02',totalExerciseCalories:200}}
+}));
+const daySummary=run(`buildTrackerSummaryReport('2026-12-31','2027-01-02','day')`);
+assert.deepStrictEqual(daySummary.periods.map(p=>p.key),['2026-12-31','2027-01-02']);
+assert.deepStrictEqual(daySummary.periods.map(p=>p.loggedDays),[1,1]);
+assert.deepStrictEqual(daySummary.periods.map(p=>p.macroAverages.netCarbs),[60,30]);
+assert.deepStrictEqual(daySummary.periods.map(p=>p.microAverages.vitC),[10,20]);
+assert.deepStrictEqual(daySummary.periods.map(p=>p.calories),[1500,1000]);
+assert.deepStrictEqual(daySummary.periods.map(p=>p.exercise),[300,200]);
+assert.deepStrictEqual(daySummary.periods.map(p=>p.balance),[-800,-1200]);
+assert.strictEqual(run(`formatTrackerSummaryBalance(-800)`),'800 kcal Deficit');
+assert.strictEqual(run(`formatTrackerSummaryBalance(250)`),'250 kcal Surplus');
+
+const weekSummary=run(`buildTrackerSummaryReport('2026-12-31','2027-01-02','week')`);
+assert.deepStrictEqual(weekSummary.periods.map(p=>p.key),['2026-12-27']);
+assert.strictEqual(weekSummary.periods[0].label.includes('2027'),true);
+assert.strictEqual(weekSummary.periods[0].loggedDays,2);
+assert.strictEqual(weekSummary.periods[0].calories,2500);
+assert.strictEqual(weekSummary.periods[0].exercise,500);
+assert.strictEqual(weekSummary.periods[0].balance,-2000);
+assert.strictEqual(weekSummary.periods[0].macroAverages.protein,75);
+assert.strictEqual(weekSummary.periods[0].macroAverages.netCarbs,45);
+assert.strictEqual(weekSummary.periods[0].microAverages.sodium,75);
+
+const monthSummary=run(`buildTrackerSummaryReport('2026-12-31','2027-01-31','month')`);
+assert.deepStrictEqual(monthSummary.periods.map(p=>p.key),['2026-12-01','2027-01-01']);
+assert.deepStrictEqual(monthSummary.periods.map(p=>p.loggedDays),[1,2]);
+assert.strictEqual(monthSummary.periods[1].calories,1800);
+assert.strictEqual(monthSummary.periods[1].macroAverages.protein,35);
+assert.strictEqual(monthSummary.periods[1].macroAverages.netCarbs,22.5);
+assert.strictEqual(monthSummary.periods[1].microAverages.vitC,12.5);
+assert.deepStrictEqual(run(`trackerSummaryDefaultRange()`),{start:'2026-12-31',end:'2027-01-15'});
+assert.deepStrictEqual(run(`buildTrackerSummaryReport('2027-02-01','2027-02-28','day')`).empty,true);
+assert.strictEqual(run(`buildTrackerSummaryReport('2027-02-02','2027-02-01','day').error`),'End Date cannot be earlier than Start Date.');
+assert.strictEqual(run(`addLocalDays('2027-01-01',-1)`),'2026-12-31');
+assert.strictEqual(run(`trackerSummaryPeriodForDate('2027-01-01','week').key`),'2026-12-27');
+assert.strictEqual(run(`(()=>{const r=buildTrackerSummaryReport('2026-12-31','2027-01-02','week');return Object.prototype.hasOwnProperty.call(r.periods[0].microAverages,'vitC')&&Object.prototype.hasOwnProperty.call(r.periods[0].microAverages,'b12');})()`),true);
 
 // Removed controls, file-transfer APIs, and removed workout module identifiers stay absent.
 const forbidden=[
@@ -131,21 +186,21 @@ assert.ok(html.includes('<section class="screen active" id="publicLandingScreen"
 const accountMarkup=html.slice(html.indexOf('id="accountScreen"'),html.indexOf('</section>',html.indexOf('id="accountScreen"')));
 assert.ok(accountMarkup.includes('id="signedOutAccount"')&&accountMarkup.includes('id="loginBtn"'));
 assert.ok(accountMarkup.includes('id="signedInEmail"')&&accountMarkup.includes('id="logoutBtn"'));
-assert.ok(accountMarkup.includes('data-screen="mainMenuScreen">Back to Main Menu</button>'));
+assert.ok(accountMarkup.includes('data-screen="mainMenuScreen">Main Menu</button>'));
 const mainMenuMarkup=html.slice(html.indexOf('id="mainMenuScreen"'),html.indexOf('</section>',html.indexOf('id="mainMenuScreen"')));
 for(const label of ['Proceed to Tracker','Community Forum','Back to Account']) assert.ok(mainMenuMarkup.includes(`>${label}</button>`),`missing Main Menu button: ${label}`);
 assert.ok(!mainMenuMarkup.includes('>Contact Admin</button>'));
 for(const label of ['Food','Exercise','Utilities','Profile','Users Guide']) assert.ok(!mainMenuMarkup.includes(`>${label}</button>`),`tracker button leaked into Main Menu: ${label}`);
 const homeMarkup=html.slice(html.indexOf('id="homeScreen"'),html.indexOf('</section>',html.indexOf('id="homeScreen"')));
 assert.strictEqual((homeMarkup.match(/<button\b/g)||[]).length,6);
-for(const label of ['Food','Exercise','Profile','Utilities','Users Guide','Back to Main Menu']) assert.ok(homeMarkup.includes(`>${label}</button>`),`missing Tracker Menu button: ${label}`);
+for(const label of ['Food','Exercise','Profile','Utilities','Users Guide','Main Menu']) assert.ok(homeMarkup.includes(`>${label}</button>`),`missing Tracker Menu button: ${label}`);
 assert.ok(!homeMarkup.includes('>Contact Admin</button>')&&!homeMarkup.includes('>Admin</button>'));
 for(const forbiddenHomeContent of ['<form','signedInEmail','cloudSaveStatus','foodSelect','menuTotals','profileResults']) assert.ok(!homeMarkup.includes(forbiddenHomeContent),`Home contains module content: ${forbiddenHomeContent}`);
 assert.ok(html.includes("communityForumScreen:'mainMenuScreen'"));
 assert.ok(html.includes("foodListsHubScreen:'foodHubScreen'"));
 assert.ok(html.includes("statsHubScreen:'foodHubScreen'"));
 assert.ok(html.includes("reportsScreen:'utilitiesScreen'"));
-assert.ok(html.includes("recipePrintScreen:'reportsScreen',weightHistoryScreen:'reportsScreen'"));
+assert.ok(html.includes("recipePrintScreen:'reportsScreen',weightHistoryScreen:'reportsScreen',trackerSummaryScreen:'reportsScreen'"));
 assert.ok(html.includes("SHARED_DESTINATION_PARENTS={dailyTotalsScreen:['statsHubScreen','exerciseHubScreen']}"));
 assert.ok(html.includes('.homeMenu{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))'));
 assert.ok(html.includes('@media(max-width:899px){.homeMenu{grid-template-columns:repeat(2,minmax(0,1fr))'));
