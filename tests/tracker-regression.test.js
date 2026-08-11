@@ -110,6 +110,60 @@ assert.ok(html.includes('id="trackerSummaryScreen"'));
 assert.ok(html.includes('Tracker Summary'));
 assert.deepStrictEqual(run(`typeof buildTrackerSummaryReport`),'function');
 
+// User recipes can be deleted with confirmation, persist through the account boundary, and built-in recipes are protected.
+function recipeDom(selectedValue){
+  const recipeSelect={value:String(selectedValue),innerHTML:'',onchange:null};
+  const recipeDetails={innerHTML:''};
+  const recipePrintChoices={innerHTML:''};
+  const deleteRecipeBtn={disabled:null,hidden:false,classList:{toggle(name,on){if(name==='hide')deleteRecipeBtn.hidden=!!on;}}};
+  return {recipeSelect,recipeDetails,recipePrintChoices,deleteRecipeBtn};
+}
+const userRecipes=[
+  {id:'recipe-1',name:'Delete Me',category:'Other',yield:'1 serving',serving:'1 bowl',foodName:'Delete Me Food',ingredients:['1 cup test food'],directions:['Mix.'],nutrition:{calories:100}},
+  {id:'recipe-2',name:'Keep Me',category:'Other',yield:'2 servings',serving:'1 plate',foodName:'Keep Me Food',ingredients:['2 cups test food'],directions:['Bake.'],nutrition:{calories:200}}
+];
+let dom=recipeDom(run('RECIPE_DATA.length'));
+let confirmMessages=[];
+let persistedState=null;
+context.document.getElementById=id=>dom[id]||elements[id]||null;
+context.trackerAccountStateChanged=()=>{persistedState=JSON.parse(JSON.stringify(vm.runInContext('getTrackerState()',context)));return true;};
+context.confirm=message=>{confirmMessages.push(message);return false;};
+setState(accountState({recipes:JSON.parse(JSON.stringify(userRecipes))}));
+run('(()=>{deleteSelectedRecipe();return true;})()');
+assert.deepStrictEqual(run('state.recipes.map(r=>r.name)'),['Delete Me','Keep Me']);
+assert.deepStrictEqual(confirmMessages,[`Are you sure you want to delete ‘Delete Me’? This cannot be undone.`]);
+assert.strictEqual(persistedState,null);
+
+dom=recipeDom(run('RECIPE_DATA.length'));
+context.document.getElementById=id=>dom[id]||elements[id]||null;
+context.confirm=message=>{confirmMessages.push(message);return true;};
+confirmMessages=[];
+persistedState=null;
+setState(accountState({recipes:JSON.parse(JSON.stringify(userRecipes))}));
+run('(()=>{deleteSelectedRecipe();return true;})()');
+assert.deepStrictEqual(run('state.recipes.map(r=>r.name)'),['Keep Me']);
+assert.deepStrictEqual(persistedState.recipes.map(r=>r.name),['Keep Me']);
+assert.strictEqual(dom.recipeSelect.value,'');
+assert.ok(dom.recipeDetails.innerHTML.includes('Choose a recipe to view details.'));
+assert.ok(!dom.recipePrintChoices.innerHTML.includes('Delete Me'));
+assert.ok(dom.recipePrintChoices.innerHTML.includes('Keep Me'));
+assert.strictEqual(dom.deleteRecipeBtn.disabled,true);
+assert.strictEqual(dom.deleteRecipeBtn.hidden,true);
+
+dom=recipeDom(0);
+context.document.getElementById=id=>dom[id]||elements[id]||null;
+context.confirm=message=>{confirmMessages.push(message);return true;};
+confirmMessages=[];
+alerts.length=0;
+setState(accountState({recipes:JSON.parse(JSON.stringify(userRecipes))}));
+run('(()=>{deleteSelectedRecipe();return true;})()');
+assert.deepStrictEqual(run('state.recipes.map(r=>r.name)'),['Delete Me','Keep Me']);
+assert.deepStrictEqual(confirmMessages,[]);
+assert.deepStrictEqual(alerts.slice(-1),['Built-in recipes cannot be deleted.']);
+assert.ok(html.includes('id="deleteRecipeBtn" type="button">Delete Recipe</button>'));
+context.document.getElementById=id=>elements[id]||null;
+context.confirm=()=>true;
+
 // Tracker Summary filters by local date strings and groups saved days without counting missing days as zero.
 setState(accountState({
   profile:{...accountState().profile,manualMaintenance:2000,weight:154},
