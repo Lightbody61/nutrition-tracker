@@ -161,6 +161,55 @@ assert.strictEqual(run(`addLocalDays('2027-01-01',-1)`),'2026-12-31');
 assert.strictEqual(run(`trackerSummaryPeriodForDate('2027-01-01','week').key`),'2026-12-27');
 assert.strictEqual(run(`(()=>{const r=buildTrackerSummaryReport('2026-12-31','2027-01-02','week');return Object.prototype.hasOwnProperty.call(r.periods[0].microAverages,'vitC')&&Object.prototype.hasOwnProperty.call(r.periods[0].microAverages,'b12');})()`),true);
 
+// Recipe instructions migrate from aliases, survive export/import, render, print, and tolerate missing directions.
+const honeyNotes='Cooking instructions: Line a small tray or plate with parchment paper. Combine the honey, ground ginger, and water in a small heavy-bottomed saucepan. Heat over medium-low heat, stirring until evenly blended. Bring to a gentle boil, then cook without vigorous stirring until the mixture reaches 300°F (149°C), the hard-crack stage, on a candy thermometer. Remove from the heat immediately and allow the bubbling to settle briefly. Carefully spoon small portions onto the parchment or pour into heat-safe silicone candy molds. Cool completely until firm, then remove and store in an airtight container with parchment between layers. Hot honey syrup can cause severe burns; do not touch or taste it until fully cooled. Ingredient quantities and the yield of 10 servings are estimated; final candy weight and serving size will vary with evaporation and portioning.';
+setState(accountState({recipes:[
+  {id:'new-recipe',name:'Instruction Recipe',category:'Custom',servings:2,yield:'2 servings',serving:'1 serving',ingredients:[{name:'Ingredient',amount:1,unit:'cup'}],instructions:['Prep the pan.','Cook until done.'],notes:'',nutrition:{calories:50,protein:5}},
+  {id:'legacy-directions',name:'Legacy Directions',category:'Custom',servings:1,ingredients:[{name:'Ingredient',amount:1,unit:'cup'}],directions:['Old step one.','Old step two.'],nutrition:{}},
+  {id:'legacy-method',name:'Legacy Method',category:'Custom',servings:1,ingredients:[{name:'Ingredient',amount:1,unit:'cup'}],method:'Brown the food.\\nSimmer it.',nutrition:{}},
+  {id:'honey-ginger-candy',name:'Honey Ginger Candy',category:'Custom',servings:10,yield:'10 servings',serving:'1 serving',ingredients:[{name:'Honey',brand:'',amount:280,unit:'g',foodId:'2932869d-2da3-40a5-8703-2980854a0c54',resolution:'existing'},{name:'Ground ginger',brand:'',amount:6,unit:'g',foodId:'424e5ff4-1b5e-410d-91f5-9452f3fa801f',resolution:'existing'},{name:'Water',brand:'',amount:30,unit:'ml',foodId:'7ce21fd9-040e-4b77-8fdf-077a6f77f9f5',resolution:'existing'}],notes:honeyNotes,nutrition:{calories:90,protein:0.1,carbs:22.5,fat:0,sodium:1}},
+  {id:'no-instructions',name:'No Instructions',category:'Custom',servings:1,ingredients:[{name:'Ingredient',amount:1,unit:'cup'}],nutrition:{}},
+  {id:'notes-directions',name:'Notes Directions',category:'Custom',servings:1,ingredients:[{name:'Ingredient',amount:1,unit:'cup'}],notes:'Keep this note.\\nDirections: Stir once.\\nBake until set.',nutrition:{}}
+]}));
+let exported=run('getTrackerState()');
+assert.deepStrictEqual(exported.recipes[0].instructions,['Prep the pan.','Cook until done.']);
+assert.deepStrictEqual(exported.recipes[1].instructions,['Old step one.','Old step two.']);
+assert.deepStrictEqual(exported.recipes[2].instructions,['Brown the food.','Simmer it.']);
+assert.strictEqual(exported.recipes[3].servings,10);
+assert.deepStrictEqual(exported.recipes[3].ingredients.map(x=>({name:x.name,brand:x.brand,amount:x.amount,unit:x.unit,foodId:x.foodId})),[{name:'Honey',brand:'',amount:280,unit:'g',foodId:'2932869d-2da3-40a5-8703-2980854a0c54'},{name:'Ground ginger',brand:'',amount:6,unit:'g',foodId:'424e5ff4-1b5e-410d-91f5-9452f3fa801f'},{name:'Water',brand:'',amount:30,unit:'ml',foodId:'7ce21fd9-040e-4b77-8fdf-077a6f77f9f5'}]);
+assert.ok(exported.recipes[3].instructions.length>=6);
+assert.strictEqual(exported.recipes[3].instructions[0],'Line a small tray or plate with parchment paper.');
+assert.ok(exported.recipes[3].instructions.some(x=>x.includes('300°F (149°C)')));
+assert.ok(exported.recipes[3].notes.includes('Hot honey syrup can cause severe burns; do not touch or taste it until fully cooled.'));
+assert.ok(exported.recipes[3].notes.includes('Ingredient quantities and the yield of 10 servings are estimated; final candy weight and serving size will vary with evaporation and portioning.'));
+const honeyCombined=`${exported.recipes[3].instructions.join(' ')} ${exported.recipes[3].notes}`;
+for(const part of honeyNotes.replace(/^Cooking instructions:\s*/,'').match(/[^.!?]+[.!?]+(?=\s|$)|[^.!?]+$/g)) assert.ok(honeyCombined.includes(part.trim()),`lost Honey notes text: ${part}`);
+assert.deepStrictEqual(exported.recipes[4].instructions,[]);
+assert.deepStrictEqual(exported.recipes[5].instructions,['Stir once.','Bake until set.']);
+assert.strictEqual(exported.recipes[5].notes,'Keep this note.');
+setState(run('createEmptyTrackerState()'));
+context.backup=exported;
+assert.strictEqual(run('applyTrackerState(backup)'),true);
+assert.deepStrictEqual(run('getTrackerState().recipes.map(r=>r.instructions)'),exported.recipes.map(r=>r.instructions));
+elements.recipeSelect={value:String(run('RECIPE_DATA.length')),innerHTML:'',onchange:null};
+elements.recipeDetails={innerHTML:''};
+run('(()=>{renderRecipes();return true;})()');
+assert.ok(elements.recipeDetails.innerHTML.includes('Cooking Instructions')&&elements.recipeDetails.innerHTML.includes('<li>Prep the pan.</li>')&&elements.recipeDetails.innerHTML.includes('<li>Cook until done.</li>'));
+elements.recipeSelect.value=String(run('RECIPE_DATA.length+4'));
+run('(()=>{renderRecipes();return true;})()');
+assert.ok(elements.recipeDetails.innerHTML.includes('No cooking instructions saved.'));
+let printed='';
+context.open=()=>({document:{write(html){printed+=html;},close(){}}});
+context.document.querySelectorAll=selector=>selector==='[data-recipe-print-index]:checked'?[{dataset:{recipePrintIndex:String(run('RECIPE_DATA.length'))}}]:[];
+assert.strictEqual(run('(()=>{printSelectedRecipes();return true;})()'),true);
+assert.ok(printed.includes('<h2>Cooking Instructions</h2><ol><li>Prep the pan.</li><li>Cook until done.</li></ol>'));
+printed='';
+context.document.querySelectorAll=selector=>selector==='[data-recipe-print-index]:checked'?[{dataset:{recipePrintIndex:String(run('RECIPE_DATA.length+3'))}}]:[];
+assert.strictEqual(run('(()=>{printSelectedRecipes();return true;})()'),true);
+assert.ok(printed.includes('<h1>Honey Ginger Candy</h1>'));
+assert.ok(printed.includes('<h2>Cooking Instructions</h2><ol><li>Line a small tray or plate with parchment paper.</li>'));
+assert.ok(!printed.includes('Hot honey syrup can cause severe burns'),'printed recipe should keep notes out of the ordered cooking list');
+
 // Removed controls, file-transfer APIs, and removed workout module identifiers stay absent.
 const forbidden=[
   ['Planet','Fitness'].join(' '),['planet','Fitness'].join(''),['pf','Workout'].join(''),['pf','Workouts'].join(''),['pf','Machine'].join(''),['workout','Id'].join(''),

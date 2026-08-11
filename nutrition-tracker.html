@@ -681,9 +681,47 @@ function copyKnownFoodFields(food){
   Object.keys(food||{}).forEach(key=>{ if(allowed.has(key)) clean[key]=food[key]; });
   return normalizeNutritionFields(clean);
 }
+function stripRecipeInstructionMarker(value){return String(value||'').replace(/^\s*(?:\d+[\.)]|[-*•])\s*/,'').trim();}
+function recipeInstructionSentences(text){
+  const normalized=String(text||'').replace(/\\n/g,'\n').replace(/\r/g,'').trim();
+  if(!normalized) return [];
+  const withInlineBreaks=normalized.replace(/\s+(?=\d+[\.)]\s+)/g,'\n').replace(/\s+(?=[-*•]\s+)/g,'\n');
+  const lines=withInlineBreaks.split(/\n+/).map(stripRecipeInstructionMarker).filter(Boolean);
+  if(lines.length>1) return lines;
+  return (normalized.match(/[^.!?]+[.!?]+(?=\s|$)|[^.!?]+$/g)||[normalized]).map(stripRecipeInstructionMarker).filter(Boolean);
+}
+function normalizeRecipeInstructionValue(value){
+  if(Array.isArray(value)) return value.flatMap(recipeInstructionSentences).filter(Boolean);
+  if(typeof value==='string') return recipeInstructionSentences(value);
+  return [];
+}
+function prefixedRecipeNotesInstructions(notes){
+  const text=String(notes||'').replace(/\\n/g,'\n').replace(/\r/g,''),match=text.match(/(?:^|\n)\s*(?:Cooking instructions|Directions|Instructions|Method|Preparation)\s*:\s*([\s\S]*)$/i);
+  if(!match) return null;
+  const before=text.slice(0,match.index).trim(),sentences=recipeInstructionSentences(match[1].trim());
+  const notePattern=/\b(warn|warning|caution|careful|burn|severe|safety|safe|do not touch|do not taste|storage|store|airtight|refrigerat|freeze|shelf|estimated|estimate|nutrition|nutrient|yield|serving size|final weight|will vary|vary with|approx(?:imate)?|about)\b/i;
+  const instructionOnly=sentences.filter(x=>!/\b(warn|warning|caution|burn|severe|safety|do not touch|do not taste|estimated|estimate|nutrition|nutrient|yield|serving size|final weight|will vary|vary with)\b/i.test(x));
+  const notesOnly=sentences.filter(x=>notePattern.test(x));
+  return {instructions:instructionOnly.length?instructionOnly:sentences,notes:[before,notesOnly.join(' ')].filter(Boolean).join('\n').trim()};
+}
+function normalizeRecipeInstructionsAndNotes(recipe){
+  const current=normalizeRecipeInstructionValue(recipe&&recipe.instructions);
+  if(current.length) return {instructions:current,notes:String(recipe&&recipe.notes||'')};
+  for(const key of ['cookingInstructions','directions','steps','method','preparation']){
+    const instructions=normalizeRecipeInstructionValue(recipe&&recipe[key]);
+    if(instructions.length) return {instructions,notes:String(recipe&&recipe.notes||'')};
+  }
+  const fromNotes=prefixedRecipeNotesInstructions(recipe&&recipe.notes);
+  if(fromNotes&&fromNotes.instructions.length) return fromNotes;
+  return {instructions:[],notes:String(recipe&&recipe.notes||'')};
+}
+function normalizeRecipeInstructions(recipe){
+  return normalizeRecipeInstructionsAndNotes(recipe).instructions;
+}
 function copyKnownRecipeFields(recipe){
   if(!isPlainObject(recipe)||typeof recipe.name!=='string'||!Array.isArray(recipe.ingredients))return null;
-  return {id:recipe.id,name:recipe.name,category:recipe.category||'Custom',servings:n(recipe.servings),yield:recipe.yield||`${n(recipe.servings)} servings`,serving:recipe.serving||'1 serving',ingredients:recipe.ingredients.filter(isPlainObject).map(x=>({name:String(x.name||''),brand:String(x.brand||''),amount:n(x.amount),unit:String(x.unit||''),foodId:x.foodId||null,resolution:x.resolution||'unresolved'})),notes:String(recipe.notes||''),nutrition:Object.fromEntries(KEYS.map(k=>[k,n(recipe.nutrition&&recipe.nutrition[k])])),source:recipe.source,importSchemaVersion:recipe.importSchemaVersion,dateCreated:recipe.dateCreated,containsEstimates:recipe.containsEstimates===true};
+  const instructionData=normalizeRecipeInstructionsAndNotes(recipe);
+  return {id:recipe.id,name:recipe.name,category:recipe.category||'Custom',servings:n(recipe.servings),yield:recipe.yield||`${n(recipe.servings)} servings`,serving:recipe.serving||'1 serving',ingredients:recipe.ingredients.filter(x=>isPlainObject(x)||typeof x==='string').map(x=>typeof x==='string'?x:{name:String(x.name||''),brand:String(x.brand||''),amount:n(x.amount),unit:String(x.unit||''),foodId:x.foodId||null,resolution:x.resolution||'unresolved'}),instructions:instructionData.instructions,notes:instructionData.notes,nutrition:Object.fromEntries(KEYS.map(k=>[k,n(recipe.nutrition&&recipe.nutrition[k])])),source:recipe.source,importSchemaVersion:recipe.importSchemaVersion,dateCreated:recipe.dateCreated,containsEstimates:recipe.containsEstimates===true};
 }
 function copyKnownEntryFields(entry){ return {id:entry.id,date:entry.date,order:entry.order,time:entry.time,servings:entry.servings,food:copyKnownFoodFields(entry.food),eaten:entry.eaten===true,group:entry.group||''}; }
 function copyKnownExerciseFields(exercise){ return {id:exercise.id,date:exercise.date,time:exercise.time,name:exercise.name,category:exercise.category,minutes:n(exercise.minutes),calories:n(exercise.calories),done:exercise.done!==false}; }
@@ -984,6 +1022,11 @@ function nutritionRows(nutrition){
   return Object.keys(labels).filter(k=>nutrition[k]!==undefined).map(k=>`<tr><td>${labels[k][0]}</td><td>${round(nutrition[k])} ${labels[k][1]}</td></tr>`).join('');
 }
 function trackerRecipes(){return [...RECIPE_DATA,...(state.recipes||[])];}
+function recipeInstructions(recipe){return normalizeRecipeInstructions(recipe);}
+function recipeInstructionsHtml(recipe){
+  const instructions=recipeInstructions(recipe);
+  return instructions.length?`<ol>${instructions.map(x=>`<li>${esc(x)}</li>`).join('')}</ol>`:'<p class="small">No cooking instructions saved.</p>';
+}
 function renderRecipes(){
   const sel=document.getElementById('recipeSelect');
   const details=document.getElementById('recipeDetails');
@@ -1000,7 +1043,7 @@ function renderRecipes(){
   function draw(){
     const r=recipes[Number(sel.value)||0];
     if(!r){ details.innerHTML='<p class="small">No recipes saved yet.</p>'; return; }
-    details.innerHTML=`<div class="foodItem"><h3 style="margin-top:0">${esc(r.name)}</h3><p class="small"><b>Yield:</b> ${esc(r.yield)} &nbsp; | &nbsp; <b>Serving:</b> ${esc(r.serving)}</p><p><b>Ingredients:</b></p><ul>${r.ingredients.map(x=>`<li>${esc(typeof x==='string'?x:`${x.amount} ${x.unit} ${x.name}`)}</li>`).join('')}</ul><p><b>Directions:</b></p><ol>${(r.directions||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ol><p><b>Nutrition per serving:</b></p><table><tbody>${nutritionRows(r.nutrition||{})}</tbody></table></div>`;
+    details.innerHTML=`<div class="foodItem"><h3 style="margin-top:0">${esc(r.name)}</h3><p class="small"><b>Yield:</b> ${esc(r.yield)} &nbsp; | &nbsp; <b>Serving:</b> ${esc(r.serving)}</p><p><b>Ingredients:</b></p><ul>${r.ingredients.map(x=>`<li>${esc(typeof x==='string'?x:`${x.amount} ${x.unit} ${x.name}`)}</li>`).join('')}</ul><h3>Cooking Instructions</h3>${recipeInstructionsHtml(r)}<p><b>Nutrition per serving:</b></p><table><tbody>${nutritionRows(r.nutrition||{})}</tbody></table></div>`;
   }
   sel.onchange=draw;
   draw();
@@ -1023,7 +1066,7 @@ function printSelectedRecipes(){
   const indexes=[...document.querySelectorAll('[data-recipe-print-index]:checked')].map(c=>Number(c.dataset.recipePrintIndex)).filter(Number.isInteger);
   if(!indexes.length) return alert('Select at least one recipe to print.');
   const recipes=indexes.map(i=>trackerRecipes()[i]).filter(Boolean);
-  const recipeHtml=recipes.map(r=>`<article class="recipe"><h1>${esc(r.name)}</h1><p class="meta"><b>Yield:</b> ${esc(r.yield||`${r.servings||1} servings`)} &nbsp; | &nbsp; <b>Serving:</b> ${esc(r.serving||'1 serving')}</p><h2>Ingredients</h2><ul>${(r.ingredients||[]).map(x=>`<li>${esc(typeof x==='string'?x:`${x.amount} ${x.unit} ${x.name}`)}</li>`).join('')}</ul><h2>Directions</h2><ol>${(r.directions||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ol><h2>Nutrition per serving</h2><table><tbody>${nutritionRows(r.nutrition||{})}</tbody></table></article>`).join('');
+  const recipeHtml=recipes.map(r=>`<article class="recipe"><h1>${esc(r.name)}</h1><p class="meta"><b>Yield:</b> ${esc(r.yield||`${r.servings||1} servings`)} &nbsp; | &nbsp; <b>Serving:</b> ${esc(r.serving||'1 serving')}</p><h2>Ingredients</h2><ul>${(r.ingredients||[]).map(x=>`<li>${esc(typeof x==='string'?x:`${x.amount} ${x.unit} ${x.name}`)}</li>`).join('')}</ul><h2>Cooking Instructions</h2>${recipeInstructionsHtml(r)}<h2>Nutrition per serving</h2><table><tbody>${nutritionRows(r.nutrition||{})}</tbody></table></article>`).join('');
   const w=window.open('','_blank');
   if(!w) return alert('Pop-up blocked. Allow pop-ups for this file, then try again.');
   w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>Selected Recipes</title><style>body{font-family:Arial,sans-serif;margin:24px;color:#111;line-height:1.4}.toolbar{margin-bottom:20px}.recipe{break-after:page;page-break-after:always}.recipe:last-child{break-after:auto;page-break-after:auto}h1{font-size:24px;margin:0 0 6px}h2{font-size:17px;margin:18px 0 6px}.meta{color:#444}li{margin-bottom:5px}table{width:100%;border-collapse:collapse}td{padding:6px;border-bottom:1px solid #ccc}td:last-child{text-align:right}@media print{.toolbar{display:none}body{margin:.45in}}</style></head><body><div class="toolbar"><button onclick="window.print()">Print / Save as PDF</button></div>${recipeHtml}<script>setTimeout(()=>window.print(),250)<\/script></body></html>`);

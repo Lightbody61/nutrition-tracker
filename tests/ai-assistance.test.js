@@ -14,18 +14,32 @@ const run=code=>vm.runInContext(code,context),clone=value=>JSON.parse(JSON.strin
 const keys=clone(run('KEYS'));
 const nutrients=(overrides={})=>Object.assign(Object.fromEntries(keys.map(k=>[k,null])),{calories:10,protein:1,carbs:1,fat:0,fiber:0,sodium:1},overrides);
 const proposed=(temporaryKey,name,overrides={})=>({temporaryKey,name,brand:'',category:'Custom',servingAmount:100,servingUnit:'g',nutrients:nutrients(),nutritionSource:'USDA FoodData Central estimate',containsEstimates:true,notes:'Estimated values; verify before saving.',...overrides});
-const linkedPackage=(ingredients,proposedFoods=[],overrides={})=>({packageType:'nutrition-tracker-ai-import',schemaVersion:2,operation:'addRecipeWithFoods',createdBy:'user-chatgpt',recipe:{name:'Complete Soup',servings:2,ingredients,notes:'',containsEstimates:false},proposedFoods,...overrides});
+const recipeInstructions=['Simmer the ingredients together.','Serve hot.'];
+const linkedPackage=(ingredients,proposedFoods=[],overrides={})=>({packageType:'nutrition-tracker-ai-import',schemaVersion:2,operation:'addRecipeWithFoods',createdBy:'user-chatgpt',recipe:{name:'Complete Soup',servings:2,ingredients,instructions:recipeInstructions,notes:'',containsEstimates:false},proposedFoods,...overrides});
 const ingredient=(name,link,overrides={})=>({name,brand:'',amount:100,unit:'g',existingFoodId:null,foodTemporaryKey:null,...link,...overrides});
+const honeyNotes='Cooking instructions: Line a small tray or plate with parchment paper. Combine the honey, ground ginger, and water in a small heavy-bottomed saucepan. Heat over medium-low heat, stirring until evenly blended. Bring to a gentle boil, then cook without vigorous stirring until the mixture reaches 300°F (149°C), the hard-crack stage, on a candy thermometer. Remove from the heat immediately and allow the bubbling to settle briefly. Carefully spoon small portions onto the parchment or pour into heat-safe silicone candy molds. Cool completely until firm, then remove and store in an airtight container with parchment between layers. Hot honey syrup can cause severe burns; do not touch or taste it until fully cooled. Ingredient quantities and the yield of 10 servings are estimated; final candy weight and serving size will vary with evaporation and portioning.';
+const honeyPackage={"packageType":"nutrition-tracker-ai-import","schemaVersion":2,"operation":"addRecipeWithFoods","createdBy":"user-chatgpt","recipe":{"name":"Honey Ginger Candy","servings":10,"ingredients":[{"name":"Honey","brand":"","amount":280,"unit":"g","existingFoodId":"2932869d-2da3-40a5-8703-2980854a0c54","foodTemporaryKey":null},{"name":"Ground ginger","brand":"","amount":6,"unit":"g","existingFoodId":"424e5ff4-1b5e-410d-91f5-9452f3fa801f","foodTemporaryKey":null},{"name":"Water","brand":"","amount":30,"unit":"ml","existingFoodId":"7ce21fd9-040e-4b77-8fdf-077a6f77f9f5","foodTemporaryKey":null}],"notes":honeyNotes,"containsEstimates":true},"proposedFoods":[]};
 const reset=()=>run(`state=createEmptyTrackerState();state.foods.push(
- {id:'existing-chicken',custom:true,private:true,name:'Chicken breast',brand:'',serving:'100 g',calories:120,protein:25,carbs:0,fat:2,fiber:0,sodium:50},
- {id:'existing-carrot',custom:true,private:true,name:'Carrot',brand:'',serving:'100 g',calories:41,protein:1,carbs:10,fat:0,fiber:3,sodium:69}
+ {id:'existing-chicken',custom:true,private:true,name:'Chicken breast',brand:'',category:'Meat',serving:'100 g',calories:120,protein:25,carbs:0,fat:2,fiber:0,sodium:50,ownerId:'owner-secret',userId:'user-secret',accountId:'account-secret',storageKey:'storage-secret',settings:{theme:'private'},entries:[{id:'saved-day-secret'}]},
+ {id:'existing-carrot',custom:true,private:true,name:'Carrot',brand:'',category:'Vegetables',serving:'100 g',calories:41,protein:1,carbs:10,fat:0,fiber:3,sodium:69},
+ {id:'brand:exact/001',custom:true,private:true,name:'Peanut Butter',brand:'Kroger Natural',category:'Pantry',serving:'2 tbsp',calories:190,protein:7,carbs:0,fat:16,fiber:2,sodium:0},
+ {id:'missing-optional',custom:true,private:true,name:'Mystery Item',serving:''},
+ {id:'2932869d-2da3-40a5-8703-2980854a0c54',custom:true,private:true,name:'Honey',brand:'',category:'Custom',serving:'100 g',calories:304,protein:0.3,carbs:82.4,fat:0,fiber:0,sodium:4},
+ {id:'424e5ff4-1b5e-410d-91f5-9452f3fa801f',custom:true,private:true,name:'Ground ginger',brand:'',category:'Custom',serving:'100 g',calories:335,protein:9,carbs:72,fat:4.2,fiber:14,sodium:27},
+ {id:'7ce21fd9-040e-4b77-8fdf-077a6f77f9f5',custom:true,private:true,name:'Water',brand:'',category:'Custom',serving:'100 ml',calories:0,protein:0,carbs:0,fat:0,fiber:0,sodium:0}
 );state.profile={...state.profile,age:54};state.entries.push({id:'unrelated-entry',date:'2026-08-04',servings:1,food:{name:'Unrelated'},eaten:false});`);
 const state=()=>clone(run('getTrackerState()'));
 const rejects=(value,pattern)=>assert.throws(()=>core.validatePackage(clone(value)),pattern);
+const promptFoods=prompt=>{
+ const marker='existingFoods JSON array';
+ const start=prompt.indexOf('[',prompt.indexOf(marker));
+ const end=prompt.indexOf('\n\nExisting-food matching rules:',start);
+ return JSON.parse(prompt.slice(start,end));
+};
 
 // Existing operations remain compatible and strictly isolated.
 const foodPackage={packageType:'nutrition-tracker-ai-import',schemaVersion:1,operation:'addFood',createdBy:'user-chatgpt',food:{name:'Kroger Cottage Cheese',brand:'Kroger',category:'Dairy',servingAmount:113,servingUnit:'g',nutrients:nutrients({calories:90,protein:13,carbs:5,fat:2.5,sodium:360}),nutritionSource:'package label',containsEstimates:false,notes:''}};
-const recipePackage={packageType:'nutrition-tracker-ai-import',schemaVersion:1,operation:'addRecipe',createdBy:'user-chatgpt',recipe:{name:'Legacy Recipe',servings:2,ingredients:[{name:'Chicken breast',brand:'',amount:100,unit:'g',existingFoodId:null}],notes:'',containsEstimates:false}};
+const recipePackage={packageType:'nutrition-tracker-ai-import',schemaVersion:1,operation:'addRecipe',createdBy:'user-chatgpt',recipe:{name:'Legacy Recipe',servings:2,ingredients:[{name:'Chicken breast',brand:'',amount:100,unit:'g',existingFoodId:null}],instructions:['Cook the chicken until done.'],notes:'',containsEstimates:false}};
 reset();assert.strictEqual(core.validatePackage(clone(foodPackage)).operation,'addFood');assert.strictEqual(core.validatePackage(clone(recipePackage)).operation,'addRecipe');
 assert.throws(()=>core.parsePackage('{bad'),/not valid JSON/);assert.strictEqual(core.parsePackage('```json\n{"a":1}\n```').a,1);
 for(const [field,value,pattern] of [['packageType','wrong',/package type/],['schemaVersion',3,/schema version/],['operation','deleteFood',/prohibited operation/]]){const p=clone(foodPackage);p[field]=value;rejects(p,pattern);}
@@ -37,16 +51,25 @@ reset();let pkg=linkedPackage([
  ingredient('Chicken breast',{existingFoodId:'existing-chicken'}),
  ingredient('Carrot',{existingFoodId:'existing-carrot'})
 ]);let validated=core.validatePackage(clone(pkg));assert.deepStrictEqual(clone(core.defaultResolutions(validated).map(x=>x.kind)),['existing','existing']);
+assert.strictEqual(validated.proposedFoods.length,0);
+assert.strictEqual(validated.plans.every(x=>!x.proposedFood),true);
 
 // Recipe with all new foods and a mixture of existing/new foods.
 reset();pkg=linkedPackage([ingredient('Sea salt',{foodTemporaryKey:'salt'}),ingredient('Spice',{foodTemporaryKey:'spice'})],[proposed('salt','Sea salt',{servingAmount:1,nutrients:nutrients({calories:0,protein:0,carbs:0,fat:0,fiber:0,sodium:387})}),proposed('spice','Spice')]);validated=core.validatePackage(clone(pkg));assert.deepStrictEqual(clone(core.defaultResolutions(validated).map(x=>x.kind)),['proposed','proposed']);
 reset();pkg=linkedPackage([ingredient('Chicken breast',{existingFoodId:'existing-chicken'}),ingredient('Spice',{foodTemporaryKey:'spice'})],[proposed('spice','Spice')]);validated=core.validatePackage(clone(pkg));assert.deepStrictEqual(clone(core.defaultResolutions(validated).map(x=>x.kind)),['existing','proposed']);
+assert.strictEqual(validated.recipe.ingredients[0].foodTemporaryKey,null);assert.strictEqual(validated.recipe.ingredients[1].existingFoodId,null);
+assert.strictEqual(validated.proposedFoods.length,1);assert.strictEqual(validated.proposedFoods[0].temporaryKey,'spice');
 
 // Missing/duplicate/unknown references, cross-account IDs, ambiguity, and invalid nutrition.
 reset();rejects(linkedPackage([ingredient('Missing',{foodTemporaryKey:'missing'})],[]),/unknown temporaryKey|Missing proposed food/);
 {const p=linkedPackage([ingredient('Salt',{foodTemporaryKey:'same'})],[proposed('same','Salt'),proposed('same','Pepper')]);rejects(p,/Duplicate temporaryKey/);}
 {const p=linkedPackage([ingredient('Salt',{foodTemporaryKey:'unknown'})],[proposed('known','Salt')]);rejects(p,/unknown temporaryKey/);}
 {const p=linkedPackage([ingredient('Other account',{existingFoodId:'other-user-food'})]);rejects(p,/active account/);}
+{const p=linkedPackage([ingredient('Salt',{foodTemporaryKey:'salt'})],[proposed('salt','Salt')]);delete p.recipe.instructions;assert.deepStrictEqual(clone(core.validatePackage(clone(p)).recipe.instructions),[]);}
+{const p=linkedPackage([ingredient('Salt',{foodTemporaryKey:'salt'})],[proposed('salt','Salt')]);p.recipe.instructions=[' ',''];assert.deepStrictEqual(clone(core.validatePackage(clone(p)).recipe.instructions),[]);}
+{const p=linkedPackage([ingredient('Salt',{foodTemporaryKey:'salt'})],[proposed('salt','Salt')]);p.recipe.instructions=[];p.recipe.cookingInstructions='1. Mix salt.\\n2. Serve.';assert.deepStrictEqual(clone(core.validatePackage(clone(p)).recipe.instructions),['Mix salt.','Serve.']);}
+{const p=linkedPackage([ingredient('Salt',{foodTemporaryKey:'salt'})],[proposed('salt','Salt')]);p.recipe.instructions=['Already correct.'];p.recipe.directions=['Do not duplicate this legacy direction.'];assert.deepStrictEqual(clone(core.validatePackage(clone(p)).recipe.instructions),['Already correct.']);}
+{const p=linkedPackage([ingredient('Salt',{foodTemporaryKey:'salt'})],[proposed('salt','Salt')]);delete p.recipe.instructions;p.recipe.notes='Kitchen note.\\nDirections: Mix salt.\\nServe.';const normalized=core.validatePackage(clone(p)).recipe;assert.deepStrictEqual(clone(normalized.instructions),['Mix salt.','Serve.']);assert.strictEqual(normalized.notes,'Kitchen note.');}
 run(`state.foods.push({id:'milk-a',custom:true,private:true,name:'Milk',serving:'100 g'},{id:'milk-b',custom:true,private:true,name:'Milk',serving:'100 g'});`);
 pkg=linkedPackage([ingredient('Milk',{foodTemporaryKey:'milk-new'})],[proposed('milk-new','Milk')]);validated=core.validatePackage(clone(pkg));assert.strictEqual(validated.matches[0].length,2);assert.strictEqual(core.defaultResolutions(validated)[0].kind,'ambiguous');assert.throws(()=>core.approveImport(validated),/Resolve every ambiguous/);
 {const bad=proposed('bad','Bad food');bad.nutrients.calories=null;rejects(linkedPackage([ingredient('Bad food',{foodTemporaryKey:'bad'})],[bad]),/calories nutrient is required/);}
@@ -55,13 +78,51 @@ pkg=linkedPackage([ingredient('Milk',{foodTemporaryKey:'milk-new'})],[proposed('
 {const bad=proposed('bad','Bad food');delete bad.nutrients.choline;rejects(linkedPackage([ingredient('Bad food',{foodTemporaryKey:'bad'})],[bad]),/choline nutrient field is required/);}
 {const bad=proposed('salt','Sea salt',{nutrients:nutrients({sodium:0})});rejects(linkedPackage([ingredient('Sea salt',{foodTemporaryKey:'salt'})],[bad]),/Salt must include sodium/);}
 {const bad=proposed('sweetener','Zero-calorie sweetener',{nutrients:nutrients({calories:0,sugar:null})});rejects(linkedPackage([ingredient('Zero-calorie sweetener',{foodTemporaryKey:'sweetener'})],[bad]),/numeric sugar value/);}
+assert.strictEqual(core.findMatches({name:'Peanut Butter',brand:'Store Brand',unit:'tbsp'}).length,0);
 
 // Validation and cancellation are non-mutating.
 reset();const cancelBefore=state();core.validatePackage(clone(linkedPackage([ingredient('Spice',{foodTemporaryKey:'spice'})],[proposed('spice','Spice')])));assert.deepStrictEqual(state(),cancelBefore,'cancellation after review must produce no changes');
+const promptBefore=state(),uuidBefore=uuid;
+const foodPrompt=core.schemaPrompt('addFood','Add a food that may already exist',1),legacyPrompt=core.schemaPrompt('addRecipe','Legacy recipe from chicken and carrots',2),linkedPrompt=core.schemaPrompt('addRecipeWithFoods','Recipe with Kroger Natural peanut butter and chicken',4);
+assert.deepStrictEqual(state(),promptBefore,'prompt generation must not mutate existing foods or tracker state');assert.strictEqual(uuid,uuidBefore,'prompt generation must not generate IDs');
+for(const promptText of [foodPrompt,legacyPrompt,linkedPrompt])assert.ok(promptText.includes('existingFoods JSON array')&&promptText.includes('Existing-food matching rules')&&promptText.includes('Never invent, alter, shorten, or reconstruct an existingFoodId.'));
+for(const [promptText,operationText] of [[foodPrompt,'"operation":"addFood"'],[legacyPrompt,'"operation":"addRecipe"'],[linkedPrompt,'"operation":"addRecipeWithFoods"']])assert.ok(promptText.includes(operationText),`prompt missing ${operationText}`);
+const foods=promptFoods(linkedPrompt),chicken=foods.find(f=>f.id==='existing-chicken'),peanut=foods.find(f=>f.id==='brand:exact/001'),optional=foods.find(f=>f.id==='missing-optional');
+assert.ok(chicken&&peanut&&optional);assert.strictEqual(chicken.name,'Chicken breast');assert.strictEqual(chicken.brand,'');assert.strictEqual(chicken.category,'Meat');assert.strictEqual(chicken.servingAmount,100);assert.strictEqual(chicken.servingUnit,'g');assert.strictEqual(chicken.nutrients.carbs,0);assert.strictEqual(chicken.nutrients.fiber,0);
+assert.strictEqual(peanut.id,'brand:exact/001');assert.strictEqual(peanut.brand,'Kroger Natural');assert.strictEqual(peanut.servingAmount,2);assert.strictEqual(peanut.servingUnit,'tbsp');assert.strictEqual(peanut.nutrients.sodium,0);
+assert.strictEqual(optional.brand,'');assert.strictEqual(optional.category,'');assert.strictEqual(optional.servingAmount,1);assert.strictEqual(optional.servingUnit,'');
+for(const forbidden of ['owner-secret','user-secret','account-secret','storage-secret','saved-day-secret','theme'])assert.ok(!linkedPrompt.includes(forbidden),`prompt leaked ${forbidden}`);
 
 // Approval adds every food and the recipe, links generated IDs, calculates all ingredients, and preserves unrelated state.
 reset();const unrelatedBefore=state();pkg=linkedPackage([ingredient('Salt',{foodTemporaryKey:'salt'}),ingredient('Spice',{foodTemporaryKey:'spice'})],[proposed('salt','Salt',{nutrients:nutrients({calories:0,protein:0,carbs:0,fat:0,fiber:0,sodium:400})}),proposed('spice','Spice',{nutrients:nutrients({calories:20,protein:2,carbs:4,fat:1,fiber:2,sodium:3})})]);validated=core.validatePackage(clone(pkg));saveResult=true;const imported=core.approveImport(validated);let after=state();
-assert.strictEqual(after.foods.length,unrelatedBefore.foods.length+2);assert.strictEqual(after.recipes.length,1);assert.strictEqual(imported.createdFoodIds.length,2);assert.ok(after.recipes[0].ingredients.every(x=>imported.createdFoodIds.includes(x.foodId)));assert.ok(after.recipes[0].ingredients.every(x=>!String(x.foodId).includes('salt')&&!String(x.foodId).includes('spice')));assert.strictEqual(after.recipes[0].nutrition.calories,10);assert.strictEqual(after.recipes[0].nutrition.sodium,201.5);assert.deepStrictEqual(after.profile,unrelatedBefore.profile);assert.deepStrictEqual(after.entries,unrelatedBefore.entries);
+assert.strictEqual(after.foods.length,unrelatedBefore.foods.length+2);assert.strictEqual(after.recipes.length,1);assert.strictEqual(imported.createdFoodIds.length,2);assert.ok(after.recipes[0].ingredients.every(x=>imported.createdFoodIds.includes(x.foodId)));assert.ok(after.recipes[0].ingredients.every(x=>!String(x.foodId).includes('salt')&&!String(x.foodId).includes('spice')));assert.deepStrictEqual(after.recipes[0].instructions,recipeInstructions);assert.strictEqual(after.recipes[0].nutrition.calories,10);assert.strictEqual(after.recipes[0].nutrition.sodium,201.5);assert.deepStrictEqual(after.profile,unrelatedBefore.profile);assert.deepStrictEqual(after.entries,unrelatedBefore.entries);
+
+// Exact Honey Ginger Candy regression: prefixed notes become ordered cooking instructions without changing ingredients, servings, nutrition inputs, or food references.
+reset();const honeyBefore=clone(honeyPackage.recipe),honeyValidated=core.validatePackage(clone(honeyPackage));
+assert.strictEqual(honeyValidated.operation,'addRecipeWithFoods');
+assert.strictEqual(honeyValidated.recipe.servings,10);
+assert.deepStrictEqual(clone(honeyValidated.recipe.ingredients),honeyBefore.ingredients);
+assert.strictEqual(honeyValidated.proposedFoods.length,0);
+assert.deepStrictEqual(clone(core.defaultResolutions(honeyValidated).map(x=>x.food.id)),honeyBefore.ingredients.map(x=>x.existingFoodId));
+assert.ok(honeyValidated.recipe.instructions.length>=6);
+assert.strictEqual(honeyValidated.recipe.instructions[0],'Line a small tray or plate with parchment paper.');
+assert.ok(honeyValidated.recipe.instructions.some(x=>x.includes('300°F (149°C)')));
+assert.ok(honeyValidated.recipe.instructions.some(x=>x.includes('airtight container with parchment between layers.')));
+assert.ok(honeyValidated.recipe.notes.includes('Hot honey syrup can cause severe burns; do not touch or taste it until fully cooled.'));
+assert.ok(honeyValidated.recipe.notes.includes('Ingredient quantities and the yield of 10 servings are estimated; final candy weight and serving size will vary with evaporation and portioning.'));
+const honeyImport=core.approveImport(honeyValidated),honeyState=state(),honeyRecipe=honeyState.recipes.find(r=>r.id===honeyImport.record.id);
+assert.deepStrictEqual(honeyRecipe.ingredients.map(x=>({name:x.name,brand:x.brand,amount:x.amount,unit:x.unit,foodId:x.foodId})),honeyBefore.ingredients.map(x=>({name:x.name,brand:x.brand,amount:x.amount,unit:x.unit,foodId:x.existingFoodId})));
+assert.strictEqual(honeyRecipe.servings,10);
+assert.deepStrictEqual(honeyRecipe.instructions,clone(honeyValidated.recipe.instructions));
+assert.deepStrictEqual(honeyRecipe.nutrition,clone(honeyImport.record.nutrition));
+assert.ok(honeyRecipe.notes.includes('severe burns')&&honeyRecipe.notes.includes('estimated; final candy weight'));
+const honeyOriginalParts=honeyNotes.replace(/^Cooking instructions:\s*/,'').match(/[^.!?]+[.!?]+(?=\s|$)|[^.!?]+$/g);
+const honeyCombined=`${honeyRecipe.instructions.join(' ')} ${honeyRecipe.notes}`;
+for(const part of honeyOriginalParts)assert.ok(honeyCombined.includes(part.trim()),`lost Honey notes text: ${part}`);
+run(`state=createEmptyTrackerState();`);
+context.backup=honeyState;
+assert.strictEqual(run('applyTrackerState(backup)'),true);
+assert.deepStrictEqual(run('getTrackerState().recipes[0].instructions'),honeyRecipe.instructions);
 
 // Partial save failure rolls back the complete state, including unrelated data.
 reset();const rollbackBefore=state();validated=core.validatePackage(clone(pkg));saveResult=false;assert.throws(()=>core.approveImport(validated),/Save failed/);assert.deepStrictEqual(state(),rollbackBefore);saveResult=true;
@@ -73,7 +134,7 @@ reset();validated=core.validatePackage(clone(pkg));const undoable=core.approveIm
 reset();validated=core.validatePackage(clone(pkg));const shared=core.approveImport(validated),keptId=shared.createdFoodIds[0];run(`state.recipes.push({id:'later-recipe',name:'Later recipe',servings:1,ingredients:[{name:'Salt',brand:'',amount:1,unit:'g',foodId:${JSON.stringify(keptId)},resolution:'existing'}],nutrition:{}});`);core.undoImport(shared);after=state();assert.ok(after.foods.some(f=>f.id===keptId));assert.ok(after.recipes.some(r=>r.id==='later-recipe'));assert.ok(!after.recipes.some(r=>r.id===shared.record.id));
 
 // Prompt and source safety requirements.
-const prompt=core.schemaPrompt('addRecipeWithFoods','Branded sweetener and salt',4);for(const text of ['addRecipeWithFoods','proposedFoods','temporaryKey','complete proposedFoods record','Salt must include sodium','Preserve supplied brand names','calories, protein, carbs, fat, fiber, and sodium'])assert.ok(prompt.includes(text),`prompt missing ${text}`);
+const prompt=core.schemaPrompt('addRecipeWithFoods','Branded sweetener and salt',4);for(const text of ['addRecipeWithFoods','proposedFoods','temporaryKey','complete proposedFoods record','Salt must include sodium','Preserve supplied brand names','calories, protein, carbs, fat, fiber, and sodium','"instructions":["First cooking step.","Second cooking step.","Continue until the recipe is complete."]','recipe.instructions is required and must be a nonempty ordered array','Include complete, step-by-step cooking directions for every recipe in recipe.instructions exactly as shown in the import schema','Preserve the original step order','Keep ingredient data in recipe.ingredients and cooking directions in recipe.instructions','Never put directions only in explanatory chat text outside the importable JSON payload','Return raw valid JSON only, without Markdown code fences','Do not place preparation steps, cooking directions, method text, or directions prefixed with "Cooking instructions:" in recipe.notes','<h3>Cooking Instructions</h3>','<h3>Notes</h3>','<h3>Nutrition</h3>'])assert.ok(prompt.includes(text)||ai.includes(text),`prompt/source missing ${text}`);
 assert.ok(ai.includes("source:'chatgpt-assisted'")&&ai.includes('if(!save())'));assert.ok(!ai.includes('eval(')&&!ai.includes('Function(')&&!ai.includes('api.openai.com'));assert.ok(html.includes('AI Assistance uses your own ChatGPT account'));assert.ok(ai.includes('https://chatgpt.com/'));
 
 console.log('AI Assistance tests: PASS (legacy compatibility; all-existing/all-new/mixed recipe foods; strict references and nutrition; ambiguity/cross-account rejection; non-mutating review; atomic approval/rollback; generated links/calculation; safe surgical undo; unrelated-data preservation; privacy)');
