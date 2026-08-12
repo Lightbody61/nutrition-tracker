@@ -18,7 +18,7 @@ const context={
   location:{href:'https://tracker.example.test/?view=day#unchanged',hash:'#unchanged',pathname:'/',search:'?view=day'},
   history:{replaceState(...args){urlMutations.push(args);},pushState(...args){urlMutations.push(args);}},
   localStorage:{getItem:key=>stored[key]??null,setItem:(key,value)=>{stored[key]=value;},removeItem:key=>delete stored[key]},
-  document:{addEventListener(){},getElementById:id=>elements[id]||null,querySelectorAll:()=>[]},
+  document:{body:{classList:{contains(){return false;}}},addEventListener(){},getElementById:id=>elements[id]||null,querySelectorAll:()=>[]},
   setTimeout(){return 1;},
   clearTimeout(){},
   confirm:()=>true,
@@ -266,16 +266,34 @@ assert.ok(printed.includes('<h1>Honey Ginger Candy</h1>'));
 assert.ok(printed.includes('<h2>Cooking Instructions</h2><ol><li>Line a small tray or plate with parchment paper.</li>'));
 assert.ok(!printed.includes('Hot honey syrup can cause severe burns'),'printed recipe should keep notes out of the ordered cooking list');
 
-// Selected recipes can be saved into the persistent Food List without duplicate entries.
-setState(accountState({recipes:[{id:'food-list-recipe',name:'Food List Recipe',category:'Custom',servings:2,yield:'2 servings',serving:'1 serving',ingredients:[{name:'Ingredient',amount:1,unit:'cup'}],nutrition:{calories:123,protein:9,carbs:10,fat:4,fiber:2,sodium:55}}]}));
+// Selected recipes can be saved into the persistent Food List and then logged today without duplicate entries.
+const foodListRecipe={id:'food-list-recipe',name:'Food List Recipe',foodName:'Different Generated Food Name',category:'Custom',servings:2,yield:'2 servings',serving:'1 saved recipe serving',ingredients:[{name:'Ingredient',amount:1,unit:'cup'}],nutrition:{calories:123,protein:9,carbs:10,fat:4,fiber:2,sodium:55,potassium:77}};
+setState(accountState({recipes:[foodListRecipe]}));
 elements.recipeSelect={value:String(run('RECIPE_DATA.length'))};
+elements.date={value:'2026-08-01'};
+vm.runInContext('selectedDate=()=> "2026-08-01"',context);
 elements.recipeFoodListStatus={textContent:''};
 context.renderFoodSelect=()=>{};
 context.renderFoodsList=()=>{};
 assert.strictEqual(run('(()=>{addSelectedRecipeToFoodList();addSelectedRecipeToFoodList();return state.foods.filter(f=>f.name==="Food List Recipe").length;})()'),1);
 const savedRecipeFood=run('getTrackerState().foods.find(f=>f.name==="Food List Recipe")');
-assert.deepStrictEqual({name:savedRecipeFood.name,custom:savedRecipeFood.custom,serving:savedRecipeFood.serving,calories:savedRecipeFood.calories,protein:savedRecipeFood.protein,carbs:savedRecipeFood.carbs,fat:savedRecipeFood.fat,fiber:savedRecipeFood.fiber,sodium:savedRecipeFood.sodium},{name:'Food List Recipe',custom:true,serving:'1 serving',calories:123,protein:9,carbs:10,fat:4,fiber:2,sodium:55});
+assert.deepStrictEqual({name:savedRecipeFood.name,custom:savedRecipeFood.custom,serving:savedRecipeFood.serving,calories:savedRecipeFood.calories,protein:savedRecipeFood.protein,carbs:savedRecipeFood.carbs,fat:savedRecipeFood.fat,fiber:savedRecipeFood.fiber,sodium:savedRecipeFood.sodium,potassium:savedRecipeFood.potassium},{name:'Food List Recipe',custom:true,serving:'1 saved recipe serving',calories:123,protein:9,carbs:10,fat:4,fiber:2,sodium:55,potassium:77});
 assert.strictEqual(elements.recipeFoodListStatus.textContent,'Food List Recipe is in the Food List.');
+const savedFoodListState=run('getTrackerState()');
+alerts.length=0;
+assert.strictEqual(run('(()=>{addSelectedRecipeToDay();return state.entries.length;})()'),1);
+let recipeEntry=run('state.entries[0]');
+assert.deepStrictEqual({date:recipeEntry.date,servings:recipeEntry.servings,foodName:recipeEntry.food.name,serving:recipeEntry.food.serving,calories:recipeEntry.food.calories,protein:recipeEntry.food.protein,carbs:recipeEntry.food.carbs,fat:recipeEntry.food.fat,fiber:recipeEntry.food.fiber,sodium:recipeEntry.food.sodium,potassium:recipeEntry.food.potassium},{date:'2026-08-01',servings:1,foodName:'Food List Recipe',serving:'1 saved recipe serving',calories:123,protein:9,carbs:10,fat:4,fiber:2,sodium:55,potassium:77});
+assert.deepStrictEqual(alerts,[]);
+context.reloadedRecipeState=savedFoodListState;
+setState(accountState());
+assert.strictEqual(run('applyTrackerState(reloadedRecipeState)'),true);
+elements.recipeSelect={value:String(run('RECIPE_DATA.length'))};
+elements.date={value:'2026-08-02'};
+vm.runInContext('selectedDate=()=> "2026-08-02"',context);
+assert.strictEqual(run('(()=>{addSelectedRecipeToDay();return state.entries.length;})()'),1);
+recipeEntry=run('state.entries[0]');
+assert.deepStrictEqual({date:recipeEntry.date,foodName:recipeEntry.food.name,serving:recipeEntry.food.serving,calories:recipeEntry.food.calories,protein:recipeEntry.food.protein,potassium:recipeEntry.food.potassium},{date:'2026-08-02',foodName:'Food List Recipe',serving:'1 saved recipe serving',calories:123,protein:9,potassium:77});
 
 // Removed controls, file-transfer APIs, and removed workout module identifiers stay absent.
 const forbidden=[

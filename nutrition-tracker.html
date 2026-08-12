@@ -1050,6 +1050,10 @@ function selectedRecipe(){
   return trackerRecipes()[selectedRecipeIndex()];
 }
 function recipeFoodListName(recipe){return String(recipe&&recipe.name||'').trim();}
+function recipeFoodListFood(recipe){
+  const names=[recipeFoodListName(recipe),String(recipe&&recipe.foodName||'').trim()].filter(Boolean).map(x=>x.toLowerCase());
+  return (state.foods||[]).find(f=>names.includes(String(f&&f.name||'').trim().toLowerCase()));
+}
 function recipeFoodListItem(recipe){
   const nutrition=recipe&&recipe.nutrition||{},food={custom:true,category:recipe.category||'Meals',name:recipeFoodListName(recipe),serving:recipe.serving||recipe.yield||'1 serving'};
   [...KEYS,'saturatedFat','cholesterol'].forEach(k=>{ if(nutrition[k]!==undefined) food[k]=n(nutrition[k]); });
@@ -1126,7 +1130,7 @@ function printSelectedRecipes(){
 function addSelectedRecipeToDay(){
   const r=trackerRecipes()[selectedRecipeIndex()];
   if(!r) return alert('Choose a recipe first.');
-  const food=(state.foods||[]).find(f=>(f.name||'')===r.foodName);
+  const food=recipeFoodListFood(r);
   if(!food) return alert('This recipe is not in the Food List yet.');
   const d=selectedDate(); state.entries.push({id:crypto.randomUUID(),date:d,order:nextFoodOrder(d),time:hhmm(),servings:1,food:JSON.parse(JSON.stringify(food)),eaten:false});
   save();
@@ -1137,7 +1141,7 @@ function addSelectedRecipeToFoodList(){
   const r=selectedRecipe();
   if(!r) return alert('Choose a recipe first.');
   const name=recipeFoodListName(r);
-  const existing=(state.foods||[]).find(f=>String(f.name||'').trim().toLowerCase()===name.toLowerCase());
+  const existing=recipeFoodListFood(r);
   if(!existing){
     state.foods.push(recipeFoodListItem(r));
     save();
