@@ -19,6 +19,8 @@ const context={
   history:{replaceState(...args){urlMutations.push(args);},pushState(...args){urlMutations.push(args);}},
   localStorage:{getItem:key=>stored[key]??null,setItem:(key,value)=>{stored[key]=value;},removeItem:key=>delete stored[key]},
   document:{addEventListener(){},getElementById:id=>elements[id]||null,querySelectorAll:()=>[]},
+  setTimeout(){return 1;},
+  clearTimeout(){},
   confirm:()=>true,
   alert(message){alerts.push(message);}
 };
@@ -209,6 +211,17 @@ assert.strictEqual(run('(()=>{printSelectedRecipes();return true;})()'),true);
 assert.ok(printed.includes('<h1>Honey Ginger Candy</h1>'));
 assert.ok(printed.includes('<h2>Cooking Instructions</h2><ol><li>Line a small tray or plate with parchment paper.</li>'));
 assert.ok(!printed.includes('Hot honey syrup can cause severe burns'),'printed recipe should keep notes out of the ordered cooking list');
+
+// Selected recipes can be saved into the persistent Food List without duplicate entries.
+setState(accountState({recipes:[{id:'food-list-recipe',name:'Food List Recipe',category:'Custom',servings:2,yield:'2 servings',serving:'1 serving',ingredients:[{name:'Ingredient',amount:1,unit:'cup'}],nutrition:{calories:123,protein:9,carbs:10,fat:4,fiber:2,sodium:55}}]}));
+elements.recipeSelect={value:String(run('RECIPE_DATA.length'))};
+elements.recipeFoodListStatus={textContent:''};
+context.renderFoodSelect=()=>{};
+context.renderFoodsList=()=>{};
+assert.strictEqual(run('(()=>{addSelectedRecipeToFoodList();addSelectedRecipeToFoodList();return state.foods.filter(f=>f.name==="Food List Recipe").length;})()'),1);
+const savedRecipeFood=run('getTrackerState().foods.find(f=>f.name==="Food List Recipe")');
+assert.deepStrictEqual({name:savedRecipeFood.name,custom:savedRecipeFood.custom,serving:savedRecipeFood.serving,calories:savedRecipeFood.calories,protein:savedRecipeFood.protein,carbs:savedRecipeFood.carbs,fat:savedRecipeFood.fat,fiber:savedRecipeFood.fiber,sodium:savedRecipeFood.sodium},{name:'Food List Recipe',custom:true,serving:'1 serving',calories:123,protein:9,carbs:10,fat:4,fiber:2,sodium:55});
+assert.strictEqual(elements.recipeFoodListStatus.textContent,'Food List Recipe is in the Food List.');
 
 // Removed controls, file-transfer APIs, and removed workout module identifiers stay absent.
 const forbidden=[
