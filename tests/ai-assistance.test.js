@@ -193,8 +193,68 @@ core.importValidatedMealPlan(mealValidated,'cancel');
 assert.strictEqual(JSON.stringify(state()),JSON.stringify(appendBase));
 setState(appendBase);mealValidated=core.parseMealPlanPackage(JSON.stringify(mealPlanPackage),mealRequest);saveResult=false;core.importValidatedMealPlan(mealValidated,'replace');assert.strictEqual(JSON.stringify(state()),JSON.stringify(appendBase));saveResult=true;
 
+async function runCopyButtonRegressionTests(){
+ function element(id,tag='div'){
+  const listeners={},children=[],el={id,tagName:tag.toUpperCase(),value:'',textContent:'',checked:false,disabled:false,dataset:{},style:{},children,parentElement:null,attributes:{},
+   classList:{classes:new Set(),add(name){this.classes.add(name);},remove(name){this.classes.delete(name);},toggle(name,on){if(on)this.classes.add(name);else this.classes.delete(name);},contains(name){return this.classes.has(name);}},
+   setAttribute(name,value){this.attributes[name]=String(value);},
+   appendChild(child){child.parentElement=this;children.push(child);return child;},
+   removeChild(child){const i=children.indexOf(child);if(i>=0)children.splice(i,1);child.parentElement=null;},
+   remove(){if(this.parentElement)this.parentElement.removeChild(this);},
+   focus(){},
+   select(){this.selected=true;},
+   setSelectionRange(start,end){this.selection=[start,end];},
+   addEventListener(type,fn){(listeners[type]||(listeners[type]=[])).push(fn);},
+   dispatchEvent(event){for(const fn of listeners[event.type]||[])fn.call(el,event);},
+   listenerCount(type){return (listeners[type]||[]).length;}
+  };
+  return el;
+ }
+ function harness({clipboardMode='success',secure=true,execMode=true}={}){
+  const elements={},screens={},body=element('body','body'),writes=[],openCalls=[];
+  const make=id=>elements[id]=element(id,id.includes('Description')||id.includes('Notes')||id.includes('Package')?'textarea':id.includes('Btn')?'button':'input');
+  for(const id of ['aiFoodDescription','aiRecipeDescription','aiRecipeServings','aiFoodPackage','aiRecipePackage','aiImportStatus','aiReviewPanel','aiImportComplete','aiReviewContent','aiCompleteMessage','aiAddTodayBtn','aiReturnBtn','aiUndoBtn','aiMealPlanStart','aiMealPlanEnd','aiGoalWeightLoss','aiGoalKeto','aiGoalHeartHealthy','aiGoalLowCarb','aiGoalLowFat','aiGoalOther','aiWeightLossDegree','aiOtherGoalText','aiMealPlanCalorieAdjustmentType','aiMealPlanCalorieAdjustmentAmount','aiMealPlanNotes','aiMealPlanPackage','aiMealPlanStatus','aiMealPlanConflict','aiMealPlanPreview','aiMealPlanPreviewContent','aiImportMealPlanBtn','aiMealPlanComplete','aiMealPlanCompleteMessage','aiWeightLossDegreeWrap','aiOtherGoalWrap','aiCopyFoodBtn','aiOpenFoodBtn','aiCopyRecipeBtn','aiOpenRecipeBtn','aiPasteFoodBtn','aiPasteRecipeBtn','aiReviewFoodBtn','aiReviewRecipeBtn','aiApproveBtn','aiEditBtn','aiCancelBtn','aiGenerateMealPlanBtn','aiOpenMealPlanBtn','aiPasteMealPlanBtn','aiReviewMealPlanBtn','aiMealPlanAppendBtn','aiMealPlanReplaceBtn','aiMealPlanCancelImportBtn','aiMealPlanOpenTodayBtn'])make(id);
+  for(const id of ['aiAddFoodScreen','aiAddRecipeScreen','aiMealPlanScreen']){
+   const screen=element(id,'section'),card=element(`${id}Card`,'div');screen.classList.add('screen');screen.classList.add('aiAssist');screen.appendChild(card);screens[id]={screen,card};
+  }
+  let active='aiAddFoodScreen';
+  const document={readyState:'loading',body,addEventListener(){},getElementById:id=>elements[id]||null,createElement:tag=>element('',tag),execCommand(cmd){return cmd==='copy'&&execMode===true;},querySelector(selector){return selector==='.screen.active.aiAssist>.card'?screens[active].card:null;},querySelectorAll(){return [];}};
+  const navigator={clipboard:{writeText:async text=>{if(clipboardMode==='reject')throw new Error('blocked');writes.push(String(text));return true;}}};
+  if(clipboardMode==='missing')delete navigator.clipboard;
+  const ctx={console,crypto:{randomUUID:()=>`dom-uuid-${++uuid}`},navigator,document,window:null,location:{},history:{},alert(){},confirm:()=>true,setTimeout,clearTimeout};
+  ctx.window=ctx;ctx.isSecureContext=secure;ctx.open=(url,target,features)=>openCalls.push({url,target,features});
+  vm.createContext(ctx);vm.runInContext(tracker,ctx);ctx.trackerAccountStateChanged=()=>true;vm.runInContext('state=createEmptyTrackerState();',ctx);document.readyState='complete';vm.runInContext(ai,ctx);
+  return {ctx,elements,writes,openCalls,setActive:id=>{active=id;},flush:()=>new Promise(resolve=>setImmediate(resolve)),body};
+ }
+
+ let h=harness();h.setActive('aiAddFoodScreen');h.elements.aiFoodDescription.value='Add cottage cheese with package-label nutrition.';h.elements.aiCopyFoodBtn.dispatchEvent({type:'click'});await h.flush();
+ assert.strictEqual(h.writes.length,1);assert.ok(h.writes[0].includes('"operation":"addFood"'));assert.ok(h.writes[0].includes('Add cottage cheese with package-label nutrition.'));assert.ok(!h.writes[0].includes('"operation":"addRecipeWithFoods"'));assert.strictEqual(h.elements.aiImportStatus.textContent,'Instructions copied.');assert.strictEqual(h.elements.aiFoodPackage.value,'');
+
+ h.setActive('aiAddRecipeScreen');h.elements.aiRecipeDescription.value='Add turkey chili with beans.';h.elements.aiRecipeServings.value='6';h.elements.aiCopyRecipeBtn.dispatchEvent({type:'click'});await h.flush();
+ assert.strictEqual(h.writes.length,2);assert.ok(h.writes[1].includes('"operation":"addRecipeWithFoods"'));assert.ok(h.writes[1].includes('Add turkey chili with beans.'));assert.ok(h.writes[1].includes('"servings":6'));assert.ok(!h.writes[1].includes('"operation":"addFood"'));assert.strictEqual(h.elements.aiImportStatus.textContent,'Instructions copied.');assert.strictEqual(h.elements.aiRecipePackage.value,'');
+
+ h.setActive('aiMealPlanScreen');h.elements.aiMealPlanStart.value='2026-08-20';h.elements.aiMealPlanEnd.value='2026-08-22';h.elements.aiGoalWeightLoss.checked=true;h.elements.aiWeightLossDegree.value='moderate';h.elements.aiGoalKeto.checked=true;h.elements.aiGoalOther.checked=true;h.elements.aiOtherGoalText.value='No shellfish';h.elements.aiMealPlanCalorieAdjustmentType.value='deficit';h.elements.aiMealPlanCalorieAdjustmentAmount.value='450';h.elements.aiMealPlanNotes.value='Higher protein breakfast.';h.elements.aiGenerateMealPlanBtn.dispatchEvent({type:'click'});await h.flush();
+ assert.strictEqual(h.writes.length,3);assert.ok(h.writes[2].includes('nutrition-tracker-ai-meal-plan'));assert.ok(h.writes[2].includes('Date range: 2026-08-20 through 2026-08-22.'));assert.ok(h.writes[2].includes('Weight loss (moderate), Keto, Other: No shellfish'));assert.ok(h.writes[2].includes("450-calorie daily deficit"));assert.ok(!h.writes[2].includes('"operation":"addFood"')&&!h.writes[2].includes('"operation":"addRecipeWithFoods"'));assert.ok(h.elements.aiMealPlanStatus.textContent.includes('Instructions copied.'));assert.strictEqual(h.elements.aiMealPlanPackage.value,'');
+
+ h.elements.aiFoodDescription.value='';h.setActive('aiAddFoodScreen');h.elements.aiCopyFoodBtn.dispatchEvent({type:'click'});await h.flush();
+ assert.strictEqual(h.writes.length,3);assert.strictEqual(h.elements.aiImportStatus.textContent,'Describe the item first.');assert.ok(h.elements.aiImportStatus.classList.contains('error'));
+ h.elements.aiMealPlanStart.value='';h.setActive('aiMealPlanScreen');h.elements.aiGenerateMealPlanBtn.dispatchEvent({type:'click'});await h.flush();
+ assert.strictEqual(h.writes.length,3);assert.strictEqual(h.elements.aiMealPlanStatus.textContent,'Choose a valid start date.');
+
+ h=harness({clipboardMode:'reject',secure:true,execMode:true});h.setActive('aiAddFoodScreen');h.elements.aiFoodDescription.value='Fallback food.';h.elements.aiCopyFoodBtn.dispatchEvent({type:'click'});await h.flush();
+ assert.strictEqual(h.writes.length,0);assert.strictEqual(h.elements.aiImportStatus.textContent,'Instructions copied.');assert.strictEqual(h.body.children.length,0,'temporary clipboard textarea should be removed after fallback');
+
+ h=harness({clipboardMode:'missing',secure:false,execMode:false});h.setActive('aiAddRecipeScreen');h.elements.aiRecipeDescription.value='Clipboard failure recipe.';h.elements.aiCopyRecipeBtn.dispatchEvent({type:'click'});await h.flush();
+ assert.strictEqual(h.elements.aiImportStatus.textContent,'Clipboard permission was denied or is unavailable. Copy the instructions manually.');assert.ok(h.elements.aiImportStatus.classList.contains('error'));assert.strictEqual(h.body.children.length,0);
+
+ h=harness();h.ctx.NutritionTrackerAI.bind();h.ctx.NutritionTrackerAI.bind();assert.strictEqual(h.elements.aiCopyFoodBtn.listenerCount('click'),1);assert.strictEqual(h.elements.aiGenerateMealPlanBtn.listenerCount('click'),1);
+ h.setActive('aiAddFoodScreen');h.elements.aiFoodDescription.value='First visit food.';h.elements.aiCopyFoodBtn.dispatchEvent({type:'click'});await h.flush();h.setActive('aiMealPlanScreen');h.setActive('aiAddFoodScreen');h.elements.aiFoodDescription.value='Returned visit food.';h.elements.aiCopyFoodBtn.dispatchEvent({type:'click'});await h.flush();
+ assert.strictEqual(h.writes.length,2);assert.ok(h.writes[0].includes('First visit food.'));assert.ok(h.writes[1].includes('Returned visit food.'));
+ h.elements.aiOpenFoodBtn.dispatchEvent({type:'click'});await h.flush();assert.strictEqual(h.openCalls.length,1);assert.strictEqual(h.openCalls[0].url,'https://chatgpt.com/');
+}
+
 // Prompt and source safety requirements.
 const prompt=core.schemaPrompt('addRecipeWithFoods','Branded sweetener and salt',4);for(const text of ['addRecipeWithFoods','proposedFoods','temporaryKey','complete proposedFoods record','Salt must include sodium','Preserve supplied brand names','calories, protein, carbs, fat, fiber, and sodium','"instructions":["First cooking step.","Second cooking step.","Continue until the recipe is complete."]','recipe.instructions is required and must be a nonempty ordered array','Include complete, step-by-step cooking directions for every recipe in recipe.instructions exactly as shown in the import schema','Preserve the original step order','Keep ingredient data in recipe.ingredients and cooking directions in recipe.instructions','Never put directions only in explanatory chat text outside the importable JSON payload','Return raw valid JSON only, without Markdown code fences','Do not place preparation steps, cooking directions, method text, or directions prefixed with "Cooking instructions:" in recipe.notes','<h3>Cooking Instructions</h3>','<h3>Notes</h3>','<h3>Nutrition</h3>'])assert.ok(prompt.includes(text)||ai.includes(text),`prompt/source missing ${text}`);
 assert.ok(ai.includes("source:'chatgpt-assisted'")&&ai.includes('if(!save())'));assert.ok(!ai.includes('eval(')&&!ai.includes('Function(')&&!ai.includes('api.openai.com'));assert.ok(html.includes('AI Assistance uses your own ChatGPT account'));assert.ok(ai.includes('https://chatgpt.com/'));
 
-console.log('AI Assistance tests: PASS (legacy compatibility; all-existing/all-new/mixed recipe foods; strict references and nutrition; ambiguity/cross-account rejection; non-mutating review; atomic approval/rollback; generated links/calculation; safe surgical undo; unrelated-data preservation; privacy)');
+runCopyButtonRegressionTests().then(()=>console.log('AI Assistance tests: PASS (legacy compatibility; all-existing/all-new/mixed recipe foods; strict references and nutrition; ambiguity/cross-account rejection; non-mutating review; copy buttons; atomic approval/rollback; generated links/calculation; safe surgical undo; unrelated-data preservation; privacy)')).catch(error=>{console.error(error);process.exit(1);});
