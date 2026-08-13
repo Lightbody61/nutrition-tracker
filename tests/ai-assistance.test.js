@@ -136,6 +136,7 @@ reset();validated=core.validatePackage(clone(pkg));const shared=core.approveImpo
 
 // Meal-plan generation, validation, matching, date handling, import choices, and rollback.
 const mealRequest={startDate:'2026-08-10',endDate:'2026-08-11',goals:['Weight loss','Keto','Other'],weightLossDegree:'moderate',otherGoal:'No shellfish',notes:'1200 calories, avoid peanuts'};
+run(`state.profile={...state.profile,manualMaintenance:1700,weight:150,feet:5,inches:6,age:54};`);
 assert.deepStrictEqual(clone(core.inclusiveDates('2026-08-10','2026-08-11')),['2026-08-10','2026-08-11']);
 assert.throws(()=>core.validateMealPlanRequest({...mealRequest,startDate:''}),/start date/);
 assert.throws(()=>core.validateMealPlanRequest({...mealRequest,endDate:'2026-08-09'}),/End date/);
@@ -144,19 +145,33 @@ assert.throws(()=>core.validateMealPlanRequest({...mealRequest,goals:[]}),/at le
 assert.strictEqual(core.validateMealPlanRequest({...mealRequest,calorieAdjustmentAmount:'',calorieAdjustmentType:''}).calorieAdjustment,null);
 assert.strictEqual(core.validateMealPlanRequest({...mealRequest,calorieAdjustmentAmount:'',calorieAdjustmentType:'deficit'}).calorieAdjustment,null);
 assert.strictEqual(core.validateMealPlanRequest({...mealRequest,calorieAdjustmentAmount:'0',calorieAdjustmentType:''}).calorieAdjustment,null);
-assert.deepStrictEqual(clone(core.validateMealPlanRequest({...mealRequest,calorieAdjustmentAmount:'500',calorieAdjustmentType:'deficit'}).calorieAdjustment),{type:'deficit',amount:500});
-assert.deepStrictEqual(clone(core.validateMealPlanRequest({...mealRequest,calorieAdjustmentAmount:'250',calorieAdjustmentType:'surplus'}).calorieAdjustment),{type:'surplus',amount:250});
+assert.deepStrictEqual(clone(core.validateMealPlanRequest({...mealRequest,notes:'higher protein',calorieAdjustmentAmount:'500',calorieAdjustmentType:'deficit'}).calorieAdjustment),{type:'deficit',amount:500});
+assert.deepStrictEqual(clone(core.validateMealPlanRequest({...mealRequest,notes:'higher protein',calorieAdjustmentAmount:'250',calorieAdjustmentType:'surplus'}).calorieAdjustment),{type:'surplus',amount:250});
 assert.throws(()=>core.validateMealPlanRequest({...mealRequest,calorieAdjustmentAmount:'500',calorieAdjustmentType:''}),/Select Deficit or Surplus/);
 for(const amount of ['-1','abc','12.5','2001'])assert.throws(()=>core.validateMealPlanRequest({...mealRequest,calorieAdjustmentAmount:amount,calorieAdjustmentType:'deficit'}),/whole number from 0 through 2,000/);
-reset();const mealPrompt=core.mealPlanPrompt(mealRequest);
+assert.strictEqual(core.validateMealPlanRequest({...mealRequest,expectedExerciseCalories:''}).expectedExerciseCalories,0);
+assert.strictEqual(core.validateMealPlanRequest({...mealRequest,expectedExerciseCalories:'0'}).expectedExerciseCalories,0);
+assert.strictEqual(core.validateMealPlanRequest({...mealRequest,expectedExerciseCalories:'350'}).expectedExerciseCalories,350);
+for(const amount of ['-1','abc','12.5','3001','Infinity','NaN'])assert.throws(()=>core.validateMealPlanRequest({...mealRequest,expectedExerciseCalories:amount}),/Expected daily exercise calories/);
+run(`state.profile={...state.profile,manualMaintenance:0,weight:0,feet:0,inches:0,age:0};`);
+assert.throws(()=>core.validateMealPlanRequest({...mealRequest,notes:'higher protein',calorieAdjustmentAmount:'500',calorieAdjustmentType:'deficit'}),/Enter maintenance calories/);
+run(`state.profile={...state.profile,manualMaintenance:1700,weight:150,feet:5,inches:6,age:54};`);
+const mealPrompt=core.mealPlanPrompt(mealRequest);
 for(const text of ['Weight loss (moderate)','Keto','Other: No shellfish','1200 calories, avoid peanuts','No maintenance-relative calorie deficit or surplus was supplied.','2026-08-10, 2026-08-11','nutrition-tracker-ai-meal-plan','This is not a medical prescription','Existing private Food List JSON','Existing recipes JSON'])assert.ok(mealPrompt.includes(text),`meal prompt missing ${text}`);
 assert.ok(!mealPrompt.includes('owner-secret')&&!mealPrompt.includes('user-secret'));
-const deficitPrompt=core.mealPlanPrompt({...mealRequest,calorieAdjustmentType:'deficit',calorieAdjustmentAmount:'500'});
-assert.ok(deficitPrompt.includes("Create each daily menu at a 500-calorie daily deficit relative to the user's maintenance target."));
-assert.ok(deficitPrompt.includes('Potential calorie conflict')&&deficitPrompt.includes('absolute daily calorie target')&&deficitPrompt.includes('Do not confuse the 500-calorie daily deficit with an absolute daily calorie target.'));
+assert.throws(()=>core.mealPlanPrompt({...mealRequest,calorieAdjustmentType:'deficit',calorieAdjustmentAmount:'500'}),/Resolve the absolute calorie target/);
+const deficitPrompt=core.mealPlanPrompt({...mealRequest,notes:'higher protein',expectedExerciseCalories:'350',calorieAdjustmentType:'deficit',calorieAdjustmentAmount:'400'});
+assert.ok(deficitPrompt.includes('estimated maintenance requirement before separately counted exercise is 1,700 calories per day')||deficitPrompt.includes('estimated maintenance requirement before separately counted exercise is 1700 calories per day'));
+assert.ok(deficitPrompt.includes('Expected exercise expenditure is 350 calories per day'));
+assert.ok(deficitPrompt.includes('expected total expenditure of 2050 calories'));
+assert.ok(deficitPrompt.includes('approximately 1650 calories per day'));
+assert.ok(deficitPrompt.includes('targetMenuCalories'));
+const deficitPlan=core.validateMealPlanRequest({...mealRequest,notes:'higher protein',expectedExerciseCalories:'350',calorieAdjustmentType:'deficit',calorieAdjustmentAmount:'400'}).caloriePlan;
+assert.deepStrictEqual(clone(deficitPlan),{maintenanceCalories:1700,expectedExerciseCalories:350,expectedDailyExpenditure:2050,requestedAdjustment:{type:'deficit',amount:400},targetMenuCalories:1650});
 const surplusPrompt=core.mealPlanPrompt({...mealRequest,notes:'higher protein',calorieAdjustmentType:'surplus',calorieAdjustmentAmount:'250'});
-assert.ok(surplusPrompt.includes("Create each daily menu at a 250-calorie daily surplus relative to the user's maintenance target."));
-assert.ok(!surplusPrompt.includes('Potential calorie conflict'));
+assert.ok(surplusPrompt.includes('daily surplus')&&surplusPrompt.includes('targetMenuCalories'));
+const surplusPlan=core.validateMealPlanRequest({...mealRequest,notes:'higher protein',expectedExerciseCalories:'350',calorieAdjustmentType:'surplus',calorieAdjustmentAmount:'250'}).caloriePlan;
+assert.deepStrictEqual(clone(surplusPlan),{maintenanceCalories:1700,expectedExerciseCalories:350,expectedDailyExpenditure:2050,requestedAdjustment:{type:'surplus',amount:250},targetMenuCalories:2300});
 const mealNutrients=(overrides={})=>nutrients({calories:300,protein:25,carbs:8,fat:14,fiber:3,sodium:220,...overrides});
 const mealPlanPackage={packageType:'nutrition-tracker-ai-meal-plan',schemaVersion:1,createdBy:'user-chatgpt',startDate:'2026-08-10',endDate:'2026-08-11',days:[
  {date:'2026-08-10',items:[{meal:'Breakfast',type:'food',name:'Chicken breast',quantity:1.5,servingUnit:'serving',foodId:null,recipeId:null,nutrients:mealNutrients({calories:120,protein:25,carbs:0,fat:2,fiber:0,sodium:50}),notes:''},{meal:'Dinner',type:'food',name:'New salmon bowl',quantity:1,servingUnit:'bowl',foodId:null,recipeId:null,nutrients:mealNutrients({calories:410,protein:34,carbs:12,fat:22,fiber:4,sodium:390}),notes:'Estimated.'}]},
@@ -169,6 +184,10 @@ assert.strictEqual(mealValidated.days[0].items[0].match.kind,'food');
 assert.strictEqual(mealValidated.days[0].items[1].match.kind,'generated');
 assert.strictEqual(mealValidated.days[1].items[0].match.kind,'recipe');
 assert.strictEqual(core.mealPlanDailyTotals(mealValidated.days[0]).calories,590);
+const deficitValidated=core.parseMealPlanPackage(JSON.stringify(mealPlanPackage),{...mealRequest,notes:'higher protein',expectedExerciseCalories:'350',calorieAdjustmentType:'deficit',calorieAdjustmentAmount:'400'});
+assert.deepStrictEqual(clone(core.mealPlanProjectedBalance(deficitValidated,core.mealPlanDailyTotals(deficitValidated.days[0]).calories)),{kind:'deficit',value:1460});
+const surplusValidated=core.parseMealPlanPackage(JSON.stringify(mealPlanPackage),{...mealRequest,notes:'higher protein',expectedExerciseCalories:'350',calorieAdjustmentType:'surplus',calorieAdjustmentAmount:'250'});
+assert.deepStrictEqual(clone(core.mealPlanProjectedBalance(surplusValidated,core.mealPlanDailyTotals(surplusValidated.days[0]).calories)),{kind:'surplus',value:-1460});
 assert.throws(()=>core.parseMealPlanPackage('{bad',mealRequest),/not valid JSON/);
 {const bad=clone(mealPlanPackage);bad.days=bad.days.slice(0,1);assert.throws(()=>core.parseMealPlanPackage(JSON.stringify(bad),mealRequest),/missing 2026-08-11/);}
 {const bad=clone(mealPlanPackage);bad.days[1].date='2026-08-12';assert.throws(()=>core.parseMealPlanPackage(JSON.stringify(bad),mealRequest),/out-of-range date/);}
@@ -216,7 +235,7 @@ async function runCopyButtonRegressionTests(){
   const elements={},screens={},body=element('body','body'),writes=[],reads=[],openCalls=[];
   let clipboardText='Cloudflare build log';
   const make=id=>elements[id]=element(id,id.includes('Description')||id.includes('Notes')||id.includes('Package')||id.includes('Instructions')?'textarea':id.includes('Btn')?'button':'input');
-  for(const id of ['date','aiFoodDescription','aiRecipeDescription','aiRecipeServings','aiFoodPackage','aiRecipePackage','aiImportStatus','aiReviewPanel','aiImportComplete','aiReviewContent','aiCompleteMessage','aiAddTodayBtn','aiReturnBtn','aiUndoBtn','aiMealPlanStart','aiMealPlanEnd','aiGoalWeightLoss','aiGoalKeto','aiGoalHeartHealthy','aiGoalLowCarb','aiGoalLowFat','aiGoalOther','aiWeightLossDegree','aiOtherGoalText','aiMealPlanCalorieAdjustmentType','aiMealPlanCalorieAdjustmentAmount','aiMealPlanNotes','aiGeneratedMealPlanPanel','aiGeneratedMealPlanInstructions','aiMealPlanPackage','aiMealPlanCopyStatus','aiMealPlanStatus','aiMealPlanConflict','aiMealPlanPreview','aiMealPlanPreviewContent','aiImportMealPlanBtn','aiMealPlanComplete','aiMealPlanCompleteMessage','aiWeightLossDegreeWrap','aiOtherGoalWrap','aiCopyFoodBtn','aiOpenFoodBtn','aiCopyRecipeBtn','aiOpenRecipeBtn','aiPasteFoodBtn','aiPasteRecipeBtn','aiReviewFoodBtn','aiReviewRecipeBtn','aiApproveBtn','aiEditBtn','aiCancelBtn','aiGenerateMealPlanBtn','aiOpenMealPlanBtn','aiSelectMealPlanInstructionsBtn','aiPasteMealPlanBtn','aiConfirmMealPlanPackageBtn','aiReviewMealPlanBtn','aiMealPlanAppendBtn','aiMealPlanReplaceBtn','aiMealPlanCancelImportBtn','aiMealPlanOpenTodayBtn'])make(id);
+  for(const id of ['date','manualMaintenance','aiFoodDescription','aiRecipeDescription','aiRecipeServings','aiFoodPackage','aiRecipePackage','aiImportStatus','aiReviewPanel','aiImportComplete','aiReviewContent','aiCompleteMessage','aiAddTodayBtn','aiReturnBtn','aiUndoBtn','aiMealPlanStart','aiMealPlanEnd','aiGoalWeightLoss','aiGoalKeto','aiGoalHeartHealthy','aiGoalLowCarb','aiGoalLowFat','aiGoalOther','aiWeightLossDegree','aiOtherGoalText','aiMealPlanCalorieAdjustmentType','aiMealPlanCalorieAdjustmentAmount','aiExpectedExerciseCalories','aiExpectedExerciseStatus','aiMealPlanNotes','aiMealPlanCalorieSummary','aiGeneratedMealPlanPanel','aiGeneratedMealPlanInstructions','aiMealPlanPackage','aiMealPlanCopyStatus','aiMealPlanStatus','aiMealPlanConflict','aiMealPlanPreview','aiMealPlanPreviewContent','aiImportMealPlanBtn','aiMealPlanComplete','aiMealPlanCompleteMessage','aiWeightLossDegreeWrap','aiOtherGoalWrap','aiCopyFoodBtn','aiOpenFoodBtn','aiCopyRecipeBtn','aiOpenRecipeBtn','aiPasteFoodBtn','aiPasteRecipeBtn','aiReviewFoodBtn','aiReviewRecipeBtn','aiApproveBtn','aiEditBtn','aiCancelBtn','aiGenerateMealPlanBtn','aiOpenMealPlanBtn','aiSelectMealPlanInstructionsBtn','aiPasteMealPlanBtn','aiConfirmMealPlanPackageBtn','aiReviewMealPlanBtn','aiMealPlanAppendBtn','aiMealPlanReplaceBtn','aiMealPlanCancelImportBtn','aiMealPlanOpenTodayBtn'])make(id);
   elements.date.value='2026-08-13';
   for(const id of ['aiAddFoodScreen','aiAddRecipeScreen','aiMealPlanScreen']){
    const screen=element(id,'section'),card=element(`${id}Card`,'div');screen.classList.add('screen');screen.classList.add('aiAssist');screen.appendChild(card);screens[id]={screen,card};
@@ -227,7 +246,7 @@ async function runCopyButtonRegressionTests(){
   if(clipboardMode==='missing')delete navigator.clipboard;
   const ctx={console,crypto:{randomUUID:()=>`dom-uuid-${++uuid}`},navigator,document,window:null,location:{},history:{},alert(){},confirm:()=>true,setTimeout,clearTimeout};
   ctx.window=ctx;ctx.isSecureContext=secure;ctx.open=(url,target,features)=>openCalls.push({url,target,features});
-  vm.createContext(ctx);vm.runInContext(tracker,ctx);ctx.trackerAccountStateChanged=()=>true;vm.runInContext('state=createEmptyTrackerState();',ctx);document.readyState='complete';vm.runInContext(ai,ctx);
+  vm.createContext(ctx);vm.runInContext(tracker,ctx);ctx.trackerAccountStateChanged=()=>true;vm.runInContext('state=createEmptyTrackerState();state.profile={...state.profile,manualMaintenance:1700,weight:150,feet:5,inches:6,age:54};',ctx);document.readyState='complete';vm.runInContext(ai,ctx);
   return {ctx,elements,writes,reads,openCalls,get clipboardText(){return clipboardText;},setActive:id=>{active=id;},flush:()=>new Promise(resolve=>setImmediate(resolve)),body};
  }
 
@@ -237,7 +256,7 @@ async function runCopyButtonRegressionTests(){
  h.setActive('aiAddRecipeScreen');h.elements.aiRecipeDescription.value='Add turkey chili with beans.';h.elements.aiRecipeServings.value='6';h.elements.aiCopyRecipeBtn.dispatchEvent({type:'click'});await h.flush();
  assert.strictEqual(h.writes.length,2);assert.ok(h.writes[1].includes('"operation":"addRecipeWithFoods"'));assert.ok(h.writes[1].includes('Add turkey chili with beans.'));assert.ok(h.writes[1].includes('"servings":6'));assert.ok(!h.writes[1].includes('"operation":"addFood"'));assert.strictEqual(h.elements.aiImportStatus.textContent,'Instructions copied.');assert.strictEqual(h.elements.aiRecipePackage.value,'');
 
- h.setActive('aiMealPlanScreen');assert.strictEqual(h.elements.aiMealPlanStart.value,'2026-08-13');assert.strictEqual(h.elements.aiMealPlanEnd.value,'2026-08-13');h.elements.aiMealPlanStart.value='2026-08-20';h.elements.aiMealPlanEnd.value='2026-08-22';h.elements.aiGoalWeightLoss.checked=true;h.elements.aiWeightLossDegree.value='moderate';h.elements.aiGoalKeto.checked=true;h.elements.aiGoalOther.checked=true;h.elements.aiOtherGoalText.value='No shellfish';h.elements.aiMealPlanCalorieAdjustmentType.value='deficit';h.elements.aiMealPlanCalorieAdjustmentAmount.value='450';h.elements.aiMealPlanNotes.value='Higher protein breakfast.';h.elements.aiGenerateMealPlanBtn.dispatchEvent({type:'click'});assert.ok(h.elements.aiGeneratedMealPlanInstructions.value.includes('Date range: 2026-08-20 through 2026-08-22.'),'instructions should be visible before clipboard completion');await h.flush();
+ h.setActive('aiMealPlanScreen');assert.strictEqual(h.elements.aiMealPlanStart.value,'2026-08-13');assert.strictEqual(h.elements.aiMealPlanEnd.value,'2026-08-13');h.elements.aiMealPlanStart.value='2026-08-20';h.elements.aiMealPlanEnd.value='2026-08-22';h.elements.aiGoalWeightLoss.checked=true;h.elements.aiWeightLossDegree.value='moderate';h.elements.aiGoalKeto.checked=true;h.elements.aiGoalOther.checked=true;h.elements.aiOtherGoalText.value='No shellfish';h.elements.aiMealPlanCalorieAdjustmentType.value='deficit';h.elements.aiMealPlanCalorieAdjustmentAmount.value='450';h.elements.aiExpectedExerciseCalories.value='350';h.elements.aiMealPlanNotes.value='Higher protein breakfast.';h.elements.aiGenerateMealPlanBtn.dispatchEvent({type:'click'});assert.ok(h.elements.aiGeneratedMealPlanInstructions.value.includes('Date range: 2026-08-20 through 2026-08-22.'),'instructions should be visible before clipboard completion');await h.flush();
  assert.strictEqual(h.writes.length,3);assert.ok(h.writes[2].includes('nutrition-tracker-ai-meal-plan'));assert.ok(h.writes[2].includes('Date range: 2026-08-20 through 2026-08-22.'));assert.ok(h.writes[2].includes('Create one complete daily menu for every date in this inclusive list: 2026-08-20, 2026-08-21, 2026-08-22.'));assert.ok(h.writes[2].includes('Weight loss (moderate), Keto, Other: No shellfish'));assert.ok(h.writes[2].includes("450-calorie daily deficit"));assert.ok(!h.writes[2].includes('"operation":"addFood"')&&!h.writes[2].includes('"operation":"addRecipeWithFoods"'));assert.strictEqual(h.clipboardText,h.writes[2]);assert.strictEqual(h.elements.aiMealPlanCopyStatus.textContent,'Instructions copied successfully.');assert.strictEqual(h.elements.aiPasteMealPlanBtn.disabled,false);assert.strictEqual(h.elements.aiMealPlanPackage.value,'');
 
  h.elements.aiFoodDescription.value='';h.setActive('aiAddFoodScreen');h.elements.aiCopyFoodBtn.dispatchEvent({type:'click'});await h.flush();
