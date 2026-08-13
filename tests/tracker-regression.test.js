@@ -331,6 +331,14 @@ for(const label of ['Food','Exercise','Profile','Utilities','Users Guide','Main 
 assert.ok(!homeMarkup.includes('>Contact Admin</button>')&&!homeMarkup.includes('>Admin</button>'));
 for(const forbiddenHomeContent of ['<form','signedInEmail','cloudSaveStatus','foodSelect','menuTotals','profileResults']) assert.ok(!homeMarkup.includes(forbiddenHomeContent),`Home contains module content: ${forbiddenHomeContent}`);
 assert.ok(html.includes("communityForumScreen:'mainMenuScreen'"));
+const aiMenuMarkup=html.slice(html.indexOf('id="aiAssistanceScreen"'),html.indexOf('id="aiAddFoodScreen"'));
+for(const label of ['Add Food','Add Recipe','Suggest Meal Plans']) assert.ok(aiMenuMarkup.includes(`>${label}<span>`),`missing AI Assistance menu button: ${label}`);
+assert.ok(aiMenuMarkup.includes('data-screen="foodHubScreen">← Food</button>'));
+assert.ok(html.includes('id="aiAddFoodScreen"')&&html.includes('data-screen="aiAssistanceScreen">← AI Assistance</button>'));
+assert.ok(html.includes('id="aiAddRecipeScreen"')&&html.includes('id="aiMealPlanScreen"'));
+assert.ok(html.includes('id="aiGenerateMealPlanBtn" type="button">Generate Meal Plan</button>'));
+assert.ok(html.includes('id="aiImportMealPlanBtn" type="button" disabled>Import Meal Plan to Today'));
+assert.ok(html.includes("aiAddFoodScreen:'aiAssistanceScreen',aiAddRecipeScreen:'aiAssistanceScreen',aiMealPlanScreen:'aiAssistanceScreen'"));
 assert.ok(html.includes("foodListsHubScreen:'foodHubScreen'"));
 assert.ok(html.includes("statsHubScreen:'foodHubScreen'"));
 assert.ok(html.includes("reportsScreen:'utilitiesScreen'"));
@@ -341,7 +349,7 @@ assert.ok(html.includes('@media(max-width:899px){.homeMenu{grid-template-columns
 assert.ok(html.includes('@media(max-width:599px){.homeMenu{grid-template-columns:1fr'));
 assert.ok(html.includes('.trackerLocked main .screen:not(#accountScreen):not(#publicLandingScreen){display:none!important}'));
 
-const navIds=['publicLandingScreen','mainMenuScreen','communityForumScreen','homeScreen','accountScreen','foodHubScreen','foodListsHubScreen','statsHubScreen','exerciseHubScreen','utilitiesScreen','reportsScreen','profileScreen','contactScreen','usersGuideScreen','dailyTotalsScreen'];
+const navIds=['publicLandingScreen','mainMenuScreen','communityForumScreen','homeScreen','accountScreen','foodHubScreen','aiAssistanceScreen','aiAddFoodScreen','aiAddRecipeScreen','aiMealPlanScreen','foodListsHubScreen','statsHubScreen','exerciseHubScreen','utilitiesScreen','reportsScreen','profileScreen','contactScreen','usersGuideScreen','dailyTotalsScreen'];
 const navScreens=Object.fromEntries(navIds.map(id=>[id,{id,active:id==='homeScreen',classList:{add(name){if(name==='active')this.owner.active=true;},remove(name){if(name==='active')this.owner.active=false;}}}]));
 for(const screen of Object.values(navScreens)) screen.classList.owner=screen;
 const dailyReturn={dataset:{screen:'statsHubScreen'},textContent:''};
@@ -352,7 +360,7 @@ context.document.getElementById=id=>navScreens[id]||elements[id]||null;
 context.document.body={classList:{contains:()=>false}};
 context.scrollTo=(x,y)=>{assert.strictEqual(x,0);assert.strictEqual(y,0);scrollCalls++;};
 context.render=()=>{};context.renderProfile=()=>{};context.renderVitABreakdown=()=>{};context.renderDailyBreakdown=()=>{};
-for(const id of ['publicLandingScreen','mainMenuScreen','communityForumScreen','foodHubScreen','foodListsHubScreen','statsHubScreen','exerciseHubScreen','utilitiesScreen','reportsScreen','accountScreen','profileScreen','contactScreen','usersGuideScreen']){
+for(const id of ['publicLandingScreen','mainMenuScreen','communityForumScreen','foodHubScreen','aiAssistanceScreen','aiAddFoodScreen','aiAddRecipeScreen','aiMealPlanScreen','foodListsHubScreen','statsHubScreen','exerciseHubScreen','utilitiesScreen','reportsScreen','accountScreen','profileScreen','contactScreen','usersGuideScreen']){
   assert.strictEqual(run(`showScreen('${id}')`),true);
   assert.deepStrictEqual(Object.values(navScreens).filter(screen=>screen.active).map(screen=>screen.id),[id]);
 }
@@ -366,6 +374,6 @@ assert.strictEqual(dailyReturn.textContent,'← Exercise');
 run("showScreen('statsHubScreen');showScreen('dailyTotalsScreen','statsHubScreen')");
 assert.strictEqual(dailyReturn.dataset.screen,'statsHubScreen');
 assert.strictEqual(dailyReturn.textContent,'← Stats');
-assert.ok(scrollCalls>=14);
+assert.ok(scrollCalls>=18);
 
 console.log('Tracker regression tests: PASS (hierarchical navigation, retained nutrition reports, clean state, account boundary, local persistence, logging, copy/reset, removal scans)');

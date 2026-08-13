@@ -29,6 +29,7 @@ const reset=()=>run(`state=createEmptyTrackerState();state.foods.push(
  {id:'7ce21fd9-040e-4b77-8fdf-077a6f77f9f5',custom:true,private:true,name:'Water',brand:'',category:'Custom',serving:'100 ml',calories:0,protein:0,carbs:0,fat:0,fiber:0,sodium:0}
 );state.profile={...state.profile,age:54};state.entries.push({id:'unrelated-entry',date:'2026-08-04',servings:1,food:{name:'Unrelated'},eaten:false});`);
 const state=()=>clone(run('getTrackerState()'));
+const setState=value=>{context.testState=clone(value);run('state=testState');};
 const rejects=(value,pattern)=>assert.throws(()=>core.validatePackage(clone(value)),pattern);
 const promptFoods=prompt=>{
  const marker='existingFoods JSON array';
@@ -132,6 +133,52 @@ reset();validated=core.validatePackage(clone(pkg));const undoable=core.approveIm
 
 // Undo removes the imported recipe but retains a created food used by another recipe.
 reset();validated=core.validatePackage(clone(pkg));const shared=core.approveImport(validated),keptId=shared.createdFoodIds[0];run(`state.recipes.push({id:'later-recipe',name:'Later recipe',servings:1,ingredients:[{name:'Salt',brand:'',amount:1,unit:'g',foodId:${JSON.stringify(keptId)},resolution:'existing'}],nutrition:{}});`);core.undoImport(shared);after=state();assert.ok(after.foods.some(f=>f.id===keptId));assert.ok(after.recipes.some(r=>r.id==='later-recipe'));assert.ok(!after.recipes.some(r=>r.id===shared.record.id));
+
+// Meal-plan generation, validation, matching, date handling, import choices, and rollback.
+const mealRequest={startDate:'2026-08-10',endDate:'2026-08-11',goals:['Weight loss','Keto','Other'],weightLossDegree:'moderate',otherGoal:'No shellfish',notes:'1200 calories, avoid peanuts'};
+assert.deepStrictEqual(clone(core.inclusiveDates('2026-08-10','2026-08-11')),['2026-08-10','2026-08-11']);
+assert.throws(()=>core.validateMealPlanRequest({...mealRequest,startDate:''}),/start date/);
+assert.throws(()=>core.validateMealPlanRequest({...mealRequest,endDate:'2026-08-09'}),/End date/);
+assert.throws(()=>core.validateMealPlanRequest({...mealRequest,startDate:'2026-08-01',endDate:'2026-09-01'}),/31 inclusive days/);
+assert.throws(()=>core.validateMealPlanRequest({...mealRequest,goals:[]}),/at least one goal/);
+reset();const mealPrompt=core.mealPlanPrompt(mealRequest);
+for(const text of ['Weight loss (moderate)','Keto','Other: No shellfish','1200 calories, avoid peanuts','2026-08-10, 2026-08-11','nutrition-tracker-ai-meal-plan','This is not a medical prescription','Existing private Food List JSON','Existing recipes JSON'])assert.ok(mealPrompt.includes(text),`meal prompt missing ${text}`);
+assert.ok(!mealPrompt.includes('owner-secret')&&!mealPrompt.includes('user-secret'));
+const mealNutrients=(overrides={})=>nutrients({calories:300,protein:25,carbs:8,fat:14,fiber:3,sodium:220,...overrides});
+const mealPlanPackage={packageType:'nutrition-tracker-ai-meal-plan',schemaVersion:1,createdBy:'user-chatgpt',startDate:'2026-08-10',endDate:'2026-08-11',days:[
+ {date:'2026-08-10',items:[{meal:'Breakfast',type:'food',name:'Chicken breast',quantity:1.5,servingUnit:'serving',foodId:null,recipeId:null,nutrients:mealNutrients({calories:120,protein:25,carbs:0,fat:2,fiber:0,sodium:50}),notes:''},{meal:'Dinner',type:'food',name:'New salmon bowl',quantity:1,servingUnit:'bowl',foodId:null,recipeId:null,nutrients:mealNutrients({calories:410,protein:34,carbs:12,fat:22,fiber:4,sodium:390}),notes:'Estimated.'}]},
+ {date:'2026-08-11',items:[{meal:'Lunch',type:'recipe',name:'Complete Soup',quantity:2,servingUnit:'serving',foodId:null,recipeId:null,nutrients:mealNutrients({calories:250,protein:20,carbs:10,fat:12,fiber:2,sodium:300}),notes:''}]}
+]};
+run(`state.recipes.push({id:'recipe-complete-soup',name:'Complete Soup',category:'Custom',servings:2,serving:'1 serving',nutrition:{calories:111,protein:11,carbs:5,fat:4,fiber:1,sodium:99}});render=()=>{};`);
+let mealValidated=core.parseMealPlanPackage('```json\n'+JSON.stringify(mealPlanPackage)+'\n```',mealRequest);
+assert.strictEqual(mealValidated.days.length,2);
+assert.strictEqual(mealValidated.days[0].items[0].match.kind,'food');
+assert.strictEqual(mealValidated.days[0].items[1].match.kind,'generated');
+assert.strictEqual(mealValidated.days[1].items[0].match.kind,'recipe');
+assert.strictEqual(core.mealPlanDailyTotals(mealValidated.days[0]).calories,590);
+assert.throws(()=>core.parseMealPlanPackage('{bad',mealRequest),/not valid JSON/);
+{const bad=clone(mealPlanPackage);bad.days=bad.days.slice(0,1);assert.throws(()=>core.parseMealPlanPackage(JSON.stringify(bad),mealRequest),/missing 2026-08-11/);}
+{const bad=clone(mealPlanPackage);bad.days[1].date='2026-08-12';assert.throws(()=>core.parseMealPlanPackage(JSON.stringify(bad),mealRequest),/out-of-range date/);}
+{const bad=clone(mealPlanPackage);bad.days[1].date='2026-08-10';assert.throws(()=>core.parseMealPlanPackage(JSON.stringify(bad),mealRequest),/duplicate date/);}
+{const bad=clone(mealPlanPackage);bad.days[0].items[0].quantity=0;assert.throws(()=>core.parseMealPlanPackage(JSON.stringify(bad),mealRequest),/greater than zero/);}
+{const bad=clone(mealPlanPackage);bad.days[0].items[0].nutrients.calories=null;assert.throws(()=>core.parseMealPlanPackage(JSON.stringify(bad),mealRequest),/calories is required/);}
+let importResult=core.importValidatedMealPlan(mealValidated,'append');after=state();
+assert.deepStrictEqual(clone(importResult),{days:2,items:3,mode:'append'});
+assert.deepStrictEqual(after.entries.map(e=>e.date).filter(d=>d>='2026-08-10').sort(),['2026-08-10','2026-08-10','2026-08-11']);
+assert.strictEqual(after.entries.find(e=>e.food.name==='Chicken breast').food.calories,120);
+assert.strictEqual(after.entries.find(e=>e.food.name==='Complete Soup').food.calories,111);
+assert.strictEqual(after.entries.find(e=>e.food.name==='New salmon bowl').food.calories,410);
+const appendBase=state();
+mealValidated=core.parseMealPlanPackage(JSON.stringify(mealPlanPackage),mealRequest);
+core.importValidatedMealPlan(mealValidated,'append');
+assert.strictEqual(state().entries.filter(e=>e.date==='2026-08-10').length,4);
+setState(appendBase);mealValidated=core.parseMealPlanPackage(JSON.stringify(mealPlanPackage),mealRequest);
+core.importValidatedMealPlan(mealValidated,'replace');
+after=state();assert.strictEqual(after.entries.filter(e=>e.date==='2026-08-10').length,2);assert.strictEqual(after.entries.filter(e=>e.date==='2026-08-11').length,1);
+setState(appendBase);mealValidated=core.parseMealPlanPackage(JSON.stringify(mealPlanPackage),mealRequest);
+core.importValidatedMealPlan(mealValidated,'cancel');
+assert.strictEqual(JSON.stringify(state()),JSON.stringify(appendBase));
+setState(appendBase);mealValidated=core.parseMealPlanPackage(JSON.stringify(mealPlanPackage),mealRequest);saveResult=false;core.importValidatedMealPlan(mealValidated,'replace');assert.strictEqual(JSON.stringify(state()),JSON.stringify(appendBase));saveResult=true;
 
 // Prompt and source safety requirements.
 const prompt=core.schemaPrompt('addRecipeWithFoods','Branded sweetener and salt',4);for(const text of ['addRecipeWithFoods','proposedFoods','temporaryKey','complete proposedFoods record','Salt must include sodium','Preserve supplied brand names','calories, protein, carbs, fat, fiber, and sodium','"instructions":["First cooking step.","Second cooking step.","Continue until the recipe is complete."]','recipe.instructions is required and must be a nonempty ordered array','Include complete, step-by-step cooking directions for every recipe in recipe.instructions exactly as shown in the import schema','Preserve the original step order','Keep ingredient data in recipe.ingredients and cooking directions in recipe.instructions','Never put directions only in explanatory chat text outside the importable JSON payload','Return raw valid JSON only, without Markdown code fences','Do not place preparation steps, cooking directions, method text, or directions prefixed with "Cooking instructions:" in recipe.notes','<h3>Cooking Instructions</h3>','<h3>Notes</h3>','<h3>Nutrition</h3>'])assert.ok(prompt.includes(text)||ai.includes(text),`prompt/source missing ${text}`);

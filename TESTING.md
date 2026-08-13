@@ -13,9 +13,12 @@ node tests/account-auth-mock.test.js
 node tests/cloud-persistence-correctness.test.js
 node tests/contact-security.test.js
 node tests/admin-module.test.js
+node tests/ai-assistance.test.js
 cmp -s index.html nutrition-tracker.html
 git diff --check
 ```
+
+AI Assistance coverage verifies the submenu and relocated Add Food/Add Recipe pages, meal-plan request validation, conditional goal prompt data, fenced JSON cleanup, malformed/incomplete plan rejection, local-date handling, existing Food List and recipe reuse, per-date imports, append/replace/cancel behavior, save-failure rollback, and mirrored file synchronization.
 
 Contact coverage should verify signed-out access remains locked, form required/email/length validation, duplicate-submit prevention, message preservation on failure, fixed server-side recipient, authenticated session-derived `user_id`, storage-before-delivery, and RLS denial of message reads/updates/deletes. Production delivery requires the migration, deployed Edge Function, and configured Resend secrets described in README.
 
