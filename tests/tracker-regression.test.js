@@ -322,9 +322,12 @@ assert.ok(accountMarkup.includes('id="signedOutAccount"')&&accountMarkup.include
 assert.ok(accountMarkup.includes('id="signedInEmail"')&&accountMarkup.includes('id="logoutBtn"'));
 assert.ok(accountMarkup.includes('data-screen="mainMenuScreen">Main Menu</button>'));
 const mainMenuMarkup=html.slice(html.indexOf('id="mainMenuScreen"'),html.indexOf('</section>',html.indexOf('id="mainMenuScreen"')));
-for(const label of ['Proceed to Tracker','Community Forum','Back to Account']) assert.ok(mainMenuMarkup.includes(`>${label}</button>`),`missing Main Menu button: ${label}`);
+for(const label of ['Proceed to Tracker','Reports','AI Assistance','Community Forum','Back to Account']) assert.ok(mainMenuMarkup.includes(`>${label}</button>`),`missing Main Menu button: ${label}`);
 assert.ok(!mainMenuMarkup.includes('>Contact Admin</button>'));
 for(const label of ['Food','Exercise','Utilities','Profile','Users Guide']) assert.ok(!mainMenuMarkup.includes(`>${label}</button>`),`tracker button leaked into Main Menu: ${label}`);
+const obsoletePrefix='diet';
+const obsoleteUpper='Diet';
+for(const obsolete of [obsoleteUpper+'ician',obsoleteUpper+'icians',obsoletePrefix+'ician',obsoletePrefix+'icians',obsoletePrefix+'iciansScreen',obsoletePrefix+'iciansState',obsoletePrefix+'iciansComingSoon','update'+obsoleteUpper+'iciansMessage']) assert.ok(!html.includes(obsolete),`obsolete removed feature reference remains: ${obsolete}`);
 const homeMarkup=html.slice(html.indexOf('id="homeScreen"'),html.indexOf('</section>',html.indexOf('id="homeScreen"')));
 assert.strictEqual((homeMarkup.match(/<button\b/g)||[]).length,6);
 for(const label of ['Food','Exercise','Profile','Utilities','Users Guide','Main Menu']) assert.ok(homeMarkup.includes(`>${label}</button>`),`missing Tracker Menu button: ${label}`);
@@ -333,15 +336,21 @@ for(const forbiddenHomeContent of ['<form','signedInEmail','cloudSaveStatus','fo
 assert.ok(html.includes("communityForumScreen:'mainMenuScreen'"));
 function sectionMarkup(id){const start=html.indexOf(`id="${id}"`);assert.ok(start>=0,`missing section ${id}`);const sectionStart=html.lastIndexOf('<section',start);const next=html.indexOf('<section class="screen',start+1);return html.slice(sectionStart,next>0?next:html.indexOf('</main>'));}
 const aiMenuMarkup=sectionMarkup('aiAssistanceScreen');
+assert.ok(mainMenuMarkup.includes('data-screen="aiAssistanceScreen">AI Assistance</button>'));
+assert.ok(!html.slice(html.indexOf('id="foodHubScreen"'),html.indexOf('</section>',html.indexOf('id="foodHubScreen"'))).includes('data-screen="aiAssistanceScreen"'));
+assert.ok(aiMenuMarkup.includes('data-screen="mainMenuScreen">← Back to Main Menu</button>'));
+assert.strictEqual((aiMenuMarkup.match(/<button\b/g)||[]).length,4);
 for(const label of ['Add Food','Add Recipe','Suggest Menus']) assert.ok(aiMenuMarkup.includes(`>${label}<span>`),`missing AI Assistance menu button: ${label}`);
 for(const forbidden of ['aiFoodDescription','aiRecipeDescription','aiMealPlanStart','aiMealPlanPackage','Paste AI Import Package']) assert.ok(!aiMenuMarkup.includes(forbidden),`AI Assistance menu contains tool form: ${forbidden}`);
-assert.ok(aiMenuMarkup.includes('data-screen="foodHubScreen">← Food</button>'));
 const aiFoodMarkup=sectionMarkup('aiAddFoodScreen'),aiRecipeMarkup=sectionMarkup('aiAddRecipeScreen'),aiMenusMarkup=sectionMarkup('aiMealPlanScreen');
 assert.ok(aiFoodMarkup.includes('data-screen="aiAssistanceScreen">← AI Assistance</button>')&&aiFoodMarkup.includes('aiFoodDescription'));
 assert.ok(!aiFoodMarkup.includes('aiRecipeDescription')&&!aiFoodMarkup.includes('aiMealPlanStart'));
 assert.ok(aiRecipeMarkup.includes('data-screen="aiAssistanceScreen">← AI Assistance</button>')&&aiRecipeMarkup.includes('aiRecipeDescription'));
 assert.ok(!aiRecipeMarkup.includes('aiFoodDescription')&&!aiRecipeMarkup.includes('aiMealPlanStart'));
 assert.ok(aiMenusMarkup.includes('<h2>Suggest Menus with ChatGPT</h2>')&&aiMenusMarkup.includes('data-screen="aiAssistanceScreen">← AI Assistance</button>'));
+assert.ok(aiMenusMarkup.includes('id="aiMealPlanCalorieAdjustmentType"')&&aiMenusMarkup.includes('>Deficit</option>')&&aiMenusMarkup.includes('>Surplus</option>'));
+assert.ok(aiMenusMarkup.includes('id="aiMealPlanCalorieAdjustmentAmount" type="number" min="0" max="2000" step="1"'));
+assert.ok(aiMenusMarkup.includes('Daily calorie deficit or surplus')&&aiMenusMarkup.includes('Calories per day'));
 assert.ok(aiMenusMarkup.includes('id="aiGenerateMealPlanBtn" type="button">Copy ChatGPT Instructions</button>'));
 assert.ok(aiMenusMarkup.includes('id="aiReviewMealPlanBtn" type="button">Preview Menus</button>'));
 assert.ok(aiMenusMarkup.includes('id="aiImportMealPlanBtn" type="button" disabled>Import Menus to Today'));
@@ -351,7 +360,9 @@ assert.ok(!aiMenusMarkup.includes('aiFoodDescription')&&!aiMenusMarkup.includes(
 assert.ok(html.includes("aiAddFoodScreen:'aiAssistanceScreen',aiAddRecipeScreen:'aiAssistanceScreen',aiMealPlanScreen:'aiAssistanceScreen'"));
 assert.ok(html.includes("foodListsHubScreen:'foodHubScreen'"));
 assert.ok(html.includes("statsHubScreen:'foodHubScreen'"));
-assert.ok(html.includes("reportsScreen:'utilitiesScreen'"));
+assert.ok(html.includes("aiAssistanceScreen:'mainMenuScreen'"));
+assert.ok(html.includes("reportsScreen:'mainMenuScreen'"));
+assert.ok(!html.includes("reportsScreen:'utilitiesScreen'"));
 assert.ok(html.includes("recipePrintScreen:'reportsScreen',weightHistoryScreen:'reportsScreen',trackerSummaryScreen:'reportsScreen'"));
 assert.ok(html.includes("SHARED_DESTINATION_PARENTS={dailyTotalsScreen:['statsHubScreen','exerciseHubScreen']}"));
 assert.ok(html.includes('.homeMenu{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))'));
@@ -359,6 +370,16 @@ assert.ok(html.includes('@media(max-width:899px){.homeMenu{grid-template-columns
 assert.ok(html.includes('@media(max-width:599px){.homeMenu{grid-template-columns:1fr'));
 assert.ok(html.includes('.trackerLocked main .screen:not(#accountScreen):not(#publicLandingScreen){display:none!important}'));
 
+const ids=[...html.matchAll(/\bid="([^"]+)"/g)].map(match=>match[1]);
+const duplicates=[...new Set(ids.filter((id,index)=>ids.indexOf(id)!==index))];
+assert.deepStrictEqual(duplicates,[]);
+const reportsButtons=[...html.matchAll(/data-screen="reportsScreen">Reports/g)].length;
+assert.strictEqual(reportsButtons,1);
+assert.ok(mainMenuMarkup.includes('data-screen="reportsScreen">Reports</button>'));
+const utilitiesMarkup=sectionMarkup('utilitiesScreen');
+assert.ok(!utilitiesMarkup.includes('data-screen="reportsScreen"'));
+const reportsMarkup=sectionMarkup('reportsScreen');
+assert.ok(reportsMarkup.includes('data-screen="mainMenuScreen">← Back to Main Menu</button>'));
 const navIds=['publicLandingScreen','mainMenuScreen','communityForumScreen','homeScreen','accountScreen','foodHubScreen','aiAssistanceScreen','aiAddFoodScreen','aiAddRecipeScreen','aiMealPlanScreen','foodListsHubScreen','statsHubScreen','exerciseHubScreen','utilitiesScreen','reportsScreen','profileScreen','contactScreen','usersGuideScreen','dailyTotalsScreen'];
 const navScreens=Object.fromEntries(navIds.map(id=>[id,{id,active:id==='homeScreen',classList:{add(name){if(name==='active')this.owner.active=true;},remove(name){if(name==='active')this.owner.active=false;}}}]));
 for(const screen of Object.values(navScreens)) screen.classList.owner=screen;

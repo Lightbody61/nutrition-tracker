@@ -141,9 +141,22 @@ assert.throws(()=>core.validateMealPlanRequest({...mealRequest,startDate:''}),/s
 assert.throws(()=>core.validateMealPlanRequest({...mealRequest,endDate:'2026-08-09'}),/End date/);
 assert.throws(()=>core.validateMealPlanRequest({...mealRequest,startDate:'2026-08-01',endDate:'2026-09-01'}),/31 inclusive days/);
 assert.throws(()=>core.validateMealPlanRequest({...mealRequest,goals:[]}),/at least one goal/);
+assert.strictEqual(core.validateMealPlanRequest({...mealRequest,calorieAdjustmentAmount:'',calorieAdjustmentType:''}).calorieAdjustment,null);
+assert.strictEqual(core.validateMealPlanRequest({...mealRequest,calorieAdjustmentAmount:'',calorieAdjustmentType:'deficit'}).calorieAdjustment,null);
+assert.strictEqual(core.validateMealPlanRequest({...mealRequest,calorieAdjustmentAmount:'0',calorieAdjustmentType:''}).calorieAdjustment,null);
+assert.deepStrictEqual(clone(core.validateMealPlanRequest({...mealRequest,calorieAdjustmentAmount:'500',calorieAdjustmentType:'deficit'}).calorieAdjustment),{type:'deficit',amount:500});
+assert.deepStrictEqual(clone(core.validateMealPlanRequest({...mealRequest,calorieAdjustmentAmount:'250',calorieAdjustmentType:'surplus'}).calorieAdjustment),{type:'surplus',amount:250});
+assert.throws(()=>core.validateMealPlanRequest({...mealRequest,calorieAdjustmentAmount:'500',calorieAdjustmentType:''}),/Select Deficit or Surplus/);
+for(const amount of ['-1','abc','12.5','2001'])assert.throws(()=>core.validateMealPlanRequest({...mealRequest,calorieAdjustmentAmount:amount,calorieAdjustmentType:'deficit'}),/whole number from 0 through 2,000/);
 reset();const mealPrompt=core.mealPlanPrompt(mealRequest);
-for(const text of ['Weight loss (moderate)','Keto','Other: No shellfish','1200 calories, avoid peanuts','2026-08-10, 2026-08-11','nutrition-tracker-ai-meal-plan','This is not a medical prescription','Existing private Food List JSON','Existing recipes JSON'])assert.ok(mealPrompt.includes(text),`meal prompt missing ${text}`);
+for(const text of ['Weight loss (moderate)','Keto','Other: No shellfish','1200 calories, avoid peanuts','No maintenance-relative calorie deficit or surplus was supplied.','2026-08-10, 2026-08-11','nutrition-tracker-ai-meal-plan','This is not a medical prescription','Existing private Food List JSON','Existing recipes JSON'])assert.ok(mealPrompt.includes(text),`meal prompt missing ${text}`);
 assert.ok(!mealPrompt.includes('owner-secret')&&!mealPrompt.includes('user-secret'));
+const deficitPrompt=core.mealPlanPrompt({...mealRequest,calorieAdjustmentType:'deficit',calorieAdjustmentAmount:'500'});
+assert.ok(deficitPrompt.includes("Create each daily menu at a 500-calorie daily deficit relative to the user's maintenance target."));
+assert.ok(deficitPrompt.includes('Potential calorie conflict')&&deficitPrompt.includes('absolute daily calorie target')&&deficitPrompt.includes('Do not confuse the 500-calorie daily deficit with an absolute daily calorie target.'));
+const surplusPrompt=core.mealPlanPrompt({...mealRequest,notes:'higher protein',calorieAdjustmentType:'surplus',calorieAdjustmentAmount:'250'});
+assert.ok(surplusPrompt.includes("Create each daily menu at a 250-calorie daily surplus relative to the user's maintenance target."));
+assert.ok(!surplusPrompt.includes('Potential calorie conflict'));
 const mealNutrients=(overrides={})=>nutrients({calories:300,protein:25,carbs:8,fat:14,fiber:3,sodium:220,...overrides});
 const mealPlanPackage={packageType:'nutrition-tracker-ai-meal-plan',schemaVersion:1,createdBy:'user-chatgpt',startDate:'2026-08-10',endDate:'2026-08-11',days:[
  {date:'2026-08-10',items:[{meal:'Breakfast',type:'food',name:'Chicken breast',quantity:1.5,servingUnit:'serving',foodId:null,recipeId:null,nutrients:mealNutrients({calories:120,protein:25,carbs:0,fat:2,fiber:0,sodium:50}),notes:''},{meal:'Dinner',type:'food',name:'New salmon bowl',quantity:1,servingUnit:'bowl',foodId:null,recipeId:null,nutrients:mealNutrients({calories:410,protein:34,carbs:12,fat:22,fiber:4,sodium:390}),notes:'Estimated.'}]},

@@ -7,3 +7,8 @@ node_modules/**
 **/node_modules/**
 .DS_Store
 **/.DS_Store
+package.json
+package-lock.json
+index.html.backup-*
+nutrition-tracker-promo-video
+nutrition-tracker-promo-video/**
