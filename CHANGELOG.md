@@ -2,7 +2,8 @@
 
 ## AI Assistance menu and meal plans
 
-- Converted AI Assistance into a submenu with separate Add Food, Add Recipe, and Suggest Meal Plans pages.
+- Corrected AI Assistance labels and navigation to the exact four-page flow: AI Assistance menu, Add Food page, Add Recipe page, and Suggest Menus page.
+- Converted AI Assistance into a submenu with separate Add Food, Add Recipe, and Suggest Menus pages.
 - Kept the existing AI-assisted Add Food and Add Recipe import controls and behavior while relocating them to child pages.
 - Added a validated AI meal-plan workflow with local-date range limits, goal prompts, defensive JSON parsing, preview totals, existing food/recipe matching, append/replace/cancel imports, and rollback on save failure.
 - Added regression coverage for AI navigation, meal-plan prompt construction, parsing, validation, matching, dated import behavior, conflicts, and mirrored file synchronization.

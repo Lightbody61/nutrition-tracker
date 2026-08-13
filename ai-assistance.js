@@ -158,7 +158,7 @@ function schemaPrompt(operation,description,servings){
  return `Create one proposed Nutrition Tracker ${operation==='addFood'?'addFood':operation} import operation from the user description below. Return only one valid JSON object, without markdown or commentary. Do not rewrite account data or alter existing records.${special} Use these exact nutrient fields and units: ${NUTRIENTS.map(x=>`${x.key} (${x.unit})`).join(', ')}. calories, protein, carbs, fat, fiber, and sodium are required numeric core values for every proposed food. Other fields may be null when genuinely unknown. nutritionSource is required. Set containsEstimates true and clearly explain estimates in notes whenever any value is estimated. Never include owner IDs, user IDs, account IDs, login data, authorization tokens, permanent record IDs for proposed foods, storage keys, complete tracker state, saved days, menus, exercise records, settings, or deletion instructions.\n\nImport-operation instructions and allowlisted schema:\n${schema}\n\nUser food or recipe description:\n${String(description||'').trim()}\n\nexistingFoods JSON array (complete private Food List records supplied for matching; not truncated):\n${JSON.stringify(existingFoods,null,2)}\n\nExisting-food matching rules:\n${matchingRules}`;
 }
 async function copyPrompt(operation,openAfter=false){const isFood=operation==='addFood',description=byId(isFood?'aiFoodDescription':'aiRecipeDescription').value;if(!description.trim())return status('Describe the item first.',true);const prompt=schemaPrompt(operation,description,byId('aiRecipeServings').value);try{await navigator.clipboard.writeText(prompt);status('ChatGPT instructions copied to the clipboard.');if(openAfter)window.open('https://chatgpt.com/','_blank','noopener,noreferrer');}catch(_e){status('Clipboard permission was denied or is unavailable. Copy the instructions manually.',true);if(openAfter)window.open('https://chatgpt.com/','_blank','noopener,noreferrer');}}
-async function pasteClipboard(target){try{const text=await navigator.clipboard.readText();if(!text)return target==='aiMealPlanPackage'?mealPlanStatus('The clipboard is empty. Paste the JSON manually into the box.',true):status('The clipboard is empty. Paste the JSON manually into the box.',true);byId(target).value=text;return target==='aiMealPlanPackage'?mealPlanStatus('Clipboard content pasted. Select Review Meal Plan when ready.'):status('Clipboard content pasted. Select Review Import when ready.');}catch(_e){return target==='aiMealPlanPackage'?mealPlanStatus('Clipboard permission was denied or is unavailable. Paste the JSON manually into the box.',true):status('Clipboard permission was denied or is unavailable. Paste the JSON manually into the box.',true);}}
+async function pasteClipboard(target){try{const text=await navigator.clipboard.readText();if(!text)return target==='aiMealPlanPackage'?mealPlanStatus('The clipboard is empty. Paste the JSON manually into the box.',true):status('The clipboard is empty. Paste the JSON manually into the box.',true);byId(target).value=text;return target==='aiMealPlanPackage'?mealPlanStatus('Clipboard content pasted. Select Preview Menus when ready.'):status('Clipboard content pasted. Select Review Import when ready.');}catch(_e){return target==='aiMealPlanPackage'?mealPlanStatus('Clipboard permission was denied or is unavailable. Paste the JSON manually into the box.',true):status('Clipboard permission was denied or is unavailable. Paste the JSON manually into the box.',true);}}
 function ensureImportFeedback(){const active=document.querySelector('.screen.active.aiAssist>.card');if(!active)return;for(const id of ['aiImportStatus','aiReviewPanel','aiImportComplete']){const el=byId(id);if(el&&el.parentElement!==active)active.appendChild(el);}}
 function status(message,error=false){ensureImportFeedback();const el=byId('aiImportStatus');if(el){el.textContent=message;el.classList.toggle('error',error);}return false;}
 function review(operation){try{const text=byId(operation==='addFood'?'aiFoodPackage':'aiRecipePackage').value;pending=validatePackage(parsePackage(text),operation);renderReview();return true;}catch(error){pending=null;byId('aiReviewPanel').classList.add('hide');return status(error.message,true);}}
@@ -205,6 +205,8 @@ function undoImport(importInfo=lastImport){
 function undo(){try{undoImport();byId('aiImportComplete').classList.add('hide');renderFoodSelect();renderFoodsList();renderRecipes();status('The AI-assisted import was undone.');}catch(error){status('Undo failed. Your saved data was not changed.',true);}}
 function cancel(){pending=null;byId('aiReviewPanel').classList.add('hide');status('Import canceled. Nothing was saved.');if(previousFocus&&previousFocus.focus)previousFocus.focus();}
 function mealPlanStatus(message,error=false){const el=byId('aiMealPlanStatus');if(el){el.textContent=message;el.classList.toggle('error',error);}return false;}
+function hideMealPlanConflict(){byId('aiMealPlanConflict')?.classList.add('hide');}
+function showMealPlanComplete(message){const panel=byId('aiMealPlanComplete'),el=byId('aiMealPlanCompleteMessage');if(el)el.textContent=message;if(panel)panel.classList.remove('hide');}
 function dateKeyValid(value){return /^\d{4}-\d{2}-\d{2}$/.test(String(value||''));}
 function dateParts(value){if(!dateKeyValid(value))return null;const [y,m,d]=value.split('-').map(Number);const dt=new Date(y,m-1,d);if(dt.getFullYear()!==y||dt.getMonth()!==m-1||dt.getDate()!==d)return null;return {y,m,d};}
 function dateOrdinal(value){const p=dateParts(value);return p?Date.UTC(p.y,p.m-1,p.d)/86400000:null;}
@@ -220,7 +222,7 @@ function validateMealPlanRequest(req){
  if(!dateParts(req.startDate))throw new Error('Choose a valid start date.');
  if(!dateParts(req.endDate))throw new Error('Choose a valid end date.');
  const days=inclusiveDates(req.startDate,req.endDate);if(!days.length)throw new Error('End date cannot be before start date.');
- if(days.length>MAX_MEAL_PLAN_DAYS)throw new Error(`Meal plans are limited to ${MAX_MEAL_PLAN_DAYS} inclusive days.`);
+ if(days.length>MAX_MEAL_PLAN_DAYS)throw new Error(`Menus are limited to ${MAX_MEAL_PLAN_DAYS} inclusive days.`);
  if(!req.goals.length)throw new Error('Select at least one goal.');
  if(req.goals.includes('Other')&&!req.otherGoal)throw new Error('Enter the custom Other goal or clear Other.');
  return {...req,days};
@@ -230,7 +232,7 @@ function mealPlanPrompt(req){
  const recipes=trackerRecipes().map((r,i)=>({id:r.id||`built-in-recipe-${i}`,name:String(r.name||''),serving:String(r.serving||'1 serving'),nutrition:plain(r.nutrition)?Object.fromEntries(KEYS.map(k=>[k,finiteNumberOrNull(r.nutrition[k])] )):Object.fromEntries(KEYS.map(k=>[k,finiteNumberOrNull(r[k])]))})).filter(r=>r.name);
  const goals=valid.goals.map(g=>g==='Weight loss'?`${g} (${valid.weightLossDegree})`:g==='Other'?`${g}: ${valid.otherGoal}`:g);
  const nutrientShape=KEYS.map(k=>`"${k}": ${CORE_NUTRIENTS.has(k)?0:'null'}`).join(', ');
- return `Create a Nutrition Tracker meal plan suggestion. Return raw valid JSON only, without Markdown code fences or commentary. This is not a medical prescription and must not claim to diagnose, treat, or prescribe. Use local date strings exactly as supplied; do not use UTC timestamps.\n\nDate range: ${valid.startDate} through ${valid.endDate}. Include exactly one day object for every date in this inclusive list: ${valid.days.join(', ')}.\nGoals: ${goals.join(', ')}.\nOptional preferences and constraints: ${valid.notes||'None supplied'}.\n\nUser profile and nutrition targets JSON:\n${JSON.stringify({profile:state.profile||{},targets},null,2)}\n\nExisting private Food List JSON for matching:\n${JSON.stringify(foods,null,2)}\n\nExisting recipes JSON for matching:\n${JSON.stringify(recipes,null,2)}\n\nRequired JSON schema:\n{"packageType":"${MEAL_PLAN_PACKAGE_TYPE}","schemaVersion":${MEAL_PLAN_SCHEMA_VERSION},"createdBy":"user-chatgpt","startDate":"${valid.startDate}","endDate":"${valid.endDate}","days":[{"date":"YYYY-MM-DD","items":[{"meal":"Breakfast","type":"food","name":"Item name","quantity":1,"servingUnit":"serving","foodId":null,"recipeId":null,"nutrients":{${nutrientShape}},"notes":""}]}]}\n\nRules: every item name is required. quantity must be a positive finite number. servingUnit is required. nutrients are numeric values for one listed serving or null only for optional non-core fields; calories, protein, carbs, fat, fiber, and sodium must be finite nonnegative numbers. Use foodId or recipeId only when it exactly matches a supplied existing record. Do not invent IDs. Preserve enough nutrition for unmatched items to become Today\'s Menu entries. Do not create or overwrite Food List items or recipes.`;
+ return `Create a Nutrition Tracker menu suggestion import package. Return raw valid JSON only, without Markdown code fences or commentary. This is not a medical prescription and must not claim to diagnose, treat, or prescribe. Use local YYYY-MM-DD date strings exactly as supplied; do not use UTC timestamps.\n\nDate range: ${valid.startDate} through ${valid.endDate}. Create one complete daily menu for every date in this inclusive list: ${valid.days.join(', ')}.\nGoals: ${goals.join(', ')}.\nOptional preferences and restrictions: ${valid.notes||'None supplied'}.\n\nUser profile and nutrition targets JSON:\n${JSON.stringify({profile:state.profile||{},targets},null,2)}\n\nExisting private Food List JSON for matching:\n${JSON.stringify(foods,null,2)}\n\nExisting recipes JSON for matching:\n${JSON.stringify(recipes,null,2)}\n\nRequired strict JSON AI Import Package schema:\n{"packageType":"${MEAL_PLAN_PACKAGE_TYPE}","schemaVersion":${MEAL_PLAN_SCHEMA_VERSION},"createdBy":"user-chatgpt","startDate":"${valid.startDate}","endDate":"${valid.endDate}","days":[{"date":"YYYY-MM-DD","items":[{"meal":"Breakfast","type":"food","name":"Item name","quantity":1,"servingUnit":"serving","foodId":null,"recipeId":null,"nutrients":{${nutrientShape}},"notes":""}]}]}\n\nRules: every item name is required. quantity must be a positive finite number. servingUnit is required. meal is the Today\'s Menu group assignment when applicable. nutrients are numeric values for one listed serving or null only for optional non-core fields; calories, protein, carbs, fat, fiber, and sodium must be finite nonnegative numbers. Include carbohydrate as carbs. Include the other supported nutrition fields when available. Use foodId or recipeId only when it exactly matches a supplied existing record. Do not invent IDs. Preserve enough nutrition for unmatched items to become Today\'s Menu entries. Do not create or overwrite Food List items or recipes.`;
 }
 function finiteNumberOrNull(value){if(value===null||value===undefined||value==='')return null;const num=Number(value);return Number.isFinite(num)&&num>=0?num:null;}
 function mealPlanNutrients(value,label){if(!plain(value))throw new Error(`${label} nutrients object is required.`);rejectUnknown(value,NUTRIENT_FIELDS,`${label} nutrients`);const out={};for(const key of KEYS){const raw=own(value,key)?value[key]:null;if(CORE_NUTRIENTS.has(key)&&raw===null)throw new Error(`${label} ${key} is required.`);out[key]=finite(raw,`${label} ${key}`,{nullable:!CORE_NUTRIENTS.has(key)});}return out;}
@@ -248,19 +250,19 @@ function findMealPlanMatch(item){
  return {kind:'generated',record:null};
 }
 function validateMealPlan(value,request){
- rejectUnknown(value,new Set(['packageType','schemaVersion','createdBy','startDate','endDate','days']),'Meal plan package');
- if(value.packageType!==MEAL_PLAN_PACKAGE_TYPE)throw new Error('Unsupported meal plan package type.');
- if(value.schemaVersion!==MEAL_PLAN_SCHEMA_VERSION)throw new Error('Unsupported meal plan schema version.');
+ rejectUnknown(value,new Set(['packageType','schemaVersion','createdBy','startDate','endDate','days']),'Menu package');
+ if(value.packageType!==MEAL_PLAN_PACKAGE_TYPE)throw new Error('Unsupported menu package type.');
+ if(value.schemaVersion!==MEAL_PLAN_SCHEMA_VERSION)throw new Error('Unsupported menu schema version.');
  if(value.createdBy!=='user-chatgpt')throw new Error('createdBy must be "user-chatgpt".');
  const req=validateMealPlanRequest(request||{startDate:value.startDate,endDate:value.endDate,goals:['Meal plan']});
- if(value.startDate!==req.startDate||value.endDate!==req.endDate)throw new Error('Meal plan date range does not match the requested dates.');
- if(!Array.isArray(value.days))throw new Error('Meal plan days must be an array.');
+ if(value.startDate!==req.startDate||value.endDate!==req.endDate)throw new Error('Menu date range does not match the requested dates.');
+ if(!Array.isArray(value.days))throw new Error('Menu days must be an array.');
  const expected=new Set(req.days),seen=new Set(),days=[];
  value.days.forEach((day,dayIndex)=>{
-  if(!plain(day))throw new Error(`Day ${dayIndex+1} must be an object.`);rejectUnknown(day,new Set(['date','items','notes']),'Meal plan day');
-  if(!expected.has(day.date))throw new Error(`Meal plan contains out-of-range date ${day.date}.`);
-  if(seen.has(day.date))throw new Error(`Meal plan contains duplicate date ${day.date}.`);seen.add(day.date);
-  if(!Array.isArray(day.items)||!day.items.length)throw new Error(`Meal plan date ${day.date} must contain at least one item.`);
+  if(!plain(day))throw new Error(`Day ${dayIndex+1} must be an object.`);rejectUnknown(day,new Set(['date','items','notes']),'Menu day');
+  if(!expected.has(day.date))throw new Error(`Menu contains out-of-range date ${day.date}.`);
+  if(seen.has(day.date))throw new Error(`Menu contains duplicate date ${day.date}.`);seen.add(day.date);
+  if(!Array.isArray(day.items)||!day.items.length)throw new Error(`Menu date ${day.date} must contain at least one item.`);
   const items=day.items.map((item,itemIndex)=>{
    if(!plain(item))throw new Error(`${day.date} item ${itemIndex+1} must be an object.`);rejectUnknown(item,new Set(['meal','group','type','name','quantity','servingUnit','foodId','recipeId','nutrients','notes']),'Meal plan item');
    const name=String(item.name||'').trim();if(!name)throw new Error(`${day.date} item ${itemIndex+1} name is required.`);
@@ -271,11 +273,11 @@ function validateMealPlan(value,request){
   });
   days.push({date:day.date,items,notes:String(day.notes||'').trim()});
  });
- for(const date of req.days)if(!seen.has(date))throw new Error(`Meal plan is missing ${date}.`);
+ for(const date of req.days)if(!seen.has(date))throw new Error(`Menu package is missing ${date}.`);
  days.sort((a,b)=>a.date.localeCompare(b.date));
  return {request:req,days};
 }
-function parseMealPlanPackage(text,request){return validateMealPlan(parseJsonObject(text,'AI meal plan JSON'),request);}
+function parseMealPlanPackage(text,request){return validateMealPlan(parseJsonObject(text,'AI import package'),request);}
 function mealPlanItemFood(item){
  if(item.match.kind==='food')return normalizeNutritionFields(cloneStateValue(item.match.record));
  if(item.match.kind==='recipe')return recipeFoodSnapshot(item.match.record);
@@ -286,15 +288,25 @@ function mealPlanDailyTotals(day){const totals=Object.fromEntries(KEYS.map(k=>[k
 function renderMealPlanPreview(plan){
  const box=byId('aiMealPlanPreviewContent'),panel=byId('aiMealPlanPreview'),btn=byId('aiImportMealPlanBtn');if(!box||!panel||!btn)return;
  box.innerHTML=plan.days.map(day=>{const totals=mealPlanDailyTotals(day);return `<div class="aiMealDay"><h3>${esc(day.date)}</h3><p class="aiMealTotals">Calories ${round(totals.calories)} kcal · Protein ${round(totals.protein)} g · Carbs ${round(totals.carbs)} g · Fat ${round(totals.fat)} g · Fiber ${round(totals.fiber)} g · Sodium ${round(totals.sodium)} mg</p>${day.items.map(item=>`<div class="aiMealItem"><b>${esc(item.meal||'Meal')}</b>: ${esc(item.name)} · ${round(item.quantity)} ${esc(item.servingUnit)}<br><span class="small">${item.match.kind==='food'?'Reuses Food List item':item.match.kind==='recipe'?'Reuses recipe':'Uses generated nutrition'} · ${round(item.nutrients.calories)} kcal per ${esc(item.servingUnit)}</span></div>`).join('')}</div>`;}).join('');
- panel.classList.remove('hide');btn.disabled=false;mealPlanStatus('Validated. Review every date before importing.');
+ panel.classList.remove('hide');btn.disabled=false;hideMealPlanConflict();byId('aiMealPlanComplete')?.classList.add('hide');mealPlanStatus('Validated. Review every date before importing.');
 }
-function reviewMealPlan(){try{pendingMealPlan=parseMealPlanPackage(byId('aiMealPlanPackage').value,lastMealPlanRequest);renderMealPlanPreview(pendingMealPlan);return true;}catch(error){pendingMealPlan=null;const btn=byId('aiImportMealPlanBtn');if(btn)btn.disabled=true;byId('aiMealPlanPreview')?.classList.add('hide');return mealPlanStatus(error.message,true);}}
-async function generateMealPlan(openAfter=false){try{lastMealPlanRequest=validateMealPlanRequest(mealPlanFormRequest());const prompt=mealPlanPrompt(lastMealPlanRequest);await navigator.clipboard.writeText(prompt);mealPlanStatus('Meal plan instructions copied to the clipboard. Paste the returned JSON below for review.');if(openAfter)window.open('https://chatgpt.com/','_blank','noopener,noreferrer');return prompt;}catch(error){if(openAfter)window.open('https://chatgpt.com/','_blank','noopener,noreferrer');return mealPlanStatus(error.message,true);}}
+function reviewMealPlan(){try{pendingMealPlan=parseMealPlanPackage(byId('aiMealPlanPackage').value,lastMealPlanRequest);renderMealPlanPreview(pendingMealPlan);return true;}catch(error){pendingMealPlan=null;const btn=byId('aiImportMealPlanBtn');if(btn)btn.disabled=true;byId('aiMealPlanPreview')?.classList.add('hide');hideMealPlanConflict();return mealPlanStatus(error.message,true);}}
+async function generateMealPlan(openAfter=false){try{lastMealPlanRequest=validateMealPlanRequest(mealPlanFormRequest());const prompt=mealPlanPrompt(lastMealPlanRequest);await navigator.clipboard.writeText(prompt);mealPlanStatus('ChatGPT instructions copied to the clipboard. Paste the returned import package below for preview.');if(openAfter)window.open('https://chatgpt.com/','_blank','noopener,noreferrer');return prompt;}catch(error){if(openAfter)window.open('https://chatgpt.com/','_blank','noopener,noreferrer');return mealPlanStatus(error.message,true);}}
+function mealPlanAffectedDates(plan){return plan?plan.days.filter(day=>(state.entries||[]).some(e=>e.date===day.date)).map(day=>day.date):[];}
+function requestMealPlanConflictChoice(){
+ if(!pendingMealPlan)return mealPlanStatus('Review a valid menu package before importing.',true);
+ const affected=mealPlanAffectedDates(pendingMealPlan);
+ if(!affected.length)return importMealPlan('append');
+ const panel=byId('aiMealPlanConflict'),dates=byId('aiMealPlanConflictDates');
+ if(dates)dates.textContent=`Existing Today's Menu entries were found for: ${affected.join(', ')}.`;
+ if(panel)panel.classList.remove('hide');
+ return mealPlanStatus('Choose how to handle dates that already contain menu entries.');
+}
 function importValidatedMealPlan(plan,choice){
  let before=null;
  try{
-  if(!plan)throw new Error('Review a valid meal plan before importing.');
-  const affected=plan.days.filter(day=>(state.entries||[]).some(e=>e.date===day.date)).map(day=>day.date);
+  if(!plan)throw new Error('Review a valid menu package before importing.');
+  const affected=mealPlanAffectedDates(plan);
   let mode=choice;
   if(affected.length&&!mode){mode=String(prompt(`Existing Today\'s Menu items were found for: ${affected.join(', ')}.\nType append to append generated items, replace to replace existing items on those dates, or cancel to stop.`,'cancel')||'cancel').trim().toLowerCase();}
   if(affected.length&&!['append','replace'].includes(mode))return mealPlanStatus('Meal plan import canceled.');
@@ -303,12 +315,12 @@ function importValidatedMealPlan(plan,choice){
   if(affected.length&&mode==='replace'){const replaceDates=new Set(affected);state.entries=(state.entries||[]).filter(e=>!replaceDates.has(e.date));}
   state.entries=[...(state.entries||[]),...newEntries];normalizeAllFoodEntryOrders();
   if(!save())throw new Error('Save failed. No meal plan entries were retained.');
-  render();mealPlanStatus(`Imported ${added} item${added===1?'':'s'} for ${plan.request.startDate} through ${plan.request.endDate} (${plan.days.length} days).`);return {days:plan.days.length,items:added,mode:affected.length?mode:'append'};
+  render();hideMealPlanConflict();const message=`Imported ${plan.request.startDate} through ${plan.request.endDate}: ${plan.days.length} day${plan.days.length===1?'':'s'}, ${added} menu entr${added===1?'y':'ies'}.`;mealPlanStatus(message);showMealPlanComplete(message);return {days:plan.days.length,items:added,mode:affected.length?mode:'append'};
  }catch(error){if(before)applyTrackerState(before);return mealPlanStatus(error.message,true);}
 }
 function importMealPlan(choice){return importValidatedMealPlan(pendingMealPlan,choice);}
 function updateMealPlanConditionals(){const wl=byId('aiGoalWeightLoss')?.checked,other=byId('aiGoalOther')?.checked;byId('aiWeightLossDegreeWrap')?.classList.toggle('hide',!wl);byId('aiOtherGoalWrap')?.classList.toggle('hide',!other);}
-function bind(){const on=(id,event,fn)=>{const el=byId(id);if(el)el.addEventListener(event,fn);};on('aiCopyFoodBtn','click',()=>copyPrompt('addFood'));on('aiOpenFoodBtn','click',()=>copyPrompt('addFood',true));on('aiCopyRecipeBtn','click',()=>copyPrompt('addRecipeWithFoods'));on('aiOpenRecipeBtn','click',()=>copyPrompt('addRecipeWithFoods',true));on('aiPasteFoodBtn','click',()=>pasteClipboard('aiFoodPackage'));on('aiPasteRecipeBtn','click',()=>pasteClipboard('aiRecipePackage'));on('aiReviewFoodBtn','click',()=>review('addFood'));on('aiReviewRecipeBtn','click',()=>review('addRecipeWithFoods'));on('aiApproveBtn','click',approve);on('aiEditBtn','click',cancel);on('aiCancelBtn','click',cancel);on('aiUndoBtn','click',undo);on('aiAddTodayBtn','click',addImportedToday);on('aiReturnBtn','click',()=>showScreen(lastImport?.operation==='addFood'?'foodsScreen':'recipesScreen'));on('aiGenerateMealPlanBtn','click',()=>generateMealPlan(false));on('aiOpenMealPlanBtn','click',()=>generateMealPlan(true));on('aiPasteMealPlanBtn','click',()=>pasteClipboard('aiMealPlanPackage'));on('aiReviewMealPlanBtn','click',reviewMealPlan);on('aiImportMealPlanBtn','click',()=>importMealPlan());['aiGoalWeightLoss','aiGoalOther'].forEach(id=>on(id,'change',updateMealPlanConditionals));updateMealPlanConditionals();}
+function bind(){const on=(id,event,fn)=>{const el=byId(id);if(el)el.addEventListener(event,fn);};on('aiCopyFoodBtn','click',()=>copyPrompt('addFood'));on('aiOpenFoodBtn','click',()=>copyPrompt('addFood',true));on('aiCopyRecipeBtn','click',()=>copyPrompt('addRecipeWithFoods'));on('aiOpenRecipeBtn','click',()=>copyPrompt('addRecipeWithFoods',true));on('aiPasteFoodBtn','click',()=>pasteClipboard('aiFoodPackage'));on('aiPasteRecipeBtn','click',()=>pasteClipboard('aiRecipePackage'));on('aiReviewFoodBtn','click',()=>review('addFood'));on('aiReviewRecipeBtn','click',()=>review('addRecipeWithFoods'));on('aiApproveBtn','click',approve);on('aiEditBtn','click',cancel);on('aiCancelBtn','click',cancel);on('aiUndoBtn','click',undo);on('aiAddTodayBtn','click',addImportedToday);on('aiReturnBtn','click',()=>showScreen(lastImport?.operation==='addFood'?'foodsScreen':'recipesScreen'));on('aiGenerateMealPlanBtn','click',()=>generateMealPlan(false));on('aiOpenMealPlanBtn','click',()=>generateMealPlan(true));on('aiPasteMealPlanBtn','click',()=>pasteClipboard('aiMealPlanPackage'));on('aiReviewMealPlanBtn','click',reviewMealPlan);on('aiImportMealPlanBtn','click',requestMealPlanConflictChoice);on('aiMealPlanAppendBtn','click',()=>importMealPlan('append'));on('aiMealPlanReplaceBtn','click',()=>importMealPlan('replace'));on('aiMealPlanCancelImportBtn','click',()=>{hideMealPlanConflict();mealPlanStatus('Menu import canceled.');});on('aiMealPlanOpenTodayBtn','click',()=>showScreen('mainScreen'));['aiGoalWeightLoss','aiGoalOther'].forEach(id=>on(id,'change',updateMealPlanConditionals));updateMealPlanConditionals();}
 window.NutritionTrackerAI={parsePackage,validatePackage,validateFood,validateRecipe,validateRecipeWithFoods,normalizeRecipeInstructionsAndNotes,findMatches,calculateRecipeNutrition,defaultResolutions,approveImport,undoImport,foodUsedElsewhere,existingFoodsForPrompt,schemaPrompt,mealPlanFormRequest,validateMealPlanRequest,mealPlanPrompt,parseMealPlanPackage,validateMealPlan,mealPlanDailyTotals,importMealPlan,importValidatedMealPlan,findMealPlanMatch,inclusiveDates};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind);else bind();
 })();
