@@ -52,8 +52,19 @@ select optgroup{
 <section class="screen" id="statsHubScreen"><div class="card"><p class="breadcrumb"><button class="secondary" data-screen="foodHubScreen">← Food</button></p><h2>Stats</h2><div class="moduleGrid"><button class="moduleBtn" data-screen="dailyTotalsScreen">Daily Totals<span>Calories, macros, net calories, and estimated loss/gain.</span></button><button class="moduleBtn" data-screen="statsScreen">Nutrition Stats<span>Targets, charts, vitamin breakdowns, and insulin-response estimate.</span></button><button class="moduleBtn" data-screen="breakdownScreen">Daily Macro/Micro Breakdown<span>Each nutrient with contributing foods.</span></button></div></div></section>
 <section class="screen" id="exerciseHubScreen"><div class="card"><p class="breadcrumb"><button class="secondary returnButton" data-screen="homeScreen">← Back to Menu</button></p><h2>Exercise</h2><div class="moduleGrid"><button class="moduleBtn" data-screen="exerciseScreen">Workout &amp; Activity Tracker<span>Build reusable workouts, log completed sets, and save other activities.</span></button><button class="moduleBtn" data-screen="dailyTotalsScreen">Daily Totals<span>View workout and activity calories inside daily totals.</span></button></div></div></section>
 <section class="screen" id="utilitiesScreen"><div class="card"><p class="breadcrumb"><button class="secondary returnButton" data-screen="homeScreen">← Back to Menu</button></p><h2>Utilities</h2><p class="small">Copy and reset tools for the information stored temporarily in this browser.</p><div class="moduleGrid"><div class="card" style="padding:12px;background:#0f172a"><h3 style="margin-top:0">Copy Day</h3><div class="dateRow"><div><label>Copy From Date</label><input id="copyFromDate" type="date"/></div><div><label>Copy To Date</label><input id="copyToDate" type="date"/></div></div><div class="actions"><button id="copyDayBtn">Copy From Date → Copy To Date</button></div></div><button class="moduleBtn danger" id="clearDayBtn">Reset Day<span>Clear the selected day's entries.</span></button><button class="moduleBtn danger" id="resetBtn">Reset App<span>Delete all local tracker data.</span></button></div></div></section>
-<section class="screen" id="reportsScreen"><div class="card"><p class="breadcrumb"><button class="secondary returnButton" data-screen="mainMenuScreen">← Back to Main Menu</button></p><h2>Reports</h2><p class="small">Create printable reports from your saved tracker data.</p><div class="moduleGrid"><button class="moduleBtn" data-screen="recipePrintScreen">Print Recipes<span>Select one or more recipes and print them to PDF or a printer.</span></button><button class="moduleBtn" data-screen="weightHistoryScreen">Weight History<span>Select a date range, view a graph and table, then print or save as PDF.</span></button><button class="moduleBtn" data-screen="trackerSummaryScreen">Tracker Summary<span>Summarize calories, exercise, macros, and micronutrients by day, week, or month.</span></button></div></div></section>
+<section class="screen" id="reportsScreen"><div class="card"><p class="breadcrumb"><button class="secondary returnButton" data-screen="mainMenuScreen">← Back to Main Menu</button></p><h2>Reports</h2><p class="small">Create printable reports from your saved tracker data.</p><div class="moduleGrid"><button class="moduleBtn" data-screen="recipePrintScreen">Print Recipes<span>Select one or more recipes and print them to PDF or a printer.</span></button><button class="moduleBtn" data-screen="weightHistoryScreen">Weight History<span>Select a date range, view a graph and table, then print or save as PDF.</span></button><button class="moduleBtn" data-screen="trackerSummaryScreen">Tracker Summary<span>Summarize calories, exercise, macros, and micronutrients by day, week, or month.</span></button><button class="moduleBtn" data-screen="menuRangeReportScreen">Print Menu Range<span>Preview and print Today's Menu for any start and end date.</span></button></div></div></section>
 <section class="screen" id="recipePrintScreen"><div class="card"><p class="breadcrumb"><button class="secondary" data-screen="reportsScreen">← Reports</button></p><h2>Print Recipes</h2><p class="small">Check the recipes you want, then open the browser print dialog. Choose Save as PDF or select a printer.</p><div class="actions noPrint"><button class="secondary" id="selectAllRecipesBtn">Select All</button><button class="secondary" id="clearRecipeSelectionBtn">Clear Selection</button><button id="printSelectedRecipesBtn">Print Selected Recipes</button></div><div id="recipePrintChoices" style="margin-top:14px"></div></div></section>
+<section class="screen" id="menuRangeReportScreen"><div class="card">
+<p class="breadcrumb noPrint"><button class="secondary" data-screen="reportsScreen">← Reports</button></p>
+<h2>Print Menu Range</h2>
+<p class="small noPrint">Choose a start and end date to preview the saved Today’s Menu for each day. Print opens a printer-friendly view that can also be saved as PDF.</p>
+<div class="dateRow noPrint">
+<div><label>Start Date</label><input id="menuRangeStart" type="date"/></div>
+<div><label>End Date</label><input id="menuRangeEnd" type="date"/></div>
+</div>
+<div class="actions noPrint"><button id="previewMenuRangeBtn">Preview Range</button><button id="printMenuRangeBtn">Print Range</button></div>
+<div id="menuRangeReportPreview" style="margin-top:16px"></div>
+</div></section>
 <section class="screen" id="mainScreen"><div class="card"><p class="breadcrumb"><button class="secondary" data-screen="foodHubScreen">← Food</button></p><h2>Today's Menu</h2><label>Date</label><input id="date" type="date"/><label style="margin-left:12px">Daily Weight (lb)</label><input id="todayMenuWeight" min="0" placeholder="147.2" step="0.1" type="number"/>
 <label style="margin-left:12px">Schedule</label>
 <select id="mealSchedule">
@@ -198,6 +209,7 @@ select optgroup{
 <details class="usersGuideSection"><summary>Reports, Shopping Lists, and Utilities</summary><div class="usersGuideBody"><ul>
 <li><b>Weight History</b> provides a date-range graph and table that can be printed or saved as a PDF.</li>
 <li><b>Tracker Summary</b> reports calories, exercise, macros, and micronutrients for a selected date range by day, week, or month.</li>
+<li><b>Print Menu Range</b> previews and prints the saved Today's Menu for every date in a selected range.</li>
 <li><b>Shopping List</b> consolidates entries from selected dates; print output includes items marked to buy.</li>
 <li><b>Copy Day</b> copies a selected day’s saved entries to another date. Review the destination date after copying.</li>
 <li>Reset and delete actions require confirmation and should be used carefully.</li>
@@ -2279,4 +2291,86 @@ document.addEventListener('change',e=>{
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.53.0/dist/umd/supabase.min.js" crossorigin="anonymous"></script>
 <script src="ai-assistance.js"></script>
 <script src="workout.js"></script>
-<script src="account.js"></script></body></html>
+<script src="account.js"></script><script id="menuRangeReportScript">
+function menuRangeParseDate(value){
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(value||'')) return null;
+  const d=new Date(value+'T12:00:00');
+  return Number.isNaN(d.getTime())?null:d;
+}
+function menuRangeFormatDate(value){
+  const d=menuRangeParseDate(value);
+  return d?d.toLocaleDateString(undefined,{weekday:'long',year:'numeric',month:'long',day:'numeric'}):value;
+}
+function menuRangeDates(start,end){
+  const first=menuRangeParseDate(start), last=menuRangeParseDate(end);
+  if(!first||!last||last<first) return [];
+  const out=[];
+  const cur=new Date(first);
+  while(cur<=last && out.length<367){
+    out.push(cur.getFullYear()+'-'+String(cur.getMonth()+1).padStart(2,'0')+'-'+String(cur.getDate()).padStart(2,'0'));
+    cur.setDate(cur.getDate()+1);
+  }
+  return out;
+}
+function initMenuRangeControls(force=false){
+  const start=document.getElementById('menuRangeStart');
+  const end=document.getElementById('menuRangeEnd');
+  if(!start||!end) return;
+  const finish=(typeof selectedDate==='function'&&selectedDate())||new Date().toISOString().slice(0,10);
+  if(force||!end.value) end.value=finish;
+  if(force||!start.value){
+    const d=menuRangeParseDate(finish)||new Date();
+    d.setDate(d.getDate()-6);
+    start.value=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  }
+}
+function menuRangeDayHtml(date,printMode=false){
+  const entries=(typeof foodEntriesForDate==='function'?foodEntriesForDate(date):[]);
+  const totals=(typeof totalsForDate==='function'?totalsForDate(date):{});
+  const rows=entries.length?entries.map((e,i)=>{
+    const food=e.food||{};
+    const serving=food.serving?` × ${esc(food.serving)}`:'';
+    const group=e.group?`<span class="menuRangeGroup">${esc(e.group)}</span>`:'';
+    const eaten=e.eaten?' ✓ eaten':'';
+    return `<tr><td>${i+1}</td><td><b>${esc(food.name||'Food')}</b>${group}</td><td>${Number(e.servings||0).toFixed(2).replace(/\.00$/,'')}${serving}</td><td>${Math.round((Number(food.calories)||0)*(Number(e.servings)||0))} kcal${eaten}</td></tr>`;
+  }).join(''):'<tr><td colspan="4"><span class="small">No foods saved for this date.</span></td></tr>';
+  return `<article class="menuRangeDay${printMode?' printDay':''}"><h3>${esc(menuRangeFormatDate(date))}</h3><table><thead><tr><th>#</th><th>Food</th><th>Amount</th><th>Calories</th></tr></thead><tbody>${rows}</tbody></table><div class="menuRangeTotals"><b>Daily totals:</b> ${Math.round(Number(totals.calories)||0)} kcal · Protein ${Math.round((Number(totals.protein)||0)*10)/10} g · Carbs ${Math.round((Number(totals.carbs)||0)*10)/10} g · Fat ${Math.round((Number(totals.fat)||0)*10)/10} g · Fiber ${Math.round((Number(totals.fiber)||0)*10)/10} g</div></article>`;
+}
+function getMenuRangeSelection(){
+  initMenuRangeControls(false);
+  const start=(document.getElementById('menuRangeStart')||{}).value||'';
+  const end=(document.getElementById('menuRangeEnd')||{}).value||'';
+  const first=menuRangeParseDate(start),last=menuRangeParseDate(end);
+  if(!first||!last) return {error:'Choose a valid start and end date.'};
+  if(last<first) return {error:'End Date cannot be earlier than Start Date.'};
+  const dates=menuRangeDates(start,end);
+  if(!dates.length) return {error:'No dates are available for that range.'};
+  if(dates.length>366) return {error:'Choose a range of 366 days or fewer.'};
+  return {start,end,dates};
+}
+function renderMenuRangeReport(){
+  const box=document.getElementById('menuRangeReportPreview');
+  if(!box) return;
+  const selection=getMenuRangeSelection();
+  if(selection.error){box.innerHTML=`<p class="small">${esc(selection.error)}</p>`;return;}
+  box.innerHTML=`<div class="small">${esc(selection.start)} through ${esc(selection.end)} · ${selection.dates.length} day${selection.dates.length===1?'':'s'}</div>${selection.dates.map(d=>menuRangeDayHtml(d)).join('')}`;
+}
+function printMenuRangeReport(){
+  const selection=getMenuRangeSelection();
+  if(selection.error){alert(selection.error);return;}
+  const body=selection.dates.map(d=>menuRangeDayHtml(d,true)).join('');
+  const w=window.open('','_blank');
+  if(!w){alert('Pop-up blocked. Allow pop-ups, then try again.');return;}
+  w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>Today’s Menu ${esc(selection.start)} to ${esc(selection.end)}</title><style>body{font-family:Arial,sans-serif;margin:24px;color:#111}h1{font-size:22px;margin:0 0 4px}h3{font-size:17px;margin:0 0 8px}.range{color:#555;margin:0 0 18px}.menuRangeDay{margin:0 0 24px;break-inside:avoid}.menuRangeDay+ .menuRangeDay{border-top:2px solid #222;padding-top:18px}table{width:100%;border-collapse:collapse;font-size:12px}th,td{padding:6px;border-bottom:1px solid #ccc;text-align:left;vertical-align:top}.menuRangeGroup{display:block;color:#555;font-size:11px}.menuRangeTotals{margin-top:8px;font-size:12px}.small{color:#555}@media print{button{display:none}.menuRangeDay{page-break-inside:avoid}}</style></head><body><button onclick="window.print()">Print</button><h1>Today’s Menu Range</h1><p class="range">${esc(selection.start)} through ${esc(selection.end)}</p>${body}<script>setTimeout(()=>window.print(),250)<\/script></body></html>`);
+  w.document.close();
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  initMenuRangeControls(true);
+  const preview=document.getElementById('previewMenuRangeBtn');
+  const print=document.getElementById('printMenuRangeBtn');
+  if(preview) preview.addEventListener('click',renderMenuRangeReport);
+  if(print) print.addEventListener('click',printMenuRangeReport);
+  document.querySelectorAll('[data-screen="menuRangeReportScreen"]').forEach(btn=>btn.addEventListener('click',()=>{initMenuRangeControls(false);setTimeout(renderMenuRangeReport,0);}));
+});
+</script>
+</body></html>
