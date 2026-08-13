@@ -139,7 +139,8 @@ jobs:
                 text=text.replace(guide_old,guide_new,1)
               if '</body>' not in text:
                 raise SystemExit(f'{path}: closing body not found')
-              text=text.replace('</body>',script+'</body>',1)
+              before, after = text.rsplit('</body>', 1)
+              text = before + script + '</body>' + after
             path.write_text(text)
 
           a=files[0].read_bytes(); b=files[1].read_bytes()
