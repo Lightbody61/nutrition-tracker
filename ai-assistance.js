@@ -9,7 +9,7 @@ const LEGACY_INGREDIENT_FIELDS=new Set(['name','brand','amount','unit','existing
 const LINKED_INGREDIENT_FIELDS=new Set(['name','brand','amount','unit','existingFoodId','foodTemporaryKey']);
 const NUTRIENT_FIELDS=new Set(KEYS),CORE_NUTRIENTS=new Set(['calories','protein','carbs','fat','fiber','sodium']);
 const UNIT_ALIASES={gram:'g',grams:'g',kilogram:'kg',kilograms:'kg',milligram:'mg',milligrams:'mg',ounce:'oz',ounces:'oz',pound:'lb',pounds:'lb',liter:'l',liters:'l',litre:'l',litres:'l',teaspoon:'tsp',teaspoons:'tsp',tablespoon:'tbsp',tablespoons:'tbsp',cups:'cup',pieces:'piece',servings:'serving'};
-let pending=null,lastImport=null,previousFocus=null,pendingMealPlan=null,lastMealPlanRequest=null;
+let pending=null,lastImport=null,previousFocus=null,pendingMealPlan=null,lastMealPlanRequest=null,mealPlanClipboardReady=false;
 const byId=id=>document.getElementById(id);
 const plain=v=>!!v&&typeof v==='object'&&!Array.isArray(v);
 const own=(o,k)=>Object.prototype.hasOwnProperty.call(o,k);
@@ -226,13 +226,16 @@ function undoImport(importInfo=lastImport){
 function undo(){try{undoImport();byId('aiImportComplete').classList.add('hide');renderFoodSelect();renderFoodsList();renderRecipes();status('The AI-assisted import was undone.');}catch(error){status('Undo failed. Your saved data was not changed.',true);}}
 function cancel(){pending=null;byId('aiReviewPanel').classList.add('hide');status('Import canceled. Nothing was saved.');if(previousFocus&&previousFocus.focus)previousFocus.focus();}
 function mealPlanStatus(message,error=false){const el=byId('aiMealPlanStatus');if(el){el.textContent=message;el.classList.toggle('error',error);}return false;}
+function mealPlanCopyStatus(message,error=false){const el=byId('aiMealPlanCopyStatus')||byId('aiMealPlanStatus');if(el){el.textContent=message;el.classList.toggle('error',error);}return false;}
+function setMealPlanPasteEnabled(enabled){mealPlanClipboardReady=!!enabled;const btn=byId('aiPasteMealPlanBtn');if(btn)btn.disabled=!mealPlanClipboardReady;}
 function hideMealPlanConflict(){byId('aiMealPlanConflict')?.classList.add('hide');}
 function showMealPlanComplete(message){const panel=byId('aiMealPlanComplete'),el=byId('aiMealPlanCompleteMessage');if(el)el.textContent=message;if(panel)panel.classList.remove('hide');}
 function dateKeyValid(value){return /^\d{4}-\d{2}-\d{2}$/.test(String(value||''));}
 function dateParts(value){if(!dateKeyValid(value))return null;const [y,m,d]=value.split('-').map(Number);const dt=new Date(y,m-1,d);if(dt.getFullYear()!==y||dt.getMonth()!==m-1||dt.getDate()!==d)return null;return {y,m,d};}
-function dateOrdinal(value){const p=dateParts(value);return p?Date.UTC(p.y,p.m-1,p.d)/86400000:null;}
-function dateFromOrdinal(value){const d=new Date(value*86400000);return `${d.getUTCFullYear()}-${String(d.getUTCMonth()+1).padStart(2,'0')}-${String(d.getUTCDate()).padStart(2,'0')}`;}
-function inclusiveDates(start,end){const a=dateOrdinal(start),b=dateOrdinal(end);if(a===null||b===null||b<a)return [];return Array.from({length:b-a+1},(_x,i)=>dateFromOrdinal(a+i));}
+function dateOrdinal(value){const p=dateParts(value);return p?new Date(p.y,p.m-1,p.d).getTime():null;}
+function formatLocalDate(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+function dateFromOrdinal(value){return formatLocalDate(new Date(value));}
+function inclusiveDates(start,end){const a=dateParts(start),b=dateParts(end);if(!a||!b)return [];const current=new Date(a.y,a.m-1,a.d),last=new Date(b.y,b.m-1,b.d);if(last<current)return [];const days=[];while(current<=last){days.push(formatLocalDate(current));current.setDate(current.getDate()+1);}return days;}
 function mealPlanFormRequest(){
  const start=byId('aiMealPlanStart')?.value||'',end=byId('aiMealPlanEnd')?.value||'',goals=[];
  const checks=[['aiGoalWeightLoss','Weight loss'],['aiGoalKeto','Keto'],['aiGoalHeartHealthy','Heart healthy'],['aiGoalLowCarb','Low carb'],['aiGoalLowFat','Low fat'],['aiGoalOther','Other']];
@@ -264,6 +267,23 @@ function validateMealPlanRequest(req){
  if(req.goals.includes('Other')&&!req.otherGoal)throw new Error('Enter the custom Other goal or clear Other.');
  const calorieAdjustment=validateCalorieAdjustment(req.calorieAdjustmentType,req.calorieAdjustmentAmount);
  return {...req,calorieAdjustment,days};
+}
+function clearMealPlanInvalidFields(){['aiMealPlanStart','aiMealPlanEnd','aiGoalWeightLoss','aiGoalKeto','aiGoalHeartHealthy','aiGoalLowCarb','aiGoalLowFat','aiGoalOther','aiOtherGoalText','aiMealPlanCalorieAdjustmentType','aiMealPlanCalorieAdjustmentAmount'].forEach(id=>{const el=byId(id);if(!el)return;el.classList.remove('aiInvalid');el.removeAttribute?.('aria-invalid');});}
+function showMealPlanValidationError(fieldId,message){clearMealPlanInvalidFields();const field=byId(fieldId);if(field){field.classList.add('aiInvalid');field.setAttribute?.('aria-invalid','true');field.focus?.();field.scrollIntoView?.({block:'center'});}return mealPlanCopyStatus(message,true);}
+function validateMealPlanFormForCopy(){
+ clearMealPlanInvalidFields();
+ const req=mealPlanFormRequest(),goalIds=['aiGoalWeightLoss','aiGoalKeto','aiGoalHeartHealthy','aiGoalLowCarb','aiGoalLowFat','aiGoalOther'];
+ if(!dateParts(req.startDate))throw {fieldId:'aiMealPlanStart',message:'Choose a valid start date.'};
+ if(!dateParts(req.endDate))throw {fieldId:'aiMealPlanEnd',message:'Choose a valid end date.'};
+ if(dateOrdinal(req.endDate)<dateOrdinal(req.startDate))throw {fieldId:'aiMealPlanEnd',message:'End date cannot be before start date.'};
+ if(inclusiveDates(req.startDate,req.endDate).length>MAX_MEAL_PLAN_DAYS)throw {fieldId:'aiMealPlanEnd',message:`Menus are limited to ${MAX_MEAL_PLAN_DAYS} inclusive days.`};
+ if(!req.goals.length)throw {fieldId:goalIds[0],message:'Select at least one goal.'};
+ if(req.goals.includes('Other')&&!req.otherGoal)throw {fieldId:'aiOtherGoalText',message:'Enter the custom Other goal or clear Other.'};
+ try{return validateMealPlanRequest(req);}catch(error){
+  const message=String(error.message||error);
+  const fieldId=/calorie deficit or surplus|Select Deficit or Surplus/.test(message)?(req.calorieAdjustmentAmount?'aiMealPlanCalorieAdjustmentAmount':'aiMealPlanCalorieAdjustmentType'):'aiMealPlanStart';
+  throw {fieldId,message};
+ }
 }
 function mealPlanPrompt(req){
  const valid=validateMealPlanRequest(req),targets=typeof profileCalc==='function'?profileCalc():{},foods=existingFoodsForPrompt();
@@ -332,7 +352,30 @@ function renderMealPlanPreview(plan){
  panel.classList.remove('hide');btn.disabled=false;hideMealPlanConflict();byId('aiMealPlanComplete')?.classList.add('hide');mealPlanStatus('Validated. Review every date before importing.');
 }
 function reviewMealPlan(){try{pendingMealPlan=parseMealPlanPackage(byId('aiMealPlanPackage').value,lastMealPlanRequest);renderMealPlanPreview(pendingMealPlan);return true;}catch(error){pendingMealPlan=null;const btn=byId('aiImportMealPlanBtn');if(btn)btn.disabled=true;byId('aiMealPlanPreview')?.classList.add('hide');hideMealPlanConflict();return mealPlanStatus(error.message,true);}}
-async function generateMealPlan(openAfter=false){try{lastMealPlanRequest=validateMealPlanRequest(mealPlanFormRequest());const prompt=mealPlanPrompt(lastMealPlanRequest);await copyTextToClipboard(prompt);mealPlanStatus('Instructions copied. Paste the returned import package below for preview.');if(openAfter)window.open('https://chatgpt.com/','_blank','noopener,noreferrer');return prompt;}catch(error){if(openAfter)window.open('https://chatgpt.com/','_blank','noopener,noreferrer');return mealPlanStatus(error.message,true);}}
+async function generateMealPlan(openAfter=false){
+ const panel=byId('aiGeneratedMealPlanPanel'),output=byId('aiGeneratedMealPlanInstructions');
+ try{
+  setMealPlanPasteEnabled(false);
+  lastMealPlanRequest=validateMealPlanFormForCopy();
+  const prompt=mealPlanPrompt(lastMealPlanRequest);
+  if(output)output.value=prompt;
+  if(panel)panel.classList.remove('hide');
+  mealPlanCopyStatus('Generated instructions. Copying to clipboard...');
+  if(!navigator.clipboard||typeof navigator.clipboard.writeText!=='function')throw new Error('Automatic copying was blocked. Select and copy the instructions below.');
+  await navigator.clipboard.writeText(prompt);
+  setMealPlanPasteEnabled(true);
+  mealPlanCopyStatus('Instructions copied successfully.');
+  if(openAfter)window.open('https://chatgpt.com/','_blank','noopener,noreferrer');
+  return prompt;
+ }catch(error){
+  const message=error&&error.message?error.message:String(error);
+  if(error&&error.fieldId)return showMealPlanValidationError(error.fieldId,error.message);
+  mealPlanCopyStatus('Automatic copying was blocked. Select and copy the instructions below.',true);
+  return false;
+ }
+}
+function selectMealPlanInstructions(){const output=byId('aiGeneratedMealPlanInstructions');if(!output)return;output.focus();output.select();output.setSelectionRange?.(0,output.value.length);mealPlanCopyStatus('Instructions selected. Copy them manually.');}
+function confirmMealPlanPackageReady(){setMealPlanPasteEnabled(true);mealPlanStatus('Paste from Clipboard is enabled for the new ChatGPT import package.');}
 function mealPlanAffectedDates(plan){return plan?plan.days.filter(day=>(state.entries||[]).some(e=>e.date===day.date)).map(day=>day.date):[];}
 function requestMealPlanConflictChoice(){
  if(!pendingMealPlan)return mealPlanStatus('Review a valid menu package before importing.',true);
@@ -361,7 +404,8 @@ function importValidatedMealPlan(plan,choice){
 }
 function importMealPlan(choice){return importValidatedMealPlan(pendingMealPlan,choice);}
 function updateMealPlanConditionals(){const wl=byId('aiGoalWeightLoss')?.checked,other=byId('aiGoalOther')?.checked;byId('aiWeightLossDegreeWrap')?.classList.toggle('hide',!wl);byId('aiOtherGoalWrap')?.classList.toggle('hide',!other);}
-function bind(){const on=(id,event,fn)=>{const el=byId(id);if(!el)return;const key=`aiBound${event[0].toUpperCase()}${event.slice(1)}`;if(el.dataset&&el.dataset[key])return;el.addEventListener(event,fn);if(el.dataset)el.dataset[key]='1';};on('aiCopyFoodBtn','click',()=>copyPrompt('addFood'));on('aiOpenFoodBtn','click',()=>copyPrompt('addFood',true));on('aiCopyRecipeBtn','click',()=>copyPrompt('addRecipeWithFoods'));on('aiOpenRecipeBtn','click',()=>copyPrompt('addRecipeWithFoods',true));on('aiPasteFoodBtn','click',()=>pasteClipboard('aiFoodPackage'));on('aiPasteRecipeBtn','click',()=>pasteClipboard('aiRecipePackage'));on('aiReviewFoodBtn','click',()=>review('addFood'));on('aiReviewRecipeBtn','click',()=>review('addRecipeWithFoods'));on('aiApproveBtn','click',approve);on('aiEditBtn','click',cancel);on('aiCancelBtn','click',cancel);on('aiUndoBtn','click',undo);on('aiAddTodayBtn','click',addImportedToday);on('aiReturnBtn','click',()=>showScreen(lastImport?.operation==='addFood'?'foodsScreen':'recipesScreen'));on('aiGenerateMealPlanBtn','click',()=>generateMealPlan(false));on('aiOpenMealPlanBtn','click',()=>generateMealPlan(true));on('aiPasteMealPlanBtn','click',()=>pasteClipboard('aiMealPlanPackage'));on('aiReviewMealPlanBtn','click',reviewMealPlan);on('aiImportMealPlanBtn','click',requestMealPlanConflictChoice);on('aiMealPlanAppendBtn','click',()=>importMealPlan('append'));on('aiMealPlanReplaceBtn','click',()=>importMealPlan('replace'));on('aiMealPlanCancelImportBtn','click',()=>{hideMealPlanConflict();mealPlanStatus('Menu import canceled.');});on('aiMealPlanOpenTodayBtn','click',()=>showScreen('mainScreen'));['aiGoalWeightLoss','aiGoalOther'].forEach(id=>on(id,'change',updateMealPlanConditionals));updateMealPlanConditionals();}
+function initMealPlanDefaults(){const start=byId('aiMealPlanStart'),end=byId('aiMealPlanEnd'),d=typeof selectedDate==='function'&&byId('date')?selectedDate():today();if(start&&!start.value)start.value=d;if(end&&!end.value)end.value=start?.value||d;setMealPlanPasteEnabled(false);}
+function bind(){const on=(id,event,fn)=>{const el=byId(id);if(!el)return;const key=`aiBound${event[0].toUpperCase()}${event.slice(1)}`;if(el.dataset&&el.dataset[key])return;el.addEventListener(event,fn);if(el.dataset)el.dataset[key]='1';};on('aiCopyFoodBtn','click',()=>copyPrompt('addFood'));on('aiOpenFoodBtn','click',()=>copyPrompt('addFood',true));on('aiCopyRecipeBtn','click',()=>copyPrompt('addRecipeWithFoods'));on('aiOpenRecipeBtn','click',()=>copyPrompt('addRecipeWithFoods',true));on('aiPasteFoodBtn','click',()=>pasteClipboard('aiFoodPackage'));on('aiPasteRecipeBtn','click',()=>pasteClipboard('aiRecipePackage'));on('aiReviewFoodBtn','click',()=>review('addFood'));on('aiReviewRecipeBtn','click',()=>review('addRecipeWithFoods'));on('aiApproveBtn','click',approve);on('aiEditBtn','click',cancel);on('aiCancelBtn','click',cancel);on('aiUndoBtn','click',undo);on('aiAddTodayBtn','click',addImportedToday);on('aiReturnBtn','click',()=>showScreen(lastImport?.operation==='addFood'?'foodsScreen':'recipesScreen'));on('aiGenerateMealPlanBtn','click',()=>generateMealPlan(false));on('aiOpenMealPlanBtn','click',()=>generateMealPlan(true));on('aiPasteMealPlanBtn','click',()=>mealPlanClipboardReady?pasteClipboard('aiMealPlanPackage'):mealPlanStatus('Generate and copy instructions, or confirm you have a new ChatGPT import package before pasting.',true));on('aiConfirmMealPlanPackageBtn','click',confirmMealPlanPackageReady);on('aiSelectMealPlanInstructionsBtn','click',selectMealPlanInstructions);on('aiReviewMealPlanBtn','click',reviewMealPlan);on('aiImportMealPlanBtn','click',requestMealPlanConflictChoice);on('aiMealPlanAppendBtn','click',()=>importMealPlan('append'));on('aiMealPlanReplaceBtn','click',()=>importMealPlan('replace'));on('aiMealPlanCancelImportBtn','click',()=>{hideMealPlanConflict();mealPlanStatus('Menu import canceled.');});on('aiMealPlanOpenTodayBtn','click',()=>showScreen('mainScreen'));['aiGoalWeightLoss','aiGoalOther'].forEach(id=>on(id,'change',updateMealPlanConditionals));['aiMealPlanStart','aiMealPlanEnd','aiGoalWeightLoss','aiGoalKeto','aiGoalHeartHealthy','aiGoalLowCarb','aiGoalLowFat','aiGoalOther','aiOtherGoalText','aiMealPlanCalorieAdjustmentType','aiMealPlanCalorieAdjustmentAmount'].forEach(id=>on(id,'input',clearMealPlanInvalidFields));updateMealPlanConditionals();initMealPlanDefaults();}
 window.NutritionTrackerAI={parsePackage,validatePackage,validateFood,validateRecipe,validateRecipeWithFoods,normalizeRecipeInstructionsAndNotes,findMatches,calculateRecipeNutrition,defaultResolutions,approveImport,undoImport,foodUsedElsewhere,existingFoodsForPrompt,schemaPrompt,mealPlanFormRequest,validateMealPlanRequest,mealPlanPrompt,parseMealPlanPackage,validateMealPlan,mealPlanDailyTotals,importMealPlan,importValidatedMealPlan,findMealPlanMatch,inclusiveDates,validateCalorieAdjustment,calorieAdjustmentSentence,copyTextToClipboard,bind};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind);else bind();
 })();
