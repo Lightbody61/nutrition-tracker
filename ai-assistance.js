@@ -178,7 +178,8 @@ async function copyTextToClipboard(text){
  if(fallbackCopyText(value))return true;
  throw new Error('Clipboard permission was denied or is unavailable. Copy the instructions manually.');
 }
-async function copyPrompt(operation,openAfter=false){const isFood=operation==='addFood',description=byId(isFood?'aiFoodDescription':'aiRecipeDescription').value;if(!description.trim())return status('Describe the item first.',true);const prompt=schemaPrompt(operation,description,byId('aiRecipeServings').value);try{await copyTextToClipboard(prompt);status('Instructions copied.');if(openAfter)window.open('https://chatgpt.com/','_blank','noopener,noreferrer');return prompt;}catch(error){status(error.message,true);if(openAfter)window.open('https://chatgpt.com/','_blank','noopener,noreferrer');return false;}}
+function openChatGPT(){return window.open('https://chatgpt.com/','_blank','noopener,noreferrer');}
+async function copyPrompt(operation,openAfter=false){const isFood=operation==='addFood',description=byId(isFood?'aiFoodDescription':'aiRecipeDescription').value;if(!description.trim())return status('Describe the item first.',true);const prompt=schemaPrompt(operation,description,byId('aiRecipeServings').value);if(openAfter)openChatGPT();try{await copyTextToClipboard(prompt);status('Instructions copied.');return prompt;}catch(error){status(error.message,true);return false;}}
 async function pasteClipboard(target){try{const text=await navigator.clipboard.readText();if(!text)return target==='aiMealPlanPackage'?mealPlanStatus('The clipboard is empty. Paste the JSON manually into the box.',true):status('The clipboard is empty. Paste the JSON manually into the box.',true);byId(target).value=text;return target==='aiMealPlanPackage'?mealPlanStatus('Clipboard content pasted. Select Preview Menus when ready.'):status('Clipboard content pasted. Select Review Import when ready.');}catch(_e){return target==='aiMealPlanPackage'?mealPlanStatus('Clipboard permission was denied or is unavailable. Paste the JSON manually into the box.',true):status('Clipboard permission was denied or is unavailable. Paste the JSON manually into the box.',true);}}
 function ensureImportFeedback(){const active=document.querySelector('.screen.active.aiAssist>.card');if(!active)return;for(const id of ['aiImportStatus','aiReviewPanel','aiImportComplete']){const el=byId(id);if(el&&el.parentElement!==active)active.appendChild(el);}}
 function status(message,error=false){ensureImportFeedback();const el=byId('aiImportStatus');if(el){el.textContent=message;el.classList.toggle('error',error);}return false;}
@@ -403,12 +404,11 @@ async function generateMealPlan(openAfter=false){
   renderCaloriePlanSummary(lastMealPlanRequest.caloriePlan);
   if(output)output.value=prompt;
   if(panel)panel.classList.remove('hide');
+  if(openAfter)openChatGPT();
   mealPlanCopyStatus('Generated instructions. Copying to clipboard...');
-  if(!navigator.clipboard||typeof navigator.clipboard.writeText!=='function')throw new Error('Automatic copying was blocked. Select and copy the instructions below.');
-  await navigator.clipboard.writeText(prompt);
+  await copyTextToClipboard(prompt);
   setMealPlanPasteEnabled(true);
   mealPlanCopyStatus('Instructions copied successfully.');
-  if(openAfter)window.open('https://chatgpt.com/','_blank','noopener,noreferrer');
   return prompt;
  }catch(error){
   const message=error&&error.message?error.message:String(error);
