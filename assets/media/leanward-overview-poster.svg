@@ -26,6 +26,5 @@
       <g fill="#f8fafc"><circle cx="0" cy="170" r="7"/><circle cx="72" cy="151" r="7"/><circle cx="145" cy="158" r="7"/><circle cx="220" cy="112" r="7"/><circle cx="292" cy="101" r="7"/><circle cx="364" cy="61" r="7"/><circle cx="465" cy="42" r="7"/></g>
     </g>
   </g>
-  <g transform="translate(457 494)"><circle cx="88" cy="88" r="86" fill="#0c4a6e" stroke="#e2e8f0" stroke-width="4"/><path d="M72 52 72 124 128 88Z" fill="#fff"/></g>
   <text x="76" y="690" fill="#cbd5e1" font-family="system-ui,Segoe UI,sans-serif" font-size="24">Simple daily guidance for healthier, stronger habits.</text>
 </svg>
