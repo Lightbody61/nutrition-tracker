@@ -17,30 +17,8 @@ function installVideoFix(){
  video.setAttribute('controls','');
  video.playsInline=true;
  video.preload='metadata';
- let toggle=document.getElementById('leanwardVideoToggleBtn');
- if(toggle&&toggle.tagName!=='BUTTON'){toggle.remove();toggle=null;}
- if(!toggle){
-  toggle=document.createElement('button');
-  toggle.className='accountVideoToggle';
-  toggle.id='leanwardVideoToggleBtn';
-  toggle.type='button';
-  toggle.setAttribute('aria-controls','leanwardOverviewVideo');
-  toggle.textContent='Watch Overview Video';
-  video.insertAdjacentElement('afterend',toggle);
- }
- if(toggle.dataset.videoFixBound==='1')return;
- toggle.dataset.videoFixBound='1';
- const sync=()=>{toggle.textContent=video.paused?'Watch Overview Video':'Pause Overview Video';};
- toggle.addEventListener('click',async()=>{
-  try{if(video.paused)await video.play();else video.pause();}
-  catch(error){console.error('Leanward overview video playback failed:',error);}
-  sync();
- });
- video.addEventListener('play',sync);
- video.addEventListener('pause',sync);
- video.addEventListener('ended',sync);
- video.addEventListener('error',()=>console.error('Leanward overview video failed to load.',video.error));
- sync();
+ document.getElementById('leanwardVideoToggleBtn')?.remove();
+ document.getElementById('leanwardOverlayPlayBtn')?.remove();
 }
 function installAnalyzeMenu(){
  if(document.getElementById('aiAnalyzeMenuMenuBtn'))return;
