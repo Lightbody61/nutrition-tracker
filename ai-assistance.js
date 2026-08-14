@@ -8,6 +8,33 @@ function loadCore(done){
  script.onerror=()=>console.error('Nutrition Tracker AI core failed to load.');
  document.head.appendChild(script);
 }
+function installVideoFix(){
+ const video=document.getElementById('leanwardOverviewVideo');
+ if(!video)return;
+ let toggle=document.getElementById('leanwardVideoToggleBtn');
+ if(!toggle){
+  toggle=document.createElement('button');
+  toggle.className='accountVideoToggle';
+  toggle.id='leanwardVideoToggleBtn';
+  toggle.type='button';
+  toggle.setAttribute('aria-controls','leanwardOverviewVideo');
+  toggle.textContent='Watch Overview Video';
+  (video.parentElement||video).appendChild(toggle);
+ }
+ if(toggle.dataset.videoFixBound==='1')return;
+ toggle.dataset.videoFixBound='1';
+ const sync=()=>{toggle.textContent=video.paused?'Watch Overview Video':'Pause Overview Video';};
+ toggle.addEventListener('click',async()=>{
+  try{
+   if(video.paused){await video.play();}else video.pause();
+  }catch(error){console.error('Leanward overview video playback failed:',error);}
+  sync();
+ });
+ video.addEventListener('play',sync);
+ video.addEventListener('pause',sync);
+ video.addEventListener('ended',sync);
+ sync();
+}
 function installAnalyzeMenu(){
  if(document.getElementById('aiAnalyzeMenuMenuBtn'))return;
  const grid=document.querySelector('#aiAssistanceScreen .moduleGrid');
@@ -75,6 +102,7 @@ function installAnalyzeMenu(){
  byId('aiAnalyzeMenuOpenBtn').addEventListener('click',()=>copy(true));
  byId('aiAnalyzeMenuSelectBtn').addEventListener('click',()=>{const el=byId('aiAnalyzeMenuPrompt');el.focus();el.select();el.setSelectionRange?.(0,el.value.length);status('Instructions selected. Copy them manually.');});
 }
-function start(){loadCore(()=>{if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',installAnalyzeMenu,{once:true});else installAnalyzeMenu();});}
+function install(){installVideoFix();installAnalyzeMenu();}
+function start(){loadCore(()=>{if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else install();});}
 start();
 })();
