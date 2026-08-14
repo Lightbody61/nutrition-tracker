@@ -9,9 +9,16 @@ function loadCore(done){
  document.head.appendChild(script);
 }
 function installVideoFix(){
+ const subtitle=document.querySelector('.accountPromoSubtitle');
+ if(subtitle)subtitle.textContent='Learn how the Tracker tools can help you';
  const video=document.getElementById('leanwardOverviewVideo');
  if(!video)return;
+ video.controls=true;
+ video.setAttribute('controls','');
+ video.playsInline=true;
+ video.preload='metadata';
  let toggle=document.getElementById('leanwardVideoToggleBtn');
+ if(toggle&&toggle.tagName!=='BUTTON'){toggle.remove();toggle=null;}
  if(!toggle){
   toggle=document.createElement('button');
   toggle.className='accountVideoToggle';
@@ -19,20 +26,20 @@ function installVideoFix(){
   toggle.type='button';
   toggle.setAttribute('aria-controls','leanwardOverviewVideo');
   toggle.textContent='Watch Overview Video';
-  (video.parentElement||video).appendChild(toggle);
+  video.insertAdjacentElement('afterend',toggle);
  }
  if(toggle.dataset.videoFixBound==='1')return;
  toggle.dataset.videoFixBound='1';
  const sync=()=>{toggle.textContent=video.paused?'Watch Overview Video':'Pause Overview Video';};
  toggle.addEventListener('click',async()=>{
-  try{
-   if(video.paused){await video.play();}else video.pause();
-  }catch(error){console.error('Leanward overview video playback failed:',error);}
+  try{if(video.paused)await video.play();else video.pause();}
+  catch(error){console.error('Leanward overview video playback failed:',error);}
   sync();
  });
  video.addEventListener('play',sync);
  video.addEventListener('pause',sync);
  video.addEventListener('ended',sync);
+ video.addEventListener('error',()=>console.error('Leanward overview video failed to load.',video.error));
  sync();
 }
 function installAnalyzeMenu(){
@@ -102,7 +109,10 @@ function installAnalyzeMenu(){
  byId('aiAnalyzeMenuOpenBtn').addEventListener('click',()=>copy(true));
  byId('aiAnalyzeMenuSelectBtn').addEventListener('click',()=>{const el=byId('aiAnalyzeMenuPrompt');el.focus();el.select();el.setSelectionRange?.(0,el.value.length);status('Instructions selected. Copy them manually.');});
 }
-function install(){installVideoFix();installAnalyzeMenu();}
-function start(){loadCore(()=>{if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else install();});}
+function installAnalyze(){if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',installAnalyzeMenu,{once:true});else installAnalyzeMenu();}
+function start(){
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',installVideoFix,{once:true});else installVideoFix();
+ loadCore(installAnalyze);
+}
 start();
 })();
