@@ -10,6 +10,7 @@ const root=path.resolve(__dirname,'..');
 const html=fs.readFileSync(path.join(root,'index.html'),'utf8');
 const duplicateHtml=fs.readFileSync(path.join(root,'nutrition-tracker.html'),'utf8');
 const coreKeys=['calories','protein','carbs','fat','fiber','sugar'];
+const requiredFoodKeys=['calories','protein','carbs','fat','fiber','sugar','sodium','potassium','calcium','iron','magnesium','phosphorus','zinc','copper','manganese','selenium','vitA','vitC','vitD','vitE','vitK','thiamin','riboflavin','niacin','b6','folate','b12','choline'];
 const trackedKeys=['calories','protein','collagenProtein','carbs','fat','fiber','sugar','glycemicLoad','sodium','potassium','calcium','iron','magnesium','phosphorus','zinc','copper','manganese','selenium','vitA','vitC','vitD','vitD3','vitDOther','vitE','vitK','vitK1','vitK2','thiamin','riboflavin','niacin','b6','folate','b12','choline'];
 const referenceKeys=new Set(['calories','proteinG','carbohydrateG','fiberG','sugarsG','fatG','saturatedFatG','monounsaturatedFatG','polyunsaturatedFatG','cholesterolMg','sodiumMg','potassiumMg','calciumMg','ironMg','magnesiumMg','phosphorusMg','zincMg','copperMg','manganeseMg','seleniumMcg','vitaminAMcgRAE','vitaminCMg','vitaminDMcg','vitaminEMg','vitaminKMcg','thiaminMg','riboflavinMg','niacinMg','pantothenicAcidMg','vitaminB6Mg','folateMcg','vitaminB12Mcg','cholineMg']);
 
@@ -65,17 +66,24 @@ for(const [label,items] of [['food',foods],['recipe',recipes]]){
     seen.add(name);
     assert.ok(String(item.serving||'').trim(),`${label} ${item.name}: missing serving`);
     assertNutrition(item,label==='recipe'?item.nutrition:item,`${label} ${item.name}`);
+    if(label==='food')for(const key of requiredFoodKeys)assert.ok(Object.hasOwn(item,key),`${label} ${item.name}: missing tracked nutrient ${key}`);
   }
 }
 
 const index=JSON.parse(fs.readFileSync(path.join(root,'data/foods/food-index.json'),'utf8'));
 let referenceCount=0;
+const referenceIds=new Set(),referenceDataTypes=new Map(),allowedDataTypes=new Set(['Foundation','SR Legacy','FNDDS']);
 for(const group of index.groups){
   const records=JSON.parse(fs.readFileSync(path.join(root,'data/foods',group.file),'utf8'));
   assert.strictEqual(records.length,group.count,`${group.group}: index count mismatch`);
   for(const record of records){
     referenceCount++;
     assert.ok(record.id===`fdc-${record.fdcId}`,`${record.name}: invalid USDA identity`);
+    assert.ok(!referenceIds.has(record.id),`${record.name}: duplicate USDA identity ${record.id}`);
+    referenceIds.add(record.id);
+    assert.ok(allowedDataTypes.has(record.dataType),`${record.name}: invalid USDA data type ${record.dataType}`);
+    assert.ok(String(record.release||'').trim(),`${record.name}: missing USDA release`);
+    referenceDataTypes.set(record.dataType,(referenceDataTypes.get(record.dataType)||0)+1);
     assert.strictEqual(record.nutritionBasis,'per 100 g',`${record.name}: invalid basis`);
     assert.ok(Object.keys(record.nutrition).length,`${record.name}: empty nutrition`);
     for(const [key,value] of Object.entries(record.nutrition)){
@@ -86,5 +94,6 @@ for(const group of index.groups){
   }
 }
 assert.strictEqual(referenceCount,index.total,'Reference index total mismatch');
+assert.deepStrictEqual(Object.fromEntries(referenceDataTypes),index.dataTypes,'Reference data-type counts mismatch');
 
 console.log(`Nutrition data audit: PASS (${foods.length} built-in foods, ${recipes.length} recipes, ${referenceCount} USDA reference foods)`);

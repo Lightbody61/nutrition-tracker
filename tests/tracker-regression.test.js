@@ -49,8 +49,11 @@ assert.strictEqual(boundary.writes,0);
 assert.strictEqual(boundary.data['nutritionTracker.rebuild.v1'],JSON.stringify(currentLocal));
 
 // A fresh browser has catalogs and neutral placeholders, but no user history or user-created foods.
-assert.deepStrictEqual(run(`(()=>{const s=createEmptyTrackerState();return {builtInFoods:s.foods.length,customFoods:s.foods.filter(f=>f.custom).length,oneOff:s.oneOffFoods.length,entries:s.entries.length,exercises:s.exercises.length,weights:s.dailyWeights.length,profile:s.profile};})()`),{builtInFoods:135,customFoods:0,oneOff:0,entries:0,exercises:0,weights:0,profile:accountState().profile});
-assert.strictEqual(run('RECIPE_DATA.length'),15);
+assert.deepStrictEqual(run(`(()=>{const s=createEmptyTrackerState();return {builtInFoods:s.foods.length,customFoods:s.foods.filter(f=>f.custom).length,oneOff:s.oneOffFoods.length,entries:s.entries.length,exercises:s.exercises.length,weights:s.dailyWeights.length,profile:s.profile};})()`),{builtInFoods:128,customFoods:0,oneOff:0,entries:0,exercises:0,weights:0,profile:accountState().profile});
+assert.strictEqual(run('RECIPE_DATA.length'),13);
+assert.strictEqual(run(`DEFAULT_FOODS.filter(f=>['Cheddar Cheese, shredded','Cheddar Cheese, block','Sardines, canned in water','Priano Ricotta & Spinach Ravioli'].includes(f.name)).length`),0);
+assert.deepStrictEqual(run(`DEFAULT_FOODS.filter(f=>Number.isInteger(f.fdcId)).map(f=>f.fdcId).sort((a,b)=>a-b)`),[169134,169230,169246,170150,170285,170899,171726,174665,175177]);
+assert.strictEqual(run(`DEFAULT_FOODS.every(f=>['calories','protein','carbs','fat','fiber','sugar','sodium','potassium','calcium','iron','magnesium','phosphorus','zinc','copper','manganese','selenium','vitA','vitC','vitD','vitE','vitK','thiamin','riboflavin','niacin','b6','folate','b12','choline'].every(k=>Object.hasOwn(f,k)))`),true);
 assert.strictEqual(run('CDC_EXERCISES.length'),20);
 
 // The Stage 2 boundary returns current user state and applies a valid state while ignoring unknown fields.
@@ -91,7 +94,7 @@ context.render=()=>{};
 context.init=()=>{};
 assert.strictEqual(run(`(()=>{clearDay();return state.entries.some(e=>e.date==='2026-07-03')||state.exercises.some(e=>e.date==='2026-07-03');})()`),false);
 assert.strictEqual(run('(()=>{resetAll();return true;})()'),true);
-assert.deepStrictEqual(run(`(()=>({foods:state.foods.length,custom:state.foods.filter(f=>f.custom).length,oneOff:state.oneOffFoods.length,entries:state.entries.length,exercises:state.exercises.length,weights:state.dailyWeights.length}))()`),{foods:135,custom:0,oneOff:0,entries:0,exercises:0,weights:0});
+assert.deepStrictEqual(run(`(()=>({foods:state.foods.length,custom:state.foods.filter(f=>f.custom).length,oneOff:state.oneOffFoods.length,entries:state.entries.length,exercises:state.exercises.length,weights:state.dailyWeights.length}))()`),{foods:128,custom:0,oneOff:0,entries:0,exercises:0,weights:0});
 
 // Signed-out saves are refused and never move personal data into URL/history or unscoped storage.
 setState(run('createEmptyTrackerState()'));

@@ -1,84 +1,13 @@
 {
-  "title": "Comprehensive Food Reference",
-  "source": "USDA FoodData Central Foundation Foods",
-  "version": "April 2026",
+  "title": "USDA Reference Foods",
+  "source": "USDA FoodData Central",
+  "version": "Disabled in favor of the curated built-in catalog",
   "basis": "per 100 g",
-  "total": 363,
-  "groups": [
-    {
-      "group": "Beans, Peas and Legumes",
-      "file": "beans-peas-and-legumes.json",
-      "count": 36
-    },
-    {
-      "group": "Beverages",
-      "file": "beverages.json",
-      "count": 2
-    },
-    {
-      "group": "Dairy",
-      "file": "dairy.json",
-      "count": 35
-    },
-    {
-      "group": "Eggs",
-      "file": "eggs.json",
-      "count": 9
-    },
-    {
-      "group": "Fats and Oils",
-      "file": "fats-and-oils.json",
-      "count": 8
-    },
-    {
-      "group": "Fish and Seafood",
-      "file": "fish-and-seafood.json",
-      "count": 15
-    },
-    {
-      "group": "Fruits",
-      "file": "fruits.json",
-      "count": 51
-    },
-    {
-      "group": "Grains and Cereals",
-      "file": "grains-and-cereals.json",
-      "count": 45
-    },
-    {
-      "group": "Meat",
-      "file": "meat.json",
-      "count": 29
-    },
-    {
-      "group": "Nuts and Seeds",
-      "file": "nuts-and-seeds.json",
-      "count": 20
-    },
-    {
-      "group": "Other",
-      "file": "other.json",
-      "count": 32
-    },
-    {
-      "group": "Poultry",
-      "file": "poultry.json",
-      "count": 10
-    },
-    {
-      "group": "Prepared and Mixed Foods",
-      "file": "prepared-and-mixed-foods.json",
-      "count": 1
-    },
-    {
-      "group": "Sauces, Condiments and Dressings",
-      "file": "sauces-condiments-and-dressings.json",
-      "count": 4
-    },
-    {
-      "group": "Vegetables",
-      "file": "vegetables.json",
-      "count": 66
-    }
-  ]
+  "total": 0,
+  "dataTypes": {},
+  "quality": {
+    "selectionMode": "curated built-in foods only",
+    "duplicateRows": 0
+  },
+  "groups": []
 }

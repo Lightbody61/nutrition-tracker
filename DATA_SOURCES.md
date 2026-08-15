@@ -1,21 +1,18 @@
 # Reference data sources and update process
 
-## Comprehensive Food Reference
+## Curated food database
 
-The production food-reference files were normalized from **USDA FoodData Central Foundation Foods, April 2026** (downloaded July 29, 2026). FoodData Central data are in the U.S. public domain; USDA asks that FoodData Central be credited. Source: <https://fdc.nal.usda.gov/download-datasets/>.
+The production tracker uses a controlled built-in catalog rather than exposing the full USDA archives. Generic foods are checked against **USDA FoodData Central Foundation Foods, April 2026**, **SR Legacy, April 2018**, or **FNDDS 2021–2023, October 2024**. FoodData Central data are in the U.S. public domain; USDA asks that FoodData Central be credited. Source: <https://fdc.nal.usda.gov/download-datasets/>.
 
-The repository does not include the raw archive. `scripts/build-reference-data.js` accepts the official Foundation Foods JSON file, maps supported USDA nutrient IDs to the Tracker's named fields, omits unavailable values, assigns broad display groups, alphabetizes records, and writes compact group JSON plus `data/foods/food-index.json`. Update by downloading a newer official Foundation Foods JSON release and running:
+The raw USDA archives are not production food lists and are not included in the repository. Foundation, SR Legacy, and FNDDS overlap, contain distinct preparation variants, and do not report every nutrient for every record. They must not be concatenated directly into the selectable database.
 
-```bash
-node scripts/build-reference-data.js /path/to/FoodData_Central_foundation_food.json
-node tests/food-reference.test.js
-```
+Every built-in food must store all nutrient fields used by the Tracker. A zero is permitted only as an assigned numeric value; an absent property fails the nutrition audit. Generic USDA-derived foods should also record their FDC ID, source description, serving weight, and source dataset. Manufacturer-specific foods and supplements must use their product label rather than a generic USDA substitute. Recipes must be recalculated when ingredients, amounts, yield, or serving size changes.
 
-All food values in this static reference are reported per 100 g. Values absent from the source are omitted and displayed as “Not available”; they are not converted to zero. Tiny negative analytical results in the source are normalized to zero because a consumed nutrient amount cannot be negative. The Tracker has not independently laboratory-verified the USDA values. The Foundation Foods subset emphasizes analytically characterized commodity and minimally processed foods. It is broad but does not contain every food, brand, restaurant item, or cultural preparation.
+The full USDA reference catalog is disabled in production to prevent cross-dataset duplicates and incomplete rows from appearing beside the curated foods. `data/foods/food-index.json` therefore contains no selectable USDA archive groups.
 
-Run `node scripts/audit-nutrition-data.js` after any food or recipe edit. The audit covers every built-in food, built-in recipe, and USDA reference record; rejects empty records, duplicate built-in names, missing core nutrition, nonnumeric or negative assigned values, inconsistent vitamin D/K component totals, invalid USDA identifiers or serving bases, unsupported nutrient fields, and index-count drift. Recipe values remain estimates when ingredient brands, optional ingredients, cooking yield, or serving weight can vary.
+Run `node scripts/audit-nutrition-data.js` after any food or recipe edit. The audit rejects empty records, duplicate built-in names, any missing tracked nutrient property, nonnumeric or negative assigned values, inconsistent vitamin D/K component totals, invalid static-reference records, and index-count drift. Recipe values remain estimates when ingredient brands, optional ingredients, cooking yield, or serving weight can vary.
 
-The complete static reference is intentionally excluded from localStorage and Supabase state. When a reference food is logged, the selected quantity and a nutrition snapshot are stored in the existing daily-entry format, preserving historical totals if the static dataset changes. Existing built-ins remain available to recipes and the Today's Menu selector, while existing custom foods remain user state.
+Logged entries continue to store nutrition snapshots, so historical totals do not change when the curated catalog is corrected. Custom foods remain user state and are not silently merged with the controlled built-in catalog.
 
 ## Herbs and Spices culinary reference
 
