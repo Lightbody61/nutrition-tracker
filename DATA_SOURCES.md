@@ -11,7 +11,9 @@ node scripts/build-reference-data.js /path/to/FoodData_Central_foundation_food.j
 node tests/food-reference.test.js
 ```
 
-All food values in this static reference are reported per 100 g. Values absent from the source are omitted and displayed as “Not available”; they are not converted to zero. The Tracker has not independently laboratory-verified the USDA values. The Foundation Foods subset emphasizes analytically characterized commodity and minimally processed foods. It is broad but does not contain every food, brand, restaurant item, or cultural preparation.
+All food values in this static reference are reported per 100 g. Values absent from the source are omitted and displayed as “Not available”; they are not converted to zero. Tiny negative analytical results in the source are normalized to zero because a consumed nutrient amount cannot be negative. The Tracker has not independently laboratory-verified the USDA values. The Foundation Foods subset emphasizes analytically characterized commodity and minimally processed foods. It is broad but does not contain every food, brand, restaurant item, or cultural preparation.
+
+Run `node scripts/audit-nutrition-data.js` after any food or recipe edit. The audit covers every built-in food, built-in recipe, and USDA reference record; rejects empty records, duplicate built-in names, missing core nutrition, nonnumeric or negative assigned values, inconsistent vitamin D/K component totals, invalid USDA identifiers or serving bases, unsupported nutrient fields, and index-count drift. Recipe values remain estimates when ingredient brands, optional ingredients, cooking yield, or serving weight can vary.
 
 The complete static reference is intentionally excluded from localStorage and Supabase state. When a reference food is logged, the selected quantity and a nutrition snapshot are stored in the existing daily-entry format, preserving historical totals if the static dataset changes. Existing built-ins remain available to recipes and the Today's Menu selector, while existing custom foods remain user state.
 

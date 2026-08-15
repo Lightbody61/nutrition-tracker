@@ -49,7 +49,7 @@ assert.strictEqual(boundary.writes,0);
 assert.strictEqual(boundary.data['nutritionTracker.rebuild.v1'],JSON.stringify(currentLocal));
 
 // A fresh browser has catalogs and neutral placeholders, but no user history or user-created foods.
-assert.deepStrictEqual(run(`(()=>{const s=createEmptyTrackerState();return {builtInFoods:s.foods.length,customFoods:s.foods.filter(f=>f.custom).length,oneOff:s.oneOffFoods.length,entries:s.entries.length,exercises:s.exercises.length,weights:s.dailyWeights.length,profile:s.profile};})()`),{builtInFoods:138,customFoods:0,oneOff:0,entries:0,exercises:0,weights:0,profile:accountState().profile});
+assert.deepStrictEqual(run(`(()=>{const s=createEmptyTrackerState();return {builtInFoods:s.foods.length,customFoods:s.foods.filter(f=>f.custom).length,oneOff:s.oneOffFoods.length,entries:s.entries.length,exercises:s.exercises.length,weights:s.dailyWeights.length,profile:s.profile};})()`),{builtInFoods:135,customFoods:0,oneOff:0,entries:0,exercises:0,weights:0,profile:accountState().profile});
 assert.strictEqual(run('RECIPE_DATA.length'),15);
 assert.strictEqual(run('CDC_EXERCISES.length'),20);
 
@@ -91,7 +91,7 @@ context.render=()=>{};
 context.init=()=>{};
 assert.strictEqual(run(`(()=>{clearDay();return state.entries.some(e=>e.date==='2026-07-03')||state.exercises.some(e=>e.date==='2026-07-03');})()`),false);
 assert.strictEqual(run('(()=>{resetAll();return true;})()'),true);
-assert.deepStrictEqual(run(`(()=>({foods:state.foods.length,custom:state.foods.filter(f=>f.custom).length,oneOff:state.oneOffFoods.length,entries:state.entries.length,exercises:state.exercises.length,weights:state.dailyWeights.length}))()`),{foods:138,custom:0,oneOff:0,entries:0,exercises:0,weights:0});
+assert.deepStrictEqual(run(`(()=>({foods:state.foods.length,custom:state.foods.filter(f=>f.custom).length,oneOff:state.oneOffFoods.length,entries:state.entries.length,exercises:state.exercises.length,weights:state.dailyWeights.length}))()`),{foods:135,custom:0,oneOff:0,entries:0,exercises:0,weights:0});
 
 // Signed-out saves are refused and never move personal data into URL/history or unscoped storage.
 setState(run('createEmptyTrackerState()'));

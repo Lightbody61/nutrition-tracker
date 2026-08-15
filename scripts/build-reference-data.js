@@ -33,7 +33,7 @@ function groupFor(name){return (groups.find(([,pattern])=>pattern.test(name))||[
 const slug=s=>s.toLowerCase().replace(/&/g,'and').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
 const records=raw.filter(Boolean).map(food=>{
   const nutrition={};
-  for(const item of food.foodNutrients||[]){const key=nutrientMap[item.nutrient&&item.nutrient.id];if(key&&Number.isFinite(item.amount)&&nutrition[key]===undefined)nutrition[key]=item.amount;}
+  for(const item of food.foodNutrients||[]){const key=nutrientMap[item.nutrient&&item.nutrient.id];if(key&&Number.isFinite(item.amount)&&nutrition[key]===undefined)nutrition[key]=Math.max(0,item.amount);}
   return {id:`fdc-${food.fdcId}`,fdcId:food.fdcId,name:food.description,group:groupFor(food.description),nutritionBasis:'per 100 g',nutrition};
 }).filter(x=>x.name&&Object.keys(x.nutrition).length).sort((a,b)=>a.group.localeCompare(b.group)||a.name.localeCompare(b.name));
 const byGroup=new Map();for(const record of records){if(!byGroup.has(record.group))byGroup.set(record.group,[]);byGroup.get(record.group).push(record);}

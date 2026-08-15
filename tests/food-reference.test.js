@@ -8,6 +8,7 @@ const index=JSON.parse(fs.readFileSync('data/foods/food-index.json','utf8'));
 const herbs=JSON.parse(fs.readFileSync('data/herbs-spices/herbs.json','utf8'));
 const spices=JSON.parse(fs.readFileSync('data/herbs-spices/spices.json','utf8'));
 const allHerbSpices=[...herbs,...spices];
+require('../scripts/audit-nutrition-data.js');
 const alpha=items=>items.map(x=>x.name).every((name,i,names)=>i===0||names[i-1].localeCompare(name)<=0);
 
 for(const id of ['foodReferenceSearch','clearFoodReferenceSearchBtn','expandAllFoodGroupsBtn','collapseAllFoodGroupsBtn','herbSpiceScreen','herbSpiceSearch','clearHerbSpiceSearchBtn','foodPickerToggle','foodPickerPanel','foodPickerSearch','clearFoodPickerSearchBtn','expandAllFoodPickerBtn','collapseAllFoodPickerBtn','foodPickerGroups'])assert.ok(html.includes(`id="${id}"`),`missing ${id}`);
