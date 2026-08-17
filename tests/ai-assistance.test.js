@@ -6,7 +6,7 @@ const vm=require('vm');
 const html=fs.readFileSync('index.html','utf8');
 const start=html.indexOf('<script>')+8;
 const tracker=html.slice(start,html.indexOf('</script>',start));
-const ai=fs.readFileSync('ai-assistance.js','utf8');
+const ai=fs.readFileSync('ai-assistance-core.js','utf8');
 let uuid=0,saveResult=true;
 const context={console,crypto:{randomUUID:()=>`uuid-${++uuid}`},navigator:{clipboard:{}},document:{readyState:'loading',addEventListener(){},getElementById(){return null;}},window:null,location:{},history:{},alert(){},confirm:()=>true};
 context.window=context;vm.createContext(context);vm.runInContext(tracker,context);context.trackerAccountStateChanged=()=>saveResult;vm.runInContext(ai,context);
@@ -43,6 +43,9 @@ const foodPackage={packageType:'nutrition-tracker-ai-import',schemaVersion:1,ope
 const recipePackage={packageType:'nutrition-tracker-ai-import',schemaVersion:1,operation:'addRecipe',createdBy:'user-chatgpt',recipe:{name:'Legacy Recipe',servings:2,ingredients:[{name:'Chicken breast',brand:'',amount:100,unit:'g',existingFoodId:null}],instructions:['Cook the chicken until done.'],notes:'',containsEstimates:false}};
 reset();assert.strictEqual(core.validatePackage(clone(foodPackage)).operation,'addFood');assert.strictEqual(core.validatePackage(clone(recipePackage)).operation,'addRecipe');
 assert.throws(()=>core.parsePackage('{bad'),/not valid JSON/);assert.strictEqual(core.parsePackage('```json\n{"a":1}\n```').a,1);
+assert.strictEqual(core.parsePackage('Here is your import package:\n```json\n{"a":1}\n```\nReview it before saving.').a,1);
+assert.strictEqual(core.parsePackage('Here is your import package:\n{"a":1}\nReview it before saving.').a,1);
+assert.throws(()=>core.parsePackage('```json\n{"a":1}\n```\n```json\n{"b":2}\n```'),/multiple code blocks/);
 for(const [field,value,pattern] of [['packageType','wrong',/package type/],['schemaVersion',3,/schema version/],['operation','deleteFood',/prohibited operation/]]){const p=clone(foodPackage);p[field]=value;rejects(p,pattern);}
 for(const forbidden of ['ownerId','userId','accountId','storageKey','permanentId']){const p=clone(foodPackage);p.food[forbidden]='forbidden';rejects(p,/prohibited or unknown field/);}
 {const p=clone(foodPackage);p.tracker_state={foods:[]};rejects(p,/prohibited or unknown field/);}
@@ -76,7 +79,8 @@ pkg=linkedPackage([ingredient('Milk',{foodTemporaryKey:'milk-new'})],[proposed('
 {const bad=proposed('bad','Bad food');bad.nutrients.calories=null;rejects(linkedPackage([ingredient('Bad food',{foodTemporaryKey:'bad'})],[bad]),/calories nutrient is required/);}
 {const bad=proposed('bad','Bad food');bad.nutrients.sodium='unknown';rejects(linkedPackage([ingredient('Bad food',{foodTemporaryKey:'bad'})],[bad]),/finite number/);}
 {const bad=proposed('bad','Bad food');bad.nutritionSource='';rejects(linkedPackage([ingredient('Bad food',{foodTemporaryKey:'bad'})],[bad]),/Nutrition source is required/);}
-{const bad=proposed('bad','Bad food');delete bad.nutrients.choline;rejects(linkedPackage([ingredient('Bad food',{foodTemporaryKey:'bad'})],[bad]),/choline nutrient field is required/);}
+{const partial=proposed('partial','Partial nutrition food');for(const key of ['choline','magnesium','vitK'])delete partial.nutrients[key];const accepted=core.validatePackage(clone(linkedPackage([ingredient('Partial nutrition food',{foodTemporaryKey:'partial'})],[partial])));assert.strictEqual(accepted.proposedFoods[0].nutrients.choline,null);assert.strictEqual(accepted.proposedFoods[0].nutrients.magnesium,null);assert.strictEqual(accepted.proposedFoods[0].nutrients.vitK,null);}
+{const bad=proposed('bad','Bad food');delete bad.nutrients.protein;rejects(linkedPackage([ingredient('Bad food',{foodTemporaryKey:'bad'})],[bad]),/protein nutrient field is required/);}
 {const bad=proposed('salt','Sea salt',{nutrients:nutrients({sodium:0})});rejects(linkedPackage([ingredient('Sea salt',{foodTemporaryKey:'salt'})],[bad]),/Salt must include sodium/);}
 {const bad=proposed('sweetener','Zero-calorie sweetener',{nutrients:nutrients({calories:0,sugar:null})});rejects(linkedPackage([ingredient('Zero-calorie sweetener',{foodTemporaryKey:'sweetener'})],[bad]),/numeric sugar value/);}
 assert.strictEqual(core.findMatches({name:'Peanut Butter',brand:'Store Brand',unit:'tbsp'}).length,0);
