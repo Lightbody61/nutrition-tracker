@@ -17,8 +17,17 @@ const normalizeText=v=>String(v||'').trim().toLowerCase().replace(/[^a-z0-9]+/g,
 const normalizeUnit=v=>UNIT_ALIASES[normalizeText(v)]||normalizeText(v);
 const finite=(v,label,{positive=false,nullable=false}={})=>{if(nullable&&v===null)return null;if(typeof v!=='number'||!Number.isFinite(v))throw new Error(`${label} must be a finite number${nullable?' or null':''}.`);if(positive&&v<=0)throw new Error(`${label} must be greater than zero.`);if(v<0)throw new Error(`${label} must not be negative.`);return v;};
 function rejectUnknown(value,allowed,label){for(const key of Object.keys(value))if(!allowed.has(key))throw new Error(`${label} contains prohibited or unknown field “${key}”.`);}
-function parsePackage(text){let raw=String(text||'').trim();if(!raw)throw new Error('Paste an AI import package first.');const fenced=raw.match(/^```(?:json)?\s*([\s\S]*?)\s*```$/i);if(fenced)raw=fenced[1].trim();else if(raw.includes('```'))throw new Error('Markdown code fences are incomplete or mixed with other content. Paste only the JSON object.');let value;try{value=JSON.parse(raw);}catch(_e){throw new Error('The import package is not valid JSON. Paste one complete JSON object without commentary.');}if(!plain(value))throw new Error('The import package root must be a JSON object.');return value;}
-function parseJsonObject(text,label='JSON package'){let raw=String(text||'').trim();if(!raw)throw new Error(`Paste a ${label} first.`);const fenced=raw.match(/^```(?:json)?\s*([\s\S]*?)\s*```$/i);if(fenced)raw=fenced[1].trim();else if(raw.includes('```'))throw new Error('Markdown code fences are incomplete or mixed with other content. Paste only the JSON object.');let value;try{value=JSON.parse(raw);}catch(_e){throw new Error(`The ${label} is not valid JSON. Paste one complete JSON object without commentary.`);}if(!plain(value))throw new Error(`The ${label} root must be a JSON object.`);return value;}
+function jsonObjectText(text){
+ const raw=String(text||'').trim();if(!raw)return '';
+ const fences=[...raw.matchAll(/```(?:json)?\s*([\s\S]*?)\s*```/gi)];
+ if(fences.length===1)return fences[0][1].trim();
+ if(fences.length>1||raw.includes('```'))throw new Error('The response contains incomplete or multiple code blocks. Paste one AI import package.');
+ if(raw.startsWith('{')&&raw.endsWith('}'))return raw;
+ const start=raw.indexOf('{'),end=raw.lastIndexOf('}');
+ return start>=0&&end>start?raw.slice(start,end+1).trim():raw;
+}
+function parsePackage(text){const raw=jsonObjectText(text);if(!raw)throw new Error('Paste an AI import package first.');let value;try{value=JSON.parse(raw);}catch(_e){throw new Error('The import package is not valid JSON. Paste one complete JSON object.');}if(!plain(value))throw new Error('The import package root must be a JSON object.');return value;}
+function parseJsonObject(text,label='JSON package'){const raw=jsonObjectText(text);if(!raw)throw new Error(`Paste a ${label} first.`);let value;try{value=JSON.parse(raw);}catch(_e){throw new Error(`The ${label} is not valid JSON. Paste one complete JSON object.`);}if(!plain(value))throw new Error(`The ${label} root must be a JSON object.`);return value;}
 function validatePackage(value,expectedOperation){
  rejectUnknown(value,ROOT_FIELDS,'Import package');
  if(value.packageType!==PACKAGE_TYPE)throw new Error('Unsupported package type.');
@@ -38,7 +47,7 @@ function validateFood(food,{operation='addFood',requireCore=false,requireTempora
  const name=String(food.name||'').trim();if(!name)throw new Error('Food name is required.');
  const servingAmount=finite(food.servingAmount,'Serving amount',{positive:true});const servingUnit=normalizeUnit(food.servingUnit);if(!servingUnit)throw new Error('Serving unit is required.');
  if(!plain(food.nutrients))throw new Error('Food nutrients object is required.');rejectUnknown(food.nutrients,NUTRIENT_FIELDS,'Nutrients');
- const nutrients={};for(const key of KEYS){if(requireCore&&!own(food.nutrients,key))throw new Error(`${key} nutrient field is required for every proposed food; use null only when this optional value is unknown.`);if(requireCore&&CORE_NUTRIENTS.has(key)&&food.nutrients[key]===null)throw new Error(`${key} nutrient is required for every proposed food.`);const value=own(food.nutrients,key)?food.nutrients[key]:null;nutrients[key]=finite(value,`${key} nutrient`,{nullable:true});}
+ const nutrients={};for(const key of KEYS){const required=requireCore&&CORE_NUTRIENTS.has(key);if(required&&!own(food.nutrients,key))throw new Error(`${key} nutrient field is required for every proposed food.`);if(required&&food.nutrients[key]===null)throw new Error(`${key} nutrient is required for every proposed food.`);const value=own(food.nutrients,key)?food.nutrients[key]:null;nutrients[key]=finite(value,`${key} nutrient`,{nullable:true});}
  const nutritionSource=String(food.nutritionSource||'').trim();if(requireCore&&!nutritionSource)throw new Error('Nutrition source is required for every proposed food.');
  if(requireCore&&typeof food.containsEstimates!=='boolean')throw new Error('containsEstimates must be true or false for every proposed food.');
  if(requireCore&&/\bsalt\b/i.test(name)&&!(nutrients.sodium>0))throw new Error('Salt must include sodium for the stated serving quantity.');
